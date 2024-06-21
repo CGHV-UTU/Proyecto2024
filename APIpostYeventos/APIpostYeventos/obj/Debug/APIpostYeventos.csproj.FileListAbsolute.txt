@@ -1,0 +1,12 @@
+C:\Users\FedeG\source\repos\APIpostYeventos\APIpostYeventos\bin\Debug\APIpostYeventos.exe.config
+C:\Users\FedeG\source\repos\APIpostYeventos\APIpostYeventos\bin\Debug\APIpostYeventos.exe
+C:\Users\FedeG\source\repos\APIpostYeventos\APIpostYeventos\bin\Debug\APIpostYeventos.pdb
+C:\Users\FedeG\source\repos\APIpostYeventos\APIpostYeventos\obj\Debug\APIpostYeventos.csproj.AssemblyReference.cache
+C:\Users\FedeG\source\repos\APIpostYeventos\APIpostYeventos\obj\Debug\APIpostYeventos.AñadirPost.resources
+C:\Users\FedeG\source\repos\APIpostYeventos\APIpostYeventos\obj\Debug\APIpostYeventos.Form1.resources
+C:\Users\FedeG\source\repos\APIpostYeventos\APIpostYeventos\obj\Debug\APIpostYeventos.Properties.Resources.resources
+C:\Users\FedeG\source\repos\APIpostYeventos\APIpostYeventos\obj\Debug\APIpostYeventos.csproj.GenerateResource.cache
+C:\Users\FedeG\source\repos\APIpostYeventos\APIpostYeventos\obj\Debug\APIpostYeventos.csproj.CoreCompileInputs.cache
+C:\Users\FedeG\source\repos\APIpostYeventos\APIpostYeventos\obj\Debug\APIpostYeventos.exe
+C:\Users\FedeG\source\repos\APIpostYeventos\APIpostYeventos\obj\Debug\APIpostYeventos.pdb
+C:\Users\FedeG\source\repos\APIpostYeventos\APIpostYeventos\obj\Debug\APIpostYeventos.EliminarPost.resources
