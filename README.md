@@ -1,4 +1,9 @@
 # Proyecto UTU 2024
-This code repository (or "repo") is designed to demonstrate the best GitHub has to offer with the least amount of noise.
+--- 
+En este repositorio se encuentra lo referente al proyecto que se relacione con el código, como los scripts de bases de datos que usamos en su desarrollo, diagramas o manuales de instalación. 
 
-The repo includes an `index.html` file (so it can render a web page), two GitHub Actions workflows, and a CSS stylesheet dependency.
+La rama principal contiene la carpeta "Documentos", donde se encuentran algunos manuales de instalación, el boceto de MER y otros diagramas.
+
+Tenemos una rama dedicada para las versiones de la APIs de Post y Eventos.
+
+La rama "Backoffice" tiene un programa que interactúa directamente con una base de datos primitiva.
