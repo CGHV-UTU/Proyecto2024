@@ -1,0 +1,31 @@
+-- Crear base de datos y tablas
+CREATE DATABASE IF NOT EXISTS base;
+USE base;
+
+CREATE TABLE IF NOT EXISTS posts (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    texto VARCHAR(100),
+    imagen BLOB,
+    url VARCHAR(50),
+    categorias varchar(100) not null,
+    comentarios bool not null,
+    likes int(11) not null,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS eventos (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    titulo VARCHAR(100) NOT NULL,
+    ubicacion VARCHAR(100),
+    descripcion VARCHAR(100),
+    foto BLOB NOT NULL,
+    fechayhora VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+create table IF NOT EXISTS comentarios (
+	id int(11) not null auto_increment,
+    texto varchar(100) not null,
+    likes int(11) not null,
+    primary key (id)
+);

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<ArrayOfPost xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Post>
+    <id>2</id>
+    <texto>F</texto>
+    <imagen>C:\Users\Lab5\Desktop\I_Gede_Wenten_ITB_2020.jpg</imagen>
+    <linkYT>F</linkYT>
+  </Post>
+  <Post>
+    <id>1</id>
+    <texto>F</texto>
+    <imagen>C:\Users\Lab5\Desktop\I_Gede_Wenten_ITB_2020.jpg</imagen>
+    <linkYT>W</linkYT>
+  </Post>
+  <Post>
+    <id>4</id>
+    <texto>Texto</texto>
+    <imagen>C:\Users\Lab5\Desktop\I_Gede_Wenten_ITB_2020.jpg</imagen>
+    <linkYT>Fede</linkYT>
+  </Post>
+</ArrayOfPost>
