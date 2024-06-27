@@ -1,0 +1,225 @@
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ConexionDB.exe.config
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ConexionDB.exe
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ConexionDB.pdb
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\BouncyCastle.Cryptography.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.Streams.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Hash.xxHash.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\MySql.Data.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Buffers.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Configuration.ConfigurationManager.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.IO.Pipelines.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Memory.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ZstdSharp.dll
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\BouncyCastle.Cryptography.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.pdb
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.Streams.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Hash.xxHash.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\MySql.Data.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Buffers.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.IO.Pipelines.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Memory.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.AssemblyReference.cache
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.Editar_comentario.resources
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.Editar_post.resources
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.Principal.resources
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.Properties.Resources.resources
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.GenerateResource.cache
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.CoreCompileInputs.cache
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.CopyComplete
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.exe
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.pdb
+C:\Users\Lab5\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.Editar_evento.resources
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ConexionDB.exe.config
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ConexionDB.exe
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ConexionDB.pdb
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\BouncyCastle.Cryptography.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.Streams.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Hash.xxHash.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\MySql.Data.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Buffers.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Configuration.ConfigurationManager.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.IO.Pipelines.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Memory.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ZstdSharp.dll
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\BouncyCastle.Cryptography.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.pdb
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.Streams.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Hash.xxHash.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\MySql.Data.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Buffers.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.IO.Pipelines.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Memory.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.AssemblyReference.cache
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.Editar_comentario.resources
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.Editar_evento.resources
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.Editar_post.resources
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.Principal.resources
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.Properties.Resources.resources
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.GenerateResource.cache
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.CopyComplete
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.exe
+C:\Users\Usuario\Desktop\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.pdb
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ConexionDB.exe.config
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ConexionDB.exe
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ConexionDB.pdb
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\BouncyCastle.Cryptography.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.Streams.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Hash.xxHash.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\MySql.Data.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Buffers.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Configuration.ConfigurationManager.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.IO.Pipelines.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Memory.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ZstdSharp.dll
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\BouncyCastle.Cryptography.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.pdb
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.Streams.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Hash.xxHash.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\MySql.Data.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Buffers.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.IO.Pipelines.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Memory.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.AssemblyReference.cache
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.Properties.Resources.resources
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.GenerateResource.cache
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.CoreCompileInputs.cache
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.CopyComplete
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.exe
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.pdb
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\BackofficeDeAdministracion.Editar_comentario.resources
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\BackofficeDeAdministracion.Editar_evento.resources
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\BackofficeDeAdministracion.Editar_post.resources
+C:\Users\emerg\Downloads\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\BackofficeDeAdministracion.Principal.resources
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ConexionDB.exe.config
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ConexionDB.exe
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ConexionDB.pdb
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\BouncyCastle.Cryptography.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.Streams.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Hash.xxHash.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\MySql.Data.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Buffers.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Configuration.ConfigurationManager.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.IO.Pipelines.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Memory.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\ZstdSharp.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\BouncyCastle.Cryptography.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.pdb
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.Streams.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\K4os.Hash.xxHash.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\MySql.Data.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Buffers.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.IO.Pipelines.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Memory.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.AssemblyReference.cache
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\BackofficeDeAdministracion.Editar_comentario.resources
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\BackofficeDeAdministracion.Editar_evento.resources
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\BackofficeDeAdministracion.Editar_post.resources
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\BackofficeDeAdministracion.Principal.resources
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.Properties.Resources.resources
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.GenerateResource.cache
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.CoreCompileInputs.cache
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.CopyComplete
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.exe
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\backofficesanti\Ejemplo_ConexionDB\ConexionDB\ConexionDB\obj\Debug\ConexionDB.pdb
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\ConexionDB.exe.config
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\ConexionDB.exe
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\ConexionDB.pdb
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\BouncyCastle.Cryptography.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.Streams.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\K4os.Hash.xxHash.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\MySql.Data.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.Buffers.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.Configuration.ConfigurationManager.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.IO.Pipelines.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.Memory.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\ZstdSharp.dll
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\BouncyCastle.Cryptography.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.pdb
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\Google.Protobuf.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\K4os.Compression.LZ4.Streams.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\K4os.Hash.xxHash.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\MySql.Data.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.Buffers.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.IO.Pipelines.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.Memory.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.AssemblyReference.cache
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\obj\Debug\BackofficeDeAdministracion.Editar_comentario.resources
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\obj\Debug\BackofficeDeAdministracion.Editar_evento.resources
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\obj\Debug\BackofficeDeAdministracion.Editar_post.resources
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\obj\Debug\BackofficeDeAdministracion.Principal.resources
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\obj\Debug\ConexionDB.Properties.Resources.resources
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.GenerateResource.cache
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.CoreCompileInputs.cache
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\obj\Debug\Backoffice de administración.csproj.CopyComplete
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\obj\Debug\ConexionDB.exe
+C:\Users\emerg\OneDrive\Escritorio\Ultimo codigo programacion\ConexionDB\ConexionDB\obj\Debug\ConexionDB.pdb
