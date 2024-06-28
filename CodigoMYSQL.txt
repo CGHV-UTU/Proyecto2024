@@ -1,0 +1,29 @@
+CREATE DATABASE base;
+CREATE TABLE base.posts(
+    id INT(11) NOT NULL auto_increment,
+    texto VARCHAR(100),
+    imagen BLOB,
+    url VARCHAR(50),
+    PRIMARY KEY(id)
+);
+
+SELECT * FROM base.posts;
+
+CREATE TABLE base.eventos(
+    id INT(11) NOT NULL auto_increment,
+    titulo VARCHAR(100) NOT NULL,
+    ubicacion VARCHAR(100),
+    descripcion VARCHAR(100),
+    foto BLOB NOT NULL,
+    fechayhora VARCHAR(100) NOT NULL,
+    PRIMARY KEY(id)
+    );
+    
+SELECT * FROM base.eventos;
+
+CREATE TABLE comentarios (
+    id int(11) NOT NULL auto_increment,
+    texto varchar(100) NOT NULL,
+    likes int(11) NOT NULL,
+    primary key (id)
+);
