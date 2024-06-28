@@ -6,4 +6,4 @@ La rama principal contiene la carpeta "Documentos", donde se encuentran algunos 
 
 Tenemos una rama dedicada para las versiones de la APIs de Post y Eventos.
 
-La rama "Backoffice" tiene un programa que interactúa directamente con una base de datos primitiva.
+Las ramas "Backoffice" tienen un programa que interactúa directamente con una base de datos primitiva.
