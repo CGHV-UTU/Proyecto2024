@@ -9,7 +9,7 @@ Tenemos una rama dedicada para las versiones de la APIs de Post y Eventos.
 Las ramas "Backoffice" tienen un programa que interactúa directamente con una base de datos primitiva.
 
 
-## Definition of Done
+## Definition of Done del Product Backlog
 
 Cumplimiento de Características Necesarias:
 - Cada ítem del Product Backlog debe cumplir con todas las características y requisitos definidos para ese ítem. Esto incluye funcionalidades, integraciones, comportamientos esperados y cualquier otro criterio técnico o funcional establecido.
