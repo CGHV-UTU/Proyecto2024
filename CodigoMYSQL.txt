@@ -4,6 +4,10 @@ CREATE TABLE base.posts(
     texto VARCHAR(100),
     imagen BLOB,
     url VARCHAR(50),
+    categorias varchar(100) not null,
+    comentarios bool not null,
+    likes int(11) not null,
+
     PRIMARY KEY(id)
 );
 
