@@ -7,7 +7,6 @@ CREATE TABLE base.posts(
     categorias varchar(100) not null,
     comentarios bool not null,
     likes int(11) not null,
-
     PRIMARY KEY(id)
 );
 
