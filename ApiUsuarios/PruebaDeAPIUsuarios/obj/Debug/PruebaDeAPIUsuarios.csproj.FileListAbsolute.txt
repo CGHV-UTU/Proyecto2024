@@ -1,0 +1,5 @@
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios\Proyecto2024\Proyecto2024\ApiUsuarios\PruebaDeAPIUsuarios\obj\Debug\PruebaDeAPIUsuarios.csproj.AssemblyReference.cache
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios\Proyecto2024\Proyecto2024\ApiUsuarios\PruebaDeAPIUsuarios\obj\Debug\PruebaDeAPIUsuarios.Form1.resources
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios\Proyecto2024\Proyecto2024\ApiUsuarios\PruebaDeAPIUsuarios\obj\Debug\PruebaDeAPIUsuarios.Properties.Resources.resources
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios\Proyecto2024\Proyecto2024\ApiUsuarios\PruebaDeAPIUsuarios\obj\Debug\PruebaDeAPIUsuarios.csproj.GenerateResource.cache
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios\Proyecto2024\Proyecto2024\ApiUsuarios\PruebaDeAPIUsuarios\obj\Debug\PruebaDeAPIUsuarios.csproj.CoreCompileInputs.cache

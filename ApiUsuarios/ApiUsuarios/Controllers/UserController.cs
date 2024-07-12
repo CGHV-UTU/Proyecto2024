@@ -12,41 +12,47 @@ namespace ApiUsuarios.Controllers
         [Route("RegistrarUsuario")]
         public dynamic CrearUsuario(string nombredecuenta, string nombrevisible, string email, string descripcion, string imagen, string configuraciones, string genero, string fecha_de_nacimiento, string estado_de_cuenta)
         {
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-            conn.Open();
-            MySqlCommand cmd;
-            if (!string.IsNullOrEmpty(nombredecuenta) && !string.IsNullOrEmpty(nombrevisible) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(imagen) && !string.IsNullOrEmpty(configuraciones) && !string.IsNullOrEmpty(genero) && !string.IsNullOrEmpty(fecha_de_nacimiento) && !string.IsNullOrEmpty(estado_de_cuenta))
+            try
             {
-                byte[] foto = Convert.FromBase64String(imagen);
-                cmd = new MySqlCommand("INSERT INTO usuarios (NombreDeCuenta,NombreVisible,email,Foto,configuraciones,genero,fecha_de_nacimiento,estado_de_cuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fecha_de_nacimiento,@estado_de_cuenta)",conn);
-                cmd.Parameters.AddWithValue("@nombredecuenta", nombredecuenta);
-                cmd.Parameters.AddWithValue("@nombrevisible", nombrevisible);
-                cmd.Parameters.AddWithValue("@email", email);
-                cmd.Parameters.AddWithValue("@foto", foto);
-                cmd.Parameters.AddWithValue("@configuraciones", configuraciones);
-                cmd.Parameters.AddWithValue("@genero", genero);
-                cmd.Parameters.AddWithValue("@fecha_de_nacimiento", fecha_de_nacimiento);
-                cmd.Parameters.AddWithValue("@estado_de_cuenta", estado_de_cuenta);
-                if (string.IsNullOrEmpty(descripcion))
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd;
+                if (!string.IsNullOrEmpty(nombredecuenta) && !string.IsNullOrEmpty(nombrevisible) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(imagen) && !string.IsNullOrEmpty(configuraciones) && !string.IsNullOrEmpty(genero) && !string.IsNullOrEmpty(fecha_de_nacimiento) && !string.IsNullOrEmpty(estado_de_cuenta))
                 {
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                    return "guardado correcto";
+                    byte[] foto = Convert.FromBase64String(imagen);
+                    cmd = new MySqlCommand("INSERT INTO usuarios (NombreDeCuenta,NombreVisible,email,Foto,configuraciones,genero,fecha_de_nacimiento,estado_de_cuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fecha_de_nacimiento,@estado_de_cuenta)", conn);
+                    cmd.Parameters.AddWithValue("@nombredecuenta", nombredecuenta);
+                    cmd.Parameters.AddWithValue("@nombrevisible", nombrevisible);
+                    cmd.Parameters.AddWithValue("@email", email);
+                    cmd.Parameters.AddWithValue("@foto", foto);
+                    cmd.Parameters.AddWithValue("@configuraciones", configuraciones);
+                    cmd.Parameters.AddWithValue("@genero", genero);
+                    cmd.Parameters.AddWithValue("@fecha_de_nacimiento", fecha_de_nacimiento);
+                    cmd.Parameters.AddWithValue("@estado_de_cuenta", estado_de_cuenta);
+                    if (string.IsNullOrEmpty(descripcion))
+                    {
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                        return Json("guardado correcto");
+                    }
+                    else
+                    {
+                        cmd = new MySqlCommand("INSERT INTO usuarios (Descripcion) VALUES (@descripcion)", conn);
+                        cmd.Parameters.AddWithValue("@descripcion", descripcion);
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                        return Json("guardado correcto");
+                    }
                 }
                 else
                 {
-                    cmd = new MySqlCommand("INSERT INTO usuarios (Descripcion) VALUES (@descripcion)", conn);
-                    cmd.Parameters.AddWithValue("@descripcion", descripcion);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                    return "guardado correcto";
+                    return Json("guardado incorrecto");
                 }
             }
-            else
+            catch
             {
-                return "guardado incorrecto";
+                return Json("guardado incorrecto");
             }
-
         }
 
         [HttpGet]
@@ -90,12 +96,12 @@ namespace ApiUsuarios.Controllers
                 }
                 else
                 {
-                    return "no se encuentra";
+                    return Json("no se encuentra");
                 }
             }
-            catch(Exception ex)
+            catch
             {
-                return "no se encuentra";
+                return Json("no se encuentra");
             }
         }
 
@@ -103,26 +109,33 @@ namespace ApiUsuarios.Controllers
         [Route ("existeUsuario")]
         public dynamic existeUsuario(string nombredecuenta)
         {
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-            conn.Open();
-            MySqlCommand command = new MySqlCommand("SELECT NombreDeCuenta FROM usuarios WHERE NombreDeCuenta=@nombredecuenta", conn);
-            command.Parameters.AddWithValue("@nombredecuenta", nombredecuenta);
-            MySqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
+            try
             {
-                var data = true;
-                if (reader["NombreDeCuenta"].ToString().Equals(Convert.ToString(nombredecuenta)))
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand command = new MySqlCommand("SELECT NombreDeCuenta FROM usuarios WHERE NombreDeCuenta=@nombredecuenta", conn);
+                command.Parameters.AddWithValue("@nombredecuenta", nombredecuenta);
+                MySqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
                 {
-                    data = true;
-                    return Json(data);
+                    var data = true;
+                    if (reader["NombreDeCuenta"].ToString().Equals(Convert.ToString(nombredecuenta)))
+                    {
+                        data = true;
+                        return Json(data);
+                    }
+                    else
+                    {
+                        data = false;
+                        return Json(data);
+                    }
                 }
                 else
                 {
-                    data = false;
-                    return Json(data);
+                    return null;
                 }
             }
-            else
+            catch
             {
                 return null;
             }

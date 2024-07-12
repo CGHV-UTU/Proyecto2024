@@ -25,6 +25,12 @@ CREATE TABLE IF NOT EXISTS usuarios (
     estado_de_cuenta varchar(20) NOT NULL,
     PRIMARY KEY (NombreDeCuenta)
     );
+
+CREATE TABLE login(
+	NombreDeCuenta varchar(20) NOT NULL,
+    Contraseña varchar(20),
+    PRIMARY KEY(NombreDeCuenta, Contraseña)
+	);    
     
 
 CREATE TABLE IF NOT EXISTS eventos (
