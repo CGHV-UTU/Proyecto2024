@@ -1,0 +1,122 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9D0E8FD6-48D6-4CB4-9D10-AE7E0E05B0AE}|ConexionDB\\Backoffice de administraci\u00F3n.csproj|c:\\users\\emerg\\downloads\\backofficesanti\\ejemplo_conexiondb\\conexiondb\\conexiondb\\editarpost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9D0E8FD6-48D6-4CB4-9D10-AE7E0E05B0AE}|ConexionDB\\Backoffice de administraci\u00F3n.csproj|solutionrelative:conexiondb\\editarpost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9D0E8FD6-48D6-4CB4-9D10-AE7E0E05B0AE}|ConexionDB\\Backoffice de administraci\u00F3n.csproj|C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\conexiondb\\editarpost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{9D0E8FD6-48D6-4CB4-9D10-AE7E0E05B0AE}|ConexionDB\\Backoffice de administraci\u00F3n.csproj|solutionrelative:conexiondb\\editarpost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9D0E8FD6-48D6-4CB4-9D10-AE7E0E05B0AE}|ConexionDB\\Backoffice de administraci\u00F3n.csproj|C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\conexiondb\\editarevento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9D0E8FD6-48D6-4CB4-9D10-AE7E0E05B0AE}|ConexionDB\\Backoffice de administraci\u00F3n.csproj|solutionrelative:conexiondb\\editarevento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9D0E8FD6-48D6-4CB4-9D10-AE7E0E05B0AE}|ConexionDB\\Backoffice de administraci\u00F3n.csproj|C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\conexiondb\\editarevento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{9D0E8FD6-48D6-4CB4-9D10-AE7E0E05B0AE}|ConexionDB\\Backoffice de administraci\u00F3n.csproj|solutionrelative:conexiondb\\editarevento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9D0E8FD6-48D6-4CB4-9D10-AE7E0E05B0AE}|ConexionDB\\Backoffice de administraci\u00F3n.csproj|C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\conexiondb\\principal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{9D0E8FD6-48D6-4CB4-9D10-AE7E0E05B0AE}|ConexionDB\\Backoffice de administraci\u00F3n.csproj|solutionrelative:conexiondb\\principal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9D0E8FD6-48D6-4CB4-9D10-AE7E0E05B0AE}|ConexionDB\\Backoffice de administraci\u00F3n.csproj|C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\conexiondb\\principal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9D0E8FD6-48D6-4CB4-9D10-AE7E0E05B0AE}|ConexionDB\\Backoffice de administraci\u00F3n.csproj|solutionrelative:conexiondb\\principal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "EditarEvento.cs",
+              "DocumentMoniker": "C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\EditarEvento.cs",
+              "RelativeDocumentMoniker": "ConexionDB\\EditarEvento.cs",
+              "ToolTip": "C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\EditarEvento.cs",
+              "RelativeToolTip": "ConexionDB\\EditarEvento.cs",
+              "ViewState": "AQIAAOQAAAAAAAAAAAAAABcBAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003525|",
+              "WhenOpened": "2024-06-16T07:11:30.352Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "EditarEvento.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\EditarEvento.cs",
+              "RelativeDocumentMoniker": "ConexionDB\\EditarEvento.cs",
+              "ToolTip": "C:\\Users\\Usuario\\Desktop\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\EditarEvento.cs [Dise\u00F1o]",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Usuario\\Desktop\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\EditarEvento.cs [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003525|",
+              "WhenOpened": "2024-06-16T07:11:30.379Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EditarPost.cs",
+              "DocumentMoniker": "C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\EditarPost.cs",
+              "RelativeDocumentMoniker": "ConexionDB\\EditarPost.cs",
+              "ToolTip": "C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\EditarPost.cs",
+              "RelativeToolTip": "ConexionDB\\EditarPost.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACcBAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-16T07:11:30.538Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EditarPost.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\EditarPost.cs",
+              "RelativeDocumentMoniker": "ConexionDB\\EditarPost.cs",
+              "ToolTip": "C:\\Users\\Usuario\\Desktop\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\EditarPost.cs [Dise\u00F1o]",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Usuario\\Desktop\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\EditarPost.cs [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003525|",
+              "WhenOpened": "2024-06-16T07:11:30.612Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Principal.cs",
+              "DocumentMoniker": "C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\Principal.cs",
+              "RelativeDocumentMoniker": "ConexionDB\\Principal.cs",
+              "ToolTip": "C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\Principal.cs",
+              "RelativeToolTip": "ConexionDB\\Principal.cs",
+              "ViewState": "AQIAABMAAAAAAAAAAAAgwDQAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003525|",
+              "WhenOpened": "2024-06-16T07:11:30.613Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Principal.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Users\\emerg\\Downloads\\backofficesanti\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\Principal.cs",
+              "RelativeDocumentMoniker": "ConexionDB\\Principal.cs",
+              "ToolTip": "C:\\Users\\Usuario\\Desktop\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\Principal.cs [Dise\u00F1o]",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Usuario\\Desktop\\Ejemplo_ConexionDB\\ConexionDB\\ConexionDB\\Principal.cs [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003525|",
+              "WhenOpened": "2024-06-16T07:11:30.614Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
