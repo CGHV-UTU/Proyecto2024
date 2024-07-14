@@ -2,34 +2,69 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using MySql.Data.MySqlClient;
 namespace ApiUsuarios.Controllers
 {
+    
     public class UserController : Controller
     {
-        [HttpPost]
-        [Route("RegistrarUsuario")]
-        public dynamic CrearUsuario(string nombredecuenta, string nombrevisible, string email, string descripcion, string imagen, string configuraciones, string genero, string fecha_de_nacimiento, string estado_de_cuenta)
+        public class usuario
+        {
+            public string nombreDeCuenta { get; set;}
+            public string nombreVisible { get; set; }
+            public string email { get; set; }
+            public string descripcion { get; set; }
+            public string imagen { get; set; }
+            public string configuraciones { get; set; }
+            public string genero { get; set; }
+            public string fechaDeNacimiento { get; set; }
+            public string estadoDeCuenta { get; set; }
+            public string contraseña { get; set; }
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("RegistrarUsuario")]
+        public dynamic CrearUsuario([FromBody] usuario user )
         {
             try
             {
                 MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd;
-                if (!string.IsNullOrEmpty(nombredecuenta) && !string.IsNullOrEmpty(nombrevisible) && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(imagen) && !string.IsNullOrEmpty(configuraciones) && !string.IsNullOrEmpty(genero) && !string.IsNullOrEmpty(fecha_de_nacimiento) && !string.IsNullOrEmpty(estado_de_cuenta))
+                if (!string.IsNullOrEmpty(user.nombreDeCuenta) 
+                    && !string.IsNullOrEmpty(user.nombreVisible) 
+                    && !string.IsNullOrEmpty(user.email) 
+                    && !string.IsNullOrEmpty(user.imagen) 
+                    && !string.IsNullOrEmpty(user.configuraciones) 
+                    && !string.IsNullOrEmpty(user.genero) 
+                    && !string.IsNullOrEmpty(user.fechaDeNacimiento) 
+                    && !string.IsNullOrEmpty(user.estadoDeCuenta)
+                    && !string.IsNullOrEmpty(user.contraseña))
                 {
-                    byte[] foto = Convert.FromBase64String(imagen);
-                    cmd = new MySqlCommand("INSERT INTO usuarios (NombreDeCuenta,NombreVisible,email,Foto,configuraciones,genero,fecha_de_nacimiento,estado_de_cuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fecha_de_nacimiento,@estado_de_cuenta)", conn);
-                    cmd.Parameters.AddWithValue("@nombredecuenta", nombredecuenta);
-                    cmd.Parameters.AddWithValue("@nombrevisible", nombrevisible);
-                    cmd.Parameters.AddWithValue("@email", email);
+                    //Inserción en la tabla USUARIOS
+                    byte[] foto = Convert.FromBase64String(user.imagen);
+                    cmd = new MySqlCommand("INSERT INTO usuarios (NombreDeCuenta,NombreVisible," +
+                        "email,Foto,configuraciones,genero,fecha_de_nacimiento,estado_de_cuenta)" +
+                        " VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones," +
+                        "@genero,@fecha_de_nacimiento,@estado_de_cuenta)", conn);
+                    cmd.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@nombrevisible", user.nombreVisible);
+                    cmd.Parameters.AddWithValue("@email", user.email);
                     cmd.Parameters.AddWithValue("@foto", foto);
-                    cmd.Parameters.AddWithValue("@configuraciones", configuraciones);
-                    cmd.Parameters.AddWithValue("@genero", genero);
-                    cmd.Parameters.AddWithValue("@fecha_de_nacimiento", fecha_de_nacimiento);
-                    cmd.Parameters.AddWithValue("@estado_de_cuenta", estado_de_cuenta);
-                    if (string.IsNullOrEmpty(descripcion))
+                    cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
+                    cmd.Parameters.AddWithValue("@genero", user.genero);
+                    cmd.Parameters.AddWithValue("@fecha_de_nacimiento", user.fechaDeNacimiento);
+                    cmd.Parameters.AddWithValue("@estado_de_cuenta", user.estadoDeCuenta);
+
+                    //Inserción en la tabla LOGIN
+                    MySqlCommand cmd2 = new MySqlCommand("INSERT INTO login (NombreDeCuenta, Contraseña)" +
+                    " VALUES (@nombredecuenta, @contraseña)", conn);
+                    cmd2.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
+                    cmd2.Parameters.AddWithValue("@contraseña", user.contraseña);
+                    cmd2.ExecuteNonQuery();
+                    if (string.IsNullOrEmpty(user.descripcion))
                     {
                         cmd.ExecuteNonQuery();
                         conn.Close();
@@ -38,7 +73,7 @@ namespace ApiUsuarios.Controllers
                     else
                     {
                         cmd = new MySqlCommand("INSERT INTO usuarios (Descripcion) VALUES (@descripcion)", conn);
-                        cmd.Parameters.AddWithValue("@descripcion", descripcion);
+                        cmd.Parameters.AddWithValue("@descripcion", user.descripcion);
                         cmd.ExecuteNonQuery();
                         conn.Close();
                         return Json("guardado correcto");
@@ -55,8 +90,8 @@ namespace ApiUsuarios.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("obtenerUsuario")]
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("obtenerUsuario")]
         public dynamic ObtenerUsuario(string nombredecuenta)
         {
             try
@@ -105,8 +140,8 @@ namespace ApiUsuarios.Controllers
             }
         }
 
-        [HttpGet]
-        [Route ("existeUsuario")]
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route ("existeUsuario")]
         public dynamic existeUsuario(string nombredecuenta)
         {
             try

@@ -71,5 +71,11 @@ namespace PruebasDeApiUsuarios
                 }                
             }
         }
+
+        private void btnRegistrarse_Click(object sender, EventArgs e)
+        {
+            Registrar form = new Registrar();
+            form.Visible = true;
+        }
     }
 }

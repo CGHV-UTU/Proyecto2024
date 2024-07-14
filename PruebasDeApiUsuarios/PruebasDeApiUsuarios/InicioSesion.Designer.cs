@@ -37,12 +37,14 @@ namespace PruebasDeApiUsuarios
             this.label2 = new System.Windows.Forms.Label();
             this.lblResultado = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnRegistrarse = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnIniciarSesion
             // 
-            this.btnIniciarSesion.Location = new System.Drawing.Point(99, 107);
+            this.btnIniciarSesion.Location = new System.Drawing.Point(96, 111);
             this.btnIniciarSesion.Name = "btnIniciarSesion";
             this.btnIniciarSesion.Size = new System.Drawing.Size(90, 23);
             this.btnIniciarSesion.TabIndex = 0;
@@ -85,7 +87,7 @@ namespace PruebasDeApiUsuarios
             // lblResultado
             // 
             this.lblResultado.AutoSize = true;
-            this.lblResultado.Location = new System.Drawing.Point(12, 171);
+            this.lblResultado.Location = new System.Drawing.Point(12, 247);
             this.lblResultado.Name = "lblResultado";
             this.lblResultado.Size = new System.Drawing.Size(61, 13);
             this.lblResultado.TabIndex = 5;
@@ -95,11 +97,32 @@ namespace PruebasDeApiUsuarios
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 163);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(121, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "¿No tienes una cuenta?";
+            // 
+            // btnRegistrarse
+            // 
+            this.btnRegistrarse.Location = new System.Drawing.Point(96, 192);
+            this.btnRegistrarse.Name = "btnRegistrarse";
+            this.btnRegistrarse.Size = new System.Drawing.Size(90, 23);
+            this.btnRegistrarse.TabIndex = 7;
+            this.btnRegistrarse.Text = "Registrarse";
+            this.btnRegistrarse.UseVisualStyleBackColor = true;
+            this.btnRegistrarse.Click += new System.EventHandler(this.btnRegistrarse_Click);
+            // 
             // InicioSesion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 207);
+            this.ClientSize = new System.Drawing.Size(234, 269);
+            this.Controls.Add(this.btnRegistrarse);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.lblResultado);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtContraseña);
@@ -123,6 +146,8 @@ namespace PruebasDeApiUsuarios
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblResultado;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.Button btnRegistrarse;
+        private System.Windows.Forms.Label label3;
     }
 }
 
