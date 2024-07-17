@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     Foto BLOB NOT NULL,
     configuraciones varchar(200) NOT NULL,
     genero varchar(20) NOT NULL,
-    fecha_de_nacimiento date NOT NULL,
+    fecha_de_nacimiento VARCHAR(15) NOT NULL,
     estado_de_cuenta varchar(20) NOT NULL,
     PRIMARY KEY (NombreDeCuenta)
     );
