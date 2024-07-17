@@ -40,3 +40,17 @@ E:\Git\Proyecto20242\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\Pruebas
 E:\Git\Proyecto20242\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\Newtonsoft.Json.dll
 E:\Git\Proyecto20242\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\Newtonsoft.Json.xml
 E:\Git\Proyecto20242\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.csproj.CopyComplete
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\PruebasDeApiUsuarios.exe.config
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\PruebasDeApiUsuarios.exe
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\PruebasDeApiUsuarios.pdb
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\Newtonsoft.Json.dll
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\Newtonsoft.Json.xml
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.csproj.AssemblyReference.cache
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.InicioSesion.resources
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.Properties.Resources.resources
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.Registrar.resources
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.csproj.GenerateResource.cache
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.csproj.CoreCompileInputs.cache
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.csproj.CopyComplete
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.exe
+C:\Users\FedeG\OneDrive\Escritorio\api usuarios 2\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.pdb

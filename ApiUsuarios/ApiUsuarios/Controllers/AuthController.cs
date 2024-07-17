@@ -55,7 +55,12 @@ namespace ApiUsuarios.Controllers
                 return Json("Solicitud inválida");
             }
         }
-
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("prueba")]
+        public dynamic prueba()
+        {
+            return "si";
+        }
        
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("testToken")]

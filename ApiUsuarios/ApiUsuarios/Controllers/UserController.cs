@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using MySql.Data.MySqlClient;
 namespace ApiUsuarios.Controllers
 {
-    
+    [System.Web.Mvc.RoutePrefix("user")]
     public class UserController : Controller
     {
         public class usuario
@@ -26,29 +26,26 @@ namespace ApiUsuarios.Controllers
 
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("RegistrarUsuario")]
-        public dynamic CrearUsuario([FromBody] usuario user )
+        public dynamic RegistrarUsuario([FromBody] usuario user )
         {
             try
             {
                 MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd;
-                if (!string.IsNullOrEmpty(user.nombreDeCuenta) 
-                    && !string.IsNullOrEmpty(user.nombreVisible) 
-                    && !string.IsNullOrEmpty(user.email) 
-                    && !string.IsNullOrEmpty(user.imagen) 
-                    && !string.IsNullOrEmpty(user.configuraciones) 
-                    && !string.IsNullOrEmpty(user.genero) 
-                    && !string.IsNullOrEmpty(user.fechaDeNacimiento) 
+                if (!string.IsNullOrEmpty(user.nombreDeCuenta)
+                    && !string.IsNullOrEmpty(user.nombreVisible)
+                    && !string.IsNullOrEmpty(user.email)
+                    && !string.IsNullOrEmpty(user.imagen)
+                    && !string.IsNullOrEmpty(user.configuraciones)
+                    && !string.IsNullOrEmpty(user.genero)
+                    && !string.IsNullOrEmpty(user.fechaDeNacimiento)
                     && !string.IsNullOrEmpty(user.estadoDeCuenta)
                     && !string.IsNullOrEmpty(user.contraseña))
                 {
                     //Inserción en la tabla USUARIOS
                     byte[] foto = Convert.FromBase64String(user.imagen);
-                    cmd = new MySqlCommand("INSERT INTO usuarios (NombreDeCuenta,NombreVisible," +
-                        "email,Foto,configuraciones,genero,fecha_de_nacimiento,estado_de_cuenta)" +
-                        " VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones," +
-                        "@genero,@fecha_de_nacimiento,@estado_de_cuenta)", conn);
+                    cmd = new MySqlCommand("INSERT INTO usuarios (NombreDeCuenta,NombreVisible,email,Foto,configuraciones,genero,fecha_de_nacimiento,estado_de_cuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fecha_de_nacimiento,@estado_de_cuenta)", conn);
                     cmd.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
                     cmd.Parameters.AddWithValue("@nombrevisible", user.nombreVisible);
                     cmd.Parameters.AddWithValue("@email", user.email);
@@ -72,8 +69,16 @@ namespace ApiUsuarios.Controllers
                     }
                     else
                     {
-                        cmd = new MySqlCommand("INSERT INTO usuarios (Descripcion) VALUES (@descripcion)", conn);
+                        cmd = new MySqlCommand("INSERT INTO usuarios (NombreDeCuenta,NombreVisible,email,Foto,configuraciones,genero,fecha_de_nacimiento,estado_de_cuenta,Descripcion) VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fecha_de_nacimiento,@estado_de_cuenta,@descripcion)", conn);
                         cmd.Parameters.AddWithValue("@descripcion", user.descripcion);
+                        cmd.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
+                        cmd.Parameters.AddWithValue("@nombrevisible", user.nombreVisible);
+                        cmd.Parameters.AddWithValue("@email", user.email);
+                        cmd.Parameters.AddWithValue("@foto", foto);
+                        cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
+                        cmd.Parameters.AddWithValue("@genero", user.genero);
+                        cmd.Parameters.AddWithValue("@fecha_de_nacimiento", user.fechaDeNacimiento);
+                        cmd.Parameters.AddWithValue("@estado_de_cuenta", user.estadoDeCuenta);
                         cmd.ExecuteNonQuery();
                         conn.Close();
                         return Json("guardado correcto");
@@ -87,7 +92,18 @@ namespace ApiUsuarios.Controllers
             catch
             {
                 return Json("guardado incorrecto");
-            }
+            }   
+        }
+        public class pruebas
+        {
+            public string User { get; set; }
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("prueba")]
+        public dynamic prueba([FromBody] pruebas pruebas)
+        {
+            return pruebas.User+" si";
         }
 
         [System.Web.Mvc.HttpGet]

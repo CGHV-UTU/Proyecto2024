@@ -26,7 +26,14 @@ namespace PruebasDeApiUsuarios
             if (!token.Equals("Solicitud inválida"))
             {
                 var resultado = await ComprobarPeticion(token);
-                lblResultado.Text = "Resultado: " + resultado;
+                if (resultado)
+                {
+                    lblResultado.Text = "Resultado: Inicio correcto";
+                }
+                else
+                {
+                    lblResultado.Text = "Resultado: Inicio incorrecto";
+                }
             }
         }
 
