@@ -84,5 +84,17 @@ namespace PruebasDeApiUsuarios
             Registrar form = new Registrar();
             form.Visible = true;
         }
+
+        private void btnVerContraseña_Click(object sender, EventArgs e)
+        {
+            if (!txtContraseña.UseSystemPasswordChar)
+            {
+                txtContraseña.UseSystemPasswordChar = true;
+            }
+            else
+            {
+                txtContraseña.UseSystemPasswordChar = false;
+            }
+        }
     }
 }

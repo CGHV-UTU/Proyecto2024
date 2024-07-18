@@ -29,6 +29,7 @@ namespace PruebasDeApiUsuarios
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Registrar));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -48,13 +49,17 @@ namespace PruebasDeApiUsuarios
             this.lblRespuesta = new System.Windows.Forms.Label();
             this.dtpFecha = new System.Windows.Forms.DateTimePicker();
             this.cbxGenero = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtVerificarContraseña = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.btnVerContraseña = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
+            this.label1.Location = new System.Drawing.Point(15, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(95, 13);
             this.label1.TabIndex = 0;
@@ -63,7 +68,7 @@ namespace PruebasDeApiUsuarios
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 88);
+            this.label2.Location = new System.Drawing.Point(17, 94);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(76, 13);
             this.label2.TabIndex = 1;
@@ -72,7 +77,7 @@ namespace PruebasDeApiUsuarios
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 124);
+            this.label3.Location = new System.Drawing.Point(17, 120);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(32, 13);
             this.label3.TabIndex = 2;
@@ -81,7 +86,7 @@ namespace PruebasDeApiUsuarios
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 160);
+            this.label4.Location = new System.Drawing.Point(17, 150);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(63, 13);
             this.label4.TabIndex = 3;
@@ -90,7 +95,7 @@ namespace PruebasDeApiUsuarios
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(13, 235);
+            this.label7.Location = new System.Drawing.Point(15, 271);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(106, 13);
             this.label7.TabIndex = 5;
@@ -99,7 +104,7 @@ namespace PruebasDeApiUsuarios
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(13, 199);
+            this.label8.Location = new System.Drawing.Point(15, 245);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(42, 13);
             this.label8.TabIndex = 4;
@@ -118,36 +123,38 @@ namespace PruebasDeApiUsuarios
             // 
             // txtNombreV
             // 
-            this.txtNombreV.Location = new System.Drawing.Point(168, 88);
+            this.txtNombreV.Location = new System.Drawing.Point(168, 91);
             this.txtNombreV.Name = "txtNombreV";
             this.txtNombreV.Size = new System.Drawing.Size(138, 20);
             this.txtNombreV.TabIndex = 7;
             // 
             // txtEmail
             // 
-            this.txtEmail.Location = new System.Drawing.Point(168, 124);
+            this.txtEmail.Location = new System.Drawing.Point(168, 117);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(138, 20);
             this.txtEmail.TabIndex = 8;
             // 
             // txtDescripcion
             // 
-            this.txtDescripcion.Location = new System.Drawing.Point(168, 157);
+            this.txtDescripcion.Location = new System.Drawing.Point(168, 143);
+            this.txtDescripcion.Multiline = true;
             this.txtDescripcion.Name = "txtDescripcion";
-            this.txtDescripcion.Size = new System.Drawing.Size(138, 20);
+            this.txtDescripcion.Size = new System.Drawing.Size(138, 88);
             this.txtDescripcion.TabIndex = 9;
             // 
             // txtContraseña
             // 
-            this.txtContraseña.Location = new System.Drawing.Point(168, 50);
+            this.txtContraseña.Location = new System.Drawing.Point(168, 39);
             this.txtContraseña.Name = "txtContraseña";
             this.txtContraseña.Size = new System.Drawing.Size(138, 20);
             this.txtContraseña.TabIndex = 13;
+            this.txtContraseña.UseSystemPasswordChar = true;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 50);
+            this.label5.Location = new System.Drawing.Point(17, 42);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(61, 13);
             this.label5.TabIndex = 12;
@@ -165,17 +172,20 @@ namespace PruebasDeApiUsuarios
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(90, 254);
+            this.pictureBox1.Image = global::PruebasDeApiUsuarios.Properties.Resources.perfilVacio;
+            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
+            this.pictureBox1.Location = new System.Drawing.Point(115, 300);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(188, 162);
+            this.pictureBox1.Size = new System.Drawing.Size(205, 162);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 15;
             this.pictureBox1.TabStop = false;
             // 
             // btnRegistrar
             // 
-            this.btnRegistrar.Location = new System.Drawing.Point(115, 432);
+            this.btnRegistrar.Location = new System.Drawing.Point(115, 482);
             this.btnRegistrar.Name = "btnRegistrar";
-            this.btnRegistrar.Size = new System.Drawing.Size(75, 23);
+            this.btnRegistrar.Size = new System.Drawing.Size(205, 23);
             this.btnRegistrar.TabIndex = 16;
             this.btnRegistrar.Text = "Registrar";
             this.btnRegistrar.UseVisualStyleBackColor = true;
@@ -184,7 +194,7 @@ namespace PruebasDeApiUsuarios
             // lblRespuesta
             // 
             this.lblRespuesta.AutoSize = true;
-            this.lblRespuesta.Location = new System.Drawing.Point(13, 487);
+            this.lblRespuesta.Location = new System.Drawing.Point(15, 523);
             this.lblRespuesta.Name = "lblRespuesta";
             this.lblRespuesta.Size = new System.Drawing.Size(61, 13);
             this.lblRespuesta.TabIndex = 17;
@@ -193,7 +203,7 @@ namespace PruebasDeApiUsuarios
             // dtpFecha
             // 
             this.dtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFecha.Location = new System.Drawing.Point(168, 228);
+            this.dtpFecha.Location = new System.Drawing.Point(168, 264);
             this.dtpFecha.Name = "dtpFecha";
             this.dtpFecha.Size = new System.Drawing.Size(138, 20);
             this.dtpFecha.TabIndex = 18;
@@ -207,16 +217,57 @@ namespace PruebasDeApiUsuarios
             "Mujer",
             "Otro",
             "Prefiero no decirlo"});
-            this.cbxGenero.Location = new System.Drawing.Point(168, 191);
+            this.cbxGenero.Location = new System.Drawing.Point(168, 237);
             this.cbxGenero.Name = "cbxGenero";
             this.cbxGenero.Size = new System.Drawing.Size(138, 21);
             this.cbxGenero.TabIndex = 19;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(15, 300);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(68, 13);
+            this.label6.TabIndex = 20;
+            this.label6.Text = "Foto de perfil";
+            // 
+            // txtVerificarContraseña
+            // 
+            this.txtVerificarContraseña.Location = new System.Drawing.Point(168, 65);
+            this.txtVerificarContraseña.Name = "txtVerificarContraseña";
+            this.txtVerificarContraseña.Size = new System.Drawing.Size(138, 20);
+            this.txtVerificarContraseña.TabIndex = 22;
+            this.txtVerificarContraseña.UseSystemPasswordChar = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(17, 68);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(101, 13);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "Verificar contraseña";
+            // 
+            // btnVerContraseña
+            // 
+            this.btnVerContraseña.Location = new System.Drawing.Point(312, 39);
+            this.btnVerContraseña.Name = "btnVerContraseña";
+            this.btnVerContraseña.Size = new System.Drawing.Size(28, 23);
+            this.btnVerContraseña.TabIndex = 23;
+            this.btnVerContraseña.Text = "👁️";
+            this.btnVerContraseña.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnVerContraseña.UseVisualStyleBackColor = true;
+            this.btnVerContraseña.Click += new System.EventHandler(this.btnVerContraseña_Click);
             // 
             // Registrar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(375, 516);
+            this.ClientSize = new System.Drawing.Size(363, 545);
+            this.Controls.Add(this.btnVerContraseña);
+            this.Controls.Add(this.txtVerificarContraseña);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.cbxGenero);
             this.Controls.Add(this.dtpFecha);
             this.Controls.Add(this.lblRespuesta);
@@ -264,5 +315,9 @@ namespace PruebasDeApiUsuarios
         private System.Windows.Forms.Label lblRespuesta;
         private System.Windows.Forms.DateTimePicker dtpFecha;
         private System.Windows.Forms.ComboBox cbxGenero;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtVerificarContraseña;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button btnVerContraseña;
     }
 }

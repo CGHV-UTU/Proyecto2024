@@ -19,6 +19,7 @@ namespace PruebasDeApiUsuarios
         public Registrar()
         {
             InitializeComponent();
+            redondearPictureBox(Properties.Resources.perfilVacio);
         }
 
         private void btnSeleccionar_Click(object sender, EventArgs e)
@@ -26,16 +27,18 @@ namespace PruebasDeApiUsuarios
             OpenFileDialog ofd = new OpenFileDialog();
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                pictureBox1.ImageLocation = ofd.FileName;
-                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                Image selectedImage = Image.FromFile(ofd.FileName);
+               //pictureBox1.ImageLocation = ofd.FileName;
+                pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
+                redondearPictureBox(selectedImage);
             }
         }
 
         private async void btnRegistrar_Click(object sender, EventArgs e)
         {
-            var existe = await ExisteUser(txtNombre.Text);
-            if (!txtNombre.Text.Equals(txtContraseña.Text))
+            if (verificarDatos())
             {
+                var existe = await ExisteUser(txtNombre.Text);
                 if (!existe)
                 {
                     MemoryStream ms = new MemoryStream();
@@ -43,16 +46,14 @@ namespace PruebasDeApiUsuarios
                     byte[] imagen = ms.ToArray();
                     var resultado = await Registro(txtNombre.Text, txtContraseña.Text, txtNombreV.Text, txtEmail.Text, txtDescripcion.Text, cbxGenero.SelectedItem.ToString(), dtpFecha.Text, imagen);
                     lblRespuesta.Text = resultado;
+                    MessageBox.Show(resultado, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    lblRespuesta.Text = "Ya existe alguien con ese nombre";
+                    MessageBox.Show("Ha ocurrido un error. Ya existe alguien con ese nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                   
                 }
-            }
-            else
-            {
-                lblRespuesta.Text = "No puede tener el mismo nombre que contraseña";
-            }   
+            } 
         }
 
         public static async Task<string> Registro(string nombreCuenta, string contraseña, string nombreVisible, string email, string descripcion, string género, string fechaDeNacimiento,byte[]imagen)
@@ -92,6 +93,68 @@ namespace PruebasDeApiUsuarios
                 {
                     return false;
                 }
+            }
+        }
+
+        public void redondearPictureBox(Image image)
+        {        
+            System.Drawing.Drawing2D.GraphicsPath gp = new System.Drawing.Drawing2D.GraphicsPath();
+            gp.AddEllipse(10, 5, pictureBox1.Width -24 , pictureBox1.Height - 6);
+            Region rg = new Region(gp);
+            pictureBox1.Region = rg;
+            pictureBox1.Image = image;
+        }
+
+        public Boolean verificarDatos()
+        {
+            if (
+                string.IsNullOrEmpty(txtNombre.Text)                ||
+                string.IsNullOrEmpty(txtContraseña.Text)            ||
+                string.IsNullOrEmpty(txtNombreV.Text)               ||
+                string.IsNullOrEmpty(txtVerificarContraseña.Text)   ||
+                string.IsNullOrEmpty(txtEmail.Text)               //  ||
+               // string.IsNullOrEmpty(cbxGenero.SelectedText)
+                )      
+            {
+                MessageBox.Show("Ha ocurrido un error. Complete todos los campos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            if (!txtEmail.Text.Contains("@"))
+            {
+                MessageBox.Show("Ha ocurrido un error. Su dirección de correo electrónico no es válida", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            if (txtNombre.Equals(txtContraseña))
+            {
+                MessageBox.Show("Ha ocurrido un error. El nombre no puede ser igual a la contraseña", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            if (txtContraseña.Text.Length<8)
+            {
+                MessageBox.Show("Ha ocurrido un error. Pruebe con una contraseña de al menos 8 dígitos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            if (!txtContraseña.Equals(txtContraseña))
+            {
+                MessageBox.Show("Ha ocurrido un error. Las contraseñas no coinciden", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return true;
+        }
+
+        private void btnVerContraseña_Click(object sender, EventArgs e)
+        {
+            if (!txtContraseña.UseSystemPasswordChar)
+            {
+                txtContraseña.UseSystemPasswordChar = true;
+            } else
+            {
+                txtContraseña.UseSystemPasswordChar = false;
             }
         }
     }

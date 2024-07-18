@@ -39,6 +39,7 @@ namespace PruebasDeApiUsuarios
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.label3 = new System.Windows.Forms.Label();
             this.btnRegistrarse = new System.Windows.Forms.Button();
+            this.btnVerContraseña = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -74,6 +75,7 @@ namespace PruebasDeApiUsuarios
             this.txtContraseña.Name = "txtContraseña";
             this.txtContraseña.Size = new System.Drawing.Size(120, 20);
             this.txtContraseña.TabIndex = 3;
+            this.txtContraseña.UseSystemPasswordChar = true;
             // 
             // label2
             // 
@@ -116,11 +118,23 @@ namespace PruebasDeApiUsuarios
             this.btnRegistrarse.UseVisualStyleBackColor = true;
             this.btnRegistrarse.Click += new System.EventHandler(this.btnRegistrarse_Click);
             // 
+            // btnVerContraseña
+            // 
+            this.btnVerContraseña.Location = new System.Drawing.Point(211, 72);
+            this.btnVerContraseña.Name = "btnVerContraseña";
+            this.btnVerContraseña.Size = new System.Drawing.Size(28, 20);
+            this.btnVerContraseña.TabIndex = 24;
+            this.btnVerContraseña.Text = "👁️";
+            this.btnVerContraseña.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnVerContraseña.UseVisualStyleBackColor = true;
+            this.btnVerContraseña.Click += new System.EventHandler(this.btnVerContraseña_Click);
+            // 
             // InicioSesion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 269);
+            this.ClientSize = new System.Drawing.Size(251, 269);
+            this.Controls.Add(this.btnVerContraseña);
             this.Controls.Add(this.btnRegistrarse);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.lblResultado);
@@ -148,6 +162,7 @@ namespace PruebasDeApiUsuarios
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.Button btnRegistrarse;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnVerContraseña;
     }
 }
 
