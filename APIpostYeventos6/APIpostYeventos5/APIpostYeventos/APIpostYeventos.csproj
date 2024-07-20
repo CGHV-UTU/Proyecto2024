@@ -80,11 +80,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AñadirComentario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AñadirComentario.Designer.cs">
+      <DependentUpon>AñadirComentario.cs</DependentUpon>
+    </Compile>
     <Compile Include="AñadirPost.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AñadirPost.Designer.cs">
       <DependentUpon>AñadirPost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditarComentario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditarComentario.Designer.cs">
+      <DependentUpon>EditarComentario.cs</DependentUpon>
     </Compile>
     <Compile Include="EditarEvento.cs">
       <SubType>Form</SubType>
@@ -97,6 +109,12 @@
     </Compile>
     <Compile Include="EditarPost.Designer.cs">
       <DependentUpon>EditarPost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EliminarComentario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EliminarComentario.Designer.cs">
+      <DependentUpon>EliminarComentario.cs</DependentUpon>
     </Compile>
     <Compile Include="EliminarPost.cs">
       <SubType>Form</SubType>
@@ -125,14 +143,23 @@
     <Compile Include="Post.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AñadirComentario.resx">
+      <DependentUpon>AñadirComentario.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AñadirPost.resx">
       <DependentUpon>AñadirPost.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditarComentario.resx">
+      <DependentUpon>EditarComentario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditarEvento.resx">
       <DependentUpon>EditarEvento.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditarPost.resx">
       <DependentUpon>EditarPost.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EliminarComentario.resx">
+      <DependentUpon>EliminarComentario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EliminarPost.resx">
       <DependentUpon>EliminarPost.cs</DependentUpon>

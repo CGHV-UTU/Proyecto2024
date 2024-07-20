@@ -56,6 +56,7 @@ namespace APIpostYeventos
                     lblError.Text = "El Evento se eliminó correctamente";
                     lblError.Show();
                     CargarTabla();
+                    ModificarTabla();
                 }
                 else
                 {

@@ -52,6 +52,7 @@ namespace APIpostYeventos
                     lblError.Show();
                     lblError.Text = "El Post se eliminó correctamente";
                     CargarTabla();
+                    ModificarTabla();
                 }
                 else
                 {
@@ -155,5 +156,6 @@ namespace APIpostYeventos
                 return null;
             }
         }
+
     }
 }

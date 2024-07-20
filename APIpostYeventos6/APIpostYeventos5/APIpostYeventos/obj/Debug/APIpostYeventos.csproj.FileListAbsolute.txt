@@ -513,3 +513,44 @@ C:\Users\emerg\OneDrive\Escritorio\Nueva carpeta (2)\Proyecto2024-Sexta-version-
 C:\Users\emerg\OneDrive\Escritorio\Nueva carpeta (2)\Proyecto2024-Sexta-version-del-programa-de-API\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.csproj.CopyComplete
 C:\Users\emerg\OneDrive\Escritorio\Nueva carpeta (2)\Proyecto2024-Sexta-version-del-programa-de-API\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.exe
 C:\Users\emerg\OneDrive\Escritorio\Nueva carpeta (2)\Proyecto2024-Sexta-version-del-programa-de-API\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.pdb
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\APIpostYeventos.exe.config
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\APIpostYeventos.exe
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\APIpostYeventos.pdb
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\Newtonsoft.Json.dll
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Buffers.dll
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Memory.dll
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Numerics.Vectors.dll
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Text.Encodings.Web.dll
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Text.Json.dll
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.ValueTuple.dll
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\Newtonsoft.Json.xml
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Buffers.xml
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Memory.xml
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Numerics.Vectors.xml
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Text.Encodings.Web.xml
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Text.Json.xml
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.ValueTuple.xml
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.csproj.AssemblyReference.cache
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.exe.config
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.AñadirComentario.resources
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.AñadirPost.resources
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.EditarEvento.resources
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.EditarPost.resources
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.EliminarPost.resources
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.Form1.resources
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.AñadirEvento.resources
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.EliminarEvento.resources
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.Properties.Resources.resources
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.csproj.GenerateResource.cache
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.csproj.CoreCompileInputs.cache
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.csproj.CopyComplete
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.exe
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.pdb
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.EliminarComentario.resources
+D:\Utu 2024\Repositorio\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.EditarComentario.resources

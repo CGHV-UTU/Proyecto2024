@@ -34,6 +34,9 @@
             this.btnEditarEvento = new System.Windows.Forms.Button();
             this.btnEliminarEvento = new System.Windows.Forms.Button();
             this.btnAñadirEvento = new System.Windows.Forms.Button();
+            this.btnAñadirComentario = new System.Windows.Forms.Button();
+            this.btnEliminarComentario = new System.Windows.Forms.Button();
+            this.btnEditarComentario = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAñadirPost
@@ -96,11 +99,44 @@
             this.btnAñadirEvento.UseVisualStyleBackColor = true;
             this.btnAñadirEvento.Click += new System.EventHandler(this.btnAñadirEvento_Click);
             // 
+            // btnAñadirComentario
+            // 
+            this.btnAñadirComentario.Location = new System.Drawing.Point(82, 229);
+            this.btnAñadirComentario.Name = "btnAñadirComentario";
+            this.btnAñadirComentario.Size = new System.Drawing.Size(104, 23);
+            this.btnAñadirComentario.TabIndex = 6;
+            this.btnAñadirComentario.Text = "Añadir Comentario";
+            this.btnAñadirComentario.UseVisualStyleBackColor = true;
+            this.btnAñadirComentario.Click += new System.EventHandler(this.btnAñadirComentario_Click);
+            // 
+            // btnEliminarComentario
+            // 
+            this.btnEliminarComentario.Location = new System.Drawing.Point(258, 229);
+            this.btnEliminarComentario.Name = "btnEliminarComentario";
+            this.btnEliminarComentario.Size = new System.Drawing.Size(104, 23);
+            this.btnEliminarComentario.TabIndex = 7;
+            this.btnEliminarComentario.Text = "Eliminar Comentario";
+            this.btnEliminarComentario.UseVisualStyleBackColor = true;
+            this.btnEliminarComentario.Click += new System.EventHandler(this.btnEliminarComentario_Click);
+            // 
+            // btnEditarComentario
+            // 
+            this.btnEditarComentario.Location = new System.Drawing.Point(446, 229);
+            this.btnEditarComentario.Name = "btnEditarComentario";
+            this.btnEditarComentario.Size = new System.Drawing.Size(104, 23);
+            this.btnEditarComentario.TabIndex = 8;
+            this.btnEditarComentario.Text = "Editar Comentario";
+            this.btnEditarComentario.UseVisualStyleBackColor = true;
+            this.btnEditarComentario.Click += new System.EventHandler(this.btnEditarComentario_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(625, 321);
+            this.Controls.Add(this.btnEditarComentario);
+            this.Controls.Add(this.btnEliminarComentario);
+            this.Controls.Add(this.btnAñadirComentario);
             this.Controls.Add(this.btnEditarEvento);
             this.Controls.Add(this.btnEliminarEvento);
             this.Controls.Add(this.btnAñadirEvento);
@@ -121,6 +157,9 @@
         private System.Windows.Forms.Button btnEditarEvento;
         private System.Windows.Forms.Button btnEliminarEvento;
         private System.Windows.Forms.Button btnAñadirEvento;
+        private System.Windows.Forms.Button btnAñadirComentario;
+        private System.Windows.Forms.Button btnEliminarComentario;
+        private System.Windows.Forms.Button btnEditarComentario;
     }
 }
 

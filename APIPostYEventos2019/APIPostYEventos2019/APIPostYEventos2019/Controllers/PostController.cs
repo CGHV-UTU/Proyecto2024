@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Web;
 using System.Web.Http;
+using static APIPostYEventos2019.Controllers.PostController;
 
 namespace APIPostYEventos2019.Controllers
 {
@@ -27,6 +28,135 @@ namespace APIPostYEventos2019.Controllers
             public string descripcion { get; set; } = "";
             public string imagen { get; set; } = "";
             public string fechayhora { get; set; } = "";
+        }
+        public class CommentData
+        {
+            public string id { get; set; }
+
+            public string NombreDeCuenta { get; set; }
+
+            public string IdPost { get; set; }
+
+            public string texto { get; set; }
+
+            public string fechayhora { get; set; }
+        }
+
+        [HttpPost]
+        [Route("hacerComentario")]
+        public dynamic hacerComentario([FromBody] CommentData commentdata)
+        {
+            MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+            conn.Open();
+            MySqlCommand cmd;
+            if (!string.IsNullOrEmpty(commentdata.NombreDeCuenta) &&
+                !string.IsNullOrEmpty(commentdata.IdPost) && !string.IsNullOrEmpty(commentdata.texto) &&
+                !string.IsNullOrEmpty(commentdata.fechayhora))
+            {
+                string NombreDeCuenta = commentdata.NombreDeCuenta;
+                string IdPost = commentdata.IdPost;
+                string texto = commentdata.texto;
+                string fechayhora = commentdata.fechayhora;
+                cmd = new MySqlCommand("INSERT INTO comentarios (NombreDeCuenta,IdPost,texto,fechayhora) VALUES (@NombreDeCuenta,@IdPost,@Texto,@FechayHora)", conn);
+                cmd.Parameters.AddWithValue("@NombreDeCuenta", NombreDeCuenta);
+                cmd.Parameters.AddWithValue("@IdPost", IdPost);
+                cmd.Parameters.AddWithValue("@Texto", texto);
+                cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return "guardado correcto";
+            }
+            else
+            {
+                return "guardado incorrecto";
+            }
+        }
+
+        [HttpDelete]
+        [Route("eliminarComentario")]
+        public dynamic eliminarComentario(string id)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand command = new MySqlCommand("DELETE FROM comentarios WHERE id=@Id", conn);
+                command.Parameters.AddWithValue("@Id", int.Parse(id));
+                command.ExecuteNonQuery();
+                conn.Close();
+                return "Comentario eliminado";
+            }
+            catch
+            {
+                return "Comentario                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     no eliminado";
+            }
+        }
+
+        [HttpPut]
+        [Route("modificarComentario")]
+        public dynamic modificarComentario([FromBody] CommentData commentdata)
+        {
+            string id = commentdata.id;
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd;
+                if (!string.IsNullOrEmpty(commentdata.texto))
+                {
+                    string texto = commentdata.texto;
+                    cmd = new MySqlCommand("UPDATE comentarios SET texto=@Texto WHERE id=@id", conn);
+                    cmd.Parameters.AddWithValue("@Texto", texto);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return "Modificaciòn correcta";
+                }
+                else
+                {
+                    return "Modificaciòn incorrecta";
+                }
+            }
+            catch (Exception ex)
+            {
+                return "no se encuentra";
+            }
+        }
+        [HttpGet]
+        [Route("conseguirComentario")]
+        public dynamic conseguirComentario(int id)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand command = new MySqlCommand("SELECT NombreDeCuenta,texto,fechayhora FROM comentarios WHERE id=@Id", conn);
+                command.Parameters.AddWithValue("@Id", id);
+                MySqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    string NombreDeCuenta;
+                    NombreDeCuenta = reader["NombreDeCuenta"].ToString();
+
+                    string texto;
+                    texto = reader["texto"].ToString();
+
+                    string fechayhora;
+                    fechayhora = reader["fechayhora"].ToString();
+
+                    var data = new { NombreDeCuenta = NombreDeCuenta, texto = texto, fechayhora = fechayhora };
+                    return Json(data);
+                }
+                else
+                {
+                    return "no se encuentra";
+                }
+            }
+            catch (Exception ex)
+            {
+                return "no se encuentra";
+            }
+
         }
 
         [HttpPost]
@@ -158,8 +288,11 @@ namespace APIPostYEventos2019.Controllers
             {
                 MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
                 conn.Open();
+                MySqlCommand command1 = new MySqlCommand("DELETE FROM comentarios WHERE IdPost=@Id", conn);
                 MySqlCommand command = new MySqlCommand("DELETE FROM posts WHERE id=@Id", conn);
                 command.Parameters.AddWithValue("@Id", int.Parse(id));
+                command1.Parameters.AddWithValue("@Id", int.Parse(id));
+                command1.ExecuteNonQuery();
                 command.ExecuteNonQuery();
                 conn.Close();
                 return "Post eliminado";
@@ -517,6 +650,38 @@ namespace APIPostYEventos2019.Controllers
         }
 
         [HttpGet]
+        [Route("existeComentario")]
+        public dynamic existeComentario(int id)
+        {
+            MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("SELECT id FROM comentarios WHERE id=@Id", conn);
+            command.Parameters.AddWithValue("@Id", id);
+            MySqlDataReader reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                var data = true;
+                if (reader["id"].ToString().Equals(Convert.ToString(id)))
+                {
+                    data = true;
+                    return Json(data);
+                }
+                else
+                {
+                    data = false;
+                    return Json(data);
+                }
+
+            }
+            else
+            {
+                return null;
+            }
+
+            //devuelve un tipo reader para desempaquetar su contenido en la ventana principal
+        }
+
+        [HttpGet]
         [Route("ultimoPost")]
         public dynamic ultimoPost()
         {
@@ -604,6 +769,30 @@ namespace APIPostYEventos2019.Controllers
                 {
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT id,titulo FROM eventos", conn);
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+                    return Json(dataTable);
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Error al cargar Datagrid";
+            }
+        }
+        [HttpGet]
+        [Route("seleccionarTodosLosComentarios")]
+        public dynamic seleccionarTodosLosComentarios(int id)
+        {
+            try
+            {
+                string connectionString = "server = localhost; database = base; uid = root; ";
+                // Create a new MySQL connection
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT id,texto,NombreDeCuenta,fechayhora FROM comentarios WHERE idPost = @Id;", conn);
+                    cmd.Parameters.AddWithValue("@Id", id);
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);

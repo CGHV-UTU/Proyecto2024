@@ -56,6 +56,27 @@ namespace APIpostYeventos
             EditarEvento editar = new EditarEvento();
             editar.Show();
             this.Hide();
-        } 
+        }
+
+        private void btnAñadirComentario_Click(object sender, EventArgs e)
+        {
+            AñadirComentario añadir = new AñadirComentario();
+            añadir.Show();
+            this.Hide();
+        }
+
+        private void btnEliminarComentario_Click(object sender, EventArgs e)
+        {
+            EliminarComentario eliminar = new EliminarComentario();
+            eliminar.Show();
+            this.Hide();
+        }
+
+        private void btnEditarComentario_Click(object sender, EventArgs e)
+        {
+            EditarComentario editar = new EditarComentario();
+            editar.Show();
+            this.Hide();
+        }
     }
 }
