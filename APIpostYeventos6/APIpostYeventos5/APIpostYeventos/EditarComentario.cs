@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -252,6 +253,57 @@ namespace APIpostYeventos
                 {
 
                 }
+            }
+        }
+
+        //testing
+        public dynamic modificarComentario(string id = "" ,string texto = "")
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd;
+                if (!string.IsNullOrEmpty(texto))
+                {
+                    cmd = new MySqlCommand("UPDATE comentarios SET texto=@Texto WHERE id=@id", conn);
+                    cmd.Parameters.AddWithValue("@Texto", texto);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return "Modificacion correcta";
+                }
+                else
+                {
+                    return "Modificacion incorrecta";
+                }
+            }
+            catch (Exception ex)
+            {
+                return "no se encuentra";
+            }
+        }
+        public dynamic ultimoComentario()
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand command = new MySqlCommand("SELECT id FROM comentarios ORDER BY id DESC LIMIT 1", conn);
+                MySqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    string id = reader["id"].ToString();
+                    return id;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
             }
         }
     }

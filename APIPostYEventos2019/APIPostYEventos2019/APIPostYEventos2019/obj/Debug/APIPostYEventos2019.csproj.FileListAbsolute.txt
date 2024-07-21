@@ -1055,4 +1055,4 @@ D:\Utu 2024\Repositorio\Proyecto2024\APIPostYEventos2019\APIPostYEventos2019\API
 D:\Utu 2024\Repositorio\Proyecto2024\APIPostYEventos2019\APIPostYEventos2019\APIPostYEventos2019\obj\Debug\APIPostYEventos2019.csproj.CoreCompileInputs.cache
 D:\Utu 2024\Repositorio\Proyecto2024\APIPostYEventos2019\APIPostYEventos2019\APIPostYEventos2019\obj\Debug\APIPostYEventos2019.dll
 D:\Utu 2024\Repositorio\Proyecto2024\APIPostYEventos2019\APIPostYEventos2019\APIPostYEventos2019\obj\Debug\APIPostYEventos2019.pdb
-D:\Utu 2024\Repositorio\Proyecto2024\APIPostYEventos2019\APIPostYEventos2019\APIPostYEventos2019\obj\Debug\APIPostY.F3CEB210.Up2Date
+D:\Utu 2024\Repositorio\Proyecto2024\APIPostYEventos2019\APIPostYEventos2019\APIPostYEventos2019\obj\Debug\APIPostYEventos2019.csproj.CopyComplete

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -155,6 +156,32 @@ namespace APIpostYeventos
                 }
             }
         }
+        //testing
+        public dynamic hacerComentario(string NombreDeCuenta = "", string IdPost = "", string texto = "", string fechayhora = "")
+        {
+            MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+            conn.Open();
+            MySqlCommand cmd;
+            if (!string.IsNullOrEmpty(NombreDeCuenta) &&
+                !string.IsNullOrEmpty(IdPost) && !string.IsNullOrEmpty(texto) &&
+                !string.IsNullOrEmpty(fechayhora))
+            {
+                cmd = new MySqlCommand("INSERT INTO comentarios (NombreDeCuenta,IdPost,texto,fechayhora) VALUES (@NombreDeCuenta,@IdPost,@Texto,@FechayHora)", conn);
+                cmd.Parameters.AddWithValue("@NombreDeCuenta", NombreDeCuenta);
+                cmd.Parameters.AddWithValue("@IdPost", IdPost);
+                cmd.Parameters.AddWithValue("@Texto", texto);
+                cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return "guardado correcto";
+            }
+            else
+            {
+                return "guardado incorrecto";
+            }
+        }
+
+
 
     }
 }

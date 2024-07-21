@@ -129,8 +129,11 @@ namespace APIpostYeventos
             {
                 MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
                 conn.Open();
+                MySqlCommand command1 = new MySqlCommand("DELETE FROM comentarios WHERE IdPost=@IdPost", conn);
                 MySqlCommand command = new MySqlCommand("DELETE FROM posts WHERE id=@Id", conn);
+                command1.Parameters.AddWithValue("@IdPost", int.Parse(id));
                 command.Parameters.AddWithValue("@Id", int.Parse(id));
+                command1.ExecuteNonQuery();
                 command.ExecuteNonQuery();
                 conn.Close();
                 return "El Post se eliminó correctamente";

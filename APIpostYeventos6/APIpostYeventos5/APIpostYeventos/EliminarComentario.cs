@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -207,6 +208,47 @@ namespace APIpostYeventos
                 {
 
                 }
+            }
+        }
+        //testing
+        public dynamic eliminarComentario(string id = "")
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand command = new MySqlCommand("DELETE FROM comentarios WHERE id=@Id", conn);
+                command.Parameters.AddWithValue("@Id", id);
+                command.ExecuteNonQuery();
+                conn.Close();
+                return "Comentario eliminado";
+            }
+            catch
+            {
+                return "Comentario no eliminado ";
+            }
+        }
+        public dynamic ultimoComentario()
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand command = new MySqlCommand("SELECT id FROM comentarios ORDER BY id DESC LIMIT 1", conn);
+                MySqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    string id = reader["id"].ToString();
+                    return id;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
             }
         }
     }

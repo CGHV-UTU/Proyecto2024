@@ -18,9 +18,36 @@ namespace Testeo
             string respuestaRecibida = añadirPost.hacerPost("youtube.com", "hol");
             Assert.AreEqual(respuestaEsperada, respuestaRecibida);
         }
-
+        // a partir de acá pruebas de comentarios
         [TestMethod]
         public void prueba2()
+        {
+            DateTime now = DateTime.Now;
+            string fechayhora = now.ToString("yyyy-MM-dd HH:mm:ss");
+            string respuestaEsperada = "guardado correcto";
+            APIpostYeventos.EditarPost editarPost = new APIpostYeventos.EditarPost();
+            APIpostYeventos.AñadirComentario añadirComentario = new APIpostYeventos.AñadirComentario();
+            string respuestaRecibida = añadirComentario.hacerComentario("juanito", editarPost.ultimoPost(), "soy ese", fechayhora);
+            Assert.AreEqual(respuestaEsperada,respuestaRecibida);
+        }
+        [TestMethod]
+        public void prueba3()
+        {
+            string respuestaEsperada = "Modificacion correcta";
+            APIpostYeventos.EditarComentario editarComentario = new APIpostYeventos.EditarComentario();
+            string respuestaRecibida = editarComentario.modificarComentario(editarComentario.ultimoComentario(),"ya no soy ese");
+            Assert.AreEqual(respuestaEsperada, respuestaRecibida);
+        }
+        [TestMethod]        
+        public void prueba4()
+        {
+            string respuestaEsperada = "Comentario eliminado";
+            APIpostYeventos.EliminarComentario eliminarcomentario = new APIpostYeventos.EliminarComentario();
+            string respuestaRecibida = eliminarcomentario.eliminarComentario(eliminarcomentario.ultimoComentario());
+            Assert.AreEqual(respuestaEsperada, respuestaRecibida);
+        }
+        [TestMethod]
+        public void prueba5()
         {
             string respuestaEsperada = "Modificacion correcta";
             APIpostYeventos.EditarPost editarPost = new APIpostYeventos.EditarPost();
@@ -29,7 +56,7 @@ namespace Testeo
         }
 
         [TestMethod]
-        public void prueba3()
+        public void prueba6()
         {
             string respuestaEsperada = "adios";
             APIpostYeventos.EditarPost editarPost = new APIpostYeventos.EditarPost();
@@ -38,7 +65,7 @@ namespace Testeo
         }
 
         [TestMethod]
-        public void prueba4()
+        public void prueba7()
         {
             string respuestaEsperada = "El Post se eliminó correctamente";
             APIpostYeventos.EliminarPost eliminarPost = new APIpostYeventos.EliminarPost();
@@ -48,7 +75,7 @@ namespace Testeo
 
         //a partir de acá pruebas de evento
         [TestMethod]
-        public void prueba5()
+        public void prueba8()
         {
             string respuestaEsperada = "guardado correcto";
             APIpostYeventos.AñadirEvento añadirEvento = new APIpostYeventos.AñadirEvento();
@@ -58,7 +85,7 @@ namespace Testeo
         }
 
         [TestMethod]
-        public void prueba6()
+        public void prueba9()
         {
             string respuestaEsperada = "modificacion correcta";
             APIpostYeventos.EditarEvento editarEvento = new APIpostYeventos.EditarEvento();
@@ -67,7 +94,7 @@ namespace Testeo
         }
 
         [TestMethod]
-        public void prueba7()
+        public void pruebaaa()
         {
             string respuestaEsperada = "TITULO CAMBIADO";
             APIpostYeventos.EditarEvento editarEvento = new APIpostYeventos.EditarEvento();
@@ -76,7 +103,7 @@ namespace Testeo
         }
 
         [TestMethod]
-        public void prueba8()
+        public void pruebamanya()
         {
             string respuestaEsperada = "Evento eliminado";
             APIpostYeventos.EliminarEvento eliminarEvento = new APIpostYeventos.EliminarEvento();

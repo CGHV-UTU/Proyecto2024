@@ -88,7 +88,7 @@ namespace APIPostYEventos2019.Controllers
             }
             catch
             {
-                return "Comentario                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     no eliminado";
+                return "Comentario ";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   no eliminado";
             }
         }
 
@@ -717,6 +717,32 @@ namespace APIPostYEventos2019.Controllers
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("SELECT id FROM eventos ORDER BY id DESC LIMIT 1", conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    string id = reader["id"].ToString();
+                    return Json(id);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        [HttpGet]
+        [Route("ultimoComentario")]
+        public dynamic ultimoComentario()
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand command = new MySqlCommand("SELECT id FROM comentarios ORDER BY id DESC LIMIT 1", conn);
+                MySqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
                     string id = reader["id"].ToString();
