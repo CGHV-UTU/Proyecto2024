@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace ApiUsuarios.Controllers
 {
@@ -134,6 +135,49 @@ namespace ApiUsuarios.Controllers
                 ValidAudience = "usuario",
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("af431f66a2b44ddf1c8ee210f366d921"))
             };
+        }
+
+        //pruebas de la lógica
+        public dynamic PRToken(formaLogin login)
+        {
+            try
+            {
+                if (login == null || string.IsNullOrEmpty(login.User) || string.IsNullOrEmpty(login.Pass))
+                {
+                    return JsonConvert.SerializeObject("Solicitud inválida");
+                }
+                else
+                {
+                    if (!InicioDeSesion(login.User, login.Pass))
+                    {
+                        return JsonConvert.SerializeObject("Solicitud inválida");
+                    }
+                    else
+                    {
+                        string tokenString = GenerarToken(login.User);
+                        return JsonConvert.SerializeObject(tokenString);
+                    }
+                }
+            }
+            catch
+            {
+                return JsonConvert.SerializeObject("Solicitud inválida");
+            }
+        }
+
+        public dynamic PRTestToken(TipoToken pedido)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                SecurityToken securityToken;
+                var comprobar = tokenHandler.ValidateToken(pedido.token, ParametrosDeValidacionDelToken(), out securityToken);
+                return JsonConvert.SerializeObject(true);
+            }
+            catch
+            {
+                return JsonConvert.SerializeObject(false);
+            }
         }
     }
 }
