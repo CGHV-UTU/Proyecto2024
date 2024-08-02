@@ -1,0 +1,6 @@
+@API_Grupos_HostAddress = http://localhost:5225
+
+GET {{API_Grupos_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
