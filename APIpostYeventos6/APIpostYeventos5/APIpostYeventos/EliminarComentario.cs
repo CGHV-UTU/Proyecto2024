@@ -16,9 +16,11 @@ namespace APIpostYeventos
 {
     public partial class EliminarComentario : Form
     {
-        public EliminarComentario()
+        private string usuario;
+        public EliminarComentario(string user)
         {
             InitializeComponent();
+            usuario = user;
         }
         private async void CargarTabla()
         {
@@ -141,14 +143,14 @@ namespace APIpostYeventos
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            Form1 f1 = new Form1();
+            Form1 f1 = new Form1(usuario);
             f1.Show();
             this.Close();
         }
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            Form1 f1 = new Form1();
+            Form1 f1 = new Form1(usuario);
             f1.Show();
             this.Close();
         }
@@ -204,7 +206,7 @@ namespace APIpostYeventos
                     HttpResponseMessage response = await client.DeleteAsync($"https://localhost:44340/eliminarComentario?id={id}");
                     response.EnsureSuccessStatusCode();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }

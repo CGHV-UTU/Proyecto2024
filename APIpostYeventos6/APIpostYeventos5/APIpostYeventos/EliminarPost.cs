@@ -18,11 +18,13 @@ namespace APIpostYeventos
 {
     public partial class EliminarPost : Form
     {
-        public EliminarPost()
+        private static string usuario;
+        public EliminarPost(string user)
         {
             InitializeComponent();
             CargarTabla();
             ModificarTabla();
+            usuario = user;
         }
 
         private async void CargarTabla()
@@ -64,7 +66,7 @@ namespace APIpostYeventos
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            Form1 form1 = new Form1();
+            Form1 form1 = new Form1(usuario);
             form1.Show();
             this.Close();
         }
@@ -78,7 +80,7 @@ namespace APIpostYeventos
                     HttpResponseMessage response = await client.DeleteAsync($"https://localhost:44340/eliminarPost?id={id}");
                     response.EnsureSuccessStatusCode();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }
@@ -138,7 +140,7 @@ namespace APIpostYeventos
                 conn.Close();
                 return "El Post se eliminó correctamente";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "El post no se eliminó";
             }

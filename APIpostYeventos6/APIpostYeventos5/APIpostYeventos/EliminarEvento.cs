@@ -15,11 +15,13 @@ namespace APIpostYeventos
 {
     public partial class EliminarEvento : Form
     {
-        public EliminarEvento()
+        private string usuario;
+        public EliminarEvento(string user)
         {
             InitializeComponent();
             CargarTabla();
             ModificarTabla();
+            usuario = user;
         }
         private async void CargarTabla()
         {
@@ -34,7 +36,7 @@ namespace APIpostYeventos
         }
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            Form1 form1 = new Form1();
+            Form1 form1 = new Form1(usuario);
             form1.Show();
             this.Close();
         } 

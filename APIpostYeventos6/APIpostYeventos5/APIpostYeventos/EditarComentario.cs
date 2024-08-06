@@ -16,20 +16,22 @@ namespace APIpostYeventos
 {
     public partial class EditarComentario : Form
     {
-        public EditarComentario()
+        private string usuario;
+        public EditarComentario(string user)
         {
             InitializeComponent();
+            usuario = user;
         }
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            Form1 f1 = new Form1();
+            Form1 f1 = new Form1(usuario);
             f1.Show();
             this.Close();
         }
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            Form1 f1 = new Form1();
+            Form1 f1 = new Form1(usuario);
             f1.Show();
             this.Close();
         }
@@ -249,7 +251,7 @@ namespace APIpostYeventos
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/modificarComentario", content);
                     response.EnsureSuccessStatusCode();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }
@@ -278,7 +280,7 @@ namespace APIpostYeventos
                     return "Modificacion incorrecta";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "no se encuentra";
             }

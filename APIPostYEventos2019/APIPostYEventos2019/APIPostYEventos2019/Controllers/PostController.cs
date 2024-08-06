@@ -19,6 +19,7 @@ namespace APIPostYEventos2019.Controllers
             public string text { get; set; }
             public string link { get; set; }
             public string image { get; set; }
+            public string user { get; set; }
         }
         public class EventData
         {
@@ -28,6 +29,7 @@ namespace APIPostYEventos2019.Controllers
             public string descripcion { get; set; } = "";
             public string imagen { get; set; } = "";
             public string fechayhora { get; set; } = "";
+            public string user { get; set; }
         }
         public class CommentData
         {
@@ -88,7 +90,7 @@ namespace APIPostYEventos2019.Controllers
             }
             catch
             {
-                return "Comentario ";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   no eliminado";
+                return "Comentario no eliminado";
             }
         }
 
@@ -117,7 +119,7 @@ namespace APIPostYEventos2019.Controllers
                     return "Modificaciòn incorrecta";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "no se encuentra";
             }
@@ -152,7 +154,7 @@ namespace APIPostYEventos2019.Controllers
                     return "no se encuentra";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "no se encuentra";
             }
@@ -166,16 +168,21 @@ namespace APIPostYEventos2019.Controllers
             MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
             conn.Open();
             MySqlCommand cmd;
+            MySqlCommand cmd2;
             if (!string.IsNullOrEmpty(postdata.text))
             {
                 string texto = postdata.text;
                 if (!string.IsNullOrEmpty(postdata.link))
                 {
                     string url = postdata.link;
-                    cmd = new MySqlCommand("INSERT INTO posts (texto,url) VALUES (@Texto,@url)", conn);
+                    cmd = new MySqlCommand("INSERT INTO posts (texto,url) VALUES (@Texto,@url); SELECT LAST_INSERT_id();", conn);
                     cmd.Parameters.AddWithValue("@Texto", texto);
                     cmd.Parameters.AddWithValue("@url", url);
-                    cmd.ExecuteNonQuery();
+                    long idPost = Convert.ToInt64(cmd.ExecuteScalar());
+                    cmd2 = new MySqlCommand("INSERT INTO usuarios_posts (NombreDeCuenta,idpost) VALUES (@NombreDeCuenta,@id)", conn);
+                    cmd2.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
+                    cmd2.Parameters.AddWithValue("@id", idPost);
+                    cmd2.ExecuteNonQuery();
                     conn.Close();
                     return "guardado correcto";
                 }
@@ -184,18 +191,26 @@ namespace APIPostYEventos2019.Controllers
                     if (!string.IsNullOrEmpty(postdata.image))
                     {
                         byte[] imagen = Convert.FromBase64String(postdata.image);
-                        cmd = new MySqlCommand("INSERT INTO posts (texto,imagen) VALUES (@Texto,@Imagen)", conn);
+                        cmd = new MySqlCommand("INSERT INTO posts (texto,imagen) VALUES (@Texto,@Imagen); SELECT LAST_INSERT_id();", conn);
                         cmd.Parameters.AddWithValue("@Texto", texto);
                         cmd.Parameters.AddWithValue("@Imagen", imagen);
-                        cmd.ExecuteNonQuery();
+                        long idPost = Convert.ToInt64(cmd.ExecuteScalar());
+                        cmd2 = new MySqlCommand("INSERT INTO usuarios_posts (NombreDeCuenta,idpost) VALUES (@NombreDeCuenta,@id)", conn);
+                        cmd2.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
+                        cmd2.Parameters.AddWithValue("@id", idPost);
+                        cmd2.ExecuteNonQuery();
                         conn.Close();
                         return "guardado correcto";
                     }
                     else
-                    {
-                        cmd = new MySqlCommand("INSERT INTO posts (texto) VALUES (@Texto)", conn);
-                        cmd.Parameters.AddWithValue("@Texto", texto);
-                        cmd.ExecuteNonQuery();
+                    {         
+                        cmd = new MySqlCommand("INSERT INTO posts (texto) VALUES (@Texto); SELECT LAST_INSERT_id();", conn);
+                        cmd.Parameters.AddWithValue("@Texto", texto);                      
+                        long idPost = Convert.ToInt64(cmd.ExecuteScalar());
+                        cmd2 = new MySqlCommand("INSERT INTO usuarios_posts (NombreDeCuenta,idpost) VALUES (@NombreDeCuenta,@id)", conn);
+                        cmd2.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
+                        cmd2.Parameters.AddWithValue("@id", idPost);
+                        cmd2.ExecuteNonQuery();
                         conn.Close();
                         return "guardado correcto";
                     }
@@ -206,18 +221,26 @@ namespace APIPostYEventos2019.Controllers
                 if (!string.IsNullOrEmpty(postdata.image))
                 {
                     byte[] imagen = Convert.FromBase64String(postdata.image);
-                    cmd = new MySqlCommand("INSERT INTO posts (imagen) VALUES (@Imagen)", conn);
+                    cmd = new MySqlCommand("INSERT INTO posts (imagen) VALUES (@Imagen); SELECT LAST_INSERT_id();", conn);
                     cmd.Parameters.AddWithValue("@Imagen", imagen);
-                    cmd.ExecuteNonQuery();
+                    long idPost = Convert.ToInt64(cmd.ExecuteScalar());
+                    cmd2 = new MySqlCommand("INSERT INTO usuarios_posts (NombreDeCuenta,idpost) VALUES (@NombreDeCuenta,@id)", conn);
+                    cmd2.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
+                    cmd2.Parameters.AddWithValue("@id", idPost);
+                    cmd2.ExecuteNonQuery();
                     conn.Close();
                     return "guardado correcto";
                 }
                 else
                 {
                     string url = postdata.link;
-                    cmd = new MySqlCommand("INSERT INTO posts (url) VALUES (@url)", conn);
+                    cmd = new MySqlCommand("INSERT INTO posts (url) VALUES (@url); SELECT LAST_INSERT_id();", conn);
                     cmd.Parameters.AddWithValue("@url", url);
-                    cmd.ExecuteNonQuery();
+                    long idPost = Convert.ToInt64(cmd.ExecuteScalar());
+                    cmd2 = new MySqlCommand("INSERT INTO usuarios_posts (NombreDeCuenta,idpost) VALUES (@NombreDeCuenta,@id)", conn);
+                    cmd2.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
+                    cmd2.Parameters.AddWithValue("@id", idPost);
+                    cmd2.ExecuteNonQuery();
                     conn.Close();
                     return "guardado correcto";
                 }
@@ -272,7 +295,7 @@ namespace APIPostYEventos2019.Controllers
                     return "no se encuentra";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "no se encuentra";
             }
@@ -399,31 +422,44 @@ namespace APIPostYEventos2019.Controllers
             byte[] imagen = Convert.FromBase64String(eventdata.imagen);
             MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
             conn.Open();
+            MySqlCommand cmd2;
+            if (string.IsNullOrEmpty(eventdata.user))
+            {
+                throw new Exception("ERROR: El campo 'user' no puede ser nulo");
+            }
             if (!string.IsNullOrEmpty(eventdata.ubicacion))
             {
                 if (!string.IsNullOrEmpty(eventdata.descripcion))
                 {
                     string ubicacion = eventdata.ubicacion;
                     string descripcion = eventdata.descripcion;
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO eventos (titulo,ubicacion,descripcion,fechayhora,foto) VALUES (@Titulo,@Ubicacion,@Descripcion,@FechayHora,@Foto)", conn);
+                    MySqlCommand cmd = new MySqlCommand("INSERT INTO eventos (titulo,ubicacion,descripcion,fechayhora,foto) VALUES (@Titulo,@Ubicacion,@Descripcion,@FechayHora,@Foto); SELECT LAST_INSERT_id();", conn);
                     cmd.Parameters.AddWithValue("@Titulo", titulo);
                     cmd.Parameters.AddWithValue("@Ubicacion", ubicacion);
                     cmd.Parameters.AddWithValue("@Descripcion", descripcion);
                     cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
                     cmd.Parameters.AddWithValue("@Foto", imagen);
-                    cmd.ExecuteNonQuery();
+                    long idEvento = Convert.ToInt64(cmd.ExecuteScalar());
+                    cmd2 = new MySqlCommand("INSERT INTO usuarios_eventos (NombreDeCuenta,idevento) VALUES (@NombreDeCuenta,@id)", conn);
+                    cmd2.Parameters.AddWithValue("@NombreDeCuenta", eventdata.user);
+                    cmd2.Parameters.AddWithValue("@id", idEvento);
+                    cmd2.ExecuteNonQuery();
                     conn.Close();
                     return "guardado correcto";
                 }
                 else
                 {
                     string ubicacion = eventdata.ubicacion;
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO eventos (titulo,ubicacion,fechayhora,foto) VALUES (@Titulo,@Ubicacion,@FechayHora,@Foto)", conn);
+                    MySqlCommand cmd = new MySqlCommand("INSERT INTO eventos (titulo,ubicacion,fechayhora,foto) VALUES (@Titulo,@Ubicacion,@FechayHora,@Foto); SELECT LAST_INSERT_id();", conn);
                     cmd.Parameters.AddWithValue("@Titulo", titulo);
                     cmd.Parameters.AddWithValue("@Ubicacion", ubicacion);
                     cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
                     cmd.Parameters.AddWithValue("@Foto", imagen);
-                    cmd.ExecuteNonQuery();
+                    long idEvento = Convert.ToInt64(cmd.ExecuteScalar());
+                    cmd2 = new MySqlCommand("INSERT INTO usuarios_eventos (NombreDeCuenta,idevento) VALUES (@NombreDeCuenta,@id)", conn);
+                    cmd2.Parameters.AddWithValue("@NombreDeCuenta", eventdata.user);
+                    cmd2.Parameters.AddWithValue("@id", idEvento);
+                    cmd2.ExecuteNonQuery();
                     conn.Close();
                     return "guardado correcto";
                 }
@@ -433,22 +469,30 @@ namespace APIPostYEventos2019.Controllers
                 if (!string.IsNullOrEmpty(eventdata.descripcion))
                 {
                     string descripcion = eventdata.descripcion;
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO eventos (titulo,descripcion,fechayhora,foto) VALUES (@Titulo,@Descripcion,@FechayHora,@Foto)", conn);
+                    MySqlCommand cmd = new MySqlCommand("INSERT INTO eventos (titulo,descripcion,fechayhora,foto) VALUES (@Titulo,@Descripcion,@FechayHora,@Foto); SELECT LAST_INSERT_id();", conn);
                     cmd.Parameters.AddWithValue("@Titulo", titulo);
                     cmd.Parameters.AddWithValue("@Descripcion", descripcion);
                     cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
                     cmd.Parameters.AddWithValue("@Foto", imagen);
-                    cmd.ExecuteNonQuery();
+                    long idEvento = Convert.ToInt64(cmd.ExecuteScalar());
+                    cmd2 = new MySqlCommand("INSERT INTO usuarios_eventos (NombreDeCuenta,idevento) VALUES (@NombreDeCuenta,@id)", conn);
+                    cmd2.Parameters.AddWithValue("@NombreDeCuenta", eventdata.user);
+                    cmd2.Parameters.AddWithValue("@id", idEvento);
+                    cmd2.ExecuteNonQuery();
                     conn.Close();
                     return "guardado correcto";
                 }
                 else
                 {
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO eventos (titulo,fechayhora,foto) VALUES (@Titulo,@FechayHora,@Foto)", conn);
+                    MySqlCommand cmd = new MySqlCommand("INSERT INTO eventos (titulo,fechayhora,foto) VALUES (@Titulo,@FechayHora,@Foto); SELECT LAST_INSERT_id();", conn);
                     cmd.Parameters.AddWithValue("@Titulo", titulo);
                     cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
                     cmd.Parameters.AddWithValue("@Foto", imagen);
-                    cmd.ExecuteNonQuery();
+                    long idEvento = Convert.ToInt64(cmd.ExecuteScalar());
+                    cmd2 = new MySqlCommand("INSERT INTO usuarios_eventos (NombreDeCuenta,idevento) VALUES (@NombreDeCuenta,@id)", conn);
+                    cmd2.Parameters.AddWithValue("@NombreDeCuenta", eventdata.user);
+                    cmd2.Parameters.AddWithValue("@id", idEvento);
+                    cmd2.ExecuteNonQuery();
                     conn.Close();
                     return "guardado correcto";
                 }

@@ -21,11 +21,13 @@ namespace APIpostYeventos
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
         public static List<Post> posts = new List<Post>();
-        public EditarPost()
+        private static string usuario;
+        public EditarPost(string user)
         {
             InitializeComponent();
             CargarTabla();
             ModificarTabla();
+            usuario = user;
         }
 
         private async void CargarTabla()
@@ -54,13 +56,13 @@ namespace APIpostYeventos
         }
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            Form1 f1 = new Form1();
+            Form1 f1 = new Form1(usuario);
             f1.Show();
             this.Close();
         }
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            Form1 f1 = new Form1();
+            Form1 f1 = new Form1(usuario);
             f1.Show();
             this.Close();
         }
@@ -171,7 +173,7 @@ namespace APIpostYeventos
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/modificarPost", content);
                     response.EnsureSuccessStatusCode();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }
@@ -293,7 +295,7 @@ namespace APIpostYeventos
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "Modificación incorrecta";
             }    
@@ -361,7 +363,7 @@ namespace APIpostYeventos
                     return "no se encuentra";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "no se encuentra";
             }

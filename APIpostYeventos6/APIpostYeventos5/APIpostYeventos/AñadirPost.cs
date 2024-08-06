@@ -13,21 +13,22 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
-using System.Text;
-using System.Threading.Tasks;
+
 
 
 namespace APIpostYeventos
 {
     public partial class AñadirPost : Form
     {
-        public AñadirPost()
+        private static string usuario;
+        public AñadirPost(string user)
         {
             InitializeComponent();
+            usuario = user;
         }
         public void btnVolver_Click(object sender, EventArgs e)
         {
-            Form1 f1=new Form1();
+            Form1 f1=new Form1(usuario);
             f1.Show();
             this.Close();
         }
@@ -89,7 +90,7 @@ namespace APIpostYeventos
             {
                 try
                 {
-                    var datos = new {text= texto, link=url, image=Convert.ToBase64String(imagen)};
+                    var datos = new {text= texto, link=url, image=Convert.ToBase64String(imagen), user = usuario};
                     var content = new StringContent(JsonConvert.SerializeObject(datos),Encoding.UTF8,"application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
                     response.EnsureSuccessStatusCode();
@@ -168,7 +169,7 @@ namespace APIpostYeventos
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "El post no se creó";
             }

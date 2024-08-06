@@ -17,7 +17,8 @@ namespace APIpostYeventos
 {
     public partial class EditarEvento : Form
     {
-        public EditarEvento()
+        private string usuario;
+        public EditarEvento(string user)
         {
             InitializeComponent();
             CargarTabla();
@@ -28,6 +29,7 @@ namespace APIpostYeventos
             int hora = DateTime.Now.Hour;
             int minuto = DateTime.Now.Minute + 5;
             dtpHora.MinDate = new DateTime(año, 12, 31, hora, minuto, 0);
+            usuario = user;
         }
 
         private async void CargarTabla()
@@ -52,13 +54,13 @@ namespace APIpostYeventos
         }
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            Form1 f1 = new Form1();
+            Form1 f1 = new Form1(usuario);
             f1.Show();
             this.Close();
         }
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            Form1 f1 = new Form1();
+            Form1 f1 = new Form1(usuario);
             f1.Show();
             this.Close();
         }
@@ -182,7 +184,7 @@ namespace APIpostYeventos
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/modificarEvento", content);
                     response.EnsureSuccessStatusCode();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }
@@ -352,7 +354,7 @@ namespace APIpostYeventos
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

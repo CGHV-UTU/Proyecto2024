@@ -16,9 +16,11 @@ namespace APIpostYeventos
 {
     public partial class AñadirComentario : Form
     {
-        public AñadirComentario()
+        private string usuario;
+        public AñadirComentario(string user)
         {
             InitializeComponent();
+            usuario = user;
         }
 
         private async void btnBuscar_Click(object sender, EventArgs e)
@@ -74,7 +76,7 @@ namespace APIpostYeventos
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            Form1 f1 = new Form1();
+            Form1 f1 = new Form1(usuario);
             f1.Show();
             this.Close();
         }
@@ -117,7 +119,7 @@ namespace APIpostYeventos
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            Form1 f1 = new Form1();
+            Form1 f1 = new Form1(usuario);
             f1.Show();
             this.Close();
         }

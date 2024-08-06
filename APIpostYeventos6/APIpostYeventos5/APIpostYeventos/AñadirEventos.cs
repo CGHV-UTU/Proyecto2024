@@ -17,7 +17,8 @@ namespace APIpostYeventos
 {
     public partial class AñadirEvento : Form
     {
-        public AñadirEvento()
+        private static string usuario;
+        public AñadirEvento(string user)
         {
             InitializeComponent();
             dtpFecha.MinDate = DateTime.Today;
@@ -26,6 +27,7 @@ namespace APIpostYeventos
             int hora = DateTime.Now.Hour;
             int minuto = DateTime.Now.Minute + 5;
             dtpHora.MinDate = new DateTime(año, 12, 31, hora, minuto, 0);
+            usuario = user;
         }
 
         private void btnSeleccionarFecha_Click(object sender, EventArgs e)
@@ -46,7 +48,7 @@ namespace APIpostYeventos
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            Form1 f1 = new Form1();
+            Form1 f1 = new Form1(usuario);
             f1.Show();
             this.Close();
         }
@@ -79,7 +81,7 @@ namespace APIpostYeventos
             {
                 try
                 {
-                    var datos = new { titulo = titulo, ubicacion = ubicacion, descripcion = descripcion  ,imagen = Convert.ToBase64String(imagen), fechayhora = fechayhora};
+                    var datos = new { titulo = titulo, ubicacion = ubicacion, descripcion = descripcion,imagen = Convert.ToBase64String(imagen), fechayhora = fechayhora, user = usuario};
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/hacerEvento", content);
                     response.EnsureSuccessStatusCode();
