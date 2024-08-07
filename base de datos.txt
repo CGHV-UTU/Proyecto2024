@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS posts (
 );
 
 CREATE TABLE IF NOT EXISTS usuarios (
-	NombreDeCuenta varchar(20) NOT NULL,
+    NombreDeCuenta varchar(20) NOT NULL,
     NombreVisible varchar(20) NOT NULL,
     email varchar(50) NOT NULL,
     Descripcion varchar(100),
@@ -23,15 +23,16 @@ CREATE TABLE IF NOT EXISTS usuarios (
     genero varchar(20) NOT NULL,
     fecha_de_nacimiento VARCHAR(15) NOT NULL,
     estado_de_cuenta varchar(20) NOT NULL,
+    visibilidad VARCHAR(15) NOT NULL,
+    fechaBaneoTemporal DATETIME,
     PRIMARY KEY (NombreDeCuenta)
     );
-
-CREATE TABLE login(
-	NombreDeCuenta varchar(20) NOT NULL,
-    Contraseña varchar(20),
-    PRIMARY KEY(NombreDeCuenta, Contraseña)
-	);    
     
+CREATE TABLE login(
+    NombreDeCuenta varchar(20) NOT NULL,
+    Contraseña varchar(20) NOT NULL,
+    PRIMARY KEY(NombreDeCuenta, Contraseña)
+    );
 
 CREATE TABLE IF NOT EXISTS eventos (
     id INT(11) NOT NULL AUTO_INCREMENT,
@@ -44,10 +45,83 @@ CREATE TABLE IF NOT EXISTS eventos (
 );
 
 create table IF NOT EXISTS comentarios (
-	id int(11) not null auto_increment,
+    id int(11) not null auto_increment,
+    NombreDeCuenta varchar(20) NOT NULL,
+    IdPost int(11) not null,
     texto varchar(100) not null,
+    fechayhora VARCHAR(100) NOT NULL,
     likes int(11) not null,
-    primary key (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (IdPost) references posts(id)
 );
 
- select * from posts;
+
+
+-- Tabla grupo
+create table if not exists grupos (
+	nombreReal varchar(100) not null, -- Capaz hay que cambiarla por un int
+	nombreVisible varchar(100) not null,
+	configuracion tinytext not null,
+	descripcion tinytext,
+	foto BLOB not null,
+	primary key(nombreReal)
+);
+
+-- Sugerencias de nuestro tío favorito para vincular usuarios con grupos
+    CREATE TABLE IF NOT EXISTS usuarios_grupos (
+    NombreDeCuenta VARCHAR(20) NOT NULL,
+    nombreReal VARCHAR(100) NOT NULL,
+    FOREIGN KEY (NombreDeCuenta) REFERENCES usuarios(NombreDeCuenta),
+    FOREIGN KEY (nombreReal) REFERENCES grupos(nombreReal),
+    PRIMARY KEY (NombreDeCuenta, nombreReal)
+);
+
+
+-- Usuario grupo Usuario post Usuario evento
+CREATE TABLE IF NOT EXISTS usuarios_grupos (
+    NombreDeCuenta VARCHAR(20) NOT NULL,
+    nombreReal VARCHAR(100) NOT NULL,
+    FOREIGN KEY (NombreDeCuenta) REFERENCES usuarios(NombreDeCuenta),
+    FOREIGN KEY (nombreReal) REFERENCES grupos(nombreReal),
+    PRIMARY KEY (NombreDeCuenta, nombreReal)
+);
+
+
+CREATE TABLE IF NOT EXISTS usuarios_posts (
+    NombreDeCuenta VARCHAR(20) NOT NULL,
+    idpost INT(11) NOT NULL,
+    FOREIGN KEY (NombreDeCuenta) REFERENCES usuarios(NombreDeCuenta),
+    FOREIGN KEY (idpost) REFERENCES posts(id),
+    PRIMARY KEY (NombreDeCuenta, idpost)
+);
+
+
+CREATE TABLE IF NOT EXISTS usuarios_eventos (
+    NombreDeCuenta VARCHAR(20) NOT NULL,
+    idevento INT(11) NOT NULL,
+    FOREIGN KEY (NombreDeCuenta) REFERENCES usuarios(NombreDeCuenta),
+    FOREIGN KEY (idevento) REFERENCES eventos(id),
+    PRIMARY KEY (NombreDeCuenta, idevento)
+);
+
+--  Backoffice
+
+CREATE TABLE IF NOT EXISTS base.AdministradorBackoffice (
+	Nombre VARCHAR(25) NOT NULL,
+	Contraseña VARCHAR(25) NOT NULL,
+    PRIMARY KEY (Nombre)
+);
+
+-- REPORTES
+
+CREATE TABLE IF NOT EXISTS base.Reporte (
+	NumeroDeReporte int NOT NULL auto_increment,
+    NombreDeUsuario VARCHAR(20) NOT NULL,
+	tipo VARCHAR(25) NOT NULL,
+    descripcion tinytext NOT NULL,
+    PRIMARY KEY (NumeroDeReporte, NombreDeUsuario),
+    FOREIGN KEY (NombreDeUsuario) REFERENCES usuarios(NombreDeCuenta)
+);
+
+SELECT NombreDeCuenta FROM usuarios WHERE NombreDeCuenta="Fede";
+select * from base.Reporte;

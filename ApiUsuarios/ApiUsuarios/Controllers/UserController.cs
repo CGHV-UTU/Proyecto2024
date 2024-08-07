@@ -175,12 +175,12 @@ namespace ApiUsuarios.Controllers
                     if (reader["NombreDeCuenta"].ToString().Equals(Convert.ToString(nombredecuenta)))
                     {
                         data = true;
-                        return Json(data);
+                        return Json(data, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
                         data = false;
-                        return Json(data);
+                        return Json(data, JsonRequestBehavior.AllowGet);
                     }
                 }
                 else
@@ -192,6 +192,36 @@ namespace ApiUsuarios.Controllers
             {
                 return null;
             }
+        }
+
+        public class Reporte
+        {
+            public string usuario { get; set; }
+            public string tipo { get; set; }
+            public string descripcion { get; set; }
+        }
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("ReportarUsuario")]
+        public dynamic ReportarUsuario([FromBody] Reporte user)
+        {
+            if (user == null)
+            {
+                return Json("nulo");
+            }
+            else
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO Reporte (NombreDeUsuario,tipo,descripcion) VALUES (@Nombre, @tipo, @descripcion)", conn);
+                cmd.Parameters.AddWithValue("@nombre", user.usuario);
+                cmd.Parameters.AddWithValue("@tipo", user.tipo);
+                cmd.Parameters.AddWithValue("@descripcion", user.descripcion);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return Json("Reporte correcto");
+            }
+                
+            
         }
 
         //pruebas de la lógica de la API
@@ -345,5 +375,6 @@ namespace ApiUsuarios.Controllers
                 return null;
             }
         }
+
     }
 }

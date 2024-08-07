@@ -67,6 +67,12 @@
     <Compile Include="Registrar.Designer.cs">
       <DependentUpon>Registrar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reportar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reportar.Designer.cs">
+      <DependentUpon>Reportar.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="InicioSesion.resx">
       <DependentUpon>InicioSesion.cs</DependentUpon>
     </EmbeddedResource>
@@ -82,6 +88,9 @@
     </Compile>
     <EmbeddedResource Include="Registrar.resx">
       <DependentUpon>Registrar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportar.resx">
+      <DependentUpon>Reportar.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

@@ -96,5 +96,11 @@ namespace PruebasDeApiUsuarios
                 txtContraseña.UseSystemPasswordChar = false;
             }
         }
+
+        private void btnReporte_Click(object sender, EventArgs e)
+        {
+            Reportar f = new Reportar();
+            f.Visible = true;
+        }
     }
 }

@@ -81,18 +81,13 @@ namespace PruebasDeApiUsuarios
         {
             using (HttpClient client=new HttpClient())
             {
-                try
-                {
+                
                     HttpResponseMessage response = await client.GetAsync($"https://localhost:44383/user/existeUsuario?nombredecuenta={nombreCuenta}");
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
                     return data;
-                }
-                catch
-                {
-                    return false;
-                }
+                
             }
         }
 
