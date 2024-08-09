@@ -1,0 +1,156 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|c:\\cosas\\c\u00F3digos\\pruebasapigrupos\\pruebasapigrupos\\menugrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|solutionrelative:pruebasapigrupos\\menugrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\pruebasapigrupos\\eliminargrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|solutionrelative:pruebasapigrupos\\eliminargrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\pruebasapigrupos\\modificargrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|solutionrelative:pruebasapigrupos\\modificargrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|c:\\cosas\\c\u00F3digos\\pruebasapigrupos\\pruebasapigrupos\\menugrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|solutionrelative:pruebasapigrupos\\menugrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\pruebasapigrupos\\gruposusuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|solutionrelative:pruebasapigrupos\\gruposusuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|c:\\cosas\\c\u00F3digos\\pruebasapigrupos\\pruebasapigrupos\\creargrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|solutionrelative:pruebasapigrupos\\creargrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\pruebasapigrupos\\creargrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|solutionrelative:pruebasapigrupos\\creargrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\pruebasapigrupos\\modificargrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E283166D-8BCD-4EE1-8DAE-677497858451}|PruebasAPIGrupos\\PruebasAPIGrupos.csproj|solutionrelative:pruebasapigrupos\\modificargrupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MenuGrupo.cs",
+              "DocumentMoniker": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\MenuGrupo.cs",
+              "RelativeDocumentMoniker": "PruebasAPIGrupos\\MenuGrupo.cs",
+              "ToolTip": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\MenuGrupo.cs",
+              "RelativeToolTip": "PruebasAPIGrupos\\MenuGrupo.cs",
+              "ViewState": "AQIAACYAAAAAAAAAAAAAwC8AAAA9AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-06T19:53:36.871Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MenuGrupo.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\MenuGrupo.cs",
+              "RelativeDocumentMoniker": "PruebasAPIGrupos\\MenuGrupo.cs",
+              "ToolTip": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\MenuGrupo.cs [Dise\u00F1o]",
+              "RelativeToolTip": "PruebasAPIGrupos\\MenuGrupo.cs [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-06T19:53:33.336Z",
+              "EditorCaption": " [Dise\u00F1o]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EliminarGrupo.cs",
+              "DocumentMoniker": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\EliminarGrupo.cs",
+              "RelativeDocumentMoniker": "PruebasAPIGrupos\\EliminarGrupo.cs",
+              "ToolTip": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\EliminarGrupo.cs",
+              "RelativeToolTip": "PruebasAPIGrupos\\EliminarGrupo.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAG0AAAAbAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-06T18:10:20.487Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ModificarGrupo.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\ModificarGrupo.cs",
+              "RelativeDocumentMoniker": "PruebasAPIGrupos\\ModificarGrupo.cs",
+              "ToolTip": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\ModificarGrupo.cs [Dise\u00F1o]",
+              "RelativeToolTip": "PruebasAPIGrupos\\ModificarGrupo.cs [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-06T17:55:40.18Z",
+              "EditorCaption": " [Dise\u00F1o]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CrearGrupo.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\CrearGrupo.cs",
+              "RelativeDocumentMoniker": "PruebasAPIGrupos\\CrearGrupo.cs",
+              "ToolTip": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\CrearGrupo.cs [Dise\u00F1o]",
+              "RelativeToolTip": "PruebasAPIGrupos\\CrearGrupo.cs [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-05T18:07:04.569Z",
+              "EditorCaption": " [Dise\u00F1o]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "GruposUsuario.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\GruposUsuario.cs",
+              "RelativeDocumentMoniker": "PruebasAPIGrupos\\GruposUsuario.cs",
+              "ToolTip": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\GruposUsuario.cs [Dise\u00F1o]",
+              "RelativeToolTip": "PruebasAPIGrupos\\GruposUsuario.cs [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-06T12:11:47.942Z",
+              "EditorCaption": " [Dise\u00F1o]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ModificarGrupo.cs",
+              "DocumentMoniker": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\ModificarGrupo.cs",
+              "RelativeDocumentMoniker": "PruebasAPIGrupos\\ModificarGrupo.cs",
+              "ToolTip": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\ModificarGrupo.cs",
+              "RelativeToolTip": "PruebasAPIGrupos\\ModificarGrupo.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAswGEAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-06T18:10:15.897Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CrearGrupo.cs",
+              "DocumentMoniker": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\CrearGrupo.cs",
+              "RelativeDocumentMoniker": "PruebasAPIGrupos\\CrearGrupo.cs",
+              "ToolTip": "C:\\Cosas\\C\u00F3digos\\PruebasAPIGrupos\\PruebasAPIGrupos\\CrearGrupo.cs",
+              "RelativeToolTip": "PruebasAPIGrupos\\CrearGrupo.cs",
+              "ViewState": "AQIAACMAAAAAAAAAAAAcwDoAAAAlAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-05T19:50:01.933Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
