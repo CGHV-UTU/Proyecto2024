@@ -275,6 +275,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Group1\" />
     <Folder Include="Views\Group\" />
   </ItemGroup>
   <ItemGroup>

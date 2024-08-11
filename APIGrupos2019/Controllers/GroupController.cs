@@ -13,12 +13,11 @@ using Newtonsoft.Json;
 using Org.BouncyCastle.Security;
 //using static System.Runtime.InteropServices.JavaScript.JSType;
 using static API_Grupos.Controllers.GgroupController;
+using RouteAttribute = System.Web.Mvc.RouteAttribute;
 //Sí, es la última versión
 namespace API_Grupos.Controllers
 {
-    [System.Web.Http.Route("group")]
-    [System.Web.Http.Route("group")]
-    public class GgroupController : Controller
+    public class GgroupController : ApiController
     {
         public class Grupo
         {
@@ -35,6 +34,12 @@ namespace API_Grupos.Controllers
             public string nombreDeCuenta { get; set; }
         }
 
+        public class Reporte
+        {
+            public int numeroReporte { get; set; }
+            public string usuario { get; set; }
+            public string nombreReal { get; set; }
+        }
 
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("RegistrarGrupo")] //Da error pero inserta los datos
@@ -163,7 +168,12 @@ namespace API_Grupos.Controllers
                 return Json($"Error al obtener los grupos: {e.Message}");
             }
         }
-
+        [System.Web.Http.HttpGet]
+        [Route("prueba")]
+        public dynamic prueba()
+        {
+            return "hola";
+        }
 
 
         [System.Web.Http.HttpGet]
@@ -480,6 +490,28 @@ namespace API_Grupos.Controllers
 
         }
 
+
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("ReportarGrupo")]
+        public dynamic ReportarGrupo([FromBody] Reporte reporte)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO Reporte_Grupo (NumeroDeReporte,NombreDeUsuario,nombreReal) VALUES (@reporte,@Nombre, @nombreReal)", conn);
+                cmd.Parameters.AddWithValue("@reporte", reporte.numeroReporte);
+                cmd.Parameters.AddWithValue("@nombre", reporte.usuario);
+                cmd.Parameters.AddWithValue("@nombreReal", reporte.nombreReal);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return Json("Reporte correcto");
+            }
+            catch
+            {
+                return Json("Reporte incorrecto");
+            }
+        }
         private string crearNombreGrupo()
         {
             string nombre = "";
