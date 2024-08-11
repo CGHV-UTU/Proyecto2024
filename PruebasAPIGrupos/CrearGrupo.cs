@@ -91,7 +91,7 @@ namespace PruebasAPIGrupos
                 {
                     // Registrar el grupo en la tabla "grupos"
                     var contentGrupo = new StringContent(JsonConvert.SerializeObject(grupo), Encoding.UTF8, "application/json");
-                    HttpResponseMessage responseGrupo = await client.PostAsync("https://localhost:44347/group/RegistrarGrupo", contentGrupo);
+                    HttpResponseMessage responseGrupo = await client.PostAsync("https://localhost:44304/RegistrarGrupo", contentGrupo);
                     responseGrupo.EnsureSuccessStatusCode();
 
                     return $"Grupo creado correctamente {responseGrupo}";
@@ -116,7 +116,7 @@ namespace PruebasAPIGrupos
                         nombreDeCuenta = usuario
                     };
                     var contentUsuarioGrupo = new StringContent(JsonConvert.SerializeObject(usuarioGrupo), Encoding.UTF8, "application/json");
-                    HttpResponseMessage responseUsuarioGrupo = await client.PostAsync("https://localhost:44347/group/RegistrarGrupoUG", contentUsuarioGrupo);
+                    HttpResponseMessage responseUsuarioGrupo = await client.PostAsync("https://localhost:44304/RegistrarGrupoUG", contentUsuarioGrupo);
                     responseUsuarioGrupo.EnsureSuccessStatusCode();
 
                     return $"Relación usuario-grupo creada correctamente {responseUsuarioGrupo}";

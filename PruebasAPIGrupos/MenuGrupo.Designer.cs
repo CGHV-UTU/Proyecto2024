@@ -39,7 +39,8 @@
             "Crear grupo",
             "Eliminar grupo",
             "Ver grupos de un usuario",
-            "Modificar grupo"});
+            "Modificar grupo",
+            "Reportar"});
             this.cbxMenu.Location = new System.Drawing.Point(94, 33);
             this.cbxMenu.Name = "cbxMenu";
             this.cbxMenu.Size = new System.Drawing.Size(121, 21);

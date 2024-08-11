@@ -56,7 +56,7 @@ namespace PruebasAPIGrupos
                 try
                 {
                     var content = new StringContent(JsonConvert.SerializeObject(grupo), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44347/group/EditarGrupoUG?usuario={Uri.EscapeDataString(usuario)}", content);
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/EditarGrupoUG?usuario={Uri.EscapeDataString(usuario)}", content);
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -75,7 +75,7 @@ namespace PruebasAPIGrupos
             {
                 try
                 {
-                    string url = $"https://localhost:44347/group/ObtenerGruposPorNombreVisibleYUsuario?nombreVisible={nombreGrupo}&nombreDeCuenta={usuario}";
+                    string url = $"https://localhost:44304/ObtenerGruposPorNombreVisibleYUsuario?nombreVisible={nombreGrupo}&nombreDeCuenta={usuario}";
                     HttpResponseMessage response = await client.GetAsync(url);
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();

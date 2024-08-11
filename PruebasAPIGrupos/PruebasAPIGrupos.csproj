@@ -151,6 +151,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reportar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reportar.Designer.cs">
+      <DependentUpon>Reportar.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="CrearGrupo.resx">
       <DependentUpon>CrearGrupo.cs</DependentUpon>
     </EmbeddedResource>
@@ -178,6 +184,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Reportar.resx">
+      <DependentUpon>Reportar.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

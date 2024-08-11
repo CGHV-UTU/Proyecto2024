@@ -70,7 +70,7 @@ namespace PruebasAPIGrupos
             {
                 try
                 {
-                    string url = $"https://localhost:44383/group/ObtenerGruposPorNombreVisibleYUsuario?nombreVisible={nombreGrupo}&nombreDeCuenta={usuario}";
+                    string url = $"https://localhost:44304/ObtenerGruposPorNombreVisibleYUsuario?nombreVisible={nombreGrupo}&nombreDeCuenta={usuario}";
                     HttpResponseMessage response = await client.GetAsync(url);
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
@@ -98,7 +98,7 @@ namespace PruebasAPIGrupos
             {
                 try
                 {
-                    HttpResponseMessage response = await client.DeleteAsync($"https://localhost:44383/group/EliminarGrupo?nombreReal={Uri.EscapeDataString(nombreReal)}");
+                    HttpResponseMessage response = await client.DeleteAsync($"https://localhost:44304/EliminarGrupo?nombreReal={Uri.EscapeDataString(nombreReal)}");
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);

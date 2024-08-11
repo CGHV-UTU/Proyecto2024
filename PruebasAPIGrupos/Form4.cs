@@ -92,7 +92,7 @@ namespace PruebasAPIGrupos
             };
 
                     var content = new FormUrlEncodedContent(datos);
-                    HttpResponseMessage response = await client.PostAsync($"https://localhost:44347/group/AgregarUsuarioAGrupoUG", content);
+                    HttpResponseMessage response = await client.PostAsync($"https://localhost:44304/group/AgregarUsuarioAGrupoUG", content);
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);

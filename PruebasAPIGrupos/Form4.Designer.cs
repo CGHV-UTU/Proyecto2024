@@ -136,7 +136,7 @@
             this.Controls.Add(this.dataGridViewGrupos);
             this.Controls.Add(this.label1);
             this.Name = "AgregarUsuarioAGrupo";
-            this.Text = "Agregar un usuario a un grupo";
+            this.Text = "                                                         ";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGrupos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

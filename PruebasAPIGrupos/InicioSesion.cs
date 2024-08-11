@@ -70,7 +70,7 @@ namespace PruebasAPIGrupos
             {
                 var datos = new { User = usuario, Pass = contraseña };
                 var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync("https://localhost:44383/auth/token", content);
+                HttpResponseMessage response = await client.PostAsync("https://localhost:44304/auth/token", content);
                 response.EnsureSuccessStatusCode();
                 var responseBody = await response.Content.ReadAsStringAsync();
                 dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -91,7 +91,7 @@ namespace PruebasAPIGrupos
                 {
                     var tokenPayload = new { Token = token };
                     var content = new StringContent(JsonConvert.SerializeObject(tokenPayload), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/auth/testToken", content);
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44304/auth/testToken", content);
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
