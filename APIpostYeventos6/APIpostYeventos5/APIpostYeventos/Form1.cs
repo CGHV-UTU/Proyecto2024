@@ -81,5 +81,11 @@ namespace APIpostYeventos
             editar.Show();
             this.Hide();
         }
+
+        private void btnReportar_Click(object sender, EventArgs e)
+        {
+            ReportarPost_Comentario f = new ReportarPost_Comentario();
+            f.Visible = true;
+        }
     }
 }

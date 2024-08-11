@@ -37,6 +37,7 @@
             this.btnAñadirComentario = new System.Windows.Forms.Button();
             this.btnEliminarComentario = new System.Windows.Forms.Button();
             this.btnEditarComentario = new System.Windows.Forms.Button();
+            this.btnReportar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAñadirPost
@@ -111,9 +112,9 @@
             // 
             // btnEliminarComentario
             // 
-            this.btnEliminarComentario.Location = new System.Drawing.Point(258, 229);
+            this.btnEliminarComentario.Location = new System.Drawing.Point(258, 220);
             this.btnEliminarComentario.Name = "btnEliminarComentario";
-            this.btnEliminarComentario.Size = new System.Drawing.Size(104, 23);
+            this.btnEliminarComentario.Size = new System.Drawing.Size(104, 40);
             this.btnEliminarComentario.TabIndex = 7;
             this.btnEliminarComentario.Text = "Eliminar Comentario";
             this.btnEliminarComentario.UseVisualStyleBackColor = true;
@@ -129,11 +130,22 @@
             this.btnEditarComentario.UseVisualStyleBackColor = true;
             this.btnEditarComentario.Click += new System.EventHandler(this.btnEditarComentario_Click);
             // 
+            // btnReportar
+            // 
+            this.btnReportar.Location = new System.Drawing.Point(258, 287);
+            this.btnReportar.Name = "btnReportar";
+            this.btnReportar.Size = new System.Drawing.Size(104, 23);
+            this.btnReportar.TabIndex = 9;
+            this.btnReportar.Text = "Reportar";
+            this.btnReportar.UseVisualStyleBackColor = true;
+            this.btnReportar.Click += new System.EventHandler(this.btnReportar_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(625, 321);
+            this.ClientSize = new System.Drawing.Size(625, 335);
+            this.Controls.Add(this.btnReportar);
             this.Controls.Add(this.btnEditarComentario);
             this.Controls.Add(this.btnEliminarComentario);
             this.Controls.Add(this.btnAñadirComentario);
@@ -160,6 +172,7 @@
         private System.Windows.Forms.Button btnAñadirComentario;
         private System.Windows.Forms.Button btnEliminarComentario;
         private System.Windows.Forms.Button btnEditarComentario;
+        private System.Windows.Forms.Button btnReportar;
     }
 }
 

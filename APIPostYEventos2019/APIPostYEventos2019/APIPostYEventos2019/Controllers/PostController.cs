@@ -43,6 +43,12 @@ namespace APIPostYEventos2019.Controllers
 
             public string fechayhora { get; set; }
         }
+        public class ReportePostOComentario
+        {
+            public int numeroReporte { get; set; }
+            public string usuario { get; set; }
+            public int id { get; set; }
+        }
 
         [HttpPost]
         [Route("hacerComentario")]
@@ -872,6 +878,52 @@ namespace APIPostYEventos2019.Controllers
             catch (Exception ex)
             {
                 return "Error al cargar Datagrid";
+            }
+        }
+
+        //Reportes
+
+        [HttpPost]
+        [Route("ReportarPost")]
+        public dynamic ReportarPost([FromBody] ReportePostOComentario reporte)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO Reporte_Post (NumeroDeReporte,NombreDeUsuario,idPost) VALUES (@reporte,@Nombre, @id)", conn);
+                cmd.Parameters.AddWithValue("@reporte", reporte.numeroReporte);
+                cmd.Parameters.AddWithValue("@nombre", reporte.usuario);
+                cmd.Parameters.AddWithValue("@id", reporte.id);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return Json("Reporte correcto");
+            }
+            catch
+            {
+                return Json("Reporte incorrecto");
+            }            
+        }
+
+        [HttpPost]
+        [Route("ReportarComentario")]
+        public dynamic ReportarComentario([FromBody] ReportePostOComentario reporte)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO Reporte_Post (NumeroDeReporte,NombreDeUsuario,idComentario) VALUES (@reporte,@Nombre, @id)", conn);
+                cmd.Parameters.AddWithValue("@reporte", reporte.numeroReporte);
+                cmd.Parameters.AddWithValue("@nombre", reporte.usuario);
+                cmd.Parameters.AddWithValue("@id", reporte.id);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return Json("Reporte correcto");
+            }
+            catch
+            {
+                return Json("Reporte incorrecto");
             }
         }
     }

@@ -155,6 +155,12 @@
     <Compile Include="Registrar.Designer.cs">
       <DependentUpon>Registrar.cs</DependentUpon>
     </Compile>
+    <Compile Include="ReportarPost-Comentario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReportarPost-Comentario.Designer.cs">
+      <DependentUpon>ReportarPost-Comentario.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AñadirComentario.resx">
       <DependentUpon>AñadirComentario.cs</DependentUpon>
     </EmbeddedResource>
@@ -200,6 +206,9 @@
     </Compile>
     <EmbeddedResource Include="Registrar.resx">
       <DependentUpon>Registrar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReportarPost-Comentario.resx">
+      <DependentUpon>ReportarPost-Comentario.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
