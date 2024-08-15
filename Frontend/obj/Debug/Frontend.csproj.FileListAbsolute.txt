@@ -1,0 +1,83 @@
+C:\Users\emerg\source\repos\Infini\Frontend\bin\Debug\Frontend.exe.config
+C:\Users\emerg\source\repos\Infini\Frontend\bin\Debug\Frontend.exe
+C:\Users\emerg\source\repos\Infini\Frontend\bin\Debug\Frontend.pdb
+C:\Users\emerg\source\repos\Infini\Frontend\obj\Debug\Frontend.csproj.AssemblyReference.cache
+C:\Users\emerg\source\repos\Infini\Frontend\obj\Debug\Frontend.Inicio.resources
+C:\Users\emerg\source\repos\Infini\Frontend\obj\Debug\Frontend.Properties.Resources.resources
+C:\Users\emerg\source\repos\Infini\Frontend\obj\Debug\Frontend.csproj.GenerateResource.cache
+C:\Users\emerg\source\repos\Infini\Frontend\obj\Debug\Frontend.csproj.CoreCompileInputs.cache
+C:\Users\emerg\source\repos\Infini\Frontend\obj\Debug\Frontend.exe
+C:\Users\emerg\source\repos\Infini\Frontend\obj\Debug\Frontend.pdb
+C:\Users\emerg\OneDrive\Escritorio\Infini\Frontend\bin\Debug\Frontend.exe.config
+C:\Users\emerg\OneDrive\Escritorio\Infini\Frontend\bin\Debug\Frontend.exe
+C:\Users\emerg\OneDrive\Escritorio\Infini\Frontend\bin\Debug\Frontend.pdb
+C:\Users\emerg\OneDrive\Escritorio\Infini\Frontend\obj\Debug\Frontend.Inicio.resources
+C:\Users\emerg\OneDrive\Escritorio\Infini\Frontend\obj\Debug\Frontend.Posts.resources
+C:\Users\emerg\OneDrive\Escritorio\Infini\Frontend\obj\Debug\Frontend.Properties.Resources.resources
+C:\Users\emerg\OneDrive\Escritorio\Infini\Frontend\obj\Debug\Frontend.csproj.GenerateResource.cache
+C:\Users\emerg\OneDrive\Escritorio\Infini\Frontend\obj\Debug\Frontend.csproj.CoreCompileInputs.cache
+C:\Users\emerg\OneDrive\Escritorio\Infini\Frontend\obj\Debug\Frontend.exe
+C:\Users\emerg\OneDrive\Escritorio\Infini\Frontend\obj\Debug\Frontend.pdb
+C:\Users\emerg\OneDrive\Escritorio\Infini\Frontend\obj\Debug\Frontend.csproj.AssemblyReference.cache
+C:\Users\FedeG\OneDrive\Escritorio\frontendf\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.AssemblyReference.cache
+C:\Users\FedeG\OneDrive\Escritorio\frontendf\Proyecto2024\Frontend\obj\Debug\Frontend.Inicio.resources
+C:\Users\FedeG\OneDrive\Escritorio\frontendf\Proyecto2024\Frontend\obj\Debug\Frontend.Posts.resources
+C:\Users\FedeG\OneDrive\Escritorio\frontendf\Proyecto2024\Frontend\obj\Debug\Frontend.Properties.Resources.resources
+C:\Users\FedeG\OneDrive\Escritorio\frontendf\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.GenerateResource.cache
+C:\Users\FedeG\OneDrive\Escritorio\frontendf\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CoreCompileInputs.cache
+C:\Users\FedeG\OneDrive\Escritorio\frontendf\Proyecto2024\Frontend\obj\Debug\Frontend.exe
+C:\Users\FedeG\OneDrive\Escritorio\frontendf\Proyecto2024\Frontend\obj\Debug\Frontend.pdb
+C:\Users\FedeG\OneDrive\Escritorio\frontendf\Proyecto2024\Frontend\bin\Debug\Frontend.exe.config
+C:\Users\FedeG\OneDrive\Escritorio\frontendf\Proyecto2024\Frontend\bin\Debug\Frontend.exe
+C:\Users\FedeG\OneDrive\Escritorio\frontendf\Proyecto2024\Frontend\bin\Debug\Frontend.pdb
+C:\Users\FedeG\OneDrive\Escritorio\frontendf\Proyecto2024\Frontend\obj\Debug\Frontend.PostControl.resources
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\bin\Debug\Frontend.exe.config
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\bin\Debug\Frontend.exe
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\bin\Debug\Frontend.pdb
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.AssemblyReference.cache
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Inicio.resources
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.PostControl.resources
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Posts.resources
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Properties.Resources.resources
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.GenerateResource.cache
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CoreCompileInputs.cache
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.exe
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.pdb
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Comentarios.resources
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.CommentControl.resources
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\bin\Debug\Frontend.exe.config
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\bin\Debug\Frontend.exe
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\bin\Debug\Frontend.pdb
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.csproj.AssemblyReference.cache
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.Comentarios.resources
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.CommentControl.resources
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.Inicio.resources
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.PostControl.resources
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.Posts.resources
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.Properties.Resources.resources
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.csproj.GenerateResource.cache
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.exe
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.pdb
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.IniciarSesion.resources
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Usuario\source\repos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.csproj.CopyComplete
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\bin\Debug\Frontend.exe.config
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\bin\Debug\Frontend.exe
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\bin\Debug\Frontend.pdb
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\bin\Debug\Newtonsoft.Json.dll
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\bin\Debug\Newtonsoft.Json.xml
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.csproj.AssemblyReference.cache
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.Comentarios.resources
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.CommentControl.resources
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.IniciarSesion.resources
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.Inicio.resources
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.PostControl.resources
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.Posts.resources
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.Properties.Resources.resources
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.csproj.GenerateResource.cache
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.csproj.CoreCompileInputs.cache
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.csproj.CopyComplete
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.exe
+C:\Cosas\Códigos\Proyecto2024-Frontend-Infini\Proyecto2024-Frontend-Infini\Frontend\obj\Debug\Frontend.pdb
