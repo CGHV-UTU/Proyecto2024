@@ -84,7 +84,7 @@ namespace Frontend
                 }
                 catch
                 {
-                    return "Solicitud incorrecta";
+                    return "Solicitud inválida";
                 }
             }
         }

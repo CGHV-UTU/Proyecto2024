@@ -92,6 +92,12 @@
     <Compile Include="Inicio.Designer.cs">
       <DependentUpon>Inicio.cs</DependentUpon>
     </Compile>
+    <Compile Include="Post.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Post.Designer.cs">
+      <DependentUpon>Post.cs</DependentUpon>
+    </Compile>
     <Compile Include="Posts.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +123,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Inicio.resx">
       <DependentUpon>Inicio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Post.resx">
+      <DependentUpon>Post.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PostControl.resx">
       <DependentUpon>PostControl.cs</DependentUpon>
@@ -197,6 +206,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\video.jpeg" />
     <None Include="Resources\Registrarse.png" />
     <None Include="Resources\IniciarSesion.png" />
     <None Include="Resources\Perfil.jpeg" />
@@ -207,6 +217,9 @@
     <None Include="Resources\Contraseña.jpeg" />
     <None Include="Resources\Contraseña 2.jpeg" />
     <None Include="Resources\Contraseña_2-removebg-preview.png" />
+    <None Include="Resources\foto blanca.jpeg" />
+    <None Include="Resources\crearPost.jpeg" />
+    <None Include="Resources\crearPost-removebg-preview.png" />
     <Content Include="Resources\IconoInfini.ico" />
     <None Include="Resources\Logo_Infini_Completo.jpeg" />
     <None Include="Resources\salir.png" />

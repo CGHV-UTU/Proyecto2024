@@ -20,6 +20,7 @@ namespace Frontend
             VerPosts();
             PanelComentarios.Visible = false;
             PictureBoxSalir.Visible = false;
+            PanelPostear.Visible = false;
             user = usuario;
         }
 
@@ -56,6 +57,18 @@ namespace Frontend
         {
             PanelComentarios.Visible = false;
             PictureBoxSalir.Visible = false;
+        }
+
+        private void PictureBoxCrear_Click(object sender, EventArgs e)
+        {
+            VerPost();
+            PanelPostear.Visible = true;
+        }
+        private void VerPost()
+        {
+            Post post = new Post(user);
+            
+            post.Show();
         }
     }
 }
