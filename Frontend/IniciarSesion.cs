@@ -18,6 +18,7 @@ namespace Frontend
         public IniciarSesion()
         {
             InitializeComponent();
+            this.MaximizeBox = false;
         }
 
        
@@ -114,6 +115,7 @@ namespace Frontend
                 if (resultado)
                 {
                     Inicio inicio = new Inicio(txtUsuario.Text);
+                    inicio.FormClosed += (s, args) => this.Close();
                     inicio.Show();
                     this.Hide();
                 }

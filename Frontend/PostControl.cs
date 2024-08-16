@@ -13,10 +13,56 @@ namespace Frontend
     public partial class PostControl : UserControl
     {
         public event EventHandler AbrirComentarios;
-        public PostControl(string title)
+        public PostControl(string title, string postType)
         {
-            iniciar();
+            iniciar(postType);
             lblNombre.Text = title;
+        }
+
+        private void ConfigurarPostControl(string postType)
+        {
+            //Tipos de post(puse un texto de ejemplo para que quede claro,
+            //los que quedan sin texto son los solo imagen)
+            switch (postType)
+            {
+                case "imageonly":
+                    // Solo imagen, ocultar todos los TextBox
+                    OcultarTextBoxes();
+                    break;
+
+                case "textandurl":
+                    // Mostrar ambos TextBox para texto y URL
+                    MostrarTextBoxes(true, true);
+                    txtDescripcion.Text = "Este post tiene una descripción y una URL.";
+                    txtUrl.Text = "Aca va la URL.";
+                    txtUrl.Location = new Point(80, 125);
+                    break;
+
+                case "textonly":
+                    // Mostrar solo el TextBox para texto
+                    MostrarTextBoxes(true, false);
+                    txtDescripcion.Text = "Este post solo tiene una descripción.";
+                    break;
+
+                case "urlonly":
+                    // Mostrar solo el TextBox para URL
+                    MostrarTextBoxes(false, true);
+                    txtUrl.Location = new Point(100, 95);
+                    txtUrl.Text = "Este post solo tiene una URL.";
+                    break;
+            }
+        }
+
+        // Mostrar - Ocultar los TextBox
+        private void OcultarTextBoxes()
+        {
+            txtDescripcion.Visible = false;
+            txtUrl.Visible = false;
+        }
+        private void MostrarTextBoxes(bool mostrarTexto, bool mostrarUrl)
+        {
+            txtDescripcion.Visible = mostrarTexto;
+            txtUrl.Visible = mostrarUrl;
         }
 
         // Dar like. Puse lo de isImage porque no me andaba normal
@@ -34,12 +80,14 @@ namespace Frontend
                 isImage1 = true;
             }
         }
+
+        //Abrir comentarios
         private void PictureBoxComentarios_Click(object sender, EventArgs e)
         {
             AbrirComentarios?.Invoke(this, EventArgs.Empty);
         }
 
-        private void iniciar()
+        private void iniciar(string postType)
         {
             this.lblNombre = new Label();
             this.PictureBoxUsuarioPost = new PictureBox();
@@ -49,6 +97,8 @@ namespace Frontend
             this.PictureBoxCompartir = new PictureBox();
             this.PictureBoxOpcionesPost = new PictureBox();
             this.button1 = new Button();
+            this.txtDescripcion = new TextBox();
+            this.txtUrl = new TextBox();
             this.SuspendLayout();
 
             // lblTitle
@@ -64,6 +114,7 @@ namespace Frontend
             this.PictureBoxUsuarioPost.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxUsuarioPost.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxUsuarioPost.Image = Frontend.Properties.Resources.User;
+            this.PictureBoxUsuarioPost.Cursor = Cursors.Hand;
 
             // like
             this.PictureBoxLike.Location = new System.Drawing.Point(76, 440);
@@ -72,6 +123,7 @@ namespace Frontend
             this.PictureBoxLike.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxLike.Image = Frontend.Properties.Resources.like_infini;
             this.PictureBoxLike.Click += PictureBoxLike_Click;
+            this.PictureBoxLike.Cursor = Cursors.Hand;
 
             // comentarios
             this.PictureBoxComentarios.Location = new System.Drawing.Point(548, 440);
@@ -80,6 +132,7 @@ namespace Frontend
             this.PictureBoxComentarios.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxComentarios.Image = Frontend.Properties.Resources.comentario;
             this.PictureBoxComentarios.Click += PictureBoxComentarios_Click;
+            this.PictureBoxComentarios.Cursor = Cursors.Hand;
 
             // Compartir
             this.PictureBoxCompartir.Location = new System.Drawing.Point(604, 440);
@@ -87,6 +140,7 @@ namespace Frontend
             this.PictureBoxCompartir.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxCompartir.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxCompartir.Image = Frontend.Properties.Resources.compartir;
+            this.PictureBoxCompartir.Cursor = Cursors.Hand;
 
             // PictureBoxOpcionesPost
             this.PictureBoxOpcionesPost.Location = new System.Drawing.Point(660, 440);
@@ -94,6 +148,7 @@ namespace Frontend
             this.PictureBoxOpcionesPost.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxOpcionesPost.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxOpcionesPost.Image = Frontend.Properties.Resources.mas_opciones;
+            this.PictureBoxOpcionesPost.Cursor = Cursors.Hand;
 
             // imagen
             this.imagen.Location = new System.Drawing.Point(76, 69);
@@ -110,6 +165,15 @@ namespace Frontend
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += button1_Click;
 
+            // txtDescripcion
+            this.txtDescripcion.Location = new Point(76, 80);
+            this.txtDescripcion.Name = "txtDescripcion";
+            this.txtDescripcion.Size = new Size(634, 22);
+
+            // txtUrl
+            this.txtUrl.Location = new Point(76, 410); // Justo debajo de la imagen
+            this.txtUrl.Name = "txtUrl";
+            this.txtUrl.Size = new Size(634, 22); // Ajusta el tamaño según necesidad      
 
             // PostControl
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -122,12 +186,74 @@ namespace Frontend
             this.Controls.Add(this.PictureBoxComentarios);
             this.Controls.Add(this.PictureBoxCompartir);
             this.Controls.Add(this.PictureBoxOpcionesPost);
+            this.Controls.Add(this.txtDescripcion);
+            this.Controls.Add(this.txtUrl);
             this.Name = "PostControl";
             this.Size = new System.Drawing.Size(787, 578);
-            this.ResumeLayout(false);
-            this.PerformLayout();
 
+            //Tipos de post(puse un texto de ejemplo para que quede claro,
+            //los que quedan sin texto son los de imagen)
+            switch (postType)
+            {
+                case "textAndImage":
+                    this.txtDescripcion.Visible = true;
+                    this.txtDescripcion.Text = "Texto e imagen";
+                    this.imagen.Visible = true;
+                    this.txtUrl.Visible = false;
+                    this.imagen.Location = new System.Drawing.Point(76, 102);
+                    this.PictureBoxLike.Location = new Point(76, imagen.Bottom + 10);
+                    this.PictureBoxComentarios.Location = new Point(548, imagen.Bottom + 10);
+                    this.PictureBoxCompartir.Location = new Point(604, imagen.Bottom + 10);
+                    this.PictureBoxOpcionesPost.Location = new Point(660, imagen.Bottom + 10);
+                    break;
+
+                case "imageOnly":
+                    this.txtDescripcion.Visible = false;
+                    this.txtUrl.Visible = false;
+                    this.imagen.Visible = true;
+                    break;
+
+                case "textAndUrl":
+                    this.txtDescripcion.Text = "Este post tiene una descripción y una URL.";
+                    this.txtUrl.Text = "Aca va la URL.";
+                    this.txtDescripcion.Visible = true;
+                    this.txtUrl.Visible = true;
+                    this.txtUrl.Location = new Point(76, 115);
+                    this.PictureBoxLike.Location = new Point(76, txtUrl.Bottom + 10);
+                    this.PictureBoxComentarios.Location = new Point(548, txtUrl.Bottom + 10);
+                    this.PictureBoxCompartir.Location = new Point(604, txtUrl.Bottom + 10);
+                    this.PictureBoxOpcionesPost.Location = new Point(660, txtUrl.Bottom + 10);
+                    this.imagen.Visible = false;
+                    break;
+
+                case "textOnly":
+                    this.txtDescripcion.Text = "Este post solo tiene una descripción.";
+                    this.txtDescripcion.Visible = true;
+                    this.txtUrl.Visible = false;
+                    this.imagen.Visible = false;
+                    this.PictureBoxLike.Location = new Point(76, txtDescripcion.Bottom + 10);
+                    this.PictureBoxComentarios.Location = new Point(548, txtDescripcion.Bottom + 10);
+                    this.PictureBoxCompartir.Location = new Point(604, txtDescripcion.Bottom + 10);
+                    this.PictureBoxOpcionesPost.Location = new Point(660, txtDescripcion.Bottom + 10);
+                    break;
+
+                case "urlOnly":
+                    this.txtUrl.Location = new Point(76, 80);
+                    this.txtUrl.Text = "Este post solo tiene una URL.";
+                    this.txtDescripcion.Visible = false;
+                    this.txtUrl.Visible = true;
+                    this.imagen.Visible = false;
+                    this.PictureBoxLike.Location = new Point(76, txtUrl.Bottom + 10);
+                    this.PictureBoxComentarios.Location = new Point(548, txtUrl.Bottom + 10);
+                    this.PictureBoxCompartir.Location = new Point(604, txtUrl.Bottom + 10);
+                    this.PictureBoxOpcionesPost.Location = new Point(660, txtUrl.Bottom + 10);
+                    break;
+            }
+            this.ResumeLayout(false);     
+            this.PerformLayout();
         }
+
+        //Boton de prueba para insertar una imagen al post
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();

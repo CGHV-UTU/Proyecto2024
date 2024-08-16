@@ -36,7 +36,26 @@ namespace Frontend
             // Simulación de carga de posts
             for (int i = 0; i < postsPerPage; i++)
             {
-                var postControl = new PostControl("WENTEN");
+                string postType;
+                switch (i % 5)
+                {
+                    case 0:
+                        postType = "imageOnly";
+                        break;
+                    case 1:
+                        postType = "textAndUrl";
+                        break;
+                    case 2:
+                        postType = "textOnly";
+                        break;
+                    case 3:
+                        postType = "urlOnly";
+                        break;
+                    default:
+                        postType = "textAndImage";
+                        break;
+                }
+                var postControl = new PostControl($"Post {i + 1}", postType);
                 postControl.AbrirComentarios += PostControl_AbrirComentarios;
                 postControl.Location = new Point(0, (page * postsPerPage + i) * postControl.Height);
                 panel1.Controls.Add(postControl);
@@ -68,7 +87,6 @@ namespace Frontend
             this.Name = "Form1";
             this.Text = "Infinite Scroll Posts";
             this.ResumeLayout(false);
-
         }
 
 

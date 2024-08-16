@@ -197,6 +197,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Registrarse.png" />
+    <None Include="Resources\IniciarSesion.png" />
     <None Include="Resources\Perfil.jpeg" />
     <None Include="Resources\ver_contraseña-removebg-preview.png" />
     <None Include="Resources\inciar_sesion-removebg-preview.png" />

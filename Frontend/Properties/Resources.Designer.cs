@@ -123,26 +123,6 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Contraseña_2 {
-            get {
-                object obj = ResourceManager.GetObject("Contraseña 2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Contraseña_2_removebg_preview {
-            get {
-                object obj = ResourceManager.GetObject("Contraseña_2-removebg-preview", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap crear {
             get {
                 object obj = ResourceManager.GetObject("crear", resourceCulture);
@@ -153,9 +133,9 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap inciar_sesion_removebg_preview {
+        internal static System.Drawing.Bitmap IniciarSesion {
             get {
-                object obj = ResourceManager.GetObject("inciar_sesion-removebg-preview", resourceCulture);
+                object obj = ResourceManager.GetObject("IniciarSesion", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,19 +203,9 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Registrarse {
+        internal static System.Drawing.Bitmap Registrarse1 {
             get {
-                object obj = ResourceManager.GetObject("Registrarse", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Registrarse_removebg_preview {
-            get {
-                object obj = ResourceManager.GetObject("Registrarse-removebg-preview", resourceCulture);
+                object obj = ResourceManager.GetObject("Registrarse1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
