@@ -34,9 +34,9 @@ namespace Frontend
             // 
             // PanelComentarios
             // 
-            this.PanelComentarios.Location = new System.Drawing.Point(12, 12);
+            this.PanelComentarios.Location = new System.Drawing.Point(0, 0);
             this.PanelComentarios.Name = "PanelComentarios";
-            this.PanelComentarios.Size = new System.Drawing.Size(972, 640);
+            this.PanelComentarios.Size = new System.Drawing.Size(463, 163);
             this.PanelComentarios.TabIndex = 19;
             this.PanelComentarios.Visible = false;
             // 
@@ -44,7 +44,7 @@ namespace Frontend
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(996, 664);
+            this.ClientSize = new System.Drawing.Size(447, 124);
             this.Controls.Add(this.PanelComentarios);
             this.Name = "Comentarios";
             this.Text = "Comentarios";

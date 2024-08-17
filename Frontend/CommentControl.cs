@@ -12,20 +12,24 @@ namespace Frontend
 {
     public partial class CommentControl : UserControl
     {
-        private Label lblNombre;
-        private RichTextBox txtBox;
-        private PictureBox PictureBoxLike;
-        private PictureBox PictureBoxReportar;
-        private PictureBox PictureBoxUsuario;
 
         public CommentControl(string nombre, string texto)
         {
             InitializeComponent();
-            iniciar();
+            Iniciar();
+
             lblNombre.Text = nombre;
             txtBox.Text = texto;
             txtBox.ReadOnly = true;
+
+            AjustarTamaño();
         }
+
+        private void AjustarTamaño()
+        {
+            txtBox.Size = new Size(this.Width - 70, this.Height - 65);
+        }
+
 
         private bool isImage1 = true;
 
@@ -33,17 +37,17 @@ namespace Frontend
         {
             if (isImage1)
             {
-                PictureBoxLike.Image = Properties.Resources.Like_Relleno;
+                PictureBoxLike.Image = Properties.Resources.Like_Relleno; 
                 isImage1 = false;
             }
             else
             {
-                PictureBoxLike.Image = Properties.Resources.like_infini;
+                PictureBoxLike.Image = Properties.Resources.like_infini; 
                 isImage1 = true;
             }
         }
 
-        private void iniciar()
+        private void Iniciar()
         {
             this.lblNombre = new Label();
             this.txtBox = new RichTextBox();
@@ -54,51 +58,54 @@ namespace Frontend
 
             // lblNombre
             this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(80, 10);
+            this.lblNombre.Location = new System.Drawing.Point(59, 37);
             this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(50, 13);
+            this.lblNombre.Size = new System.Drawing.Size(44, 13);
             this.lblNombre.TabIndex = 0;
 
             // txtBox
-            this.txtBox.Location = new System.Drawing.Point(80, 30); 
+            this.txtBox.Location = new System.Drawing.Point(3, 53);
             this.txtBox.Name = "txtBox";
-            this.txtBox.Size = new System.Drawing.Size(498, 106);
-            this.txtBox.TabIndex = 24;
+            this.txtBox.Size = new System.Drawing.Size(this.Width - 70, this.Height - 65);
+            this.txtBox.TabIndex = 31;
 
             // PictureBoxUsuario
-            this.PictureBoxUsuario.Location = new System.Drawing.Point(10, 10);
+            this.PictureBoxUsuario.Location = new System.Drawing.Point(3, 3);
             this.PictureBoxUsuario.Name = "PictureBoxUsuario";
-            this.PictureBoxUsuario.Size = new System.Drawing.Size(64, 64);
+            this.PictureBoxUsuario.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxUsuario.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxUsuario.Image = Properties.Resources.User;
+            this.Cursor = Cursors.Hand;
 
             // PictureBoxLike
-            this.PictureBoxLike.Location = new System.Drawing.Point(600, 40); 
+            this.PictureBoxLike.Location = new System.Drawing.Point(410, 53);
             this.PictureBoxLike.Name = "PictureBoxLike";
-            this.PictureBoxLike.Size = new System.Drawing.Size(32, 32);
+            this.PictureBoxLike.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxLike.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxLike.Image = Properties.Resources.like_infini;
             this.PictureBoxLike.Click += PictureBoxLike_Click;
+            this.Cursor = Cursors.Hand;
 
             // PictureBoxReportar
-            this.PictureBoxReportar.Location = new System.Drawing.Point(600, 80);
+            this.PictureBoxReportar.Location = new System.Drawing.Point(410, 109);
             this.PictureBoxReportar.Name = "PictureBoxReportar";
-            this.PictureBoxReportar.Size = new System.Drawing.Size(32, 32);
+            this.PictureBoxReportar.Size = new System.Drawing.Size(50,50);
             this.PictureBoxReportar.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxReportar.Image = Properties.Resources.reportar;
+            this.Cursor = Cursors.Hand;
 
             // Añadir controles al CommentControl
             this.Controls.Add(this.lblNombre);
             this.Controls.Add(this.txtBox);
             this.Controls.Add(this.PictureBoxLike);
             this.Controls.Add(this.PictureBoxReportar);
-            this.Controls.Add(this.PictureBoxUsuario); 
+            this.Controls.Add(this.PictureBoxUsuario);
 
             // Configuración final del control
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.Name = "CommentControl";
-            this.Size = new System.Drawing.Size(650, 150);
+            this.Size = new System.Drawing.Size(465, 171);
             this.ResumeLayout(false);
             this.PerformLayout();
         }

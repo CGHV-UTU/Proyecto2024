@@ -118,3 +118,8 @@ C:\Users\FedeG\OneDrive\Escritorio\FRONTENDPOST\Proyecto2024\Frontend\bin\Debug\
 C:\Users\FedeG\OneDrive\Escritorio\FRONTENDPOST\Proyecto2024\Frontend\bin\Debug\Newtonsoft.Json.dll
 C:\Users\FedeG\OneDrive\Escritorio\FRONTENDPOST\Proyecto2024\Frontend\bin\Debug\Newtonsoft.Json.xml
 C:\Users\FedeG\OneDrive\Escritorio\FRONTENDPOST\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CopyComplete
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\bin\Debug\Newtonsoft.Json.dll
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\bin\Debug\Newtonsoft.Json.xml
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.IniciarSesion.resources
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Post.resources
+D:\Utu 2024\Repositorio\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CopyComplete

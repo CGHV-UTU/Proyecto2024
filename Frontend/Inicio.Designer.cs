@@ -31,26 +31,25 @@ namespace Frontend
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Inicio));
             this.PanelSuperior = new System.Windows.Forms.Panel();
+            this.PanelPosts = new System.Windows.Forms.Panel();
+            this.PanelComentarios = new System.Windows.Forms.Panel();
+            this.PanelPostear = new System.Windows.Forms.Panel();
+            this.PictureBoxSalir = new System.Windows.Forms.PictureBox();
             this.PictureBoxUsuario = new System.Windows.Forms.PictureBox();
             this.PictureboxLogo = new System.Windows.Forms.PictureBox();
             this.PictureBoxConfiguraciones = new System.Windows.Forms.PictureBox();
             this.PictureBoxNotificaciones = new System.Windows.Forms.PictureBox();
             this.PictureBoxCrear = new System.Windows.Forms.PictureBox();
             this.PictureBoxBuscar = new System.Windows.Forms.PictureBox();
-            this.PanelPosts = new System.Windows.Forms.Panel();
-            this.PanelComentarios = new System.Windows.Forms.Panel();
-            this.PictureBoxSalir = new System.Windows.Forms.PictureBox();
-            this.PanelPostear = new System.Windows.Forms.Panel();
             this.PanelSuperior.SuspendLayout();
+            this.PanelPosts.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxSalir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureboxLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxConfiguraciones)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxNotificaciones)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCrear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxBuscar)).BeginInit();
-            this.PanelPosts.SuspendLayout();
-            this.PanelComentarios.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxSalir)).BeginInit();
             this.SuspendLayout();
             // 
             // PanelSuperior
@@ -67,6 +66,44 @@ namespace Frontend
             this.PanelSuperior.Name = "PanelSuperior";
             this.PanelSuperior.Size = new System.Drawing.Size(1264, 50);
             this.PanelSuperior.TabIndex = 0;
+            // 
+            // PanelPosts
+            // 
+            this.PanelPosts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.PanelPosts.Controls.Add(this.PanelPostear);
+            this.PanelPosts.Location = new System.Drawing.Point(128, 56);
+            this.PanelPosts.Name = "PanelPosts";
+            this.PanelPosts.Size = new System.Drawing.Size(1012, 613);
+            this.PanelPosts.TabIndex = 12;
+            // 
+            // PanelComentarios
+            // 
+            this.PanelComentarios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.PanelComentarios.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.PanelComentarios.Location = new System.Drawing.Point(608, 56);
+            this.PanelComentarios.Name = "PanelComentarios";
+            this.PanelComentarios.Size = new System.Drawing.Size(532, 613);
+            this.PanelComentarios.TabIndex = 13;
+            // 
+            // PanelPostear
+            // 
+            this.PanelPostear.Location = new System.Drawing.Point(0, 0);
+            this.PanelPostear.Name = "PanelPostear";
+            this.PanelPostear.Size = new System.Drawing.Size(1005, 609);
+            this.PanelPostear.TabIndex = 0;
+            // 
+            // PictureBoxSalir
+            // 
+            this.PictureBoxSalir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.PictureBoxSalir.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.PictureBoxSalir.Image = global::Frontend.Properties.Resources.salir;
+            this.PictureBoxSalir.Location = new System.Drawing.Point(1146, 59);
+            this.PictureBoxSalir.Name = "PictureBoxSalir";
+            this.PictureBoxSalir.Size = new System.Drawing.Size(50, 50);
+            this.PictureBoxSalir.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PictureBoxSalir.TabIndex = 6;
+            this.PictureBoxSalir.TabStop = false;
+            this.PictureBoxSalir.Click += new System.EventHandler(this.PictureBoxSalir_Click);
             // 
             // PictureBoxUsuario
             // 
@@ -139,50 +176,12 @@ namespace Frontend
             this.PictureBoxBuscar.TabIndex = 2;
             this.PictureBoxBuscar.TabStop = false;
             // 
-            // PanelPosts
-            // 
-            this.PanelPosts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.PanelPosts.Controls.Add(this.PanelComentarios);
-            this.PanelPosts.Location = new System.Drawing.Point(128, 56);
-            this.PanelPosts.Name = "PanelPosts";
-            this.PanelPosts.Size = new System.Drawing.Size(1012, 613);
-            this.PanelPosts.TabIndex = 12;
-            // 
-            // PanelComentarios
-            // 
-            this.PanelComentarios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.PanelComentarios.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.PanelComentarios.Controls.Add(this.PanelPostear);
-            this.PanelComentarios.Location = new System.Drawing.Point(3, 3);
-            this.PanelComentarios.Name = "PanelComentarios";
-            this.PanelComentarios.Size = new System.Drawing.Size(1006, 607);
-            this.PanelComentarios.TabIndex = 13;
-            // 
-            // PictureBoxSalir
-            // 
-            this.PictureBoxSalir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.PictureBoxSalir.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PictureBoxSalir.Image = global::Frontend.Properties.Resources.salir;
-            this.PictureBoxSalir.Location = new System.Drawing.Point(1146, 59);
-            this.PictureBoxSalir.Name = "PictureBoxSalir";
-            this.PictureBoxSalir.Size = new System.Drawing.Size(50, 50);
-            this.PictureBoxSalir.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PictureBoxSalir.TabIndex = 6;
-            this.PictureBoxSalir.TabStop = false;
-            this.PictureBoxSalir.Click += new System.EventHandler(this.PictureBoxSalir_Click);
-            // 
-            // PanelPostear
-            // 
-            this.PanelPostear.Location = new System.Drawing.Point(1, 1);
-            this.PanelPostear.Name = "PanelPostear";
-            this.PanelPostear.Size = new System.Drawing.Size(1005, 609);
-            this.PanelPostear.TabIndex = 0;
-            // 
             // Inicio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.PanelComentarios);
             this.Controls.Add(this.PictureBoxSalir);
             this.Controls.Add(this.PanelPosts);
             this.Controls.Add(this.PanelSuperior);
@@ -191,15 +190,14 @@ namespace Frontend
             this.Name = "Inicio";
             this.Text = "Inicio";
             this.PanelSuperior.ResumeLayout(false);
+            this.PanelPosts.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxSalir)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureboxLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxConfiguraciones)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxNotificaciones)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCrear)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxBuscar)).EndInit();
-            this.PanelPosts.ResumeLayout(false);
-            this.PanelComentarios.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxSalir)).EndInit();
             this.ResumeLayout(false);
 
         }
