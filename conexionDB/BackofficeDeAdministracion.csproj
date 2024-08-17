@@ -114,6 +114,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdministradoresBackoffice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdministradoresBackoffice.Designer.cs">
+      <DependentUpon>AdministradoresBackoffice.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditarComentario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -158,7 +164,34 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegistrarAdministrador.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegistrarAdministrador.Designer.cs">
+      <DependentUpon>RegistrarAdministrador.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ReporteComentario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReporteComentario.Designer.cs">
+      <DependentUpon>ReporteComentario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ReportePost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReportePost.Designer.cs">
+      <DependentUpon>ReportePost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ReporteUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReporteUsuario.Designer.cs">
+      <DependentUpon>ReporteUsuario.cs</DependentUpon>
+    </Compile>
     <Compile Include="VerificarBaneosTemporales.cs" />
+    <EmbeddedResource Include="AdministradoresBackoffice.resx">
+      <DependentUpon>AdministradoresBackoffice.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditarComentario.resx">
       <DependentUpon>EditarComentario.cs</DependentUpon>
     </EmbeddedResource>
@@ -190,6 +223,18 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RegistrarAdministrador.resx">
+      <DependentUpon>RegistrarAdministrador.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReporteComentario.resx">
+      <DependentUpon>ReporteComentario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReportePost.resx">
+      <DependentUpon>ReportePost.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReporteUsuario.resx">
+      <DependentUpon>ReporteUsuario.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

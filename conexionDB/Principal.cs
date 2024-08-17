@@ -37,12 +37,10 @@ namespace BackofficeDeAdministracion
                         Editar_evento ventanaEvento = new Editar_evento();
                         ventanaEvento.Show();
                         break;
-
                     case "Comentario":
                         Editar_comentario ventanaComentario = new Editar_comentario();
                         ventanaComentario.Show();
                         break;
-
                     case "Usuario":
                         GestionarUsuario ventanaUsuario = new GestionarUsuario();
                         ventanaUsuario.Show();
@@ -62,6 +60,50 @@ namespace BackofficeDeAdministracion
         private void btnSalir_Click(object sender, EventArgs e)
         {
             Environment.Exit(0);               
+        }
+
+        private void btnGestionAdmin_Click(object sender, EventArgs e)
+        {
+            AdministradoresBackoffice ventanaGrupo = new AdministradoresBackoffice();
+            ventanaGrupo.Show();
+        }
+
+        private void btnCargarReportes_Click(object sender, EventArgs e)
+        {
+            if (cbxReportes.SelectedItem != null)
+            {
+                string tabla = cbxReportes.SelectedItem.ToString();
+                switch (tabla)
+                {
+                    case "Post":
+                        Editar_post ventanaPost = new Editar_post();
+                        ventanaPost.Show();
+                        break;
+
+                    case "Evento":
+                        Editar_evento ventanaEvento = new Editar_evento();
+                        ventanaEvento.Show();
+                        break;
+
+                    case "Comentario":
+                        Editar_comentario ventanaComentario = new Editar_comentario();
+                        ventanaComentario.Show();
+                        break;
+
+                    case "Usuario":
+                        ReporteUsuario ventanaUsuario = new ReporteUsuario();
+                        ventanaUsuario.Show();
+                        break;
+                    case "Grupo":
+                        GestionarGrupos ventanaGrupo = new GestionarGrupos();
+                        ventanaGrupo.Show();
+                        break;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una tabla", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

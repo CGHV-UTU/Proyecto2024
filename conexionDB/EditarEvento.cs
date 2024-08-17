@@ -42,26 +42,17 @@ namespace BackofficeDeAdministracion
         }
         private void cargarTabla()
         {
-            // Define your connection string
             string connectionString = "server = localhost; database = base; uid = root; ";
-            // Create a new MySQL connection
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
                 {
-                    // Open the connection
                     conn.Open();
-                    // Define your query
                     string query = "SELECT id, titulo, ubicacion, descripcion, fechayhora FROM eventos";
-                    // Create a MySQL command
                     MySqlCommand cmd = new MySqlCommand(query, conn);
-                    // Create a data adapter
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                    // Create a DataTable to hold the query results
                     DataTable dataTable = new DataTable();
-                    // Fill the DataTable with the query results
                     adapter.Fill(dataTable);
-                    // Bind the DataTable to the DataGridView
                     dataGridView1.DataSource = dataTable;
                 }
                 catch (Exception ex)

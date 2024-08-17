@@ -405,7 +405,7 @@ namespace BackofficeDeAdministracion
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "Modificación incorrecta";
             }
@@ -473,7 +473,7 @@ namespace BackofficeDeAdministracion
                     return "no se encuentra";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "no se encuentra";
             }

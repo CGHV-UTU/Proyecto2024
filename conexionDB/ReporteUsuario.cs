@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,10 +11,10 @@ using System.Windows.Forms;
 
 namespace BackofficeDeAdministracion
 {
-    public partial class GestionarUsuario : Form
+    public partial class ReporteUsuario : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-        public GestionarUsuario()
+        public ReporteUsuario()
         {
             InitializeComponent();
             cargarTabla();
@@ -35,22 +34,12 @@ namespace BackofficeDeAdministracion
                 try
                 {
                     conn.Open();
-                    string query = "SELECT NombreDeCuenta, estado_de_cuenta, fechaBaneoTemporal FROM usuarios";
+                    string query = "SELECT NumeroDeReporte, NombreDeUsuario FROM base.Reporte";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
                     foreach (DataRow row in dataTable.Rows)
-                    {
-                        if(row["estado_de_cuenta"].ToString() == "activo")
-                        {
-                            row["fechaBaneoTemporal"] = DBNull.Value;
-                        }                       
-                        if (row["estado_de_cuenta"].ToString() == "baneado")
-                        {                        
-                                row["fechaBaneoTemporal"] = DateTime.Now.AddYears(1000);                        
-                        }
-                    }
                     dataGridView1.DataSource = dataTable;
                 }
                 catch (Exception ex)
@@ -65,10 +54,8 @@ namespace BackofficeDeAdministracion
             columnHeaderStyle.BackColor = Color.Beige;
             columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
             dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;
-            dataGridView1.Columns["fechaBaneoTemporal"].HeaderText = "Baneado Hasta";
-            dataGridView1.Columns["fechaBaneoTemporal"].Width = 140;
-            dataGridView1.Columns["estado_de_cuenta"].Width = 90;         
-            dataGridView1.Columns["nombreDeCuenta"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridView1.Columns["NumeroDeReporte"].Width = 80;
+            dataGridView1.Columns["NombreDeUsuario"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
         }
 
@@ -79,40 +66,22 @@ namespace BackofficeDeAdministracion
                 try
                 {
                     Boolean encontrado = false;
-                    string nombre = txtID.Text;                    
+                    string nombre = txtID.Text;
                     foreach (DataGridViewRow row in dataGridView1.Rows)
                     {
                         if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == nombre)
                         {
                             conn.Open();
-                            MySqlCommand command = new MySqlCommand("SELECT NombreDeCuenta, NombreVisible, Foto, estado_de_cuenta, visibilidad FROM usuarios WHERE NombreDeCuenta=@NombreDeCuenta", conn);
-                            command.Parameters.AddWithValue("@NombreDeCuenta", txtID.Text);
+                            MySqlCommand command = new MySqlCommand("SELECT NombreDeUsuario, descripcion FROM base.Reporte WHERE id=@id", conn);
+                            command.Parameters.AddWithValue("@id", txtID.Text);
                             MySqlDataReader reader = command.ExecuteReader();
                             if (reader.Read())
                             {
-                                lblNombreDeCuenta.Text = reader["NombreDeCuenta"].ToString();
-                                lblNombreVisible.Text = reader["NombreVisible"].ToString();
-                                lblEstadoDeCuenta.Text = reader["estado_de_cuenta"].ToString();
-                                lblReportesDeCuenta.Text = reader["visibilidad"].ToString();
-                                try
-                                {
-                                    MemoryStream ms = new MemoryStream((byte[])reader["Foto"]);
-                                    Bitmap bitmap = new Bitmap(ms);
-                                    pictureBox1.Image = bitmap;
-                                    pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                                }
-                                catch
-                                {
-
-                                }
+                                lblNombreDeCuenta.Text = reader["NombreDeUsuario"].ToString();
+                                lblDescripcionReporte.Text = reader["descripcion"].ToString();                           
                                 lblNombre.Show();
-                                lblNombreVisible.Show();
-                                lblNomVisible.Show();
-                                lblEstadoDeCuenta.Show();
-                                lblEstado.Show();
-                                lblReportesDeCuenta.Show();
-                                lblReportes.Show();
-                                lblFoto.Show();
+                                lblDescripcionReporte.Show();
+                                lblDescripcion.Show();
                             }
                             conn.Close();
                             dataGridView1.ClearSelection();
@@ -123,12 +92,12 @@ namespace BackofficeDeAdministracion
                     }
                     if (!encontrado)
                     {
-                        MessageBox.Show("No se encontró el usuario especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBox.Show("No se encontró el reporte especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("No se encontró el usuario especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show("No se encontró el reporte especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             else
@@ -154,7 +123,7 @@ namespace BackofficeDeAdministracion
                     MySqlDataReader reader = consultaEstado.ExecuteReader();
                     if (reader.Read())
                     {
-                        if(reader["estado_de_cuenta"].ToString() == "baneado")
+                        if (reader["estado_de_cuenta"].ToString() == "baneado")
                         {
                             MessageBox.Show("El usuario ya se encuentra baneado permanentemente");
                         }
@@ -170,7 +139,6 @@ namespace BackofficeDeAdministracion
                                 if (rowsAffected > 0)
                                 {
                                     MessageBox.Show("Se ha baneado al usuario correctamente.");
-                                    lblEstadoDeCuenta.Text = "Baneado Permanentemente";
                                     cargarTabla();
                                 }
                                 else
@@ -182,7 +150,7 @@ namespace BackofficeDeAdministracion
                             {
                                 MessageBox.Show("Error al intentar banear al usuario.");
                             }
-                        }               
+                        }
                     }
                     else
                     {
@@ -214,8 +182,7 @@ namespace BackofficeDeAdministracion
                         int rowsAffected = command.ExecuteNonQuery();
                         if (rowsAffected > 0)
                         {
-                            MessageBox.Show("Se ha baneado temporalmente al usuario.");                         
-                            lblEstadoDeCuenta.Text = "Baneado Hasta: " + fechayhora;
+                            MessageBox.Show("Se ha baneado temporalmente al usuario.");
                             cargarTabla();
                         }
                         else
@@ -264,7 +231,6 @@ namespace BackofficeDeAdministracion
                                 if (rowsAffected > 0)
                                 {
                                     MessageBox.Show("Se ha desbaneado al usuario.");
-                                    lblEstadoDeCuenta.Text = "activo";
                                     cargarTabla();
                                 }
                                 else
@@ -288,76 +254,6 @@ namespace BackofficeDeAdministracion
         private void btnVolver_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        //Testing
-        public string baneoPermanente(string nombre)
-        {
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;"))
-                {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("UPDATE base.usuarios SET estado_de_cuenta = 'baneado', fechaBaneoTemporal = NULL WHERE NombreDeCuenta = @NombreDeCuenta", conn);
-                    cmd.Parameters.AddWithValue("@NombreDeCuenta", nombre);
-                    int rowsAffected = cmd.ExecuteNonQuery();
-                    if (rowsAffected > 0)
-                    {
-                        return "Usuario baneado";
-                    }
-                    else
-                    {
-                        return "No se encontró el usuario a banear";
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return "Error al intentar banear usuario";
-            }
-        }
-
-        public string desbanear(string nombre)
-        {
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;"))
-                {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("UPDATE base.usuarios SET estado_de_cuenta = 'activo', fechaBaneoTemporal = NULL WHERE NombreDeCuenta = @NombreDeCuenta", conn);
-                    cmd.Parameters.AddWithValue("@NombreDeCuenta", nombre);
-                    int rowsAffected = cmd.ExecuteNonQuery();
-                    if (rowsAffected > 0)
-                    {
-                        return "Usuario desbaneado";
-                    }
-                    else
-                    {
-                        return "No se encontró el usuario a desbanear";
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return "Error al intentar desbanear usuario";
-            }
-        }
-
-        public string ultimoUsuario()
-        {
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-            conn.Open();
-            MySqlCommand command = new MySqlCommand("SELECT NombreDeCuenta FROM usuarios ORDER BY NombreDeCuenta DESC LIMIT 1", conn);
-            MySqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                string nombre = reader["NombreDeCuenta"].ToString();
-                return nombre;
-            }
-            else
-            {
-                return null;
-            }
         }
     }
 }
