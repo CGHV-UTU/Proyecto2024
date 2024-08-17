@@ -135,19 +135,19 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -206,6 +206,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\User_negro.png" />
+    <None Include="Resources\panelSuperior.jpeg" />
+    <None Include="Resources\Video2222.png" />
+    <None Include="Resources\Video1.png" />
+    <None Include="Resources\video1.jpeg" />
     <None Include="Resources\video.jpeg" />
     <None Include="Resources\Registrarse.png" />
     <None Include="Resources\IniciarSesion.png" />
@@ -220,6 +225,15 @@
     <None Include="Resources\foto blanca.jpeg" />
     <None Include="Resources\crearPost.jpeg" />
     <None Include="Resources\crearPost-removebg-preview.png" />
+    <None Include="Resources\foto blanca1.jpeg" />
+    <None Include="Resources\Foto1.png" />
+    <None Include="Resources\fondoPost.jpeg" />
+    <None Include="Resources\crearPostcrear.png" />
+    <None Include="Resources\config claro.jpeg" />
+    <None Include="Resources\campana clara notificacion.jpeg" />
+    <None Include="Resources\campana_clara-removebg-preview.png" />
+    <None Include="Resources\buscar claro.jpeg" />
+    <None Include="Resources\crear claro.jpeg" />
     <Content Include="Resources\IconoInfini.ico" />
     <None Include="Resources\Logo_Infini_Completo.jpeg" />
     <None Include="Resources\salir.png" />

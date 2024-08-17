@@ -23,8 +23,9 @@ namespace Frontend
             txtUrl.Visible = false;
             user = usuario;
         }
-
-
+        public event EventHandler Creado;
+        public event EventHandler Salir;
+        public event EventHandler CambiaTamaño;
         private void btnCrear_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text))
@@ -38,6 +39,7 @@ namespace Frontend
                     byte[] data = new byte[0];
                     Publicar(txtTexto.Text, txtUrl.Text, data);
                     MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Creado?.Invoke(this, EventArgs.Empty);
                 }
                 else
                 {
@@ -46,39 +48,56 @@ namespace Frontend
                     byte[] data = ms.ToArray();
                     Publicar(txtTexto.Text, txtUrl.Text, data);
                     MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Creado?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
 
         private void btnVideo_Click(object sender, EventArgs e)
         {
-            if (pbxImagen.Visible == true)
+            if (txtUrl.Visible==false)
             {
-                MessageBox.Show("No puede crear un post con Imagen y video", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (pbxImagen.Visible == true)
+                {
+                    MessageBox.Show("No puede crear un post con Imagen y video", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    txtUrl.Visible = true;
+                }
             }
             else
             {
-                txtUrl.Visible = true;
+                txtUrl.Visible = false;
             }
+            
         }
 
         private void btnImagen_Click(object sender, EventArgs e)
         {
-            if (txtUrl.Visible == true)
+            if (pbxImagen.Visible == false)
             {
-                MessageBox.Show("No puede crear un post con Imagen y video", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (txtUrl.Visible == true)
+                {
+                    MessageBox.Show("No puede crear un post con Imagen y video", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    CambiaTamaño?.Invoke(this, EventArgs.Empty);
+                    this.Height = 692;
+                    btnCrear.Location = new Point(16, 445);
+                    OpenFileDialog ofd = new OpenFileDialog();
+                    if (ofd.ShowDialog() == DialogResult.OK)
+                    {
+                        pbxImagen.ImageLocation = ofd.FileName;
+                        pbxImagen.SizeMode = PictureBoxSizeMode.StretchImage;
+                        pbxImagen.Visible = true;
+                    }
+                }
             }
             else
             {
-                this.Height = 692;
-                btnCrear.Location = new Point(16, 445);
-                OpenFileDialog ofd = new OpenFileDialog();
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    pbxImagen.ImageLocation = ofd.FileName;
-                    pbxImagen.SizeMode = PictureBoxSizeMode.StretchImage;
-                    pbxImagen.Visible = true;
-                }
+                pbxImagen.Visible = true;
             }
         }
 
@@ -99,6 +118,11 @@ namespace Frontend
                     Console.ReadLine();
                 }
             }
+        }
+
+        private void X_Click(object sender, EventArgs e)
+        {
+            Salir?.Invoke(this, EventArgs.Empty);
         }
     }
 }

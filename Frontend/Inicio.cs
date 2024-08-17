@@ -61,14 +61,46 @@ namespace Frontend
 
         private void PictureBoxCrear_Click(object sender, EventArgs e)
         {
-            VerPost();
-            PanelPostear.Visible = true;
+            if (PanelPostear.Visible == false)
+            {
+                VerPost();
+            }
+            else
+            {
+                PanelPostear.Visible = false;
+                PanelPosts.Visible = true;
+            }
         }
         private void VerPost()
         {
+            PanelPostear.Visible = true;
+            PanelPostear.Parent = this;
+            PanelPosts.Visible = false; 
             Post post = new Post(user);
-            
+            post.TopLevel = false;
+            post.FormBorderStyle = FormBorderStyle.None;
+            post.BackColor = Color.LightGray;
+            post.Dock = DockStyle.Fill;
+            post.Creado += Post_Creado;
+            post.Salir += Post_Salir;
+            post.CambiaTamaño += Post_CambiaTamaño;
+            post.BackColor = Color.FromArgb(34, 67, 220);
+            PanelPostear.Controls.Add(post);
             post.Show();
+        }
+        private void Post_Creado(object sender, EventArgs e)
+        {
+            PanelPostear.Visible = false;
+            PanelPosts.Visible = true;
+        }
+        private void Post_Salir(object sender,EventArgs e)
+        {
+            PanelPostear.Visible = false;
+            PanelPosts.Visible = true;
+        }
+        private void Post_CambiaTamaño(object sender, EventArgs e)
+        {
+            PanelPostear.Height = 692;
         }
     }
 }
