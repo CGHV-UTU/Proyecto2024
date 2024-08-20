@@ -11,16 +11,17 @@ using System.Windows.Forms;
 
 namespace BackofficeDeAdministracion
 {
-    public partial class RegistrarAdministrador : Form
+    public partial class AgregarAdmin : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-        public RegistrarAdministrador()
+        public AgregarAdmin()
         {
             InitializeComponent();
         }
-        private void btnRegistrar(object sender, EventArgs e)
+
+        private void btnRegistrar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtUser.Text) || string.IsNullOrEmpty(txtPass.Text))
+            if (string.IsNullOrEmpty(txtUserE.Text) || string.IsNullOrEmpty(txtPassE.Text))
             {
                 MessageBox.Show("Debe ingresar un usuario y contraseña", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
@@ -29,7 +30,7 @@ namespace BackofficeDeAdministracion
             {
                 conn.Open();
                 MySqlCommand command1 = new MySqlCommand("SELECT * FROM base.AdministradorBackoffice WHERE Nombre = @User;", conn);
-                command1.Parameters.AddWithValue("@User", txtUser.Text);
+                command1.Parameters.AddWithValue("@User", txtUserE.Text);
                 MySqlDataReader reader = command1.ExecuteReader();
                 if (reader.HasRows)
                 {
@@ -39,9 +40,10 @@ namespace BackofficeDeAdministracion
                 {
                     reader.Close();
                     MySqlCommand command = new MySqlCommand("INSERT INTO base.AdministradorBackoffice(Nombre,Contraseña) VALUES (@User, @Pass);", conn);
-                    command.Parameters.AddWithValue("@User", txtUser.Text);
-                    command.Parameters.AddWithValue("@Pass", txtPass.Text);
+                    command.Parameters.AddWithValue("@User", txtUserE.Text);
+                    command.Parameters.AddWithValue("@Pass", txtPassE.Text);
                     command.ExecuteNonQuery();
+                    lblAgregado.Show();
                 }
                 conn.Close();
             }

@@ -1,6 +1,6 @@
 ﻿namespace BackofficeDeAdministracion
 {
-    partial class Editar_comentario
+    partial class GestionarComentarios
     {
         /// <summary>
         /// Required designer variable.
@@ -78,7 +78,7 @@
             // 
             // txtTexto
             // 
-            this.txtTexto.Location = new System.Drawing.Point(63, 293);
+            this.txtTexto.Location = new System.Drawing.Point(87, 270);
             this.txtTexto.MaxLength = 100;
             this.txtTexto.Multiline = true;
             this.txtTexto.Name = "txtTexto";
@@ -89,7 +89,7 @@
             // lblTexto
             // 
             this.lblTexto.AutoSize = true;
-            this.lblTexto.Location = new System.Drawing.Point(23, 296);
+            this.lblTexto.Location = new System.Drawing.Point(22, 273);
             this.lblTexto.Name = "lblTexto";
             this.lblTexto.Size = new System.Drawing.Size(34, 13);
             this.lblTexto.TabIndex = 43;
@@ -106,7 +106,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(450, 150);
+            this.dataGridView1.Size = new System.Drawing.Size(548, 150);
             this.dataGridView1.TabIndex = 52;
             // 
             // button9
@@ -162,7 +162,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.CausesValidation = false;
-            this.label9.Location = new System.Drawing.Point(496, 308);
+            this.label9.Location = new System.Drawing.Point(624, 308);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(76, 13);
             this.label9.TabIndex = 83;
@@ -170,7 +170,7 @@
             // 
             // btnAgregar
             // 
-            this.btnAgregar.Location = new System.Drawing.Point(486, 336);
+            this.btnAgregar.Location = new System.Drawing.Point(614, 336);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(102, 23);
             this.btnAgregar.TabIndex = 82;
@@ -180,7 +180,7 @@
             // 
             // btnRestar10Likes
             // 
-            this.btnRestar10Likes.Location = new System.Drawing.Point(594, 273);
+            this.btnRestar10Likes.Location = new System.Drawing.Point(722, 273);
             this.btnRestar10Likes.Name = "btnRestar10Likes";
             this.btnRestar10Likes.Size = new System.Drawing.Size(102, 23);
             this.btnRestar10Likes.TabIndex = 81;
@@ -190,7 +190,7 @@
             // 
             // btnRestar5Likes
             // 
-            this.btnRestar5Likes.Location = new System.Drawing.Point(594, 244);
+            this.btnRestar5Likes.Location = new System.Drawing.Point(722, 244);
             this.btnRestar5Likes.Name = "btnRestar5Likes";
             this.btnRestar5Likes.Size = new System.Drawing.Size(102, 23);
             this.btnRestar5Likes.TabIndex = 80;
@@ -200,7 +200,7 @@
             // 
             // btnRestar1Like
             // 
-            this.btnRestar1Like.Location = new System.Drawing.Point(594, 215);
+            this.btnRestar1Like.Location = new System.Drawing.Point(722, 215);
             this.btnRestar1Like.Name = "btnRestar1Like";
             this.btnRestar1Like.Size = new System.Drawing.Size(102, 23);
             this.btnRestar1Like.TabIndex = 79;
@@ -210,7 +210,7 @@
             // 
             // btnSumar10Likes
             // 
-            this.btnSumar10Likes.Location = new System.Drawing.Point(486, 273);
+            this.btnSumar10Likes.Location = new System.Drawing.Point(614, 273);
             this.btnSumar10Likes.Name = "btnSumar10Likes";
             this.btnSumar10Likes.Size = new System.Drawing.Size(102, 23);
             this.btnSumar10Likes.TabIndex = 78;
@@ -220,7 +220,7 @@
             // 
             // btnSumar5Likes
             // 
-            this.btnSumar5Likes.Location = new System.Drawing.Point(486, 244);
+            this.btnSumar5Likes.Location = new System.Drawing.Point(614, 244);
             this.btnSumar5Likes.Name = "btnSumar5Likes";
             this.btnSumar5Likes.Size = new System.Drawing.Size(102, 23);
             this.btnSumar5Likes.TabIndex = 77;
@@ -230,7 +230,7 @@
             // 
             // btnSumar1Like
             // 
-            this.btnSumar1Like.Location = new System.Drawing.Point(486, 215);
+            this.btnSumar1Like.Location = new System.Drawing.Point(614, 215);
             this.btnSumar1Like.Name = "btnSumar1Like";
             this.btnSumar1Like.Size = new System.Drawing.Size(102, 23);
             this.btnSumar1Like.TabIndex = 76;
@@ -241,7 +241,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(400, 220);
+            this.label1.Location = new System.Drawing.Point(528, 220);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(76, 13);
             this.label1.TabIndex = 75;
@@ -250,9 +250,9 @@
             // btnGuardar
             // 
             this.btnGuardar.ForeColor = System.Drawing.Color.Black;
-            this.btnGuardar.Location = new System.Drawing.Point(12, 434);
+            this.btnGuardar.Location = new System.Drawing.Point(12, 404);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(714, 22);
+            this.btnGuardar.Size = new System.Drawing.Size(812, 23);
             this.btnGuardar.TabIndex = 86;
             this.btnGuardar.Text = "💾 Guardar y Salir";
             this.btnGuardar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -261,9 +261,9 @@
             // 
             // btnModificar
             // 
-            this.btnModificar.Location = new System.Drawing.Point(12, 405);
+            this.btnModificar.Location = new System.Drawing.Point(12, 375);
             this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(714, 23);
+            this.btnModificar.Size = new System.Drawing.Size(812, 23);
             this.btnModificar.TabIndex = 85;
             this.btnModificar.Text = "♻️ Modificar";
             this.btnModificar.UseVisualStyleBackColor = true;
@@ -273,7 +273,7 @@
             // 
             this.lblNumeroDeLikes.AutoSize = true;
             this.lblNumeroDeLikes.CausesValidation = false;
-            this.lblNumeroDeLikes.Location = new System.Drawing.Point(400, 171);
+            this.lblNumeroDeLikes.Location = new System.Drawing.Point(528, 184);
             this.lblNumeroDeLikes.Name = "lblNumeroDeLikes";
             this.lblNumeroDeLikes.Size = new System.Drawing.Size(86, 13);
             this.lblNumeroDeLikes.TabIndex = 88;
@@ -282,7 +282,7 @@
             // lblLikesDeComentario
             // 
             this.lblLikesDeComentario.AutoSize = true;
-            this.lblLikesDeComentario.Location = new System.Drawing.Point(492, 171);
+            this.lblLikesDeComentario.Location = new System.Drawing.Point(620, 184);
             this.lblLikesDeComentario.Name = "lblLikesDeComentario";
             this.lblLikesDeComentario.Size = new System.Drawing.Size(13, 13);
             this.lblLikesDeComentario.TabIndex = 87;
@@ -290,7 +290,7 @@
             // 
             // txtLikesPersonalizados
             // 
-            this.txtLikesPersonalizados.Location = new System.Drawing.Point(594, 305);
+            this.txtLikesPersonalizados.Location = new System.Drawing.Point(722, 305);
             this.txtLikesPersonalizados.Name = "txtLikesPersonalizados";
             this.txtLikesPersonalizados.Size = new System.Drawing.Size(102, 20);
             this.txtLikesPersonalizados.TabIndex = 84;
@@ -298,7 +298,7 @@
             // 
             // btnRestar
             // 
-            this.btnRestar.Location = new System.Drawing.Point(594, 336);
+            this.btnRestar.Location = new System.Drawing.Point(722, 336);
             this.btnRestar.Name = "btnRestar";
             this.btnRestar.Size = new System.Drawing.Size(102, 23);
             this.btnRestar.TabIndex = 89;
@@ -309,7 +309,7 @@
             // lblNom
             // 
             this.lblNom.AutoSize = true;
-            this.lblNom.Location = new System.Drawing.Point(22, 162);
+            this.lblNom.Location = new System.Drawing.Point(20, 183);
             this.lblNom.Name = "lblNom";
             this.lblNom.Size = new System.Drawing.Size(98, 13);
             this.lblNom.TabIndex = 90;
@@ -319,7 +319,7 @@
             // lblPost
             // 
             this.lblPost.AutoSize = true;
-            this.lblPost.Location = new System.Drawing.Point(25, 204);
+            this.lblPost.Location = new System.Drawing.Point(23, 225);
             this.lblPost.Name = "lblPost";
             this.lblPost.Size = new System.Drawing.Size(57, 13);
             this.lblPost.TabIndex = 91;
@@ -329,7 +329,7 @@
             // lblFecha
             // 
             this.lblFecha.AutoSize = true;
-            this.lblFecha.Location = new System.Drawing.Point(25, 248);
+            this.lblFecha.Location = new System.Drawing.Point(277, 183);
             this.lblFecha.Name = "lblFecha";
             this.lblFecha.Size = new System.Drawing.Size(112, 13);
             this.lblFecha.TabIndex = 92;
@@ -339,7 +339,7 @@
             // lblFechayHora
             // 
             this.lblFechayHora.AutoSize = true;
-            this.lblFechayHora.Location = new System.Drawing.Point(149, 248);
+            this.lblFechayHora.Location = new System.Drawing.Point(401, 183);
             this.lblFechayHora.Name = "lblFechayHora";
             this.lblFechayHora.Size = new System.Drawing.Size(37, 13);
             this.lblFechayHora.TabIndex = 95;
@@ -349,7 +349,7 @@
             // lblIdPost
             // 
             this.lblIdPost.AutoSize = true;
-            this.lblIdPost.Location = new System.Drawing.Point(149, 204);
+            this.lblIdPost.Location = new System.Drawing.Point(147, 225);
             this.lblIdPost.Name = "lblIdPost";
             this.lblIdPost.Size = new System.Drawing.Size(18, 13);
             this.lblIdPost.TabIndex = 94;
@@ -359,7 +359,7 @@
             // lblNombreDeCuenta
             // 
             this.lblNombreDeCuenta.AutoSize = true;
-            this.lblNombreDeCuenta.Location = new System.Drawing.Point(146, 162);
+            this.lblNombreDeCuenta.Location = new System.Drawing.Point(144, 183);
             this.lblNombreDeCuenta.Name = "lblNombreDeCuenta";
             this.lblNombreDeCuenta.Size = new System.Drawing.Size(98, 13);
             this.lblNombreDeCuenta.TabIndex = 93;
@@ -368,7 +368,7 @@
             // 
             // btnVerPost
             // 
-            this.btnVerPost.Location = new System.Drawing.Point(216, 199);
+            this.btnVerPost.Location = new System.Drawing.Point(214, 220);
             this.btnVerPost.Name = "btnVerPost";
             this.btnVerPost.Size = new System.Drawing.Size(75, 23);
             this.btnVerPost.TabIndex = 96;
@@ -391,7 +391,7 @@
             this.panel1.Controls.Add(this.lblImagen);
             this.panel1.Controls.Add(this.lblPostText);
             this.panel1.Controls.Add(this.button1);
-            this.panel1.Location = new System.Drawing.Point(2, 0);
+            this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(478, 287);
             this.panel1.TabIndex = 97;
@@ -506,11 +506,11 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.btnVolverPost);
             // 
-            // Editar_comentario
+            // GestionarComentarios
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(739, 461);
+            this.ClientSize = new System.Drawing.Size(836, 441);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnVerPost);
             this.Controls.Add(this.lblFechayHora);
@@ -542,7 +542,7 @@
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.txtTexto);
             this.Controls.Add(this.lblTexto);
-            this.Name = "Editar_comentario";
+            this.Name = "GestionarComentarios";
             this.Text = "Editar comentario";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);

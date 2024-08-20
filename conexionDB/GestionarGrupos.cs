@@ -18,12 +18,12 @@ namespace BackofficeDeAdministracion
         public GestionarGrupos()
         {
             InitializeComponent();
-            cargarTabla();
-            inicializarTablaGrupos();
+            CargarTabla();
+            InicializarTablaGrupos();
         }
 
         //Cargar tabla      
-        private void cargarTabla()
+        private void CargarTabla()
         {
             string connectionString = "server = localhost; database = base; uid = root; ";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -44,7 +44,7 @@ namespace BackofficeDeAdministracion
                 }
             }
         }
-        private void inicializarTablaGrupos()
+        private void InicializarTablaGrupos()
         {
             DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle();
             columnHeaderStyle.BackColor = Color.Beige;
@@ -183,7 +183,7 @@ namespace BackofficeDeAdministracion
         }
 
         //testing
-        public string eliminarGrupo(string nombre)
+        public string EliminarGrupo(string nombre)
         {
             try
             {
@@ -208,7 +208,7 @@ namespace BackofficeDeAdministracion
                 return "Error al intentar eliminar grupo";
             }
         }
-        public string ultimoGrupo()
+        public string UltimoGrupo()
         {
             MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
             conn.Open();

@@ -12,10 +12,10 @@ using System.Windows.Forms;
 
 namespace BackofficeDeAdministracion
 {
-    public partial class GestionarUsuario : Form
+    public partial class GestionarUsuarios : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-        public GestionarUsuario()
+        public GestionarUsuarios()
         {
             InitializeComponent();
             cargarTabla();

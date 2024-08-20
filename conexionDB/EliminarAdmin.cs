@@ -10,40 +10,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BackofficeDeAdministracion
-{
-    public partial class AdministradoresBackoffice : Form
+{  
+    public partial class EliminarAdmin : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-        public AdministradoresBackoffice()
+        public EliminarAdmin()
         {
             InitializeComponent();
-            PanelCrear.Visible = false;
-            PanelEliminar.Visible = false;
+            CargarTabla();
+            InicializarTablaUsuarios();
         }
 
-        //Selección de Panel
-        private void cbxOpcion_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int seleccionado = cbxOpcion.SelectedIndex;
-            PanelCrear.Visible = false;
-            PanelEliminar.Visible = false;
-
-            switch (seleccionado)
-            {
-                case 0:
-                    PanelCrear.Visible = true;
-                    break;
-                case 1:
-                    PanelEliminar.Visible = true;
-                    cargarTabla();
-                    inicializarTablaUsuarios();
-                    break;
-            }
-        }
-
-        // Panel Para Eliminar
-        //Cargar tabla      
-        private void cargarTabla()
+        private void CargarTabla()
         {
             string connectionString = "server = localhost; database = base; uid = root; ";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -64,7 +42,7 @@ namespace BackofficeDeAdministracion
                 }
             }
         }
-        private void inicializarTablaUsuarios()
+        private void InicializarTablaUsuarios()
         {
             DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle();
             columnHeaderStyle.BackColor = Color.Beige;
@@ -74,41 +52,6 @@ namespace BackofficeDeAdministracion
             dataGridView1.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
-        //Panel para registrar un nuevo administrador
-        private void btnRegistrar(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtUserE.Text) || string.IsNullOrEmpty(txtPassE.Text))
-            {
-                MessageBox.Show("Debe ingresar un usuario y contraseña", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            try
-            {
-                conn.Open();
-                MySqlCommand command1 = new MySqlCommand("SELECT * FROM base.AdministradorBackoffice WHERE Nombre = @User;", conn);
-                command1.Parameters.AddWithValue("@User", txtUserE.Text);
-                MySqlDataReader reader = command1.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    MessageBox.Show("El usuario ya existe.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-                else
-                {
-                    reader.Close();
-                    MySqlCommand command = new MySqlCommand("INSERT INTO base.AdministradorBackoffice(Nombre,Contraseña) VALUES (@User, @Pass);", conn);
-                    command.Parameters.AddWithValue("@User", txtUserE.Text);
-                    command.Parameters.AddWithValue("@Pass", txtPassE.Text);
-                    command.ExecuteNonQuery();
-                }
-                conn.Close();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("No se encontró el usuario especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-        
-        //Eliminar
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtUserE.Text))
@@ -143,12 +86,6 @@ namespace BackofficeDeAdministracion
             {
                 MessageBox.Show("Ocurrió un error al intentar eliminar el usuario.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        //Volver
-        private void btnVolver_Click(object sender, EventArgs e)
-        {
-            Close();
         }
     }
 }

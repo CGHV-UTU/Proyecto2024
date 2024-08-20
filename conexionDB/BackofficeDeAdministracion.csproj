@@ -114,35 +114,41 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdministradoresBackoffice.cs">
+    <Compile Include="AgregarAdmin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AdministradoresBackoffice.Designer.cs">
-      <DependentUpon>AdministradoresBackoffice.cs</DependentUpon>
+    <Compile Include="AgregarAdmin.Designer.cs">
+      <DependentUpon>AgregarAdmin.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditarComentario.cs">
+    <Compile Include="EliminarAdmin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditarComentario.Designer.cs">
-      <DependentUpon>EditarComentario.cs</DependentUpon>
+    <Compile Include="EliminarAdmin.Designer.cs">
+      <DependentUpon>EliminarAdmin.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditarEvento.cs">
+    <Compile Include="GestionarComentarios.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditarEvento.Designer.cs">
-      <DependentUpon>EditarEvento.cs</DependentUpon>
+    <Compile Include="GestionarComentarios.Designer.cs">
+      <DependentUpon>GestionarComentarios.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditarPost.cs">
+    <Compile Include="GestionarEventos.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EditarPost.Designer.cs">
-      <DependentUpon>EditarPost.cs</DependentUpon>
+    <Compile Include="GestionarEventos.Designer.cs">
+      <DependentUpon>GestionarEventos.cs</DependentUpon>
     </Compile>
-    <Compile Include="GestionarUsuario.cs">
+    <Compile Include="GestionarPosts.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GestionarUsuario.Designer.cs">
-      <DependentUpon>GestionarUsuario.cs</DependentUpon>
+    <Compile Include="GestionarPosts.Designer.cs">
+      <DependentUpon>GestionarPosts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GestionarUsuarios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GestionarUsuarios.Designer.cs">
+      <DependentUpon>GestionarUsuarios.cs</DependentUpon>
     </Compile>
     <Compile Include="GestionarGrupos.cs">
       <SubType>Form</SubType>
@@ -164,12 +170,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegistrarAdministrador.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RegistrarAdministrador.Designer.cs">
-      <DependentUpon>RegistrarAdministrador.cs</DependentUpon>
-    </Compile>
     <Compile Include="ReporteComentario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,20 +189,23 @@
       <DependentUpon>ReporteUsuario.cs</DependentUpon>
     </Compile>
     <Compile Include="VerificarBaneosTemporales.cs" />
-    <EmbeddedResource Include="AdministradoresBackoffice.resx">
-      <DependentUpon>AdministradoresBackoffice.cs</DependentUpon>
+    <EmbeddedResource Include="AgregarAdmin.resx">
+      <DependentUpon>AgregarAdmin.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditarComentario.resx">
-      <DependentUpon>EditarComentario.cs</DependentUpon>
+    <EmbeddedResource Include="EliminarAdmin.resx">
+      <DependentUpon>EliminarAdmin.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditarEvento.resx">
-      <DependentUpon>EditarEvento.cs</DependentUpon>
+    <EmbeddedResource Include="GestionarComentarios.resx">
+      <DependentUpon>GestionarComentarios.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditarPost.resx">
-      <DependentUpon>EditarPost.cs</DependentUpon>
+    <EmbeddedResource Include="GestionarEventos.resx">
+      <DependentUpon>GestionarEventos.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GestionarUsuario.resx">
-      <DependentUpon>GestionarUsuario.cs</DependentUpon>
+    <EmbeddedResource Include="GestionarPosts.resx">
+      <DependentUpon>GestionarPosts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GestionarUsuarios.resx">
+      <DependentUpon>GestionarUsuarios.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GestionarGrupos.resx">
       <DependentUpon>GestionarGrupos.cs</DependentUpon>
@@ -223,9 +226,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="RegistrarAdministrador.resx">
-      <DependentUpon>RegistrarAdministrador.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ReporteComentario.resx">
       <DependentUpon>ReporteComentario.cs</DependentUpon>
     </EmbeddedResource>
@@ -260,6 +260,18 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo_Infini.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo_Infini1.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo_Infini2.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo_Infini3.jpeg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

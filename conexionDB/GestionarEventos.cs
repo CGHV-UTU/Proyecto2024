@@ -13,14 +13,14 @@ using System.Windows.Forms;
 namespace BackofficeDeAdministracion
 {
    
-    public partial class Editar_evento : Form
+    public partial class GestionarEventos : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-        public Editar_evento()
+        public GestionarEventos()
         {
             InitializeComponent();
-            cargarTabla();
-            inicializarTablaEventos();
+            CargarTabla();
+            InicializarTablaEventos();
             dtpFecha.MinDate = DateTime.Today;
             int año = DateTime.Now.Year;
             dtpFecha.MaxDate = new DateTime(año, 12, 31);
@@ -28,7 +28,7 @@ namespace BackofficeDeAdministracion
         }
 
         //Cargar tabla
-        private void inicializarTablaEventos()
+        private void InicializarTablaEventos()
         {              
             DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle();
             columnHeaderStyle.BackColor = Color.Beige;
@@ -40,7 +40,7 @@ namespace BackofficeDeAdministracion
             dataGridView1.Columns["fechayhora"].HeaderText = "fecha";
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
         }
-        private void cargarTabla()
+        private void CargarTabla()
         {
             string connectionString = "server = localhost; database = base; uid = root; ";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -232,7 +232,7 @@ namespace BackofficeDeAdministracion
         }
 
         //testing
-        public string modificarEvento(string idE, string title = "", string image = "", string horario = "", string ubication = "", string description = "")
+        public string ModificarEvento(string idE, string title = "", string image = "", string horario = "", string ubication = "", string description = "")
         {
             string id = idE;
             MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
@@ -288,7 +288,7 @@ namespace BackofficeDeAdministracion
             }
         }
 
-        public string ultimoEvento()
+        public string UltimoEvento()
         {
             try
             {
@@ -312,7 +312,7 @@ namespace BackofficeDeAdministracion
             }
         }
 
-        public string conseguirEvento(int id)
+        public string ConseguirEvento(int id)
         {
             try
             {

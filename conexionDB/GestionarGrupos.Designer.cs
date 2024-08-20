@@ -71,7 +71,7 @@ namespace BackofficeDeAdministracion
             // lblFoto
             // 
             this.lblFoto.AutoSize = true;
-            this.lblFoto.Location = new System.Drawing.Point(201, 229);
+            this.lblFoto.Location = new System.Drawing.Point(276, 226);
             this.lblFoto.Name = "lblFoto";
             this.lblFoto.Size = new System.Drawing.Size(68, 13);
             this.lblFoto.TabIndex = 108;
@@ -80,16 +80,16 @@ namespace BackofficeDeAdministracion
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(289, 217);
+            this.pictureBox1.Location = new System.Drawing.Point(364, 217);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(160, 120);
+            this.pictureBox1.Size = new System.Drawing.Size(160, 117);
             this.pictureBox1.TabIndex = 107;
             this.pictureBox1.TabStop = false;
             // 
             // lblDescripcionDeGrupo
             // 
             this.lblDescripcionDeGrupo.AutoSize = true;
-            this.lblDescripcionDeGrupo.Location = new System.Drawing.Point(575, 226);
+            this.lblDescripcionDeGrupo.Location = new System.Drawing.Point(618, 223);
             this.lblDescripcionDeGrupo.Name = "lblDescripcionDeGrupo";
             this.lblDescripcionDeGrupo.Size = new System.Drawing.Size(63, 13);
             this.lblDescripcionDeGrupo.TabIndex = 106;
@@ -107,7 +107,7 @@ namespace BackofficeDeAdministracion
             // lblDesc
             // 
             this.lblDesc.AutoSize = true;
-            this.lblDesc.Location = new System.Drawing.Point(471, 226);
+            this.lblDesc.Location = new System.Drawing.Point(546, 223);
             this.lblDesc.Name = "lblDesc";
             this.lblDesc.Size = new System.Drawing.Size(66, 13);
             this.lblDesc.TabIndex = 104;
@@ -146,7 +146,7 @@ namespace BackofficeDeAdministracion
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(441, 170);
+            this.dataGridView1.Size = new System.Drawing.Size(569, 170);
             this.dataGridView1.TabIndex = 101;
             // 
             // btnBuscar
@@ -177,9 +177,9 @@ namespace BackofficeDeAdministracion
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(501, 314);
+            this.button1.Location = new System.Drawing.Point(12, 378);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(120, 23);
+            this.button1.Size = new System.Drawing.Size(812, 23);
             this.button1.TabIndex = 111;
             this.button1.Text = "Eliminar Grupo";
             this.button1.UseVisualStyleBackColor = true;
@@ -188,9 +188,9 @@ namespace BackofficeDeAdministracion
             // btnGuardar
             // 
             this.btnGuardar.ForeColor = System.Drawing.Color.Black;
-            this.btnGuardar.Location = new System.Drawing.Point(11, 373);
+            this.btnGuardar.Location = new System.Drawing.Point(11, 407);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(685, 22);
+            this.btnGuardar.Size = new System.Drawing.Size(813, 22);
             this.btnGuardar.TabIndex = 112;
             this.btnGuardar.Text = "💾 Guardar y Salir";
             this.btnGuardar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -201,7 +201,7 @@ namespace BackofficeDeAdministracion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(708, 401);
+            this.ClientSize = new System.Drawing.Size(836, 441);
             this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lblNombreVisible);

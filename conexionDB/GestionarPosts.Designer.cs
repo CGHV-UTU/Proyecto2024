@@ -1,6 +1,6 @@
 ﻿namespace BackofficeDeAdministracion
 {
-    partial class Editar_post
+    partial class GestionarPosts
     {
         /// <summary>
         /// Required designer variable.
@@ -66,7 +66,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(496, 401);
+            this.pictureBox1.Location = new System.Drawing.Point(382, 222);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(160, 120);
             this.pictureBox1.TabIndex = 39;
@@ -74,16 +74,16 @@
             // 
             // txtURL
             // 
-            this.txtURL.Location = new System.Drawing.Point(107, 348);
+            this.txtURL.Location = new System.Drawing.Point(95, 307);
             this.txtURL.MaxLength = 3227;
             this.txtURL.Multiline = true;
             this.txtURL.Name = "txtURL";
-            this.txtURL.Size = new System.Drawing.Size(263, 21);
+            this.txtURL.Size = new System.Drawing.Size(266, 21);
             this.txtURL.TabIndex = 38;
             // 
             // txtTexto
             // 
-            this.txtTexto.Location = new System.Drawing.Point(104, 205);
+            this.txtTexto.Location = new System.Drawing.Point(95, 191);
             this.txtTexto.MaxLength = 100;
             this.txtTexto.Multiline = true;
             this.txtTexto.Name = "txtTexto";
@@ -93,7 +93,7 @@
             // lblUrl
             // 
             this.lblUrl.AutoSize = true;
-            this.lblUrl.Location = new System.Drawing.Point(24, 348);
+            this.lblUrl.Location = new System.Drawing.Point(15, 307);
             this.lblUrl.Name = "lblUrl";
             this.lblUrl.Size = new System.Drawing.Size(75, 13);
             this.lblUrl.TabIndex = 35;
@@ -102,7 +102,7 @@
             // lblImagen
             // 
             this.lblImagen.AutoSize = true;
-            this.lblImagen.Location = new System.Drawing.Point(423, 401);
+            this.lblImagen.Location = new System.Drawing.Point(379, 193);
             this.lblImagen.Name = "lblImagen";
             this.lblImagen.Size = new System.Drawing.Size(42, 13);
             this.lblImagen.TabIndex = 34;
@@ -111,7 +111,7 @@
             // lblTexto
             // 
             this.lblTexto.AutoSize = true;
-            this.lblTexto.Location = new System.Drawing.Point(29, 208);
+            this.lblTexto.Location = new System.Drawing.Point(20, 194);
             this.lblTexto.Name = "lblTexto";
             this.lblTexto.Size = new System.Drawing.Size(34, 13);
             this.lblTexto.TabIndex = 33;
@@ -136,7 +136,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(545, 170);
+            this.dataGridView1.Size = new System.Drawing.Size(566, 170);
             this.dataGridView1.TabIndex = 31;
             // 
             // btnVolver
@@ -154,7 +154,7 @@
             // lblEstadoDeComentarios
             // 
             this.lblEstadoDeComentarios.AutoSize = true;
-            this.lblEstadoDeComentarios.Location = new System.Drawing.Point(29, 396);
+            this.lblEstadoDeComentarios.Location = new System.Drawing.Point(20, 354);
             this.lblEstadoDeComentarios.Name = "lblEstadoDeComentarios";
             this.lblEstadoDeComentarios.Size = new System.Drawing.Size(131, 13);
             this.lblEstadoDeComentarios.TabIndex = 41;
@@ -162,7 +162,7 @@
             // 
             // btnComentarios
             // 
-            this.btnComentarios.Location = new System.Drawing.Point(169, 391);
+            this.btnComentarios.Location = new System.Drawing.Point(160, 349);
             this.btnComentarios.Name = "btnComentarios";
             this.btnComentarios.Size = new System.Drawing.Size(201, 23);
             this.btnComentarios.TabIndex = 42;
@@ -172,7 +172,7 @@
             // 
             // btnSumar10Likes
             // 
-            this.btnSumar10Likes.Location = new System.Drawing.Point(496, 261);
+            this.btnSumar10Likes.Location = new System.Drawing.Point(604, 280);
             this.btnSumar10Likes.Name = "btnSumar10Likes";
             this.btnSumar10Likes.Size = new System.Drawing.Size(102, 23);
             this.btnSumar10Likes.TabIndex = 56;
@@ -182,7 +182,7 @@
             // 
             // btnSumar5Likes
             // 
-            this.btnSumar5Likes.Location = new System.Drawing.Point(496, 232);
+            this.btnSumar5Likes.Location = new System.Drawing.Point(604, 251);
             this.btnSumar5Likes.Name = "btnSumar5Likes";
             this.btnSumar5Likes.Size = new System.Drawing.Size(102, 23);
             this.btnSumar5Likes.TabIndex = 55;
@@ -192,7 +192,7 @@
             // 
             // btnSumar1Like
             // 
-            this.btnSumar1Like.Location = new System.Drawing.Point(496, 203);
+            this.btnSumar1Like.Location = new System.Drawing.Point(604, 222);
             this.btnSumar1Like.Name = "btnSumar1Like";
             this.btnSumar1Like.Size = new System.Drawing.Size(102, 23);
             this.btnSumar1Like.TabIndex = 54;
@@ -203,7 +203,7 @@
             // lblLikes
             // 
             this.lblLikes.AutoSize = true;
-            this.lblLikes.Location = new System.Drawing.Point(423, 208);
+            this.lblLikes.Location = new System.Drawing.Point(611, 194);
             this.lblLikes.Name = "lblLikes";
             this.lblLikes.Size = new System.Drawing.Size(32, 13);
             this.lblLikes.TabIndex = 52;
@@ -248,7 +248,7 @@
             // 
             // txtCategorias
             // 
-            this.txtCategorias.Location = new System.Drawing.Point(104, 286);
+            this.txtCategorias.Location = new System.Drawing.Point(95, 262);
             this.txtCategorias.MaxLength = 100;
             this.txtCategorias.Multiline = true;
             this.txtCategorias.Name = "txtCategorias";
@@ -258,7 +258,7 @@
             // lblCategorias
             // 
             this.lblCategorias.AutoSize = true;
-            this.lblCategorias.Location = new System.Drawing.Point(29, 289);
+            this.lblCategorias.Location = new System.Drawing.Point(20, 265);
             this.lblCategorias.Name = "lblCategorias";
             this.lblCategorias.Size = new System.Drawing.Size(59, 13);
             this.lblCategorias.TabIndex = 62;
@@ -266,9 +266,9 @@
             // 
             // btnModificar
             // 
-            this.btnModificar.Location = new System.Drawing.Point(13, 542);
+            this.btnModificar.Location = new System.Drawing.Point(12, 378);
             this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(790, 23);
+            this.btnModificar.Size = new System.Drawing.Size(811, 23);
             this.btnModificar.TabIndex = 65;
             this.btnModificar.Text = "♻️ Modificar";
             this.btnModificar.UseVisualStyleBackColor = true;
@@ -277,9 +277,9 @@
             // btnGuardar
             // 
             this.btnGuardar.ForeColor = System.Drawing.Color.Black;
-            this.btnGuardar.Location = new System.Drawing.Point(13, 571);
+            this.btnGuardar.Location = new System.Drawing.Point(12, 406);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(790, 22);
+            this.btnGuardar.Size = new System.Drawing.Size(811, 23);
             this.btnGuardar.TabIndex = 66;
             this.btnGuardar.Text = "💾 Guardar y Salir";
             this.btnGuardar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -289,7 +289,7 @@
             // lblLikesDeComentario
             // 
             this.lblLikesDeComentario.AutoSize = true;
-            this.lblLikesDeComentario.Location = new System.Drawing.Point(513, 369);
+            this.lblLikesDeComentario.Location = new System.Drawing.Point(766, 193);
             this.lblLikesDeComentario.Name = "lblLikesDeComentario";
             this.lblLikesDeComentario.Size = new System.Drawing.Size(13, 13);
             this.lblLikesDeComentario.TabIndex = 67;
@@ -299,7 +299,7 @@
             // 
             this.lblNumeroDeLikes.AutoSize = true;
             this.lblNumeroDeLikes.CausesValidation = false;
-            this.lblNumeroDeLikes.Location = new System.Drawing.Point(421, 369);
+            this.lblNumeroDeLikes.Location = new System.Drawing.Point(674, 193);
             this.lblNumeroDeLikes.Name = "lblNumeroDeLikes";
             this.lblNumeroDeLikes.Size = new System.Drawing.Size(86, 13);
             this.lblNumeroDeLikes.TabIndex = 68;
@@ -307,7 +307,7 @@
             // 
             // btnRestar10Likes
             // 
-            this.btnRestar10Likes.Location = new System.Drawing.Point(604, 261);
+            this.btnRestar10Likes.Location = new System.Drawing.Point(712, 280);
             this.btnRestar10Likes.Name = "btnRestar10Likes";
             this.btnRestar10Likes.Size = new System.Drawing.Size(102, 23);
             this.btnRestar10Likes.TabIndex = 71;
@@ -317,7 +317,7 @@
             // 
             // btnRestar5Likes
             // 
-            this.btnRestar5Likes.Location = new System.Drawing.Point(604, 232);
+            this.btnRestar5Likes.Location = new System.Drawing.Point(712, 251);
             this.btnRestar5Likes.Name = "btnRestar5Likes";
             this.btnRestar5Likes.Size = new System.Drawing.Size(102, 23);
             this.btnRestar5Likes.TabIndex = 70;
@@ -327,7 +327,7 @@
             // 
             // btnRestar1Like
             // 
-            this.btnRestar1Like.Location = new System.Drawing.Point(604, 203);
+            this.btnRestar1Like.Location = new System.Drawing.Point(712, 222);
             this.btnRestar1Like.Name = "btnRestar1Like";
             this.btnRestar1Like.Size = new System.Drawing.Size(102, 23);
             this.btnRestar1Like.TabIndex = 69;
@@ -337,7 +337,7 @@
             // 
             // btnAgregarLikes
             // 
-            this.btnAgregarLikes.Location = new System.Drawing.Point(496, 325);
+            this.btnAgregarLikes.Location = new System.Drawing.Point(604, 344);
             this.btnAgregarLikes.Name = "btnAgregarLikes";
             this.btnAgregarLikes.Size = new System.Drawing.Size(102, 23);
             this.btnAgregarLikes.TabIndex = 72;
@@ -349,7 +349,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.CausesValidation = false;
-            this.label9.Location = new System.Drawing.Point(493, 300);
+            this.label9.Location = new System.Drawing.Point(611, 315);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(76, 13);
             this.label9.TabIndex = 73;
@@ -357,7 +357,7 @@
             // 
             // txtLikesPersonalizados
             // 
-            this.txtLikesPersonalizados.Location = new System.Drawing.Point(604, 293);
+            this.txtLikesPersonalizados.Location = new System.Drawing.Point(712, 312);
             this.txtLikesPersonalizados.Name = "txtLikesPersonalizados";
             this.txtLikesPersonalizados.Size = new System.Drawing.Size(102, 20);
             this.txtLikesPersonalizados.TabIndex = 74;
@@ -365,7 +365,7 @@
             // 
             // btnRestarLikes
             // 
-            this.btnRestarLikes.Location = new System.Drawing.Point(604, 325);
+            this.btnRestarLikes.Location = new System.Drawing.Point(712, 344);
             this.btnRestarLikes.Name = "btnRestarLikes";
             this.btnRestarLikes.Size = new System.Drawing.Size(102, 23);
             this.btnRestarLikes.TabIndex = 75;
@@ -373,11 +373,11 @@
             this.btnRestarLikes.UseVisualStyleBackColor = true;
             this.btnRestarLikes.Click += new System.EventHandler(this.btnRestarLikes_Click);
             // 
-            // Editar_post
+            // GestionarPosts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(814, 601);
+            this.ClientSize = new System.Drawing.Size(836, 441);
             this.Controls.Add(this.btnRestarLikes);
             this.Controls.Add(this.txtLikesPersonalizados);
             this.Controls.Add(this.label9);
@@ -410,7 +410,7 @@
             this.Controls.Add(this.lblTexto);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.dataGridView1);
-            this.Name = "Editar_post";
+            this.Name = "GestionarPosts";
             this.Text = "Editar post";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

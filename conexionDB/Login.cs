@@ -39,7 +39,8 @@ namespace BackofficeDeAdministracion
                         if (contReal == txtPass.Text)
                         {
                             MessageBox.Show("Acceso concedido.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Principal inicio = new Principal(txtUser.Text);                      
+                            Principal inicio = new Principal(txtUser.Text);
+                            inicio.FormClosed += (s, args) => this.Close();
                             inicio.Show();
                             this.Hide();
                         }
