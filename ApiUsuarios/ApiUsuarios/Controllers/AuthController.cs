@@ -84,14 +84,14 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT NombreDeCuenta,Contraseña FROM login WHERE NombreDeCuenta=@nombredecuenta", conn);
+                MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta,contrasena FROM Login WHERE nombreDeCuenta=@nombredecuenta", conn);
                 command.Parameters.AddWithValue("@nombredecuenta", nombredecuenta);
                 MySqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    if (reader["NombreDeCuenta"].ToString().Equals(nombredecuenta) && reader["Contraseña"].ToString().Equals(contraseña))
+                    if (reader["nombreDeCuenta"].ToString().Equals(nombredecuenta) && reader["contrasena"].ToString().Equals(contraseña))
                     {
                         return true;
                     }

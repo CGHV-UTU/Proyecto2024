@@ -20,7 +20,7 @@ namespace Testing
             byte[] imageBytes = File.ReadAllBytes(imagePath);
             string base64String = Convert.ToBase64String(imageBytes);
             ApiUsuarios.Controllers.UserController.usuario datos = new ApiUsuarios.Controllers.UserController.usuario()
-            { nombreDeCuenta = "nombre", nombreVisible = "Nombre", configuraciones = "nada", contraseña = "contraseña", email = "a@gmail", estadoDeCuenta = "activo", fechaDeNacimiento = "01/01/2000", genero = "Prefiero no decirlo", imagen = base64String };
+            { nombreDeCuenta = "nombre", nombreVisible = "Nombre", configuraciones = "nada", contraseña = "contraseña", email = "a@gmail", estadoDeCuenta = "activo", fechaDeNacimiento = "01/01/2000", genero = "Prefiero no decirlo", foto = "foto.com" };
             Assert.AreEqual(respuestaEsperada, JsonConvert.DeserializeObject(controller.PRRegistrarUsuario(datos)));
         }
 

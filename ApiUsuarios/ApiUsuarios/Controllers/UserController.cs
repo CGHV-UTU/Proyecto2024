@@ -18,12 +18,13 @@ namespace ApiUsuarios.Controllers
             public string nombreVisible { get; set; }
             public string email { get; set; }
             public string descripcion { get; set; }
-            public string imagen { get; set; }
+            public string foto { get; set; }
             public string configuraciones { get; set; }
             public string genero { get; set; }
             public string fechaDeNacimiento { get; set; }
             public string estadoDeCuenta { get; set; }
             public string contraseña { get; set; }
+            public string notificaciones { get; set; }
         }
 
         [System.Web.Mvc.HttpPost]
@@ -32,13 +33,13 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd;
                 if (!string.IsNullOrEmpty(user.nombreDeCuenta)
                     && !string.IsNullOrEmpty(user.nombreVisible)
                     && !string.IsNullOrEmpty(user.email)
-                    && !string.IsNullOrEmpty(user.imagen)
+                    && !string.IsNullOrEmpty(user.foto)
                     && !string.IsNullOrEmpty(user.configuraciones)
                     && !string.IsNullOrEmpty(user.genero)
                     && !string.IsNullOrEmpty(user.fechaDeNacimiento)
@@ -46,20 +47,18 @@ namespace ApiUsuarios.Controllers
                     && !string.IsNullOrEmpty(user.contraseña))
                 {
                     //Inserción en la tabla USUARIOS
-                    byte[] foto = Convert.FromBase64String(user.imagen);
-                    cmd = new MySqlCommand("INSERT INTO usuarios (NombreDeCuenta,NombreVisible,email,Foto,configuraciones,genero,fecha_de_nacimiento,estado_de_cuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fecha_de_nacimiento,@estado_de_cuenta)", conn);
+                    cmd = new MySqlCommand("INSERT INTO Usuarios (nombreDeCuenta,nombreVisible,email,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fechaDeNacimiento,@estadoDeCuenta)", conn);
                     cmd.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
                     cmd.Parameters.AddWithValue("@nombrevisible", user.nombreVisible);
                     cmd.Parameters.AddWithValue("@email", user.email);
-                    cmd.Parameters.AddWithValue("@foto", foto);
+                    cmd.Parameters.AddWithValue("@foto", user.foto);
                     cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
                     cmd.Parameters.AddWithValue("@genero", user.genero);
-                    cmd.Parameters.AddWithValue("@fecha_de_nacimiento", user.fechaDeNacimiento);
-                    cmd.Parameters.AddWithValue("@estado_de_cuenta", user.estadoDeCuenta);
+                    cmd.Parameters.AddWithValue("@fechaDeNacimiento", user.fechaDeNacimiento);
+                    cmd.Parameters.AddWithValue("@estadoDeCuenta", user.estadoDeCuenta);
 
                     //Inserción en la tabla LOGIN
-                    MySqlCommand cmd2 = new MySqlCommand("INSERT INTO login (NombreDeCuenta, Contraseña)" +
-                    " VALUES (@nombredecuenta, @contraseña)", conn);
+                    MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Login (nombreDeCuenta, contrasena) VALUES (@nombredecuenta, @contraseña)", conn);
                     cmd2.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
                     cmd2.Parameters.AddWithValue("@contraseña", user.contraseña);
                     cmd2.ExecuteNonQuery();
@@ -71,16 +70,16 @@ namespace ApiUsuarios.Controllers
                     }
                     else
                     {
-                        cmd = new MySqlCommand("INSERT INTO usuarios (NombreDeCuenta,NombreVisible,email,Foto,configuraciones,genero,fecha_de_nacimiento,estado_de_cuenta,Descripcion) VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fecha_de_nacimiento,@estado_de_cuenta,@descripcion)", conn);
+                        cmd = new MySqlCommand("INSERT INTO Usuarios (nombreDeCuenta,nombreVisible,email,descripcion,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@descripcion,@foto,@configuraciones,@genero,@fechaDeNacimiento,@estadoDeCuenta)", conn);
                         cmd.Parameters.AddWithValue("@descripcion", user.descripcion);
                         cmd.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
                         cmd.Parameters.AddWithValue("@nombrevisible", user.nombreVisible);
                         cmd.Parameters.AddWithValue("@email", user.email);
-                        cmd.Parameters.AddWithValue("@foto", foto);
+                        cmd.Parameters.AddWithValue("@foto", user.foto);
                         cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
                         cmd.Parameters.AddWithValue("@genero", user.genero);
-                        cmd.Parameters.AddWithValue("@fecha_de_nacimiento", user.fechaDeNacimiento);
-                        cmd.Parameters.AddWithValue("@estado_de_cuenta", user.estadoDeCuenta);
+                        cmd.Parameters.AddWithValue("@fechaDeNacimiento", user.fechaDeNacimiento);
+                        cmd.Parameters.AddWithValue("@estadoDeCuenta", user.estadoDeCuenta);
                         cmd.ExecuteNonQuery();
                         conn.Close();
                         return Json("guardado correcto");
@@ -114,37 +113,44 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT NombreVisible,email,Descripcion,Foto,configuraciones,genero,fecha_de_nacimiento,estado_de_cuenta FROM usuarios WHERE NombreDeCuenta=@NombreDeCuenta", conn);
-                command.Parameters.AddWithValue("@NombreDeCuenta", nombredecuenta);
+                MySqlCommand command = new MySqlCommand("SELECT nombreVisible,email,descripcion,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                command.Parameters.AddWithValue("@nombreDeCuenta", nombredecuenta);
                 MySqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
                     string nombrevisible;
-                    nombrevisible = reader["NombreVisible"].ToString();
+                    nombrevisible = reader["nombreVisible"].ToString();
                     string email;
                     email = reader["email"].ToString();
                     string descripcion;
-                    if (string.IsNullOrEmpty(reader["Descripcion"].ToString()))
+                    if (string.IsNullOrEmpty(reader["descripcion"].ToString()))
                     {
                        descripcion = "";
                     }
                     else
                     {
-                        descripcion = reader["Descripcion"].ToString();
+                        descripcion = reader["descripcion"].ToString();
                     }
                     string foto;
-                    foto = Convert.ToBase64String((byte[])reader["Foto"]);
+                    if (string.IsNullOrEmpty(reader["foto"].ToString()))
+                    {
+                        foto = "";
+                    }
+                    else
+                    {
+                        foto = reader["foto"].ToString();
+                    }
                     string configuraciones;
                     configuraciones = reader["configuraciones"].ToString();
                     string genero;
                     genero = reader["genero"].ToString();
                     string fecha_de_nacimiento;
-                    fecha_de_nacimiento = reader["fecha_de_nacimiento"].ToString();
+                    fecha_de_nacimiento = reader["fechaDeNacimiento"].ToString();
                     string estado_de_cuenta;
-                    estado_de_cuenta = reader["estado_de_cuenta"].ToString();
-                    var data = new { NombreVisible = nombrevisible, email = email, Descripcion = descripcion, Foto = foto, configuraciones = configuraciones, genero = genero, fecha_de_nacimiento = fecha_de_nacimiento, estado_de_cuenta = estado_de_cuenta };
+                    estado_de_cuenta = reader["estadoDeCuenta"].ToString();
+                    var data = new { nombreVisible = nombrevisible, email = email, descripcion = descripcion, foto = foto, configuraciones = configuraciones, genero = genero, fechaDeNacimiento = fecha_de_nacimiento, estadoDeCuenta = estado_de_cuenta };
                     return Json(data);
                 }
                 else
@@ -164,10 +170,10 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;"))
+                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
                 {
                     conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT 1 FROM usuarios WHERE NombreDeCuenta=@nombreDeCuenta", conn);
+                    MySqlCommand cmd = new MySqlCommand("SELECT 1 FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
                     cmd.Parameters.AddWithValue("@nombreDeCuenta", nombreDeCuenta);
 
                     var result = cmd.ExecuteScalar();
@@ -196,28 +202,28 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;"))
+                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
                 {
                     conn.Open();
                     if (!string.IsNullOrEmpty(user.nombreDeCuenta)
                         && !string.IsNullOrEmpty(user.nombreVisible)
                         && !string.IsNullOrEmpty(user.email)
-                        && user.imagen != null
+                        && !string.IsNullOrEmpty(user.foto)
                         && !string.IsNullOrEmpty(user.configuraciones)
                         && !string.IsNullOrEmpty(user.genero)
                         && !string.IsNullOrEmpty(user.fechaDeNacimiento)
                         && !string.IsNullOrEmpty(user.estadoDeCuenta))
                     {
-                        string query = @"UPDATE usuarios 
-                                 SET NombreVisible=@nombreVisible, 
+                        string query = @"UPDATE Usuarios 
+                                 SET nombreVisible=@nombreVisible, 
                                      email=@Email, 
-                                     Descripcion=@Descripcion, 
-                                     Foto=@Foto, 
+                                     descripcion=@Descripcion, 
+                                     foto=@Foto, 
                                      configuraciones=@Configuraciones, 
                                      genero=@Genero, 
-                                     fecha_de_nacimiento=@FechaDeNacimiento, 
-                                     estado_de_cuenta=@EstadoDeCuenta 
-                                 WHERE NombreDeCuenta=@NombreDeCuenta";
+                                     fechaDeNacimiento=@FechaDeNacimiento, 
+                                     estadoDeCuenta=@EstadoDeCuenta 
+                                 WHERE nombreDeCuenta=@NombreDeCuenta";
 
                         using (MySqlCommand cmd = new MySqlCommand(query, conn))
                         {
@@ -225,12 +231,11 @@ namespace ApiUsuarios.Controllers
                             cmd.Parameters.AddWithValue("@NombreVisible", user.nombreVisible);
                             cmd.Parameters.AddWithValue("@Email", user.email);
                             cmd.Parameters.AddWithValue("@Descripcion", user.descripcion ?? string.Empty);
-                            cmd.Parameters.AddWithValue("@Foto", user.imagen);
+                            cmd.Parameters.AddWithValue("@Foto", user.foto);
                             cmd.Parameters.AddWithValue("@Configuraciones", user.configuraciones);
                             cmd.Parameters.AddWithValue("@Genero", user.genero);
                             cmd.Parameters.AddWithValue("@FechaDeNacimiento", user.fechaDeNacimiento);
                             cmd.Parameters.AddWithValue("@EstadoDeCuenta", user.estadoDeCuenta);
-
                             cmd.ExecuteNonQuery();
                         }
                         return Json(new { mensaje = "Guardado correcto" });
@@ -264,9 +269,9 @@ namespace ApiUsuarios.Controllers
             }
             else
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO Reporte (NombreDeUsuario,tipo,descripcion) VALUES (@Nombre, @tipo, @descripcion)", conn);
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO ReporteUsuario (nombreDeUsuario,tipo,descripcion) VALUES (@nombre, @tipo, @descripcion)", conn);
                 cmd.Parameters.AddWithValue("@nombre", user.usuario);
                 cmd.Parameters.AddWithValue("@tipo", user.tipo);
                 cmd.Parameters.AddWithValue("@descripcion", user.descripcion);
@@ -283,13 +288,13 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd;
                 if (!string.IsNullOrEmpty(user.nombreDeCuenta)
                     && !string.IsNullOrEmpty(user.nombreVisible)
                     && !string.IsNullOrEmpty(user.email)
-                    && !string.IsNullOrEmpty(user.imagen)
+                    && !string.IsNullOrEmpty(user.foto)
                     && !string.IsNullOrEmpty(user.configuraciones)
                     && !string.IsNullOrEmpty(user.genero)
                     && !string.IsNullOrEmpty(user.fechaDeNacimiento)
@@ -297,20 +302,18 @@ namespace ApiUsuarios.Controllers
                     && !string.IsNullOrEmpty(user.contraseña))
                 {
                     //Inserción en la tabla USUARIOS
-                    byte[] foto = Convert.FromBase64String(user.imagen);
-                    cmd = new MySqlCommand("INSERT INTO usuarios (NombreDeCuenta,NombreVisible,email,Foto,configuraciones,genero,fecha_de_nacimiento,estado_de_cuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fecha_de_nacimiento,@estado_de_cuenta)", conn);
+                    cmd = new MySqlCommand("INSERT INTO Usuarios (nombreDeCuenta,nombreVisible,email,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fechaDeNacimiento,@estadoDeCuenta)", conn);
                     cmd.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
                     cmd.Parameters.AddWithValue("@nombrevisible", user.nombreVisible);
                     cmd.Parameters.AddWithValue("@email", user.email);
-                    cmd.Parameters.AddWithValue("@foto", foto);
+                    cmd.Parameters.AddWithValue("@foto", user.foto);
                     cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
                     cmd.Parameters.AddWithValue("@genero", user.genero);
-                    cmd.Parameters.AddWithValue("@fecha_de_nacimiento", user.fechaDeNacimiento);
-                    cmd.Parameters.AddWithValue("@estado_de_cuenta", user.estadoDeCuenta);
+                    cmd.Parameters.AddWithValue("@fechaDeNacimiento", user.fechaDeNacimiento);
+                    cmd.Parameters.AddWithValue("@estadoDeCuenta", user.estadoDeCuenta);
 
                     //Inserción en la tabla LOGIN
-                    MySqlCommand cmd2 = new MySqlCommand("INSERT INTO login (NombreDeCuenta, Contraseña)" +
-                    " VALUES (@nombredecuenta, @contraseña)", conn);
+                    MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Login (nombreDeCuenta, contrasena) VALUES (@nombredecuenta, @contraseña)", conn);
                     cmd2.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
                     cmd2.Parameters.AddWithValue("@contraseña", user.contraseña);
                     cmd2.ExecuteNonQuery();
@@ -322,16 +325,16 @@ namespace ApiUsuarios.Controllers
                     }
                     else
                     {
-                        cmd = new MySqlCommand("INSERT INTO usuarios (NombreDeCuenta,NombreVisible,email,Foto,configuraciones,genero,fecha_de_nacimiento,estado_de_cuenta,Descripcion) VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fecha_de_nacimiento,@estado_de_cuenta,@descripcion)", conn);
+                        cmd = new MySqlCommand("INSERT INTO Usuarios (nombreDeCuenta,nombreVisible,email,descripcion,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@descripcion,@foto,@configuraciones,@genero,@fechaDeNacimiento,@estadoDeCuenta)", conn);
                         cmd.Parameters.AddWithValue("@descripcion", user.descripcion);
                         cmd.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
                         cmd.Parameters.AddWithValue("@nombrevisible", user.nombreVisible);
                         cmd.Parameters.AddWithValue("@email", user.email);
-                        cmd.Parameters.AddWithValue("@foto", foto);
+                        cmd.Parameters.AddWithValue("@foto", user.foto);
                         cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
                         cmd.Parameters.AddWithValue("@genero", user.genero);
-                        cmd.Parameters.AddWithValue("@fecha_de_nacimiento", user.fechaDeNacimiento);
-                        cmd.Parameters.AddWithValue("@estado_de_cuenta", user.estadoDeCuenta);
+                        cmd.Parameters.AddWithValue("@fechaDeNacimiento", user.fechaDeNacimiento);
+                        cmd.Parameters.AddWithValue("@estadoDeCuenta", user.estadoDeCuenta);
                         cmd.ExecuteNonQuery();
                         conn.Close();
                         return JsonConvert.SerializeObject("guardado correcto");
@@ -352,37 +355,44 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT NombreVisible,email,Descripcion,Foto,configuraciones,genero,fecha_de_nacimiento,estado_de_cuenta FROM usuarios WHERE NombreDeCuenta=@NombreDeCuenta", conn);
-                command.Parameters.AddWithValue("@NombreDeCuenta", nombredecuenta);
+                MySqlCommand command = new MySqlCommand("SELECT nombreVisible,email,descripcion,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                command.Parameters.AddWithValue("@nombreDeCuenta", nombredecuenta);
                 MySqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
                     string nombrevisible;
-                    nombrevisible = reader["NombreVisible"].ToString();
+                    nombrevisible = reader["nombreVisible"].ToString();
                     string email;
                     email = reader["email"].ToString();
                     string descripcion;
-                    if (string.IsNullOrEmpty(reader["Descripcion"].ToString()))
+                    if (string.IsNullOrEmpty(reader["descripcion"].ToString()))
                     {
                         descripcion = "";
                     }
                     else
                     {
-                        descripcion = reader["Descripcion"].ToString();
+                        descripcion = reader["descripcion"].ToString();
                     }
                     string foto;
-                    foto = Convert.ToBase64String((byte[])reader["Foto"]);
+                    if (string.IsNullOrEmpty(reader["foto"].ToString()))
+                    {
+                        foto = "";
+                    }
+                    else
+                    {
+                        foto = reader["foto"].ToString();
+                    }
                     string configuraciones;
                     configuraciones = reader["configuraciones"].ToString();
                     string genero;
                     genero = reader["genero"].ToString();
                     string fecha_de_nacimiento;
-                    fecha_de_nacimiento = reader["fecha_de_nacimiento"].ToString();
+                    fecha_de_nacimiento = reader["fechaDeNacimiento"].ToString();
                     string estado_de_cuenta;
-                    estado_de_cuenta = reader["estado_de_cuenta"].ToString();
-                    var data = new { NombreVisible = nombrevisible, email = email, Descripcion = descripcion, Foto = foto, configuraciones = configuraciones, genero = genero, fecha_de_nacimiento = fecha_de_nacimiento, estado_de_cuenta = estado_de_cuenta };
+                    estado_de_cuenta = reader["estadoDeCuenta"].ToString();
+                    var data = new { nombreVisible = nombrevisible, email = email, descripcion = descripcion, foto = foto, configuraciones = configuraciones, genero = genero, fechaDeNacimiento = fecha_de_nacimiento, estadoDeCuenta = estado_de_cuenta };
                     return JsonConvert.SerializeObject(data);
                 }
                 else
@@ -400,33 +410,29 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT NombreDeCuenta FROM usuarios WHERE NombreDeCuenta=@nombredecuenta", conn);
-                command.Parameters.AddWithValue("@nombredecuenta", nombredecuenta);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
+                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
                 {
-                    var data = true;
-                    if (reader["NombreDeCuenta"].ToString().Equals(Convert.ToString(nombredecuenta)))
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT 1 FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", nombredecuenta);
+
+                    var result = cmd.ExecuteScalar();
+
+                    conn.Close();
+
+                    if (result != null)
                     {
-                        data = true;
-                        return JsonConvert.SerializeObject(data);
+                        return JsonConvert.SerializeObject(new { mensaje = "El usuario existe", existe = true });
                     }
                     else
                     {
-                        data = false;
-                        return JsonConvert.SerializeObject(data);
+                        return JsonConvert.SerializeObject(new { mensaje = "El usuario no existe", existe = false });
                     }
                 }
-                else
-                {
-                    return null;
-                }
             }
-            catch
+            catch (Exception ex)
             {
-                return null;
+                return JsonConvert.SerializeObject(new { mensaje = "Error en la consulta", error = ex.Message });
             }
         }
 
