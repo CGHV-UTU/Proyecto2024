@@ -41,6 +41,7 @@ namespace PruebasDeApiUsuarios
             this.btnRegistrarse = new System.Windows.Forms.Button();
             this.btnVerContraseña = new System.Windows.Forms.Button();
             this.btnReporte = new System.Windows.Forms.Button();
+            this.btnModificarUsuario = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -140,11 +141,22 @@ namespace PruebasDeApiUsuarios
             this.btnReporte.UseVisualStyleBackColor = true;
             this.btnReporte.Click += new System.EventHandler(this.btnReporte_Click);
             // 
+            // btnModificarUsuario
+            // 
+            this.btnModificarUsuario.Location = new System.Drawing.Point(0, 192);
+            this.btnModificarUsuario.Name = "btnModificarUsuario";
+            this.btnModificarUsuario.Size = new System.Drawing.Size(90, 23);
+            this.btnModificarUsuario.TabIndex = 26;
+            this.btnModificarUsuario.Text = "Modificar User";
+            this.btnModificarUsuario.UseVisualStyleBackColor = true;
+            this.btnModificarUsuario.Click += new System.EventHandler(this.btnModificarUsuario_Click);
+            // 
             // InicioSesion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(251, 269);
+            this.Controls.Add(this.btnModificarUsuario);
             this.Controls.Add(this.btnReporte);
             this.Controls.Add(this.btnVerContraseña);
             this.Controls.Add(this.btnRegistrarse);
@@ -176,6 +188,7 @@ namespace PruebasDeApiUsuarios
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnVerContraseña;
         private System.Windows.Forms.Button btnReporte;
+        private System.Windows.Forms.Button btnModificarUsuario;
     }
 }
 

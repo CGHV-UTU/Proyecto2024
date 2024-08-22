@@ -69,3 +69,19 @@ C:\Users\FedeG\Downloads\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\
 C:\Users\FedeG\Downloads\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.exe
 C:\Users\FedeG\Downloads\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.pdb
 C:\Users\FedeG\Downloads\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.Reportar.resources
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\PruebasDeApiUsuarios.exe.config
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\PruebasDeApiUsuarios.exe
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\PruebasDeApiUsuarios.pdb
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\Newtonsoft.Json.dll
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\Newtonsoft.Json.xml
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.csproj.AssemblyReference.cache
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.InicioSesion.resources
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.Properties.Resources.resources
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.Registrar.resources
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.Reportar.resources
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.csproj.GenerateResource.cache
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.csproj.CoreCompileInputs.cache
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.csproj.CopyComplete
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.exe
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.pdb
+D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.ModificarUsuario.resources

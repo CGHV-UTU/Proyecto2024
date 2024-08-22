@@ -159,40 +159,94 @@ namespace ApiUsuarios.Controllers
         }
 
         [System.Web.Mvc.HttpGet]
-        [System.Web.Mvc.Route ("existeUsuario")]
-        public dynamic existeUsuario(string nombredecuenta)
+        [System.Web.Mvc.Route ("ExisteUsuario")]
+        public dynamic ExisteUsuario( string nombreDeCuenta)
         {
             try
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT NombreDeCuenta FROM usuarios WHERE NombreDeCuenta=@nombredecuenta", conn);
-                command.Parameters.AddWithValue("@nombredecuenta", nombredecuenta);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
+                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;"))
                 {
-                    var data = true;
-                    if (reader["NombreDeCuenta"].ToString().Equals(Convert.ToString(nombredecuenta)))
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT 1 FROM usuarios WHERE NombreDeCuenta=@nombreDeCuenta", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", nombreDeCuenta);
+
+                    var result = cmd.ExecuteScalar();
+
+                    conn.Close();
+
+                    if (result != null)
                     {
-                        data = true;
-                        return Json(data, JsonRequestBehavior.AllowGet);
+                        return Json(new { mensaje = "El usuario existe", existe = true }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        data = false;
-                        return Json(data, JsonRequestBehavior.AllowGet);
+                        return Json(new { mensaje = "El usuario no existe", existe = false }, JsonRequestBehavior.AllowGet);
                     }
                 }
-                else
-                {
-                    return null;
-                }
             }
-            catch
+            catch (Exception ex)
             {
-                return null;
+                return Json(new { mensaje = "Error en la consulta", error = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [System.Web.Mvc.HttpPut]
+        [System.Web.Mvc.Route("ModificarUsuario")]
+        public dynamic ModificarUsuario([FromBody] usuario user)
+        {
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;"))
+                {
+                    conn.Open();
+                    if (!string.IsNullOrEmpty(user.nombreDeCuenta)
+                        && !string.IsNullOrEmpty(user.nombreVisible)
+                        && !string.IsNullOrEmpty(user.email)
+                        && user.imagen != null
+                        && !string.IsNullOrEmpty(user.configuraciones)
+                        && !string.IsNullOrEmpty(user.genero)
+                        && !string.IsNullOrEmpty(user.fechaDeNacimiento)
+                        && !string.IsNullOrEmpty(user.estadoDeCuenta))
+                    {
+                        string query = @"UPDATE usuarios 
+                                 SET NombreVisible=@nombreVisible, 
+                                     email=@Email, 
+                                     Descripcion=@Descripcion, 
+                                     Foto=@Foto, 
+                                     configuraciones=@Configuraciones, 
+                                     genero=@Genero, 
+                                     fecha_de_nacimiento=@FechaDeNacimiento, 
+                                     estado_de_cuenta=@EstadoDeCuenta 
+                                 WHERE NombreDeCuenta=@NombreDeCuenta";
+
+                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@NombreDeCuenta", user.nombreDeCuenta);
+                            cmd.Parameters.AddWithValue("@NombreVisible", user.nombreVisible);
+                            cmd.Parameters.AddWithValue("@Email", user.email);
+                            cmd.Parameters.AddWithValue("@Descripcion", user.descripcion ?? string.Empty);
+                            cmd.Parameters.AddWithValue("@Foto", user.imagen);
+                            cmd.Parameters.AddWithValue("@Configuraciones", user.configuraciones);
+                            cmd.Parameters.AddWithValue("@Genero", user.genero);
+                            cmd.Parameters.AddWithValue("@FechaDeNacimiento", user.fechaDeNacimiento);
+                            cmd.Parameters.AddWithValue("@EstadoDeCuenta", user.estadoDeCuenta);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                        return Json(new { mensaje = "Guardado correcto" });
+                    }
+                    else
+                    {
+                        return Json(new { mensaje = "Guardado incorrecto: faltan datos" });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { mensaje = "Guardado incorrecto: error en el servidor", error = ex.Message });
+            }
+
+        } 
 
         public class Reporte
         {

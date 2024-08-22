@@ -102,5 +102,10 @@ namespace PruebasDeApiUsuarios
             Reportar f = new Reportar();
             f.Visible = true;
         }
+        private void btnModificarUsuario_Click(object sender, EventArgs e)
+        {
+            ModificarUsuario m = new ModificarUsuario();
+            m.Visible = true;
+        }
     }
 }

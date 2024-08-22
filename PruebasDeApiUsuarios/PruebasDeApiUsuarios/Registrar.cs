@@ -38,8 +38,10 @@ namespace PruebasDeApiUsuarios
         {
             if (verificarDatos())
             {
-                var existe = await ExisteUser(txtNombre.Text);
-                if (!existe)
+                string nombreCuenta = txtNombre.Text; 
+                bool userExists = await ExisteUser(nombreCuenta);
+                Console.WriteLine(userExists);
+                if (userExists==false)
                 {
                     MemoryStream ms = new MemoryStream();
                     pictureBox1.Image.Save(ms, ImageFormat.Jpeg);
@@ -77,17 +79,24 @@ namespace PruebasDeApiUsuarios
             }
         }
 
-        public static async Task<bool> ExisteUser(string nombreCuenta)
+        private async Task<bool> ExisteUser(string nombreCuenta)
         {
-            using (HttpClient client=new HttpClient())
+            using (HttpClient client = new HttpClient())
             {
-                
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44383/user/existeUsuario?nombredecuenta={nombreCuenta}");
-                    response.EnsureSuccessStatusCode();
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44383/user/ExisteUsuario?nombreDeCuenta={nombreCuenta}");
+                    response.EnsureSuccessStatusCode(); // Lanza una excepción si el código de estado no es exitoso
                     var responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody);
-                    return data;
-                
+                    dynamic result = JsonConvert.DeserializeObject(responseBody);
+
+                    return result.existe;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al conectarse al servidor: " + ex.Message);
+                    return false;
+                }
             }
         }
 
