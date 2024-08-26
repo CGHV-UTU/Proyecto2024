@@ -107,7 +107,7 @@ namespace ApiUsuarios.Controllers
             return pruebas.User+" si";
         }
 
-        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("obtenerUsuario")]
         public dynamic ObtenerUsuario(string nombredecuenta)
         {
@@ -251,7 +251,100 @@ namespace ApiUsuarios.Controllers
                 return Json(new { mensaje = "Guardado incorrecto: error en el servidor", error = ex.Message });
             }
 
-        } 
+        }
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("CambiarConfiguracion")]
+        public dynamic CambiarConfiguracion([FromBody] usuario user)
+        {
+            if (user == null)
+            {
+                return Json("nulo");
+            }
+            else
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET configuraciones=@configuraciones WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return Json("Configuracion correcta");
+            }
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("ConseguirConfiguracion")]
+        public dynamic ConseguirConfiguracion([FromBody] usuario user)
+        {
+            if (user == null)
+            {
+                return Json("nulo");
+            }
+            else
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT configuraciones FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    return Json(reader["configuraciones"].ToString());
+                }
+                else
+                {
+                    return Json("Hubo un error"+user.nombreDeCuenta);
+                }
+            }
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("ActualizarNotificaciones")]
+        public dynamic ActualizarNotificaciones([FromBody] usuario user)
+        {
+            if (user == null)
+            {
+                return Json("nulo");
+            }
+            else
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET notificaciones=@notificaciones WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                cmd.Parameters.AddWithValue("@notificaciones", user.notificaciones);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return Json("Correcto");
+            }
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("ConseguirNotificaciones")]
+        public dynamic ConseguirNotificaciones([FromBody] usuario user)
+        {
+            if (user == null)
+            {
+                return Json("nulo");
+            }
+            else
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT notificaciones FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    return Json(reader["notificaciones"].ToString());
+                }
+                else
+                {
+                    return Json("Hubo un error" + user.nombreDeCuenta);
+                }
+            }
+        }
 
         public class Reporte
         {
@@ -279,8 +372,6 @@ namespace ApiUsuarios.Controllers
                 conn.Close();
                 return Json("Reporte correcto");
             }
-                
-            
         }
 
         //pruebas de la lógica de la API
