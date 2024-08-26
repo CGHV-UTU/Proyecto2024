@@ -15,8 +15,10 @@ namespace Frontend
         public event EventHandler AbrirComentarios;
         private int currentPage = 0;
         private const int postsPerPage = 10;
-        public Posts()
+        private string modo;
+        public Posts(string modo)
         {
+            this.modo = modo;
             Iniciar();
             LoadPosts(currentPage);
             panel1.Scroll += PanelPosts_Scroll;
@@ -55,7 +57,7 @@ namespace Frontend
                         postType = "textAndImage";
                         break;
                 }
-                var postControl = new PostControl($"Post {i + 1}", postType);
+                var postControl = new PostControl($"Post {i + 1}", postType, modo);
                 postControl.AbrirComentarios += PostControl_AbrirComentarios;
                 postControl.Location = new Point(0, (page * postsPerPage + i) * postControl.Height);
                 panel1.Controls.Add(postControl);

@@ -127,6 +127,7 @@ namespace Frontend
             this.PictureboxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PictureboxLogo.TabIndex = 5;
             this.PictureboxLogo.TabStop = false;
+            this.PictureboxLogo.Click += new System.EventHandler(this.PictureboxLogo_Click);
             // 
             // PictureBoxConfiguraciones
             // 
@@ -140,6 +141,7 @@ namespace Frontend
             this.PictureBoxConfiguraciones.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PictureBoxConfiguraciones.TabIndex = 1;
             this.PictureBoxConfiguraciones.TabStop = false;
+            this.PictureBoxConfiguraciones.Click += new System.EventHandler(this.PictureBoxConfiguraciones_Click);
             // 
             // PictureBoxNotificaciones
             // 

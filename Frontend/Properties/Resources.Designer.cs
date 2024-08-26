@@ -123,9 +123,29 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap comentario_claro {
+            get {
+                object obj = ResourceManager.GetObject("comentario claro", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap compartir {
             get {
                 object obj = ResourceManager.GetObject("compartir", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap compartir_claro {
+            get {
+                object obj = ResourceManager.GetObject("compartir claro", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -263,6 +283,26 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap like_claro {
+            get {
+                object obj = ResourceManager.GetObject("like claro", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap like_claro_relleno {
+            get {
+                object obj = ResourceManager.GetObject("like claro relleno", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap like_infini {
             get {
                 object obj = ResourceManager.GetObject("like infini", resourceCulture);
@@ -306,6 +346,16 @@ namespace Frontend.Properties {
         internal static System.Drawing.Bitmap mas_opciones {
             get {
                 object obj = ResourceManager.GetObject("mas opciones", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mas_opciones_claro_relleno {
+            get {
+                object obj = ResourceManager.GetObject("mas opciones claro relleno", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

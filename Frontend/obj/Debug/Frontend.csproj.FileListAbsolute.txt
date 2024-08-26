@@ -142,3 +142,4 @@ C:\Users\FedeG\OneDrive\Escritorio\frontendMAXIMO\Proyecto2024\Frontend\obj\Debu
 C:\Users\FedeG\OneDrive\Escritorio\frontendMAXIMO\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CopyComplete
 C:\Users\FedeG\OneDrive\Escritorio\frontendMAXIMO\Proyecto2024\Frontend\obj\Debug\Frontend.exe
 C:\Users\FedeG\OneDrive\Escritorio\frontendMAXIMO\Proyecto2024\Frontend\obj\Debug\Frontend.pdb
+C:\Users\FedeG\OneDrive\Escritorio\frontendMAXIMO\Proyecto2024\Frontend\obj\Debug\Frontend.Configuracion.resources

@@ -80,6 +80,13 @@
     <Compile Include="CommentControl.Designer.cs">
       <DependentUpon>CommentControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Configuracion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuracion.Designer.cs">
+      <DependentUpon>Configuracion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfiguraEventArgs.cs" />
     <Compile Include="IniciarSesion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +98,18 @@
     </Compile>
     <Compile Include="Inicio.Designer.cs">
       <DependentUpon>Inicio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NotificacionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NotificacionControl.Designer.cs">
+      <DependentUpon>NotificacionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Notificaciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Notificaciones.Designer.cs">
+      <DependentUpon>Notificaciones.cs</DependentUpon>
     </Compile>
     <Compile Include="Post.cs">
       <SubType>Form</SubType>
@@ -118,11 +137,20 @@
     <EmbeddedResource Include="CommentControl.resx">
       <DependentUpon>CommentControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Configuracion.resx">
+      <DependentUpon>Configuracion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="IniciarSesion.resx">
       <DependentUpon>IniciarSesion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inicio.resx">
       <DependentUpon>Inicio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotificacionControl.resx">
+      <DependentUpon>NotificacionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Notificaciones.resx">
+      <DependentUpon>Notificaciones.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Post.resx">
       <DependentUpon>Post.cs</DependentUpon>
@@ -206,6 +234,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\like claro relleno.jpeg" />
+    <None Include="Resources\like claro.jpeg" />
+    <None Include="Resources\mas opciones claro relleno.jpeg" />
     <None Include="Resources\User_negro.png" />
     <None Include="Resources\panelSuperior.jpeg" />
     <None Include="Resources\Video2222.png" />
@@ -234,6 +265,8 @@
     <None Include="Resources\campana_clara-removebg-preview.png" />
     <None Include="Resources\buscar claro.jpeg" />
     <None Include="Resources\crear claro.jpeg" />
+    <None Include="Resources\compartir claro.jpeg" />
+    <None Include="Resources\comentario claro.jpeg" />
     <Content Include="Resources\IconoInfini.ico" />
     <None Include="Resources\Logo_Infini_Completo.jpeg" />
     <None Include="Resources\salir.png" />

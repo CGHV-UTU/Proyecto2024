@@ -13,8 +13,10 @@ namespace Frontend
     public partial class PostControl : UserControl
     {
         public event EventHandler AbrirComentarios;
-        public PostControl(string title, string postType)
+        private string modo;
+        public PostControl(string title, string postType, string modo)
         {
+            this.modo = modo;
             iniciar(postType);
             lblNombre.Text = title;
         }
@@ -69,16 +71,32 @@ namespace Frontend
         private bool isImage1 = true;
         private void PictureBoxLike_Click(object sender, EventArgs e)
         {
-            if (isImage1)
+            if (modo.Equals("Oscuro"))
             {
-                PictureBoxLike.Image = Properties.Resources.Like_Relleno;
-                isImage1 = false;
+                if (isImage1)
+                {
+                    PictureBoxLike.Image = Properties.Resources.like_claro_relleno;
+                    isImage1 = false;
+                }
+                else
+                {
+                    PictureBoxLike.Image = Properties.Resources.like_claro;
+                    isImage1 = true;
+                }
             }
             else
             {
-                PictureBoxLike.Image = Properties.Resources.like_infini;
-                isImage1 = true;
-            }
+                if (isImage1)
+                {
+                    PictureBoxLike.Image = Properties.Resources.Like_Relleno;
+                    isImage1 = false;
+                }
+                else
+                {
+                    PictureBoxLike.Image = Properties.Resources.like_infini;
+                    isImage1 = true;
+                }
+            }      
         }
 
         //Abrir comentarios
@@ -248,6 +266,26 @@ namespace Frontend
                     this.PictureBoxCompartir.Location = new Point(604, txtUrl.Bottom + 10);
                     this.PictureBoxOpcionesPost.Location = new Point(660, txtUrl.Bottom + 10);
                     break;
+            }
+            if (modo.Equals("Oscuro"))
+            {
+                this.PictureBoxOpcionesPost.Image = Properties.Resources.mas_opciones_claro_relleno;
+                this.PictureBoxCompartir.Image = Properties.Resources.compartir_claro;
+                this.PictureBoxLike.Image = Properties.Resources.like_claro;
+                this.PictureBoxComentarios.Image = Properties.Resources.comentario_claro;
+                this.txtUrl.ForeColor = Color.White;
+                this.txtDescripcion.ForeColor = Color.White;
+                this.lblNombre.ForeColor = Color.White;
+            }
+            else
+            {
+                this.PictureBoxOpcionesPost.Image = Properties.Resources.mas_opciones;
+                this.PictureBoxCompartir.Image = Properties.Resources.compartir;
+                this.PictureBoxLike.Image = Properties.Resources.like_infini;
+                this.PictureBoxComentarios.Image = Properties.Resources.comentario;
+                this.txtUrl.ForeColor = Color.Black;
+                this.txtDescripcion.ForeColor = Color.Black;
+                this.lblNombre.ForeColor = Color.Black;
             }
             this.ResumeLayout(false);     
             this.PerformLayout();

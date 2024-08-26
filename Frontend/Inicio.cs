@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,23 +16,35 @@ namespace Frontend
     public partial class Inicio : Form
     {
         private string user;
+        private string idioma;
         public Inicio(string usuario)
         {
             InitializeComponent();
+            user = usuario;
             VerPosts();
             PanelComentarios.Visible = false;
             PictureBoxSalir.Visible = false;
-            PanelPostear.Visible = false;
-            user = usuario;
+            PanelPostear.Visible = false;        
         }
 
         // cargar form de posts. -Puse un fondo gris para distinguirlo    
-        private void VerPosts()
+        private async void VerPosts()
         {
-            Posts post = new Posts();
+            string config = await conseguirConfig(user);
+            string[] configure = config.Split(';');    
+            idioma = configure[1];
+            Posts post = new Posts(configure[0]);
+            if (configure[0].Equals("Oscuro"))
+            {
+                BackColor = Color.FromArgb(20, 20, 20);
+                post.BackColor = Color.FromArgb(40, 40, 40);
+            }
+            else
+            {
+                post.BackColor = Color.LightGray;
+            }
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
-            post.BackColor = Color.LightGray;
             post.Dock = DockStyle.Fill;
             post.AbrirComentarios += PostControl_AbrirComentarios;
             PanelPosts.Controls.Add(post);
@@ -61,18 +75,11 @@ namespace Frontend
 
         private void PictureBoxCrear_Click(object sender, EventArgs e)
         {
-            if (PanelPostear.Visible == false)
-            {
-                VerPost();
-            }
-            else
-            {
-                PanelPostear.Visible = false;
-                PanelPosts.Visible = true;
-            }
+            VerPost();
         }
         private void VerPost()
         {
+            PanelPostear.Controls.Clear();
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false; 
@@ -101,6 +108,65 @@ namespace Frontend
         private void Post_CambiaTamaño(object sender, EventArgs e)
         {
             PanelPostear.Height = 692;
+        }
+
+        private void PictureBoxConfiguraciones_Click(object sender, EventArgs e)
+        {
+            PanelPostear.Controls.Clear();
+            PanelPostear.Visible = true;
+            PanelPostear.Parent = this;
+            PanelPosts.Visible = false;
+            Configuracion config = new Configuracion(user);
+            config.TopLevel = false;
+            config.FormBorderStyle = FormBorderStyle.None;
+            config.BackColor = Color.LightGray;
+            config.Dock = DockStyle.Fill;
+            config.CambiarModo += CambiarModo;
+            PanelPostear.Controls.Add(config);
+            config.Show();
+        }
+
+        
+        private void CambiarModo(object sender, ConfiguraEventArgs e)
+        {
+            if (e.Modo.Equals("Claro"))
+            {
+                BackColor = Color.White;
+            }
+            else
+            {
+                BackColor = Color.FromArgb(20, 20, 20);
+            }
+            idioma = e.Idioma;
+            PanelPosts.Controls.Clear();
+            VerPosts();
+        }
+
+        private void PictureboxLogo_Click(object sender, EventArgs e)
+        {
+            PanelPostear.Visible = false;
+            PanelPosts.Visible = true;
+        }
+
+        public static async Task<string> conseguirConfig(string usuario)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    var datos = new { nombreDeCuenta = usuario };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync("https://localhost:44383/user/ConseguirConfiguracion", content);
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+            }
+            catch
+            {
+                return "fallido";
+            }
+            
         }
     }
 }
