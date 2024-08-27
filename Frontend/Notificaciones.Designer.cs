@@ -29,22 +29,22 @@ namespace Frontend
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.PanelNotificaciones = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // panel1
+            // PanelNotificaciones
             // 
-            this.panel1.Location = new System.Drawing.Point(75, 42);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(634, 477);
-            this.panel1.TabIndex = 19;
+            this.PanelNotificaciones.Location = new System.Drawing.Point(75, 42);
+            this.PanelNotificaciones.Name = "PanelNotificaciones";
+            this.PanelNotificaciones.Size = new System.Drawing.Size(634, 477);
+            this.PanelNotificaciones.TabIndex = 19;
             // 
             // Notificaciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.PanelNotificaciones);
             this.Name = "Notificaciones";
             this.Text = "Notificaciones";
             this.ResumeLayout(false);
@@ -53,6 +53,6 @@ namespace Frontend
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel PanelNotificaciones;
     }
 }

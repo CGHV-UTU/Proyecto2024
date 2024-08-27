@@ -41,6 +41,7 @@ namespace Frontend
             this.PictureBoxNotificaciones = new System.Windows.Forms.PictureBox();
             this.PictureBoxCrear = new System.Windows.Forms.PictureBox();
             this.PictureBoxBuscar = new System.Windows.Forms.PictureBox();
+            this.PanelNotificaciones = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxSalir)).BeginInit();
             this.PanelSuperior.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).BeginInit();
@@ -155,6 +156,7 @@ namespace Frontend
             this.PictureBoxNotificaciones.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PictureBoxNotificaciones.TabIndex = 1;
             this.PictureBoxNotificaciones.TabStop = false;
+            this.PictureBoxNotificaciones.Click += new System.EventHandler(this.PictureBoxNotificaciones_Click);
             // 
             // PictureBoxCrear
             // 
@@ -183,11 +185,20 @@ namespace Frontend
             this.PictureBoxBuscar.TabIndex = 2;
             this.PictureBoxBuscar.TabStop = false;
             // 
+            // PanelNotificaciones
+            // 
+            this.PanelNotificaciones.Location = new System.Drawing.Point(596, 56);
+            this.PanelNotificaciones.Name = "PanelNotificaciones";
+            this.PanelNotificaciones.Size = new System.Drawing.Size(600, 419);
+            this.PanelNotificaciones.TabIndex = 0;
+            this.PanelNotificaciones.Visible = false;
+            // 
             // Inicio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.PanelNotificaciones);
             this.Controls.Add(this.PanelPostear);
             this.Controls.Add(this.PanelComentarios);
             this.Controls.Add(this.PictureBoxSalir);
@@ -222,6 +233,7 @@ namespace Frontend
         private System.Windows.Forms.Panel PanelComentarios;
         private System.Windows.Forms.PictureBox PictureBoxSalir;
         private System.Windows.Forms.Panel PanelPostear;
+        private System.Windows.Forms.Panel PanelNotificaciones;
     }
 }
 

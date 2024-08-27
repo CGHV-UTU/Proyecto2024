@@ -234,6 +234,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\notificacionLike.jpeg" />
     <None Include="Resources\like claro relleno.jpeg" />
     <None Include="Resources\like claro.jpeg" />
     <None Include="Resources\mas opciones claro relleno.jpeg" />

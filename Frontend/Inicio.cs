@@ -126,7 +126,19 @@ namespace Frontend
             config.Show();
         }
 
-        
+        private void PictureBoxNotificaciones_Click(object sender, EventArgs e)
+        {
+            PanelNotificaciones.Visible = true;
+            Notificaciones notificaciones = new Notificaciones(user);
+            notificaciones.TopLevel = false;
+            notificaciones.FormBorderStyle = FormBorderStyle.None;
+            notificaciones.BackColor = Color.LightGray;
+            notificaciones.Dock = DockStyle.Fill;
+            PanelNotificaciones.Controls.Add(notificaciones);
+            notificaciones.Show();
+            
+        }
+
         private void CambiarModo(object sender, ConfiguraEventArgs e)
         {
             if (e.Modo.Equals("Claro"))
@@ -168,5 +180,7 @@ namespace Frontend
             }
             
         }
+
+        
     }
 }
