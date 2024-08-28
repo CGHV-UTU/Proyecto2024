@@ -180,6 +180,7 @@ namespace PruebasDeApiUsuarios
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 15;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // btnRegistrar
             // 
@@ -288,6 +289,7 @@ namespace PruebasDeApiUsuarios
             this.Controls.Add(this.label1);
             this.Name = "Registrar";
             this.Text = "Registrar";
+            this.Load += new System.EventHandler(this.Registrar_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

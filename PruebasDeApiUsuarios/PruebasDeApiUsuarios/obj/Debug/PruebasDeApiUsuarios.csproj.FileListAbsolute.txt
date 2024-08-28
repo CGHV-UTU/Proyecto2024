@@ -85,3 +85,19 @@ D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\o
 D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.exe
 D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.pdb
 D:\Utu 2024\Repositorio\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.ModificarUsuario.resources
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\PruebasDeApiUsuarios.exe.config
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\PruebasDeApiUsuarios.exe
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\PruebasDeApiUsuarios.pdb
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.csproj.AssemblyReference.cache
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.InicioSesion.resources
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.ModificarUsuario.resources
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.Properties.Resources.resources
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.Registrar.resources
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.Reportar.resources
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.csproj.GenerateResource.cache
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.csproj.CopyComplete
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.exe
+C:\Users\Usuario\Desktop\Api_Usuarios\Proyecto2024\PruebasDeApiUsuarios\PruebasDeApiUsuarios\obj\Debug\PruebasDeApiUsuarios.pdb

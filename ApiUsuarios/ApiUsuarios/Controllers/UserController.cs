@@ -27,74 +27,164 @@ namespace ApiUsuarios.Controllers
             public string notificaciones { get; set; }
         }
 
+        /*  [System.Web.Mvc.HttpPost]
+          [System.Web.Mvc.Route("RegistrarUsuario")]
+          public dynamic RegistrarUsuario([FromBody] usuario user )
+          {
+              try
+              {
+                  MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                  conn.Open();
+                  MySqlCommand cmd;
+                  if (!string.IsNullOrEmpty(user.nombreDeCuenta)
+                      && !string.IsNullOrEmpty(user.nombreVisible)
+                      && !string.IsNullOrEmpty(user.email)
+                      && !string.IsNullOrEmpty(user.foto)
+                      && !string.IsNullOrEmpty(user.configuraciones)
+                      && !string.IsNullOrEmpty(user.genero)
+                      && !string.IsNullOrEmpty(user.fechaDeNacimiento)
+                      && !string.IsNullOrEmpty(user.estadoDeCuenta)
+                      && !string.IsNullOrEmpty(user.contraseña))
+                  {
+                      //Inserción en la tabla USUARIOS
+                      cmd = new MySqlCommand("INSERT INTO Usuarios (nombreDeCuenta,nombreVisible,email,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fechaDeNacimiento,@estadoDeCuenta)", conn);
+                      cmd.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
+                      cmd.Parameters.AddWithValue("@nombrevisible", user.nombreVisible);
+                      cmd.Parameters.AddWithValue("@email", user.email);
+                      cmd.Parameters.AddWithValue("@foto", user.foto);
+                      cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
+                      cmd.Parameters.AddWithValue("@genero", user.genero);
+                      cmd.Parameters.AddWithValue("@fechaDeNacimiento", user.fechaDeNacimiento);
+                      cmd.Parameters.AddWithValue("@estadoDeCuenta", user.estadoDeCuenta);
+
+                      //Inserción en la tabla LOGIN
+                      MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Login (nombreDeCuenta, contrasena) VALUES (@nombredecuenta, @contraseña)", conn);
+                      cmd2.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
+                      cmd2.Parameters.AddWithValue("@contraseña", user.contraseña);
+                      cmd2.ExecuteNonQuery();
+                      if (string.IsNullOrEmpty(user.descripcion))
+                      {
+                          cmd.ExecuteNonQuery();
+                          conn.Close();
+                          return Json("guardado correcto");
+                      }
+                      else
+                      {
+                          cmd = new MySqlCommand("INSERT INTO Usuarios (nombreDeCuenta,nombreVisible,email,descripcion,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@descripcion,@foto,@configuraciones,@genero,@fechaDeNacimiento,@estadoDeCuenta)", conn);
+                          cmd.Parameters.AddWithValue("@descripcion", user.descripcion);
+                          cmd.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
+                          cmd.Parameters.AddWithValue("@nombrevisible", user.nombreVisible);
+                          cmd.Parameters.AddWithValue("@email", user.email);
+                          cmd.Parameters.AddWithValue("@foto", user.foto);
+                          cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
+                          cmd.Parameters.AddWithValue("@genero", user.genero);
+                          cmd.Parameters.AddWithValue("@fechaDeNacimiento", user.fechaDeNacimiento);
+                          cmd.Parameters.AddWithValue("@estadoDeCuenta", user.estadoDeCuenta);
+                          cmd.ExecuteNonQuery();
+                          conn.Close();
+                          return Json("guardado correcto");
+                      }
+                  }
+                  else
+                  {
+                      return Json("guardado incorrecto. Strings nulos" +
+                          " Nombre de cuenta: " + user.nombreDeCuenta +
+                          " NombreVisible: " + user.nombreVisible +
+                          " contraseña: " + user.contraseña +
+                          " email: " + user.email +
+                          " genero: " + user.genero +
+                          " descr: " + user.descripcion +
+                          " fecha: " + user.fechaDeNacimiento +
+                          " conf: " + user.configuraciones +
+                          " foto: " + user.foto
+
+                          );
+
+                  }
+              }
+              catch (Exception ex)
+              {
+                  return Json("guardado incorrecto: " + ex.Message);
+              }   
+          }*/
+
+
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("RegistrarUsuario")]
-        public dynamic RegistrarUsuario([FromBody] usuario user )
+        public JsonResult RegistrarUsuario([System.Web.Http.FromBody] usuario user)
         {
             try
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd;
-                if (!string.IsNullOrEmpty(user.nombreDeCuenta)
-                    && !string.IsNullOrEmpty(user.nombreVisible)
-                    && !string.IsNullOrEmpty(user.email)
-                    && !string.IsNullOrEmpty(user.foto)
-                    && !string.IsNullOrEmpty(user.configuraciones)
-                    && !string.IsNullOrEmpty(user.genero)
-                    && !string.IsNullOrEmpty(user.fechaDeNacimiento)
-                    && !string.IsNullOrEmpty(user.estadoDeCuenta)
-                    && !string.IsNullOrEmpty(user.contraseña))
+                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
                 {
-                    //Inserción en la tabla USUARIOS
-                    cmd = new MySqlCommand("INSERT INTO Usuarios (nombreDeCuenta,nombreVisible,email,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fechaDeNacimiento,@estadoDeCuenta)", conn);
-                    cmd.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
-                    cmd.Parameters.AddWithValue("@nombrevisible", user.nombreVisible);
-                    cmd.Parameters.AddWithValue("@email", user.email);
-                    cmd.Parameters.AddWithValue("@foto", user.foto);
-                    cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
-                    cmd.Parameters.AddWithValue("@genero", user.genero);
-                    cmd.Parameters.AddWithValue("@fechaDeNacimiento", user.fechaDeNacimiento);
-                    cmd.Parameters.AddWithValue("@estadoDeCuenta", user.estadoDeCuenta);
+                    conn.Open();
 
-                    //Inserción en la tabla LOGIN
-                    MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Login (nombreDeCuenta, contrasena) VALUES (@nombredecuenta, @contraseña)", conn);
-                    cmd2.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
-                    cmd2.Parameters.AddWithValue("@contraseña", user.contraseña);
-                    cmd2.ExecuteNonQuery();
-                    if (string.IsNullOrEmpty(user.descripcion))
+                    if (!string.IsNullOrEmpty(user.nombreDeCuenta) &&
+                        !string.IsNullOrEmpty(user.nombreVisible) &&
+                        !string.IsNullOrEmpty(user.email) &&
+                        !string.IsNullOrEmpty(user.foto) &&
+                        !string.IsNullOrEmpty(user.configuraciones) &&
+                        !string.IsNullOrEmpty(user.genero) &&
+                        !string.IsNullOrEmpty(user.fechaDeNacimiento) &&
+                        !string.IsNullOrEmpty(user.estadoDeCuenta) &&
+                        !string.IsNullOrEmpty(user.contraseña))
                     {
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return Json("guardado correcto");
+                        // Construir la consulta SQL de inserción
+                        string query = "INSERT INTO Usuarios (nombreDeCuenta, nombreVisible, email, descripcion, foto, configuraciones, genero, fechaDeNacimiento, estadoDeCuenta) " +
+                                       "VALUES (@nombreDeCuenta, @nombreVisible, @email, @descripcion, @foto, @configuraciones, @genero, @fechaDeNacimiento, @estadoDeCuenta)";
+
+                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                            cmd.Parameters.AddWithValue("@nombreVisible", user.nombreVisible);
+                            cmd.Parameters.AddWithValue("@email", user.email);
+                            cmd.Parameters.AddWithValue("@descripcion", string.IsNullOrEmpty(user.descripcion) ? DBNull.Value : (object)user.descripcion);
+                            cmd.Parameters.AddWithValue("@foto", user.foto);
+                            cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
+                            cmd.Parameters.AddWithValue("@genero", user.genero);
+                            cmd.Parameters.AddWithValue("@fechaDeNacimiento", user.fechaDeNacimiento);
+                            cmd.Parameters.AddWithValue("@estadoDeCuenta", user.estadoDeCuenta);
+
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // Inserción en la tabla LOGIN
+                        using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Login (nombreDeCuenta, contrasena) VALUES (@nombreDeCuenta, @contraseña)", conn))
+                        {
+                            cmd2.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                            cmd2.Parameters.AddWithValue("@contraseña", user.contraseña);
+                            cmd2.ExecuteNonQuery();
+                        }
+
+                        return Json(new { mensaje = "guardado correcto" });
                     }
                     else
                     {
-                        cmd = new MySqlCommand("INSERT INTO Usuarios (nombreDeCuenta,nombreVisible,email,descripcion,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta) VALUES (@nombredecuenta,@nombrevisible,@email,@descripcion,@foto,@configuraciones,@genero,@fechaDeNacimiento,@estadoDeCuenta)", conn);
-                        cmd.Parameters.AddWithValue("@descripcion", user.descripcion);
-                        cmd.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
-                        cmd.Parameters.AddWithValue("@nombrevisible", user.nombreVisible);
-                        cmd.Parameters.AddWithValue("@email", user.email);
-                        cmd.Parameters.AddWithValue("@foto", user.foto);
-                        cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
-                        cmd.Parameters.AddWithValue("@genero", user.genero);
-                        cmd.Parameters.AddWithValue("@fechaDeNacimiento", user.fechaDeNacimiento);
-                        cmd.Parameters.AddWithValue("@estadoDeCuenta", user.estadoDeCuenta);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return Json("guardado correcto");
+                        return Json(new
+                        {
+                            mensaje = "guardado incorrecto. Strings nulos",
+                            detalles = new
+                            {
+                                user.nombreDeCuenta,
+                                user.nombreVisible,
+                                user.contraseña,
+                                user.email,
+                                user.genero,
+                                user.descripcion,
+                                user.fechaDeNacimiento,
+                                user.configuraciones,
+                                user.foto
+                            }
+                        });
                     }
                 }
-                else
-                {
-                    return Json("guardado incorrecto");
-                }
             }
-            catch
+            catch (Exception ex)
             {
-                return Json("guardado incorrecto");
-            }   
+                return Json(new { mensaje = "guardado incorrecto", error = ex.Message });
+            }
         }
+
         public class pruebas
         {
             public string User { get; set; }
