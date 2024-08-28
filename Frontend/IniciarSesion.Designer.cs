@@ -56,10 +56,9 @@ namespace Frontend
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.SlateBlue;
-            this.panel1.Location = new System.Drawing.Point(73, 389);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Location = new System.Drawing.Point(55, 316);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(484, 4);
+            this.panel1.Size = new System.Drawing.Size(363, 3);
             this.panel1.TabIndex = 60;
             // 
             // txtContraseña
@@ -68,11 +67,10 @@ namespace Frontend
             this.txtContraseña.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtContraseña.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtContraseña.ForeColor = System.Drawing.Color.Gray;
-            this.txtContraseña.Location = new System.Drawing.Point(167, 354);
-            this.txtContraseña.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtContraseña.Location = new System.Drawing.Point(125, 288);
             this.txtContraseña.MaxLength = 20;
             this.txtContraseña.Name = "txtContraseña";
-            this.txtContraseña.Size = new System.Drawing.Size(299, 27);
+            this.txtContraseña.Size = new System.Drawing.Size(224, 22);
             this.txtContraseña.TabIndex = 53;
             this.txtContraseña.Text = "Contraseña";
             this.txtContraseña.Enter += new System.EventHandler(this.txtContraseña_Enter_1);
@@ -83,11 +81,10 @@ namespace Frontend
             this.txtUsuario.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtUsuario.ForeColor = System.Drawing.Color.Gray;
-            this.txtUsuario.Location = new System.Drawing.Point(167, 241);
-            this.txtUsuario.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtUsuario.Location = new System.Drawing.Point(125, 196);
             this.txtUsuario.MaxLength = 20;
             this.txtUsuario.Name = "txtUsuario";
-            this.txtUsuario.Size = new System.Drawing.Size(299, 27);
+            this.txtUsuario.Size = new System.Drawing.Size(224, 22);
             this.txtUsuario.TabIndex = 52;
             this.txtUsuario.Text = "Usuario";
             this.txtUsuario.Enter += new System.EventHandler(this.txtUsuario_Enter_1);
@@ -98,20 +95,18 @@ namespace Frontend
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Gray;
-            this.label3.Location = new System.Drawing.Point(204, 351);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(153, 285);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(209, 24);
+            this.label3.Size = new System.Drawing.Size(163, 18);
             this.label3.TabIndex = 54;
             this.label3.Text = "¿No tienes una cuenta?";
             // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.SlateBlue;
-            this.panel2.Location = new System.Drawing.Point(73, 273);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel2.Location = new System.Drawing.Point(55, 222);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(484, 4);
+            this.panel2.Size = new System.Drawing.Size(363, 3);
             this.panel2.TabIndex = 61;
             // 
             // panel3
@@ -121,10 +116,9 @@ namespace Frontend
             this.panel3.Controls.Add(this.label3);
             this.panel3.Controls.Add(this.btnIniciarSesion);
             this.panel3.Controls.Add(this.btnRegistrar);
-            this.panel3.Location = new System.Drawing.Point(16, 193);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel3.Location = new System.Drawing.Point(12, 157);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(613, 526);
+            this.panel3.Size = new System.Drawing.Size(460, 428);
             this.panel3.TabIndex = 62;
             // 
             // lblOlvidarContraseña
@@ -133,10 +127,9 @@ namespace Frontend
             this.lblOlvidarContraseña.BackColor = System.Drawing.Color.White;
             this.lblOlvidarContraseña.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblOlvidarContraseña.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.lblOlvidarContraseña.Location = new System.Drawing.Point(77, 217);
-            this.lblOlvidarContraseña.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblOlvidarContraseña.Location = new System.Drawing.Point(58, 176);
             this.lblOlvidarContraseña.Name = "lblOlvidarContraseña";
-            this.lblOlvidarContraseña.Size = new System.Drawing.Size(225, 24);
+            this.lblOlvidarContraseña.Size = new System.Drawing.Size(179, 18);
             this.lblOlvidarContraseña.TabIndex = 59;
             this.lblOlvidarContraseña.Text = "¿Olvidaste tu contraseña?";
             this.lblOlvidarContraseña.Click += new System.EventHandler(this.lblOlvidarContraseña_Click);
@@ -144,10 +137,9 @@ namespace Frontend
             // pcbxLogo
             // 
             pcbxLogo.Image = global::Frontend.Properties.Resources.Logo_Infini;
-            pcbxLogo.Location = new System.Drawing.Point(193, 6);
-            pcbxLogo.Margin = new System.Windows.Forms.Padding(4);
+            pcbxLogo.Location = new System.Drawing.Point(145, 5);
             pcbxLogo.Name = "pcbxLogo";
-            pcbxLogo.Size = new System.Drawing.Size(291, 180);
+            pcbxLogo.Size = new System.Drawing.Size(218, 146);
             pcbxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             pcbxLogo.TabIndex = 63;
             pcbxLogo.TabStop = false;
@@ -155,10 +147,9 @@ namespace Frontend
             // pictureBox3
             // 
             this.pictureBox3.Image = global::Frontend.Properties.Resources.Perfil;
-            this.pictureBox3.Location = new System.Drawing.Point(99, 224);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox3.Location = new System.Drawing.Point(74, 182);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(60, 44);
+            this.pictureBox3.Size = new System.Drawing.Size(45, 36);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox3.TabIndex = 55;
             this.pictureBox3.TabStop = false;
@@ -166,10 +157,9 @@ namespace Frontend
             // pcbxVerContraseña
             // 
             this.pcbxVerContraseña.Image = global::Frontend.Properties.Resources.ver_contraseña_removebg_preview;
-            this.pcbxVerContraseña.Location = new System.Drawing.Point(489, 337);
-            this.pcbxVerContraseña.Margin = new System.Windows.Forms.Padding(4);
+            this.pcbxVerContraseña.Location = new System.Drawing.Point(367, 274);
             this.pcbxVerContraseña.Name = "pcbxVerContraseña";
-            this.pcbxVerContraseña.Size = new System.Drawing.Size(55, 44);
+            this.pcbxVerContraseña.Size = new System.Drawing.Size(41, 36);
             this.pcbxVerContraseña.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pcbxVerContraseña.TabIndex = 59;
             this.pcbxVerContraseña.TabStop = false;
@@ -178,10 +168,9 @@ namespace Frontend
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Frontend.Properties.Resources.Contraseña;
-            this.pictureBox2.Location = new System.Drawing.Point(99, 337);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox2.Location = new System.Drawing.Point(74, 274);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(61, 44);
+            this.pictureBox2.Size = new System.Drawing.Size(46, 36);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 56;
             this.pictureBox2.TabStop = false;
@@ -190,10 +179,9 @@ namespace Frontend
             // 
             this.btnIniciarSesion.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnIniciarSesion.Image = global::Frontend.Properties.Resources.IniciarSesion;
-            this.btnIniciarSesion.Location = new System.Drawing.Point(208, 262);
-            this.btnIniciarSesion.Margin = new System.Windows.Forms.Padding(4);
+            this.btnIniciarSesion.Location = new System.Drawing.Point(156, 213);
             this.btnIniciarSesion.Name = "btnIniciarSesion";
-            this.btnIniciarSesion.Size = new System.Drawing.Size(197, 67);
+            this.btnIniciarSesion.Size = new System.Drawing.Size(148, 54);
             this.btnIniciarSesion.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnIniciarSesion.TabIndex = 57;
             this.btnIniciarSesion.TabStop = false;
@@ -203,21 +191,20 @@ namespace Frontend
             // 
             this.btnRegistrar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRegistrar.Image = global::Frontend.Properties.Resources.Registrarse1;
-            this.btnRegistrar.Location = new System.Drawing.Point(208, 379);
-            this.btnRegistrar.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRegistrar.Location = new System.Drawing.Point(156, 308);
             this.btnRegistrar.Name = "btnRegistrar";
-            this.btnRegistrar.Size = new System.Drawing.Size(197, 67);
+            this.btnRegistrar.Size = new System.Drawing.Size(148, 54);
             this.btnRegistrar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnRegistrar.TabIndex = 58;
             this.btnRegistrar.TabStop = false;
-            this.btnRegistrar.Click += new System.EventHandler(this.btnRegistrar_Click_1);
+            this.btnRegistrar.Click += new System.EventHandler(this.btnRegistrar_Click);
             // 
             // IniciarSesion
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(645, 738);
+            this.ClientSize = new System.Drawing.Size(485, 600);
             this.Controls.Add(this.panel2);
             this.Controls.Add(pcbxLogo);
             this.Controls.Add(this.pictureBox3);
@@ -229,9 +216,8 @@ namespace Frontend
             this.Controls.Add(this.panel3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.MaximumSize = new System.Drawing.Size(663, 785);
-            this.MinimumSize = new System.Drawing.Size(663, 785);
+            this.MaximumSize = new System.Drawing.Size(501, 645);
+            this.MinimumSize = new System.Drawing.Size(501, 597);
             this.Name = "IniciarSesion";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Iniciar sesión";

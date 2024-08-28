@@ -46,7 +46,10 @@ namespace Frontend
 
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
-
+            Registrarse registro = new Registrarse();
+            registro.FormClosed += (s, args) => this.Close();
+            registro.Show();
+            this.Hide();
         }
         private void SetPlaceholder()
         {
@@ -101,10 +104,7 @@ namespace Frontend
             }
         }
 
-        private void btnRegistrar_Click_1(object sender, EventArgs e)
-        {
-            
-        }
+      
 
         private async void btnIniciarSesion_Click_1(object sender, EventArgs e)
         {
