@@ -208,7 +208,7 @@ namespace Frontend
                         nombreVisible = nombreVisible,
                         email = email,
                         descripcion = descripcion,
-                        imagen = "cambiar por string de github",
+                        foto = imagenString,
                         configuraciones = "nada",
                         genero = género,
                         fechaDeNacimiento = fechaDeNacimiento,
