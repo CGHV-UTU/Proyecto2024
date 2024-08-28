@@ -29,16 +29,33 @@ namespace Frontend
 
         public async void notificaciones()
         {
+            // Obtener las notificaciones desde la API o la fuente de datos
             string notificaciones = await conseguirNotificaciones(user);
             string[] notisarray = notificaciones.Split(';');
             int i = notisarray.Length;
+
+            // Ajuste de la posición vertical inicial
+            int currentY = 10; // Comenzar a 10 píxeles desde la parte superior
+
             for (int x = 0; x < i; x++)
             {
-                var noti = new NotificacionControl(notisarray[x]);
-                noti.Size = new Size(465 + margin * 2, 100 + margin * 2); // Ajusta el tamaño según necesites
-                noti.Location = new Point(margin, (x * (noti.Height + margin)));
+                // Crear un panel contenedor para cada notificación
+                Panel panelContenedor = new Panel();
+                panelContenedor.Size = new Size(PanelNotificaciones.Width - 20, 100); // Ancho del panel de notificación menos márgenes
+                panelContenedor.Location = new Point(10, currentY); // Ajusta la posición para cada panel
+                panelContenedor.BorderStyle = BorderStyle.FixedSingle; // Borde para diferenciar
+                panelContenedor.BackColor = Color.White; // Fondo blanco para contraste
 
-                PanelNotificaciones.Controls.Add(noti);
+                // Crear el control de notificación o contenido y añadirlo al panel contenedor
+                var notiControl = new NotificacionControl(notisarray[x]);
+                notiControl.Dock = DockStyle.Fill; // Llenar el panel contenedor
+                panelContenedor.Controls.Add(notiControl);
+
+                // Añadir el panel contenedor al PanelNotificaciones
+                PanelNotificaciones.Controls.Add(panelContenedor);
+
+                // Incrementar la posición Y para el siguiente panel
+                currentY += panelContenedor.Height + 10; // Dejar un margen de 10 píxeles entre paneles
             }
         }
 

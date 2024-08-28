@@ -43,6 +43,7 @@ namespace Frontend
             this.PictureBoxNotificacion.Location = new System.Drawing.Point(3, 3);
             this.PictureBoxNotificacion.Name = "PictureBoxNotificacion";
             this.PictureBoxNotificacion.Size = new System.Drawing.Size(50, 50);
+            this.PictureBoxNotificacion.Image = Properties.Resources.notificacionLike;
 
             this.PictureBoxNotificacion.SizeMode = PictureBoxSizeMode.StretchImage;
             this.Cursor = Cursors.Hand;
@@ -55,7 +56,7 @@ namespace Frontend
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.Name = "NotificacionControl";
-            this.Size = new System.Drawing.Size(465, 100); // Tamaño ajustado
+            this.Size = new System.Drawing.Size(50, 10); // Tamaño ajustado
             this.ResumeLayout(false);
             this.PerformLayout();
         }

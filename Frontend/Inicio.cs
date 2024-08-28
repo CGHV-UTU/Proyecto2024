@@ -24,7 +24,75 @@ namespace Frontend
             VerPosts();
             PanelComentarios.Visible = false;
             PictureBoxSalir.Visible = false;
-            PanelPostear.Visible = false;        
+            PanelPostear.Visible = false;
+            PanelNotificaciones.Visible = false;
+        }
+
+        // Método para inicializar componentes adicionales, incluido el PanelNotificaciones
+        private void IniciarComponentesAdicionales()
+        {
+            // Inicializar el PanelNotificaciones
+            this.PanelNotificaciones = new Panel();
+            this.PanelNotificaciones.AutoScroll = true;
+            this.PanelNotificaciones.Dock = DockStyle.Fill;
+            this.PanelNotificaciones.Location = new Point(0, 0);
+            this.PanelNotificaciones.Name = "PanelNotificaciones";
+            this.PanelNotificaciones.Size = new Size(500, 100);
+            this.PanelNotificaciones.TabIndex = 0;
+            this.PanelNotificaciones.Visible = false; 
+            this.Controls.Add(this.PanelNotificaciones);
+        }
+
+        private void PictureBoxNotificaciones_Click(object sender, EventArgs e)
+        {
+            if (!PanelNotificaciones.Visible)
+            {
+                MostrarNotificacionesEjemplo(); // Método para mostrar las notificaciones de ejemplo
+                PanelNotificaciones.Visible = true; // Mostrar el panel de notificaciones
+            } else {
+                PanelNotificaciones.Visible = false; // Quitar el panel de notificaciones
+            }
+           
+        }
+
+        private void MostrarNotificacionesEjemplo()
+        {
+            PanelNotificaciones.Controls.Clear(); // Limpiar cualquier notificación existente
+            int margin = 10;
+            for (int i = 0; i < 5; i++)
+            {
+                NotificacionControl notificacionControl = new NotificacionControl($"Notificación ejemplo {i + 1}");
+                notificacionControl.Size = new Size(500 - margin * 2, 100);
+                notificacionControl.Location = new Point(margin, i * (notificacionControl.Height + margin));
+                PanelNotificaciones.Controls.Add(notificacionControl);
+            }
+        }
+
+        // Las notificaciones son un string largo. Cada una se va a separar con un ";" 
+        // y luego se va a separar en otros dos campos con ":": Tipo y el texto.
+        // El tipo quiero usarlo para mostrar diferentes íconos de notificación (like, etiquetado,
+        // algo con usuario, cosas así).
+        // 
+        // EJ:
+        //          Like : Texto ; Etiquetado : Texto
+        //          
+        // Cuando nos pasemos de las 4-5 notificaciones, frenamos.
+        // Rellenar el panel de notificaciones con un for cuando tenemos menos de 4-5 notificaciones
+        // podría dar error. 
+
+        private async void MostrarNotificacionesReales()
+        {
+            PanelNotificaciones.Controls.Clear(); // Limpiar cualquier notificación existente
+            int margin = 10;
+            string notificaciones = await conseguirNotificaciones(user);
+            string[] array = notificaciones.Split(';');
+            for (int i = 0; i < 5; i++)
+            {
+                NotificacionControl notificacionControl = new NotificacionControl($"Notificación ejemplo {i + 1}");
+                notificacionControl.Size = new Size(500 - margin * 2, 100);
+                notificacionControl.Location = new Point(margin, i * (notificacionControl.Height + margin));
+                PanelNotificaciones.Controls.Add(notificacionControl);
+            }
         }
 
         // cargar form de posts. -Puse un fondo gris para distinguirlo    
@@ -125,20 +193,7 @@ namespace Frontend
             PanelPostear.Controls.Add(config);
             config.Show();
         }
-
-        private void PictureBoxNotificaciones_Click(object sender, EventArgs e)
-        {
-            PanelNotificaciones.Visible = true;
-            Notificaciones notificaciones = new Notificaciones(user);
-            notificaciones.TopLevel = false;
-            notificaciones.FormBorderStyle = FormBorderStyle.None;
-            notificaciones.BackColor = Color.LightGray;
-            notificaciones.Dock = DockStyle.Fill;
-            PanelNotificaciones.Controls.Add(notificaciones);
-            notificaciones.Show();
-            
-        }
-
+      
         private void CambiarModo(object sender, ConfiguraEventArgs e)
         {
             if (e.Modo.Equals("Claro"))
@@ -181,6 +236,24 @@ namespace Frontend
             
         }
 
-        
+        public static async Task<string> conseguirNotificaciones(string usuario)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    var datos = new { nombreDeCuenta = usuario };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync("https://localhost:44383/user/ConseguirNotificaciones", content);
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+            }
+            catch (Exception ex)
+            {
+                return "fallido: " + ex.Message;
+            }
+        }
     }
 }

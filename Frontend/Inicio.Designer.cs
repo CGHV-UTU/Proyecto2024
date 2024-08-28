@@ -187,7 +187,11 @@ namespace Frontend
             // 
             // PanelNotificaciones
             // 
+            this.PanelNotificaciones.AutoScroll = true;
+            this.PanelNotificaciones.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.PanelNotificaciones.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PanelNotificaciones.Location = new System.Drawing.Point(596, 56);
+            this.PanelNotificaciones.MaximumSize = new System.Drawing.Size(600, 419);
             this.PanelNotificaciones.Name = "PanelNotificaciones";
             this.PanelNotificaciones.Size = new System.Drawing.Size(600, 419);
             this.PanelNotificaciones.TabIndex = 0;

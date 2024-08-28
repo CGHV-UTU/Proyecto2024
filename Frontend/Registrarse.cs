@@ -209,7 +209,7 @@ namespace Frontend
                         email = email,
                         descripcion = descripcion,
                         foto = imagenString,
-                        configuraciones = "nada",
+                        configuraciones = "{Claro};{Español}",
                         genero = género,
                         fechaDeNacimiento = fechaDeNacimiento,
                         estadoDeCuenta = "activo",

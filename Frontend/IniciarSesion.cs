@@ -108,22 +108,41 @@ namespace Frontend
 
         private async void btnIniciarSesion_Click_1(object sender, EventArgs e)
         {
-            var token = await HacerPeticion(txtUsuario.Text, txtContraseña.Text);
-            if (!token.Equals("Solicitud inválida"))
+            try
             {
-                var resultado = await ComprobarPeticion(token);
-                if (resultado)
-                {
-                    Inicio inicio = new Inicio(txtUsuario.Text);
-                    inicio.FormClosed += (s, args) => this.Close();
-                    inicio.Show();
-                    this.Hide();
-                }
-                else
-                {
-                    MessageBox.Show("Ha ocurrido un error. No se pudo iniciar sesión", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                    var token = await HacerPeticion(txtUsuario.Text, txtContraseña.Text);
+                    if (!token.Equals("Solicitud inválida"))
+                    {
+                        var resultado = await ComprobarPeticion(token);
+                        if (resultado)
+                        {
+                            Inicio inicio = new Inicio(txtUsuario.Text);
+                            inicio.FormClosed += (s, args) => this.Close();
+                            inicio.Show();
+                            this.Hide();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Ha ocurrido un error. No se pudo iniciar sesión", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            txtUsuario.Text = "Usuario";
+                            txtContraseña.Text = "Contraseña";
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ha ocurrido un error. No se pudo iniciar sesión", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        txtUsuario.Text = "Usuario";
+                        txtContraseña.Text = "Contraseña";
+                    }              
+            } 
+            catch
+            {
+                MessageBox.Show("Ha ocurrido un error. No se pudo iniciar sesión", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtUsuario.Text = "Usuario";
+                txtContraseña.Text = "Contraseña";
             }
+           
+            
         }
 
         private void txtContraseña_Leave_1(object sender, EventArgs e)
