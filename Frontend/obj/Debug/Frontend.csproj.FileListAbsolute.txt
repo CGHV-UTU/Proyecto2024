@@ -210,3 +210,6 @@ C:\Users\Usuario\Desktop\Frontend-Infini\Proyecto2024\Frontend\obj\Debug\Fronten
 C:\Users\Usuario\Desktop\Frontend-Infini\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CopyComplete
 C:\Users\Usuario\Desktop\Frontend-Infini\Proyecto2024\Frontend\obj\Debug\Frontend.exe
 C:\Users\Usuario\Desktop\Frontend-Infini\Proyecto2024\Frontend\obj\Debug\Frontend.pdb
+C:\Users\FedeG\OneDrive\Escritorio\2808inf\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.AssemblyReference.cache
+C:\Users\FedeG\OneDrive\Escritorio\2808inf\Proyecto2024\Frontend\obj\Debug\Frontend.exe
+C:\Users\FedeG\OneDrive\Escritorio\2808inf\Proyecto2024\Frontend\obj\Debug\Frontend.pdb
