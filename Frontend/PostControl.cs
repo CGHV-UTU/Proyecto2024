@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,12 +17,87 @@ namespace Frontend
     {
         public event EventHandler AbrirComentarios;
         private string modo;
-        public PostControl(string title, string postType, string modo)
+        private int idpost;
+        public string tipo;
+        public PostControl(int idpost, string modo)
         {
             this.modo = modo;
-            iniciar(postType);
-            lblNombre.Text = title;
+            this.idpost = idpost;
         }
+
+        public async Task aplicarDatos()
+        {
+            var data = await Buscar(idpost);
+            if (string.IsNullOrEmpty(data[2]))
+            {
+                if (string.IsNullOrEmpty(data[1]))
+                {
+                    this.tipo = "textOnly";
+                    iniciar("textOnly");
+                    txtDescripcion.Text = data[0];
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(data[0]))
+                    {
+                        this.tipo = "urlOnly";
+                        iniciar("urlOnly");
+                        txtUrl.Text = data[1];
+                    }
+                    else
+                    {
+                        this.tipo = "textAndUrl";
+                        iniciar("textAndUrl");
+                        txtDescripcion.Text = data[0];
+                        txtUrl.Text = data[1];
+                    }
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(data[0]))
+                {
+                    this.tipo = "imageOnly";
+                    iniciar("imageOnly");
+                    byte[] imagen = Convert.FromBase64String(data[2]);
+                    MemoryStream ms = new MemoryStream(imagen);
+                    Bitmap bitmap = new Bitmap(ms);
+                    this.imagen.Image = bitmap;
+                    this.imagen.SizeMode = PictureBoxSizeMode.StretchImage;
+                }
+                else
+                {
+                    this.tipo = "textAndImage";
+                    iniciar("textAndImage");
+                    txtDescripcion.Text = data[0];
+                    byte[] imagen = Convert.FromBase64String(data[2]);
+                    MemoryStream ms = new MemoryStream(imagen);
+                    Bitmap bitmap = new Bitmap(ms);
+                    this.imagen.Image = bitmap;
+                    this.imagen.SizeMode = PictureBoxSizeMode.StretchImage;
+                }
+            }
+        }
+
+        static async Task<string[]> Buscar(int id)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/postPorId?id={id}");
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de nin}guna manera, tengo que hallar alguna forma de pasar los datos
+                    return new string[] { data.texto, data.url, data.imagen };
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
 
         private void ConfigurarPostControl(string postType)
         {
@@ -96,7 +174,7 @@ namespace Frontend
                     PictureBoxLike.Image = Properties.Resources.like_infini;
                     isImage1 = true;
                 }
-            }      
+            }
         }
 
         //Abrir comentarios
@@ -115,8 +193,8 @@ namespace Frontend
             this.PictureBoxCompartir = new PictureBox();
             this.PictureBoxOpcionesPost = new PictureBox();
             this.button1 = new Button();
-            this.txtDescripcion = new TextBox();
-            this.txtUrl = new TextBox();
+            this.txtDescripcion = new Label();
+            this.txtUrl = new Label();
             this.SuspendLayout();
 
             // lblTitle
@@ -236,7 +314,8 @@ namespace Frontend
                     this.txtUrl.Text = "Aca va la URL.";
                     this.txtDescripcion.Visible = true;
                     this.txtUrl.Visible = true;
-                    this.txtUrl.Location = new Point(76, 115);
+                    this.txtDescripcion.Location = new Point(76, 85);
+                    this.txtUrl.Location = new Point(76, txtDescripcion.Bottom + 10);
                     this.PictureBoxLike.Location = new Point(76, txtUrl.Bottom + 10);
                     this.PictureBoxComentarios.Location = new Point(548, txtUrl.Bottom + 10);
                     this.PictureBoxCompartir.Location = new Point(604, txtUrl.Bottom + 10);
@@ -253,6 +332,7 @@ namespace Frontend
                     this.PictureBoxComentarios.Location = new Point(548, txtDescripcion.Bottom + 10);
                     this.PictureBoxCompartir.Location = new Point(604, txtDescripcion.Bottom + 10);
                     this.PictureBoxOpcionesPost.Location = new Point(660, txtDescripcion.Bottom + 10);
+                    this.Height = PictureBoxLike.Bottom + 10;
                     break;
 
                 case "urlOnly":
@@ -287,7 +367,7 @@ namespace Frontend
                 this.txtDescripcion.ForeColor = Color.Black;
                 this.lblNombre.ForeColor = Color.Black;
             }
-            this.ResumeLayout(false);     
+            this.ResumeLayout(false);
             this.PerformLayout();
         }
 

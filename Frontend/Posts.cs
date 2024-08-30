@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,7 +16,6 @@ namespace Frontend
     {
         public event EventHandler AbrirComentarios;
         private int currentPage = 0;
-        private const int postsPerPage = 10;
         private string modo;
         public Posts(string modo)
         {
@@ -24,6 +25,43 @@ namespace Frontend
             panel1.Scroll += PanelPosts_Scroll;
         }
 
+        static async Task<bool> Existe(int id)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/existePost?id={id}");
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject<bool>(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de ninguna manera, tengo que hallar alguna forma de pasar los datos
+                    return data;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
+        static async Task<string> CuantosPost()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/ultimoPost");
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de ninguna manera, tengo que hallar alguna forma de pasar los datos
+                    return data;
+                }
+                catch
+                {
+                    return "0";
+                }
+            }
+        }
         private void PanelPosts_Scroll(object sender, ScrollEventArgs e)
         {
             if (panel1.VerticalScroll.Value + panel1.ClientSize.Height >= panel1.VerticalScroll.Maximum)
@@ -33,34 +71,34 @@ namespace Frontend
             }
         }
 
-        private void LoadPosts(int page)
+        private async void LoadPosts(int page)
         {
+            var cantPost = await CuantosPost();
+
             // Simulación de carga de posts
-            for (int i = 0; i < postsPerPage; i++)
+            for (int i = 0; i < int.Parse(cantPost); i++)
             {
-                string postType;
-                switch (i % 5)
+                var existe = await Existe(i);
+                if (existe)
                 {
-                    case 0:
-                        postType = "imageOnly";
-                        break;
-                    case 1:
-                        postType = "textAndUrl";
-                        break;
-                    case 2:
-                        postType = "textOnly";
-                        break;
-                    case 3:
-                        postType = "urlOnly";
-                        break;
-                    default:
-                        postType = "textAndImage";
-                        break;
+                    var postControl = new PostControl(i + 1, modo);
+                    postControl.AbrirComentarios += PostControl_AbrirComentarios;
+                    await postControl.aplicarDatos();
+                    // Calcula la ubicación Y acumulada
+                    int currentYPosition = 0;
+                    if (panel1.Controls.Count > 0)
+                    {
+                        var lastControl = panel1.Controls[panel1.Controls.Count - 1];
+                        if (postControl.tipo.Equals("imageOnly") || postControl.tipo.Equals("textAndImage"))
+                        {
+                            await Task.Delay(300);
+                        }
+                        currentYPosition = lastControl.Bottom;  // La posición inferior del último control agregado
+                    }
+                    postControl.Location = new Point(0, currentYPosition);
+
+                    panel1.Controls.Add(postControl);
                 }
-                var postControl = new PostControl($"Post {i + 1}", postType, modo);
-                postControl.AbrirComentarios += PostControl_AbrirComentarios;
-                postControl.Location = new Point(0, (page * postsPerPage + i) * postControl.Height);
-                panel1.Controls.Add(postControl);
             }
         }
         private void PostControl_AbrirComentarios(object sender, EventArgs e)

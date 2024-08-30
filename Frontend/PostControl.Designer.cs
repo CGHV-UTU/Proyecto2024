@@ -31,14 +31,14 @@ namespace Frontend
         {
             this.lblNombre = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.txtDescripcion = new System.Windows.Forms.TextBox();
-            this.txtUrl = new System.Windows.Forms.TextBox();
             this.PictureBoxOpcionesPost = new System.Windows.Forms.PictureBox();
             this.PictureBoxCompartir = new System.Windows.Forms.PictureBox();
             this.PictureBoxComentarios = new System.Windows.Forms.PictureBox();
             this.PictureBoxLike = new System.Windows.Forms.PictureBox();
             this.PictureBoxUsuarioPost = new System.Windows.Forms.PictureBox();
             this.imagen = new System.Windows.Forms.PictureBox();
+            this.txtDescripcion = new System.Windows.Forms.Label();
+            this.txtUrl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOpcionesPost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCompartir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxComentarios)).BeginInit();
@@ -65,22 +65,6 @@ namespace Frontend
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // txtDescripcion
-            // 
-            this.txtDescripcion.Location = new System.Drawing.Point(80, 77);
-            this.txtDescripcion.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.txtDescripcion.Name = "txtDescripcion";
-            this.txtDescripcion.Size = new System.Drawing.Size(636, 20);
-            this.txtDescripcion.TabIndex = 29;
-            // 
-            // txtUrl
-            // 
-            this.txtUrl.Location = new System.Drawing.Point(80, 471);
-            this.txtUrl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(636, 20);
-            this.txtUrl.TabIndex = 30;
             // 
             // PictureBoxOpcionesPost
             // 
@@ -151,6 +135,24 @@ namespace Frontend
             this.imagen.TabIndex = 21;
             this.imagen.TabStop = false;
             // 
+            // txtDescripcion
+            // 
+            this.txtDescripcion.AutoSize = true;
+            this.txtDescripcion.Location = new System.Drawing.Point(86, 77);
+            this.txtDescripcion.Name = "txtDescripcion";
+            this.txtDescripcion.Size = new System.Drawing.Size(44, 13);
+            this.txtDescripcion.TabIndex = 31;
+            this.txtDescripcion.Text = "Nombre";
+            // 
+            // txtUrl
+            // 
+            this.txtUrl.AutoSize = true;
+            this.txtUrl.Location = new System.Drawing.Point(86, 469);
+            this.txtUrl.Name = "txtUrl";
+            this.txtUrl.Size = new System.Drawing.Size(44, 13);
+            this.txtUrl.TabIndex = 32;
+            this.txtUrl.Text = "Nombre";
+            // 
             // PostControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -188,7 +190,7 @@ namespace Frontend
         private System.Windows.Forms.PictureBox PictureBoxLike;
         private System.Windows.Forms.PictureBox PictureBoxUsuarioPost;
         private System.Windows.Forms.PictureBox imagen;
-        private System.Windows.Forms.TextBox txtDescripcion;
-        private System.Windows.Forms.TextBox txtUrl;
+        private System.Windows.Forms.Label txtDescripcion;
+        private System.Windows.Forms.Label txtUrl;
     }
 }
