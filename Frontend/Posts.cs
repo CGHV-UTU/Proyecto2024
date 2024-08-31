@@ -14,7 +14,7 @@ namespace Frontend
 {
     public partial class Posts : Form
     {
-        public event EventHandler AbrirComentarios;
+        public event EventHandler<PersonalizedArgs> AbrirComentarios;
         private int currentPage = 0;
         private string modo;
         public Posts(string modo)
@@ -101,10 +101,10 @@ namespace Frontend
                 }
             }
         }
-        private void PostControl_AbrirComentarios(object sender, EventArgs e)
+        private void PostControl_AbrirComentarios(object sender, PersonalizedArgs e)
         {
             // Disparar el evento para que lo maneje quien esté suscrito (en este caso, Inicio)
-            AbrirComentarios?.Invoke(this, e);
+            AbrirComentarios?.Invoke(this, new PersonalizedArgs(e.arg));
         }
         private void Iniciar()
         {
@@ -128,7 +128,5 @@ namespace Frontend
             this.Text = "Infinite Scroll Posts";
             this.ResumeLayout(false);
         }
-
-
     }
 }

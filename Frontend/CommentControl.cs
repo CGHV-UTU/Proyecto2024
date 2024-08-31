@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,17 +14,35 @@ namespace Frontend
 {
     public partial class CommentControl : UserControl
     {
-
-        public CommentControl(string nombre, string texto)
+        private string idpost;
+        private int idcomentario;
+        public CommentControl(string modo,string idpost, int idcomentario)
         {
+            this.idpost = idpost;
+            this.idcomentario = idcomentario;
             InitializeComponent();
             Iniciar();
-
-            lblNombre.Text = nombre;
-            txtBox.Text = texto;
             txtBox.ReadOnly = true;
-
             AjustarTamaño();
+            aplicarDatos();
+        }
+        static async Task<string[]> BuscarComentario(int id)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/conseguirComentario?id={id}");
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return new string[] { data.NombreDeCuenta, data.texto, data.fechayhora };
+                }
+                catch
+                {
+                    return null;
+                }
+            }
         }
 
         private void AjustarTamaño()
@@ -30,6 +50,12 @@ namespace Frontend
             txtBox.Size = new Size(this.Width - 70, this.Height - 65);
         }
 
+        private async void aplicarDatos()
+        {
+            var data = await BuscarComentario(idcomentario);
+            lblNombre.Text = data[0];
+            txtBox.Text = data[1];
+        }
 
         private bool isImage1 = true;
 

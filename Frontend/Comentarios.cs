@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,12 +17,34 @@ namespace Frontend
         private int currentPage = 0;
         private const int commentsPerPage = 10;
         private const int margin = 10; // margen para los comentarios
-
-        public Comentarios()
+        private string modo;
+        private string idpost;
+        public Comentarios(string modo,string idpost)
         {
+            this.modo = modo;
+            this.idpost = idpost;
             Iniciar();
             LoadComments(currentPage);
             PanelComentarios.Scroll += PanelComments_Scroll;
+        }
+
+        static async Task<dynamic> ConseguirComentarios(int id)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/seleccionarTodosLosComentarios?id={id}");
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de nin}guna manera, tengo que hallar alguna forma de pasar los datos
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
         }
 
         private void PanelComments_Scroll(object sender, ScrollEventArgs e)
@@ -32,17 +56,19 @@ namespace Frontend
             }
         }
 
-        private void LoadComments(int page)
+        private async void LoadComments(int page)
         {
-            for (int i = 0; i < commentsPerPage; i++)
+            DataTable comentarios=await ConseguirComentarios(int.Parse(idpost));
+            if (comentarios != null)
             {
-                var nombreUsuario = $"Usuario {page * commentsPerPage + i + 1}";
-                var comentarioTexto = $"Este es el comentario número {page * commentsPerPage + i + 1}.";
-                var commentControl = new CommentControl(nombreUsuario, comentarioTexto);
-                commentControl.Size = new Size(465 + margin * 2, 171 + margin * 2);
-                commentControl.Location = new Point(margin, (page * commentsPerPage + i) * (commentControl.Height + margin));
-
-                PanelComentarios.Controls.Add(commentControl);
+                for (int i = 0; i <= comentarios.Rows.Count; i++)
+                {
+                    int idcomentario = Convert.ToInt32(comentarios.Rows[i]["id"]);
+                    var commentControl = new CommentControl(modo, idpost, idcomentario);
+                    commentControl.Size = new Size(465 + margin * 2, 171 + margin * 2);
+                    commentControl.Location = new Point(margin, (page * commentsPerPage + i) * (commentControl.Height + margin));
+                    PanelComentarios.Controls.Add(commentControl);
+                }
             }
         }
 

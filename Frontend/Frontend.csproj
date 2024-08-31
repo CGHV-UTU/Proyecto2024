@@ -87,6 +87,7 @@
       <DependentUpon>Configuracion.cs</DependentUpon>
     </Compile>
     <Compile Include="ConfiguraEventArgs.cs" />
+    <Compile Include="PersonalizedArgs.cs" />
     <Compile Include="Registrarse.cs">
       <SubType>Form</SubType>
     </Compile>

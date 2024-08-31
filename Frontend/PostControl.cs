@@ -15,7 +15,7 @@ namespace Frontend
 {
     public partial class PostControl : UserControl
     {
-        public event EventHandler AbrirComentarios;
+        public event EventHandler<PersonalizedArgs> AbrirComentarios;
         private string modo;
         private int idpost;
         public string tipo;
@@ -180,7 +180,7 @@ namespace Frontend
         //Abrir comentarios
         private void PictureBoxComentarios_Click(object sender, EventArgs e)
         {
-            AbrirComentarios?.Invoke(this, EventArgs.Empty);
+            AbrirComentarios?.Invoke(this, new PersonalizedArgs(""+idpost));
         }
 
         private void iniciar(string postType)

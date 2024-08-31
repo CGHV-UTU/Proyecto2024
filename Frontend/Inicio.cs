@@ -118,15 +118,17 @@ namespace Frontend
             PanelPosts.Controls.Add(post);
             post.Show();
         }
-        private void PostControl_AbrirComentarios(object sender, EventArgs e)
+        private void PostControl_AbrirComentarios(object sender, PersonalizedArgs e)
         {
-            VerComentarios();
+            VerComentarios(e.arg);
             PanelComentarios.Visible = true;
             PictureBoxSalir.Visible = true;
         }
-        private void VerComentarios()
+        private async void VerComentarios(string idpost)
         {
-            Comentarios comentario = new Comentarios();
+            string config = await conseguirConfig(user);
+            string[] configure = config.Split(';');
+            Comentarios comentario = new Comentarios(configure[0],idpost);
             comentario.TopLevel = false;
             comentario.FormBorderStyle = FormBorderStyle.None;
             comentario.BackColor = Color.LightGray;
