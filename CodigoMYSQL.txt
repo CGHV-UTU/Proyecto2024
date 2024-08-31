@@ -1,58 +1,170 @@
+CREATE DATABASE IF NOT EXISTS infini;
+use infini;
 
--- Crear base de datos y tablas
-CREATE DATABASE IF NOT EXISTS base;
-USE base;
-
-CREATE TABLE IF NOT EXISTS posts (
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    texto VARCHAR(100),
-    imagen BLOB,
-    url VARCHAR(50),
-    categorias varchar(100) not null,
-    comentarios bool not null,
-    likes int(11) not null,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS usuarios (
-    NombreDeCuenta varchar(20) NOT NULL,
-    NombreVisible varchar(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS Usuarios (
+    nombreDeCuenta varchar(20) NOT NULL,
+    nombreVisible varchar(20) NOT NULL,
     email varchar(50) NOT NULL,
-    Descripcion varchar(100),
-    Foto BLOB NOT NULL,
+    descripcion varchar(100),
+    foto VARCHAR(150) NOT NULL,
     configuraciones varchar(200) NOT NULL,
     genero varchar(20) NOT NULL,
-    fecha_de_nacimiento VARCHAR(15) NOT NULL,
-    estado_de_cuenta varchar(20) NOT NULL,
-    PRIMARY KEY (NombreDeCuenta)
-    );
-    
-CREATE TABLE login(
-    NombreDeCuenta varchar(20) NOT NULL,
-    Contraseña varchar(20) NOT NULL,
-    PRIMARY KEY(NombreDeCuenta, Contraseña)
+    fechaDeNacimiento DATE,
+    estadoDeCuenta ENUM('activo', 'inactivo', 'suspendido') NOT NULL,  
+    notificaciones MediumText, 
+    PRIMARY KEY (nombreDeCuenta)
     );
 
-CREATE TABLE IF NOT EXISTS eventos (
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    titulo VARCHAR(100) NOT NULL,
-    ubicacion VARCHAR(100),
+CREATE TABLE IF NOT EXISTS Grupos (
+    nombreReal VARCHAR(20) NOT NULL,
+    nombreVisible VARCHAR(20) NOT NULL,
+    configuracion TinyText,
     descripcion VARCHAR(100),
-    foto BLOB NOT NULL,
-    fechayhora VARCHAR(100) NOT NULL,
-    PRIMARY KEY (id)
+    foto VARCHAR(100),
+    chatGrupal LONGTEXT,
+    PRIMARY KEY (nombreReal)
 );
 
-create table IF NOT EXISTS comentarios (
-	id int(11) not null auto_increment,
-    NombreDeCuenta varchar(20) NOT NULL,
-    IdPost int(11) not null,
-    texto varchar(100) not null,
-    fechayhora VARCHAR(100) NOT NULL,
-    likes int(11) not null,
-    PRIMARY KEY (id),
-    FOREIGN KEY (IdPost) references posts(id)
+CREATE TABLE IF NOT EXISTS Posts (
+    idPost INT NOT NULL AUTO_INCREMENT,
+    nombreDeCuenta varchar(20) NOT NULL,
+    texto VARCHAR(100),    
+    video VARCHAR(50),
+    imagen VARCHAR(100),
+    categoria VARCHAR(100) NOT NULL,
+    fechaYHora DATETIME,
+    comentarios BOOL NOT NULL DEFAULT TRUE,
+    PRIMARY KEY (idPost)
+);
+CREATE TABLE IF NOT EXISTS PostPublico (
+    idPost INT NOT NULL,
+    nombreDeCuenta varchar(20) NOT NULL,
+    likes int NOT NULL DEFAULT 0,
+    PRIMARY KEY (idPost, nombreDeCuenta),
+    FOREIGN KEY (nombreDeCuenta) REFERENCES Usuarios(nombreDeCuenta),
+    FOREIGN KEY (idPost) REFERENCES Posts(idPost)
+);
+CREATE TABLE IF NOT EXISTS PostGrupo (
+    idPost INT NOT NULL AUTO_INCREMENT,
+    nombreDeCuenta VARCHAR(20) NOT NULL,
+    nombreReal VARCHAR(20) NOT NULL,
+    alEvento BOOL NOT NULL,
+    PRIMARY KEY (idPost, nombreDeCuenta, nombreReal),
+    FOREIGN KEY (nombreDeCuenta) REFERENCES Usuarios(nombreDeCuenta),
+    FOREIGN KEY (idPost) REFERENCES Posts(idPost),
+    FOREIGN KEY (nombreReal) REFERENCES Grupos(nombreReal)
 );
 
-select * from posts;
-select * from comentarios;
+create table IF NOT EXISTS Comentarios (
+    id int NOT NULL AUTO_INCREMENT,
+    nombreDeCuenta varchar(20) NOT NULL,
+    idPost int NOT NULL,
+    nombreCreador VARCHAR(20) NOT NULL,
+    texto varchar(100) NOT NULL,
+    likes int NOT NULL DEFAULT 0,
+    fechaYHora DATETIME NOT NULL,    
+    PRIMARY KEY (id, nombreDeCuenta),
+    FOREIGN KEY (idPost) references Posts(idPost),
+    FOREIGN KEY (nombreDeCuenta) REFERENCES Usuarios(nombreDeCuenta),
+    FOREIGN KEY (nombreCreador) REFERENCES Usuarios(nombreDeCuenta)		
+);
+
+CREATE TABLE IF NOT EXISTS Eventos (
+    idEvento INT NOT NULL AUTO_INCREMENT,
+    nombreReal VARCHAR(20) NOT NULL,
+    titulo VARCHAR(20) NOT NULL,
+    ubicacion VARCHAR(50),
+    fechaYHora DATETIME NOT NULL,
+    foto VARCHAR(100),
+    descripcion VARCHAR(100),
+    PRIMARY KEY (idEvento, nombreReal),
+    FOREIGN KEY (nombreReal) REFERENCES Grupos(nombreReal)
+);
+
+CREATE TABLE IF NOT EXISTS Ban (
+    idBan INT NOT NULL AUTO_INCREMENT,
+    nombreDeUsuario VARCHAR(20) NOT NULL,
+    fechaInicio DATETIME NOT NULL,
+    fechaFinalizacion DATETIME,
+    PRIMARY KEY (idBan, nombreDeUsuario),
+    FOREIGN KEY (nombreDeUsuario) REFERENCES Usuarios(nombreDeCuenta)
+);
+
+CREATE TABLE IF NOT EXISTS ReporteUsuario (
+    numeroDeReporte INT NOT NULL AUTO_INCREMENT,
+    nombreDeUsuario VARCHAR(20) NOT NULL,
+    tipo VARCHAR(50) NOT NULL,
+    descripcion TINYTEXT NOT NULL,
+    PRIMARY KEY(numeroDeReporte, nombreDeUsuario),
+    FOREIGN KEY (nombreDeUsuario) REFERENCES Usuarios(nombreDeCuenta)
+);
+
+CREATE TABLE IF NOT EXISTS ReporteGrupo (
+    numeroDeReporte int NOT NULL AUTO_INCREMENT,
+    nombreReal VARCHAR(20) NOT NULL,
+    tipo varchar(50) NOT NULL,
+    descripcion TINYTEXT NOT NULL,
+    PRIMARY KEY (numeroDeReporte, nombreReal),
+    FOREIGN KEY (nombreReal) REFERENCES Grupos(nombreReal)                                                    
+);
+
+CREATE TABLE IF NOT EXISTS ReportePost (
+    numeroDeReporte int NOT NULL AUTO_INCREMENT,
+    nombreDeCuenta VARCHAR(20) NOT NULL,
+    idPost int NOT NULL,
+    tipo VARCHAR(50) NOT NULL,
+    descripcion TINYTEXT,
+    PRIMARY KEY (numeroDeReporte, idPost, nombreDeCuenta),
+    FOREIGN KEY (nombreDeCuenta) REFERENCES Usuarios(nombreDeCuenta),
+    FOREIGN KEY (idPost) REFERENCES PostPublico(idPost)
+);
+
+CREATE TABLE IF NOT EXISTS ReporteComentario (
+    numeroDeReporte int NOT NULL AUTO_INCREMENT,
+    idComentario int NOT NULL,
+    nombreDeCuenta VARCHAR(20) NOT NULL,
+    tipo VARCHAR(50) NOT NULL,    
+    descripcion TINYTEXT NOT NULL,
+    PRIMARY KEY (numeroDeReporte, idComentario, nombreDeCuenta),
+    FOREIGN KEY (nombreDeCuenta) REFERENCES Usuarios(nombreDeCuenta),
+    FOREIGN KEY (idComentario) REFERENCES Comentarios(id)
+);
+
+CREATE TABLE IF NOT EXISTS Login (
+    nombreDeCuenta VARCHAR(20) NOT NULL,
+    contrasena VARCHAR(50) NOT NULL,
+    PRIMARY KEY (nombreDeCuenta, contrasena)
+   -- FOREIGN KEY (nombreDeCuenta) REFERENCES Usuarios(nombreDeCuenta) esto no va, confirmado por el prof
+);
+
+-- Usuario - Usuario
+CREATE TABLE IF NOT EXISTS Interactua(
+    nombreDeCuenta VARCHAR(20)  NOT NULL,
+    nombreDeCuenta2 VARCHAR(20) NOT NULL,
+    tipoInteraccion VARCHAR(10),
+    PRIMARY KEY (nombreDeCuenta, nombreDeCuenta2),
+    FOREIGN KEY (nombreDeCuenta) REFERENCES Usuarios(nombreDeCuenta),
+    FOREIGN KEY (nombreDeCuenta2) REFERENCES Usuarios(nombreDeCuenta)    
+);
+
+-- Usuario - Grupo
+CREATE TABLE IF NOT EXISTS Participa(
+    nombreDeCuenta VARCHAR(20) NOT NULL,
+    nombreReal VARCHAR(20) NOT NULL,
+    rol VARCHAR(20) NOT NULL,
+   participaEvento BOOL,
+   PRIMARY KEY (nombreDeCuenta, nombreReal),
+   FOREIGN KEY (nombreDeCuenta) REFERENCES Usuarios(nombreDeCuenta),
+   FOREIGN KEY (nombreReal) REFERENCES Grupos(nombreReal)
+);
+
+
+CREATE TABLE IF NOT EXISTS DaLike(
+    nombreDeCuenta VARCHAR(20) NOT NULL,
+    idPost INT NOT NULL, 
+    nombredeCreador VARCHAR(20) NOT NULL,
+    PRIMARY KEY (nombreDeCuenta, idPost, nombredeCreador),
+    FOREIGN KEY (nombreDeCuenta) REFERENCES Usuarios(nombreDeCuenta),
+    FOREIGN KEY (nombredeCreador) REFERENCES Usuarios(nombreDeCuenta),
+    FOREIGN KEY (idPost) REFERENCES PostPublico(idPost)
+);

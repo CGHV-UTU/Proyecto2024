@@ -47,7 +47,7 @@ namespace APIpostYeventos
             pbxImagen.Image = null;
         }
 
-        public void btnPublicar_Click(object sender, EventArgs e)
+        public async void btnPublicar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtEnlace.Text))
             {
@@ -66,7 +66,7 @@ namespace APIpostYeventos
                     if(pbxImagen.Image == null)
                     {
                         byte[] data = new byte[0];
-                        Publicar(txtTexto.Text, txtEnlace.Text, data);
+                        await Publicar(txtTexto.Text, txtEnlace.Text, data);
                         lblError.Text = "El post se creó correctamente";
                         lblError.Show();  
                     }
@@ -75,7 +75,7 @@ namespace APIpostYeventos
                         MemoryStream ms = new MemoryStream();
                         pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                         byte[] data = ms.ToArray();
-                        Publicar(txtTexto.Text, txtEnlace.Text, data);
+                        await Publicar(txtTexto.Text, txtEnlace.Text, data);
                         lblError.Text = "El post se creó correctamente";
                         lblError.Show();
                     }
