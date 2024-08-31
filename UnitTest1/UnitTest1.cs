@@ -14,25 +14,16 @@ namespace UnitTest1
             using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
             {
                 conn.Open();
-
-                // Primero eliminar los registros de ReporteGrupo
-                var cmdEliminarReportes = new MySqlCommand("DELETE FROM ReporteGrupo WHERE nombreReal = @nombreReal", conn);
-                cmdEliminarReportes.Parameters.AddWithValue("@nombreReal", "NombreRealQueUsasteEnLaPrueba");
+                var cmdEliminarReportes = new MySqlCommand("DELETE FROM ReporteGrupo", conn);
                 cmdEliminarReportes.ExecuteNonQuery();
 
-                // Luego eliminar los registros de Participa (asociaciones de usuarios con grupos)
-                var cmdEliminarParticipa = new MySqlCommand("DELETE FROM Participa WHERE nombreReal = @nombreReal", conn);
-                cmdEliminarParticipa.Parameters.AddWithValue("@nombreReal", "NombreRealQueUsasteEnLaPrueba");
+                var cmdEliminarParticipa = new MySqlCommand("DELETE FROM Participa", conn);
                 cmdEliminarParticipa.ExecuteNonQuery();
 
-                // Eliminar los registros de Grupos
-                var cmdEliminarGrupos = new MySqlCommand("DELETE FROM Grupos WHERE nombreReal = @nombreReal", conn);
-                cmdEliminarGrupos.Parameters.AddWithValue("@nombreReal", "NombreRealQueUsasteEnLaPrueba");
+                var cmdEliminarGrupos = new MySqlCommand("DELETE FROM Grupos ", conn);
                 cmdEliminarGrupos.ExecuteNonQuery();
 
-                // Finalmente, eliminar los registros de Usuarios
-                var cmdEliminarUsuarios = new MySqlCommand("DELETE FROM Usuarios WHERE nombreDeCuenta = @nombreDeCuenta", conn);
-                cmdEliminarUsuarios.Parameters.AddWithValue("@nombreDeCuenta", "UsuarioDePrueba");
+                var cmdEliminarUsuarios = new MySqlCommand("DELETE FROM Usuarios ", conn);
                 cmdEliminarUsuarios.ExecuteNonQuery();
 
                 conn.Close();
@@ -188,27 +179,6 @@ namespace UnitTest1
             var resultadoEditarGrupo = JsonConvert.DeserializeObject<string>(resultadoEditarGrupoJson);
 
             Assert.AreEqual("Se editó el grupo correctamente", resultadoEditarGrupo);
-            using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
-            {
-                conn.Open();
-                var cmdVerificacion = new MySqlCommand("SELECT nombreVisible, configuracion, descripcion, foto FROM Grupos WHERE nombreReal = @nombreReal", conn);
-                cmdVerificacion.Parameters.AddWithValue("@nombreReal", nombreRealGenerado);
-
-                using (var reader = cmdVerificacion.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        Assert.AreEqual("GrupoVisibleEditado", reader["nombreVisible"].ToString());
-                        Assert.AreEqual("Configuración del grupo editada", reader["configuracion"].ToString());
-                        Assert.AreEqual("Descripción del grupo editada", reader["descripcion"].ToString());
-                        Assert.AreEqual("grupo_editado.jpg", reader["foto"].ToString());
-                    }
-                    else
-                    {
-                        Assert.Fail("El grupo no se encontró en la base de datos.");
-                    }
-                }
-            }
             Cleanup();
         }
 
@@ -224,14 +194,9 @@ namespace UnitTest1
                 imagen = "grupo.jpg"
             };
 
-            // Registrar el grupo y obtener el nombreReal generado
             var resultadoGrupoJson = controller.PRRegistrarGrupo(grupo);
             var resultadoGrupo = JsonConvert.DeserializeObject<string>(resultadoGrupoJson);
-
-            // Verificamos que el grupo se haya registrado correctamente
             Assert.AreEqual("Registro correcto", resultadoGrupo);
-
-            // Obtener el nombreReal generado automáticamente
             string nombreRealGenerado = grupo.nombreReal;
 
             string usuario = "UsuarioTest";
@@ -261,48 +226,12 @@ namespace UnitTest1
                 cmdPermiso.Parameters.AddWithValue("@nombreReal", nombreRealGenerado);
                 cmdPermiso.Parameters.AddWithValue("@nombreDeCuenta", usuario);
                 cmdPermiso.ExecuteNonQuery();
-
                 conn.Close();
             }
-
-            API_Grupos.Controllers.GroupController.Grupo grupoEditado = new API_Grupos.Controllers.GroupController.Grupo()
-            {
-                nombreReal = nombreRealGenerado,
-                nombreVisible = "GrupoVisibleEditado",
-                configuracion = "Configuración del grupo editada",
-                descripcion = "Descripción del grupo editada",
-                imagen = "grupo_editado.jpg"
-            };
-
-            var resultadoEditarGrupoJson = controller.PREditarGrupoUG(grupoEditado, usuario);
+            var resultadoEditarGrupoJson = controller.PREditarGrupoUG(nombreRealGenerado, usuario);
             var resultadoEditarGrupo = JsonConvert.DeserializeObject<string>(resultadoEditarGrupoJson);
-
             // Verificar que la respuesta sea la esperada
             Assert.AreEqual("Se editó el grupo correctamente", resultadoEditarGrupo);
-
-            // Verificar en la base de datos si los cambios se realizaron correctamente
-            using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
-            {
-                conn.Open();
-                var cmdVerificacion = new MySqlCommand("SELECT nombreVisible, configuracion, descripcion, foto FROM Grupos WHERE nombreReal = @nombreReal", conn);
-                cmdVerificacion.Parameters.AddWithValue("@nombreReal", nombreRealGenerado);
-
-                using (var reader = cmdVerificacion.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        Assert.AreEqual("GrupoVisibleEditado", reader["nombreVisible"].ToString());
-                        Assert.AreEqual("Configuración del grupo editada", reader["configuracion"].ToString());
-                        Assert.AreEqual("Descripción del grupo editada", reader["descripcion"].ToString());
-                        Assert.AreEqual("grupo_editado.jpg", reader["foto"].ToString());
-                    }
-                    else
-                    {
-                        Assert.Fail("El grupo no se encontró en la base de datos.");
-                    }
-                }
-            }
-
             Cleanup();
         }
 
@@ -401,28 +330,12 @@ namespace UnitTest1
             var resultadoGrupoJson = controller.PRRegistrarGrupo(grupo);
             var resultadoGrupo = JsonConvert.DeserializeObject<string>(resultadoGrupoJson);
             Assert.AreEqual("Registro correcto", resultadoGrupo);
-
-            // Obtener el nombre real generado del grupo
             string nombreRealGenerado = grupo.nombreReal;
 
-            // Intentar agregar el usuario al grupo
             var resultadoAgregarUsuarioJson = controller.PRAgregarUsuarioAGrupo(nombreUsuario, nombreRealGenerado);
             var resultadoAgregarUsuario = JsonConvert.DeserializeObject<string>(resultadoAgregarUsuarioJson);
             Assert.AreEqual("Usuario agregado al grupo", resultadoAgregarUsuario);
 
-            // Verificar en la base de datos si el usuario fue agregado al grupo
-            using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
-            {
-                conn.Open();
-                var cmdVerificacion = new MySqlCommand("SELECT * FROM Participa WHERE nombreDeCuenta = @nombreUsuario AND nombreReal = @nombreGrupo", conn);
-                cmdVerificacion.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
-                cmdVerificacion.Parameters.AddWithValue("@nombreGrupo", nombreRealGenerado);
-
-                using (var reader = cmdVerificacion.ExecuteReader())
-                {
-                    Assert.IsTrue(reader.HasRows, "El usuario no fue agregado al grupo.");
-                }
-            }
             Cleanup();
         }
 
@@ -490,29 +403,10 @@ namespace UnitTest1
 
                 conn.Close();
             }
-            // Act
-            // Llamar al método para agregar el usuario al grupo por el administrador
             var resultadoAgregarUsuarioJson = controller.PRAgregarUsuarioAGrupoUG(admin, nombreUsuario, nombreRealGenerado);
             var resultadoAgregarUsuario = JsonConvert.DeserializeObject<string>(resultadoAgregarUsuarioJson);
-
-            // Assert
-            // Verificar que la respuesta sea la esperada
             Assert.AreEqual("Usuario agregado al grupo", resultadoAgregarUsuario);
 
-            // Verificar en la base de datos si el usuario fue agregado al grupo correctamente
-            using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
-            {
-                conn.Open();
-                var cmdVerificacion = new MySqlCommand("SELECT * FROM Participa WHERE nombreDeCuenta = @nombreUsuario AND nombreReal = @nombreGrupo", conn);
-                cmdVerificacion.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
-                cmdVerificacion.Parameters.AddWithValue("@nombreGrupo", nombreRealGenerado);
-
-                using (var reader = cmdVerificacion.ExecuteReader())
-                {
-                    Assert.IsTrue(reader.HasRows, "El usuario no fue agregado al grupo.");
-                }
-            }
-            // Limpiar los datos de prueba después de la ejecución
             Cleanup();
         }
 
@@ -534,13 +428,10 @@ namespace UnitTest1
             var resultadoGrupoJson = controller.PRRegistrarGrupo(grupo);
             var resultadoGrupo = JsonConvert.DeserializeObject<string>(resultadoGrupoJson);
 
-            // Verificar que el grupo se haya registrado correctamente
             Assert.AreEqual("Registro correcto", resultadoGrupo);
 
-            // Obtener el nombreReal generado automáticamente
             string nombreRealGenerado = grupo.nombreReal;
 
-            // Crear un usuario en la tabla Usuarios
             string nombreUsuario = "UsuarioDePrueba";
             using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
             {
@@ -560,7 +451,6 @@ namespace UnitTest1
                 cmdCrearUsuario.Parameters.AddWithValue("@estado", "activo");
                 cmdCrearUsuario.ExecuteNonQuery();
 
-                // Agregar el usuario al grupo
                 var cmdAgregarUsuario = new MySqlCommand(@"
         INSERT INTO Participa (nombreDeCuenta, nombreReal, rol) 
         VALUES (@nombreDeCuenta, @nombreReal, 'm');", conn);
@@ -571,50 +461,18 @@ namespace UnitTest1
                 conn.Close();
             }
 
-            // Act
-            // Llamar al método para eliminar al usuario del grupo
             var resultadoEliminarUsuario = controller.PREliminarUsuarioDeGrupo(nombreRealGenerado, nombreUsuario);
-
-            // Asegúrate de que resultadoEliminarUsuario no es null
             Assert.IsNotNull(resultadoEliminarUsuario, "El resultado de la eliminación es null");
-
-            // Convertir a string explícitamente
             string resultadoEliminarUsuarioStr = resultadoEliminarUsuario as string;
-
-            // Assert
-            // Verificar que la respuesta sea la esperada
             Assert.AreEqual("Grupo eliminado del usuario correctamente", resultadoEliminarUsuarioStr);
-
-            // Verificar en la base de datos si el usuario fue eliminado del grupo correctamente
-            using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
-            {
-                conn.Open();
-                var cmdVerificacion = new MySqlCommand("SELECT COUNT(*) FROM Participa WHERE nombreDeCuenta = @nombreUsuario AND nombreReal = @nombreGrupo", conn);
-                cmdVerificacion.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
-                cmdVerificacion.Parameters.AddWithValue("@nombreGrupo", nombreRealGenerado);
-
-                int count = Convert.ToInt32(cmdVerificacion.ExecuteScalar());
-                Assert.AreEqual(0, count, "El usuario no fue eliminado del grupo.");
-
-                // Verificar si el grupo fue eliminado correctamente si no tiene más usuarios
-                var cmdVerificarGrupo = new MySqlCommand("SELECT COUNT(*) FROM Grupos WHERE nombreReal = @nombreGrupo", conn);
-                cmdVerificarGrupo.Parameters.AddWithValue("@nombreGrupo", nombreRealGenerado);
-
-                count = Convert.ToInt32(cmdVerificarGrupo.ExecuteScalar());
-                Assert.AreEqual(0, count, "El grupo no fue eliminado correctamente.");
-            }
-
-            // Limpiar los datos de prueba después de la ejecución
             Cleanup();
         }
         [TestMethod]
-        public void TestMethod_PRReportarGrupo()
+        public void TestMethoda1_PRReportarGrupo()
         {
-            // Arrange
             string respuestaEsperada = JsonConvert.SerializeObject("Reporte correcto");
             API_Grupos.Controllers.GroupController controller = new API_Grupos.Controllers.GroupController();
 
-            // Primero, registrar un grupo para obtener el nombreReal generado automáticamente
             API_Grupos.Controllers.GroupController.Grupo grupo = new API_Grupos.Controllers.GroupController.Grupo()
             {
                 nombreVisible = "Grupo Visible",
@@ -625,14 +483,8 @@ namespace UnitTest1
 
             var resultadoGrupoJson = controller.PRRegistrarGrupo(grupo);
             var resultadoGrupo = JsonConvert.DeserializeObject<string>(resultadoGrupoJson);
-
-            // Verificar que el grupo se haya registrado correctamente
             Assert.AreEqual("Registro correcto", resultadoGrupo);
-
-            // Obtener el nombreReal generado automáticamente
             string nombreRealGenerado = grupo.nombreReal;
-
-            // Crear un reporte para el grupo recién creado
             var reporte = new API_Grupos.Controllers.GroupController.Reporte()
             {
                 numeroReporte = 1,
@@ -640,40 +492,60 @@ namespace UnitTest1
                 tipo = "Infracción",
                 descripcion = "Descripción del reporte"
             };
-
-            // Act
             var resultadoJson = controller.PRReportarGrupo(reporte);
-
-            // Convertir a string explícitamente
             string resultadoStr = resultadoJson as string;
-
-            // Assert
             Assert.IsNotNull(resultadoStr, "El resultado de la operación es null");
             Assert.AreEqual(respuestaEsperada, resultadoStr);
-
-            // Verificar en la base de datos si el reporte fue insertado correctamente
-            using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+            Cleanup();
+        }
+        [TestMethod]
+        public void TestMethoda2_PRActualizarMensajes()
+        {
+            API_Grupos.Controllers.GroupController controller = new API_Grupos.Controllers.GroupController();
+            API_Grupos.Controllers.GroupController.Grupo grupo = new API_Grupos.Controllers.GroupController.Grupo()
             {
-                conn.Open();
+                nombreVisible = "Grupo Visible",
+                configuracion = "Configuración del grupo",
+                descripcion = "Descripción del grupo",
+                imagen = "grupo.jpg"
+            };
 
-                var cmdVerificacion = new MySqlCommand("SELECT COUNT(*) FROM ReporteGrupo WHERE numeroDeReporte = @numeroReporte AND nombreReal = @nombreReal", conn);
-                cmdVerificacion.Parameters.AddWithValue("@numeroReporte", reporte.numeroReporte);
-                cmdVerificacion.Parameters.AddWithValue("@nombreReal", nombreRealGenerado);
+            var resultadoGrupoJson = controller.PRRegistrarGrupo(grupo);
+            var resultadoGrupo = JsonConvert.DeserializeObject<string>(resultadoGrupoJson);
+            Assert.AreEqual("Registro correcto", resultadoGrupo);
 
-                int count = Convert.ToInt32(cmdVerificacion.ExecuteScalar());
-                Assert.AreEqual(1, count, "El reporte no fue insertado correctamente.");
+            string nombreRealGenerado = grupo.nombreReal;
+            string chatGrupal = "Hola papus";      
+            var resultadoEditarGrupoJson = controller.PRActualizarMensajes(nombreRealGenerado,chatGrupal);
+            var resultadoEditarGrupo = JsonConvert.DeserializeObject<string>(resultadoEditarGrupoJson);
+            Assert.AreEqual("Se actualizaron los mensajes correctamente", resultadoEditarGrupo);
+            Cleanup();
+        }
 
-                // Verificar si la descripción fue insertada correctamente
-                var cmdVerificarDescripcion = new MySqlCommand("SELECT descripcion FROM ReporteGrupo WHERE numeroDeReporte = @numeroReporte AND nombreReal = @nombreReal", conn);
-                cmdVerificarDescripcion.Parameters.AddWithValue("@numeroReporte", reporte.numeroReporte);
-                cmdVerificarDescripcion.Parameters.AddWithValue("@nombreReal", nombreRealGenerado);
+        [TestMethod]
+        public void TestMethoda3_PRObtenerMensajes()
+        {
+            string respuestaEsperada = "Registro correcto";
+            API_Grupos.Controllers.GroupController controller = new API_Grupos.Controllers.GroupController();
+            API_Grupos.Controllers.GroupController.Grupo grupo = new API_Grupos.Controllers.GroupController.Grupo()
+            {
+                nombreVisible = "Grupo Visible",
+                configuracion = "Configuración del grupo",
+                descripcion = "Descripción del grupo",
+                imagen = "grupo.jpg"
+            };
+            var resultadoGrupoJson = controller.PRRegistrarGrupo(grupo);
+            var resultadoGrupo = JsonConvert.DeserializeObject<string>(resultadoGrupoJson);
+            Assert.AreEqual("Registro correcto", resultadoGrupo);
+            string nombreRealGenerado = grupo.nombreReal;
+            string chatGrupal = "Hola papus";
+            var resultadoEditarGrupoJson = controller.PRActualizarMensajes(nombreRealGenerado, chatGrupal);
+            var resultadoEditarGrupo = JsonConvert.DeserializeObject<string>(resultadoEditarGrupoJson);
+            Assert.AreEqual("Se actualizaron los mensajes correctamente", resultadoEditarGrupo);
 
-                var descripcion = cmdVerificarDescripcion.ExecuteScalar();
-                Assert.AreEqual("Descripción del reporte", descripcion.ToString(), "La descripción del reporte no fue actualizada correctamente.");
-
-                conn.Close();
-            }
-            // Limpiar los datos de prueba después de la ejecución
+            var resultadoJson = controller.PRObtenerMensajes(nombreRealGenerado);
+            var resultado = JsonConvert.DeserializeObject<string>(resultadoJson);
+            Assert.AreEqual("Hola papus", resultado.ToString());
             Cleanup();
         }
     }

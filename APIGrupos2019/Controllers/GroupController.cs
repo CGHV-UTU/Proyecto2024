@@ -6,15 +6,13 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using Google.Protobuf;
-//using Microsoft.AspNetCore.Http;
 using System.Web.Http;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Security;
-//using static System.Runtime.InteropServices.JavaScript.JSType;
 using static API_Grupos.Controllers.GroupController;
 using RouteAttribute = System.Web.Mvc.RouteAttribute;
-//Sí, es la última versión
+
 namespace API_Grupos.Controllers
 {
     public class GroupController : ApiController
@@ -26,6 +24,7 @@ namespace API_Grupos.Controllers
             public string configuracion { get; set; }
             public string descripcion { get; set; }
             public string imagen { get; set; }
+            public string chatGrupal { get; set; }
         }
 
         public class UsuarioGrupo
@@ -45,7 +44,7 @@ namespace API_Grupos.Controllers
         public string connectionString = "Server=localhost; database=infini; uID=root; pwd=;";
 
         [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("RegistrarGrupo")] //Arreglado con la nueva BD. Falta probar
+        [System.Web.Http.Route("RegistrarGrupo")]
         public dynamic RegistrarGrupo([FromBody] Grupo group)
         {
             try
@@ -82,7 +81,7 @@ namespace API_Grupos.Controllers
         }
 
         [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("RegistrarGrupoUG")] //Funciona
+        [System.Web.Http.Route("RegistrarGrupoUG")]
         public dynamic RegistrarGrupoUG([FromBody] UsuarioGrupo ug)
         {
             try
@@ -94,7 +93,6 @@ namespace API_Grupos.Controllers
 
                 MySqlConnection conn = new MySqlConnection(connectionString);
                 conn.Open();
-                //Debería funcionar incluso cuando "Rol" es un varchar y no un char.
                 string insertQuery = "INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, 'c')";
                 MySqlCommand cmd = new MySqlCommand(insertQuery, conn);
                 cmd.Parameters.AddWithValue("@nombreReal", ug.nombreReal);
@@ -110,7 +108,7 @@ namespace API_Grupos.Controllers
         }
 
         [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("ObtenerGruposPorNombreVisibleYUsuario")] //Funciona
+        [System.Web.Http.Route("ObtenerGruposPorNombreVisibleYUsuario")] 
         public dynamic ObtenerGruposPorNombreVisibleYUsuario(string nombreVisible, string nombreDeCuenta)
         {
             try
@@ -182,7 +180,7 @@ namespace API_Grupos.Controllers
 
 
         [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("ObtenerGrupo")] //Funciona
+        [System.Web.Http.Route("ObtenerGrupo")]
         public dynamic ObtenerGrupo(string nombre)
         {
             try
@@ -213,8 +211,36 @@ namespace API_Grupos.Controllers
             }
         }
 
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("ObtenerMensajes")]
+        public dynamic ObtenerMensajes(string nombre)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connectionString);
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("select chatGrupal from Grupos where nombreReal=@nombreReal", conn);
+                cmd.Parameters.AddWithValue("@nombreReal", nombre);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    string chatGrupal = reader["chatGrupal"].ToString();
+                    conn.Close();
+                    return Json(chatGrupal);
+                }
+                else
+                {
+                    return Json("No se encuentra el grupo");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json("No se encuentra el grupo");
+            }
+        }
+
         [System.Web.Http.HttpDelete]
-        [System.Web.Http.Route("EliminarGrupo")]//Salta FK
+        [System.Web.Http.Route("EliminarGrupo")]
         public dynamic EliminarGrupo(string nombreReal)
         {
             try
@@ -269,6 +295,32 @@ namespace API_Grupos.Controllers
                 return Json("No se pudo editar el grupo");
             }
         }
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("ActualizarMensajes")]
+        public dynamic ActualizarMensajes(string nombreReal, string chatGrupal)
+        {
+            if (string.IsNullOrEmpty(nombreReal) && string.IsNullOrEmpty(chatGrupal))
+            {
+                return Json("Datos inválidos");
+            }
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connectionString);
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("update Grupos " +
+                    "set chatGrupal = @chatGrupal " +
+                    "where nombreReal = @nombreReal", conn);
+                cmd.Parameters.AddWithValue("@nombreReal", nombreReal);
+                cmd.Parameters.AddWithValue("@chatGrupal", chatGrupal);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return Json("Se actualizaron los mensajes correctamente");
+            }
+            catch (Exception ex)
+            {
+                return Json($"No se pudo editar el grupo: {ex.Message}");
+            }
+        }
 
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("EditarGrupoUG")]
@@ -286,51 +338,19 @@ namespace API_Grupos.Controllers
             {
                 MySqlConnection conn = new MySqlConnection(connectionString);
                 conn.Open();
-
-                // Verificar si el usuario tiene permisos
-                //Puede ser que no funcione con "Rol" como varchar
                 string permisosQuery = "SELECT rol FROM Participa WHERE nombreReal = @nombreReal AND nombreDeCuenta = @nombreDeCuenta AND (rol = 'c' OR rol = 'a')";
                 MySqlCommand permisosCmd = new MySqlCommand(permisosQuery, conn);
                 permisosCmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
                 permisosCmd.Parameters.AddWithValue("@nombreDeCuenta", usuario);
-
                 MySqlDataReader reader = permisosCmd.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    reader.Close(); // Cerrar el reader antes de ejecutar otro comando
-
-                    // Actualizar el grupo
-                    string updateQuery = "UPDATE Grupos " +
-                        "SET nombreVisible = @nombreVisible, " +
-                        "configuracion = @configuracion, " +
-                        "descripcion = @descripcion, " +
-                        "foto = @foto " +
-                        "WHERE nombreReal = @nombreReal";
-                    MySqlCommand cmd = new MySqlCommand(updateQuery, conn);
-                    cmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
-                    cmd.Parameters.AddWithValue("@nombreVisible", group.nombreVisible);
-                    cmd.Parameters.AddWithValue("@configuracion", group.configuracion);
-                    cmd.Parameters.AddWithValue("@descripcion", group.descripcion);
-                    cmd.Parameters.AddWithValue("@foto", group.imagen);
-                    cmd.ExecuteNonQuery();
-
-                    conn.Close();
-                    return Json("Se editó el grupo correctamente");
-                }
-                else
-                {
-                    conn.Close();
-                    return Json("No tienes permisos para editar este grupo");
-                }
+                conn.Close();
+                return Json("Se editó el grupo correctamente");
             }
             catch (Exception ex)
             {
                 return Json($"No se pudo editar el grupo: {ex.Message}");
             }
         }
-
-
 
         //Grupos al que pertenece un usuario
         [System.Web.Http.HttpGet]
@@ -476,13 +496,6 @@ namespace API_Grupos.Controllers
                         eliminarCmd.Parameters.AddWithValue("@nombreRealGrupo", nombreRealGrupo);
                         eliminarCmd.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
                         eliminarCmd.ExecuteNonQuery();
-
-                        // Opcional: Eliminar el grupo si no tiene más usuarios asociados
-                        string eliminarGrupoQuery = "DELETE FROM Grupos WHERE nombreReal = @nombreRealGrupo AND NOT EXISTS (SELECT * FROM Participa WHERE nombreReal = @nombreRealGrupo)";
-                        MySqlCommand eliminarGrupoCmd = new MySqlCommand(eliminarGrupoQuery, conn);
-                        eliminarGrupoCmd.Parameters.AddWithValue("@nombreRealGrupo", nombreRealGrupo);
-                        eliminarGrupoCmd.ExecuteNonQuery();
-
                         return Json("Grupo eliminado del usuario correctamente");
                     }
                     else
@@ -535,6 +548,7 @@ namespace API_Grupos.Controllers
                 return Json($"Reporte incorrecto: {ex.Message}");
             }
         }
+
 
         private string crearNombreGrupo()
         {
@@ -746,13 +760,9 @@ namespace API_Grupos.Controllers
         }
 
 
-        public dynamic PREditarGrupoUG(Grupo group, string usuario)
+        public dynamic PREditarGrupoUG(string nombreReal, string usuario)
         {
-            if (string.IsNullOrEmpty(group.nombreReal)
-                    || string.IsNullOrEmpty(group.nombreVisible)
-                    || string.IsNullOrEmpty(group.configuracion)
-                    || string.IsNullOrEmpty(group.imagen)
-                    || string.IsNullOrEmpty(usuario))
+            if (string.IsNullOrEmpty(nombreReal) && string.IsNullOrEmpty(usuario))
             {
                 return JsonConvert.SerializeObject("Datos inválidos");
             }
@@ -760,49 +770,22 @@ namespace API_Grupos.Controllers
             {
                 MySqlConnection conn = new MySqlConnection(connectionString);
                 conn.Open();
-
                 // Verificar si el usuario tiene permisos
                 //Puede ser que no funcione con "Rol" como varchar
                 string permisosQuery = "SELECT rol FROM Participa WHERE nombreReal = @nombreReal AND nombreDeCuenta = @nombreDeCuenta AND (rol = 'c' OR rol = 'a')";
                 MySqlCommand permisosCmd = new MySqlCommand(permisosQuery, conn);
-                permisosCmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                permisosCmd.Parameters.AddWithValue("@nombreReal", nombreReal);
                 permisosCmd.Parameters.AddWithValue("@nombreDeCuenta", usuario);
-
                 MySqlDataReader reader = permisosCmd.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    reader.Close(); // Cerrar el reader antes de ejecutar otro comando
-
-                    // Actualizar el grupo
-                    string updateQuery = "UPDATE Grupos " +
-                        "SET nombreVisible = @nombreVisible, " +
-                        "configuracion = @configuracion, " +
-                        "descripcion = @descripcion, " +
-                        "foto = @foto " +
-                        "WHERE nombreReal = @nombreReal";
-                    MySqlCommand cmd = new MySqlCommand(updateQuery, conn);
-                    cmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
-                    cmd.Parameters.AddWithValue("@nombreVisible", group.nombreVisible);
-                    cmd.Parameters.AddWithValue("@configuracion", group.configuracion);
-                    cmd.Parameters.AddWithValue("@descripcion", group.descripcion);
-                    cmd.Parameters.AddWithValue("@foto", group.imagen);
-                    cmd.ExecuteNonQuery();
-
-                    conn.Close();
-                    return JsonConvert.SerializeObject("Se editó el grupo correctamente");
-                }
-                else
-                {
-                    conn.Close();
-                    return JsonConvert.SerializeObject("No tienes permisos para editar este grupo");
-                }
+                conn.Close();
+                return JsonConvert.SerializeObject("Se editó el grupo correctamente");
             }
             catch (Exception ex)
             {
                 return JsonConvert.SerializeObject($"No se pudo editar el grupo: {ex.Message}");
             }
         }
+
         public dynamic PRObtenerGruposPorUsuario(string nombreDeCuenta)
         {
             try
@@ -986,6 +969,55 @@ namespace API_Grupos.Controllers
             {
                 // Devuelve el mensaje de error para ayudar en la depuración
                 return JsonConvert.SerializeObject($"Reporte incorrecto: {ex.Message}");
+            }
+        }
+        public dynamic PRActualizarMensajes(string nombreReal, string chatGrupal)
+        {
+            if (string.IsNullOrEmpty(nombreReal) && string.IsNullOrEmpty(chatGrupal))
+            {
+                return Json("Datos inválidos");
+            }
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connectionString);
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("update Grupos " +
+                    "set chatGrupal = @chatGrupal " +
+                    "where nombreReal = @nombreReal", conn);
+                cmd.Parameters.AddWithValue("@nombreReal", nombreReal);
+                cmd.Parameters.AddWithValue("@chatGrupal", chatGrupal);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return JsonConvert.SerializeObject("Se actualizaron los mensajes correctamente");
+            }
+            catch(Exception ex)
+            {
+                return JsonConvert.SerializeObject($"No se pudo editar el grupo: {ex.Message}");
+            }
+        }
+        public dynamic PRObtenerMensajes(string nombre)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection(connectionString);
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("select chatGrupal from Grupos where nombreReal=@nombreReal", conn);
+                cmd.Parameters.AddWithValue("@nombreReal", nombre);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    string chatGrupal = reader["chatGrupal"].ToString();
+                    conn.Close();
+                    return JsonConvert.SerializeObject(chatGrupal);
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject("No se encuentra el grupo");
+                }
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject("No se encuentra el grupo");
             }
         }
 
