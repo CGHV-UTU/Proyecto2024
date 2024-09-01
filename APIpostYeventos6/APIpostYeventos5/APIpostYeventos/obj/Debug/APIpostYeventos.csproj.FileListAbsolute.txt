@@ -641,3 +641,47 @@ C:\Users\FedeG\Downloads\api post y eventos\Proyecto2024\APIpostYeventos6\APIpos
 C:\Users\FedeG\Downloads\api post y eventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.exe
 C:\Users\FedeG\Downloads\api post y eventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.pdb
 C:\Users\FedeG\Downloads\api post y eventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.ReportarPost_Comentario.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\APIpostYeventos.exe.config
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\APIpostYeventos.exe
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\APIpostYeventos.pdb
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\Newtonsoft.Json.dll
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Buffers.dll
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Memory.dll
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Text.Encodings.Web.dll
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Text.Json.dll
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.ValueTuple.dll
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\Newtonsoft.Json.xml
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Buffers.xml
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Memory.xml
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Text.Encodings.Web.xml
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Text.Json.xml
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\bin\Debug\System.ValueTuple.xml
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.csproj.AssemblyReference.cache
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.exe.config
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.AñadirComentario.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.AñadirPost.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.EditarComentario.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.EditarEvento.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.EditarPost.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.EliminarComentario.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.EliminarPost.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.Form1.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.AñadirEvento.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.EliminarEvento.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.InicioSesion.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.Properties.Resources.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.Registrar.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.ReportarPost_Comentario.resources
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.csproj.GenerateResource.cache
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.csproj.CoreCompileInputs.cache
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.csproj.CopyComplete
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.exe
+C:\Users\FedeG\Downloads\3108postYeventos\Proyecto2024\APIpostYeventos6\APIpostYeventos5\APIpostYeventos\obj\Debug\APIpostYeventos.pdb

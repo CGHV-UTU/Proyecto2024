@@ -41,6 +41,7 @@ namespace APIPostYEventos2019.Controllers
             public string id { get; set; }
 
             public string NombreDeCuenta { get; set; }
+            public string NombreCreador { get; set; }
 
             public string IdPost { get; set; }
 
@@ -255,14 +256,50 @@ namespace APIPostYEventos2019.Controllers
                 }
                 else
                 {
-                    return "no se encuentra";
+                    return Json("no se encuentra");
                 }
             }
             catch (Exception)
             {
-                return "no se encuentra";
+                return Json("no se encuentra");
             }
             //devuelve un tipo reader para desempaquetar su contenido en la ventana principal
+        }
+
+        [HttpGet]
+        [Route("conseguirCreador")]
+        public dynamic conseguirCreador(int id)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta FROM Posts WHERE idPost=@Id", conn);
+                command.Parameters.AddWithValue("@Id", id);
+                MySqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    string nombreDeCuenta;
+                    if (string.IsNullOrEmpty(reader["nombreDeCuenta"].ToString()))
+                    {
+                        nombreDeCuenta = "";
+                        return Json(nombreDeCuenta);
+                    }
+                    else
+                    {
+                        nombreDeCuenta = reader["nombreDeCuenta"].ToString();
+                        return Json(nombreDeCuenta);
+                    }
+                }
+                else
+                {
+                    return Json("no se encuentra");
+                }
+            }
+            catch
+            {
+                return Json("no se encuentra");
+            }
         }
 
         [HttpDelete]
@@ -606,14 +643,16 @@ namespace APIPostYEventos2019.Controllers
             MySqlCommand cmd;
             if (!string.IsNullOrEmpty(commentdata.NombreDeCuenta) &&
                 !string.IsNullOrEmpty(commentdata.IdPost) && !string.IsNullOrEmpty(commentdata.texto) &&
-                !string.IsNullOrEmpty(commentdata.fechayhora))
+                !string.IsNullOrEmpty(commentdata.fechayhora) &&
+                !string.IsNullOrEmpty(commentdata.NombreCreador))
             {
                 string NombreDeCuenta = commentdata.NombreDeCuenta;
                 string IdPost = commentdata.IdPost;
                 string texto = commentdata.texto;
                 string fechayhora = commentdata.fechayhora;
-                cmd = new MySqlCommand("INSERT INTO Comentarios (nombreDeCuenta, idPost, texto, fechaYHora) VALUES (@NombreDeCuenta,@IdPost,@Texto,@FechayHora)", conn);
+                cmd = new MySqlCommand("INSERT INTO Comentarios (nombreDeCuenta, idPost, nombreCreador, texto, fechaYHora) VALUES (@NombreDeCuenta,@IdPost, @nombreCreador,@Texto,@FechayHora)", conn); 
                 cmd.Parameters.AddWithValue("@NombreDeCuenta", NombreDeCuenta);
+                cmd.Parameters.AddWithValue("@nombreCreador", commentdata.NombreCreador);
                 cmd.Parameters.AddWithValue("@IdPost", IdPost);
                 cmd.Parameters.AddWithValue("@Texto", texto);
                 cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
@@ -826,7 +865,7 @@ namespace APIPostYEventos2019.Controllers
                 MySqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    string id = reader["id"].ToString();
+                    string id = reader["idPost"].ToString();
                     return Json(id);
                 }
                 else
@@ -840,6 +879,7 @@ namespace APIPostYEventos2019.Controllers
             }
         }
 
+
         [HttpGet]
         [Route("ultimoEvento")]
         public dynamic ultimoEvento()
@@ -852,7 +892,7 @@ namespace APIPostYEventos2019.Controllers
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    string id = reader["id"].ToString();
+                    string id = reader["idEvento"].ToString();
                     return Json(id);
                 }
                 else
@@ -956,7 +996,14 @@ namespace APIPostYEventos2019.Controllers
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
-                    return Json(dataTable);
+                    if(dataTable.Rows[0]["id"].ToString()!= null)
+                    {
+                        return Json(dataTable);
+                    }
+                    else
+                    {
+                        return Json("error");
+                    }
                 }
             }
             catch (Exception)
