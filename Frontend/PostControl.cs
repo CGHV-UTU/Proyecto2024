@@ -16,6 +16,7 @@ namespace Frontend
     public partial class PostControl : UserControl
     {
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
+        public event EventHandler<PersonalizedArgs> ReportarPost;
         private string modo;
         private int idpost;
         public string tipo;
@@ -192,10 +193,20 @@ namespace Frontend
             this.PictureBoxComentarios = new PictureBox();
             this.PictureBoxCompartir = new PictureBox();
             this.PictureBoxOpcionesPost = new PictureBox();
-            this.button1 = new Button();
+            this.PictureBoxReportar = new PictureBox();
             this.txtDescripcion = new Label();
             this.txtUrl = new Label();
             this.SuspendLayout();
+
+            // reportar
+            this.PictureBoxReportar.Visible = false;
+            this.PictureBoxUsuarioPost.Location = new System.Drawing.Point(720, 494);
+            this.PictureBoxUsuarioPost.Name = "PictureBoxUsuarioPost";
+            this.PictureBoxUsuarioPost.Size = new System.Drawing.Size(50, 50);
+            this.PictureBoxUsuarioPost.SizeMode = PictureBoxSizeMode.StretchImage;
+            this.PictureBoxUsuarioPost.Image = Frontend.Properties.Resources.reportar;
+            this.PictureBoxReportar.Click += PictureBoxReportar_Click_1;
+            this.PictureBoxUsuarioPost.Cursor = Cursors.Hand;
 
             // lblTitle
             this.lblNombre.AutoSize = true;
@@ -244,6 +255,7 @@ namespace Frontend
             this.PictureBoxOpcionesPost.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxOpcionesPost.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxOpcionesPost.Image = Frontend.Properties.Resources.mas_opciones;
+            this.PictureBoxOpcionesPost.Click += PictureBoxOpcionesPost_Click;
             this.PictureBoxOpcionesPost.Cursor = Cursors.Hand;
 
             // imagen
@@ -252,14 +264,6 @@ namespace Frontend
             this.imagen.Size = new System.Drawing.Size(634, 365);
             this.imagen.SizeMode = PictureBoxSizeMode.StretchImage;
 
-            // button1
-            this.button1.Location = new System.Drawing.Point(247, 45);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 27;
-            this.button1.Text = "Añadir imagen";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += button1_Click;
 
             // txtDescripcion
             this.txtDescripcion.Location = new Point(76, 80);
@@ -276,7 +280,6 @@ namespace Frontend
             this.AutoScaleMode = AutoScaleMode.Font;
             this.Controls.Add(this.PictureBoxUsuarioPost);
             this.Controls.Add(this.lblNombre);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.imagen);
             this.Controls.Add(this.PictureBoxLike);
             this.Controls.Add(this.PictureBoxComentarios);
@@ -301,6 +304,7 @@ namespace Frontend
                     this.PictureBoxComentarios.Location = new Point(548, imagen.Bottom + 10);
                     this.PictureBoxCompartir.Location = new Point(604, imagen.Bottom + 10);
                     this.PictureBoxOpcionesPost.Location = new Point(660, imagen.Bottom + 10);
+                    this.PictureBoxUsuarioPost.Location = new System.Drawing.Point(720, imagen.Bottom + 10);
                     break;
 
                 case "imageOnly":
@@ -320,6 +324,7 @@ namespace Frontend
                     this.PictureBoxComentarios.Location = new Point(548, txtUrl.Bottom + 10);
                     this.PictureBoxCompartir.Location = new Point(604, txtUrl.Bottom + 10);
                     this.PictureBoxOpcionesPost.Location = new Point(660, txtUrl.Bottom + 10);
+                    this.PictureBoxUsuarioPost.Location = new System.Drawing.Point(720, txtUrl.Bottom + 10);
                     this.imagen.Visible = false;
                     break;
 
@@ -371,15 +376,17 @@ namespace Frontend
             this.PerformLayout();
         }
 
-        //Boton de prueba para insertar una imagen al post
-        private void button1_Click(object sender, EventArgs e)
+
+
+        private void PictureBoxOpcionesPost_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                imagen.ImageLocation = ofd.FileName;
-                imagen.SizeMode = PictureBoxSizeMode.StretchImage;
-            }
+            this.PictureBoxReportar.Visible = true;
+        }
+
+
+        private void PictureBoxReportar_Click_1(object sender, EventArgs e)
+        {
+            ReportarPost?.Invoke(this, new PersonalizedArgs("" + idpost));
         }
     }
 }

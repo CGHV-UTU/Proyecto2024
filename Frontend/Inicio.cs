@@ -115,6 +115,7 @@ namespace Frontend
             post.FormBorderStyle = FormBorderStyle.None;
             post.Dock = DockStyle.Fill;
             post.AbrirComentarios += PostControl_AbrirComentarios;
+            post.ReportarPost += PostControl_AbrirComentarios;
             PanelPosts.Controls.Add(post);
             post.Show();
         }
@@ -124,11 +125,35 @@ namespace Frontend
             PanelComentarios.Visible = true;
             PictureBoxSalir.Visible = true;
         }
+        private void PostControl_ReportarPost(object sender, PersonalizedArgs e)
+        {
+            ReportarPost(e.arg);
+            PanelComentarios.Visible = true;
+            PictureBoxSalir.Visible = true;
+        }
+        private void ReportarPost(string idpost)
+        {
+            PanelPostear.Controls.Clear();
+            PanelPostear.Visible = true;
+            PanelPostear.Parent = this;
+            PanelPosts.Visible = false;
+            Post post = new Post(user);
+            post.TopLevel = false;
+            post.FormBorderStyle = FormBorderStyle.None;
+            post.BackColor = Color.LightGray;
+            post.Dock = DockStyle.Fill;
+            post.Creado += Post_Creado;
+            post.Salir += Post_Salir;
+            post.CambiaTamaño += Post_CambiaTamaño;
+            post.BackColor = Color.FromArgb(34, 67, 220);
+            PanelPostear.Controls.Add(post);
+            post.Show();
+        }
         private async void VerComentarios(string idpost)
         {
             string config = await conseguirConfig(user);
             string[] configure = config.Split(';');
-            Comentarios comentario = new Comentarios(configure[0],idpost);
+            Comentarios comentario = new Comentarios(configure[0],idpost,user);
             comentario.TopLevel = false;
             comentario.FormBorderStyle = FormBorderStyle.None;
             comentario.BackColor = Color.LightGray;
@@ -141,6 +166,7 @@ namespace Frontend
         {
             PanelComentarios.Visible = false;
             PictureBoxSalir.Visible = false;
+            PanelComentarios.Controls.Clear();
         }
 
         private void PictureBoxCrear_Click(object sender, EventArgs e)

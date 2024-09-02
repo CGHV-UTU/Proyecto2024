@@ -87,6 +87,18 @@
       <DependentUpon>Configuracion.cs</DependentUpon>
     </Compile>
     <Compile Include="ConfiguraEventArgs.cs" />
+    <Compile Include="CreadorComentarios.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CreadorComentarios.Designer.cs">
+      <DependentUpon>CreadorComentarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CrearComentario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CrearComentario.Designer.cs">
+      <DependentUpon>CrearComentario.cs</DependentUpon>
+    </Compile>
     <Compile Include="PersonalizedArgs.cs" />
     <Compile Include="Registrarse.cs">
       <SubType>Form</SubType>
@@ -138,6 +150,12 @@
     <Compile Include="PostControl.Designer.cs">
       <DependentUpon>PostControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="ReportarPost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReportarPost.Designer.cs">
+      <DependentUpon>ReportarPost.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Comentarios.resx">
       <DependentUpon>Comentarios.cs</DependentUpon>
     </EmbeddedResource>
@@ -146,6 +164,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Configuracion.resx">
       <DependentUpon>Configuracion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreadorComentarios.resx">
+      <DependentUpon>CreadorComentarios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrearComentario.resx">
+      <DependentUpon>CrearComentario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="IniciarSesion.resx">
       <DependentUpon>IniciarSesion.cs</DependentUpon>
@@ -175,6 +199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Registrarse.resx">
       <DependentUpon>Registrarse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReportarPost.resx">
+      <DependentUpon>ReportarPost.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -244,6 +271,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\reportarbtn-removebg-preview.png" />
+    <None Include="Resources\Page_1-removebg-preview.png" />
     <None Include="Resources\notificacionLike.jpeg" />
     <None Include="Resources\like claro relleno.jpeg" />
     <None Include="Resources\like claro.jpeg" />

@@ -15,6 +15,7 @@ namespace Frontend
     public partial class Posts : Form
     {
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
+        public event EventHandler<PersonalizedArgs> ReportarPost;
         private int currentPage = 0;
         private string modo;
         public Posts(string modo)
@@ -83,6 +84,7 @@ namespace Frontend
                 {
                     var postControl = new PostControl(i + 1, modo);
                     postControl.AbrirComentarios += PostControl_AbrirComentarios;
+                    postControl.ReportarPost += PostControl_ReportarPost;
                     await postControl.aplicarDatos();
                     // Calcula la ubicación Y acumulada
                     int currentYPosition = 0;
@@ -102,6 +104,11 @@ namespace Frontend
             }
         }
         private void PostControl_AbrirComentarios(object sender, PersonalizedArgs e)
+        {
+            // Disparar el evento para que lo maneje quien esté suscrito (en este caso, Inicio)
+            AbrirComentarios?.Invoke(this, new PersonalizedArgs(e.arg));
+        }
+        private void PostControl_ReportarPost(object sender, PersonalizedArgs e)
         {
             // Disparar el evento para que lo maneje quien esté suscrito (en este caso, Inicio)
             AbrirComentarios?.Invoke(this, new PersonalizedArgs(e.arg));

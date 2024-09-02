@@ -19,16 +19,20 @@ namespace Frontend
         private const int margin = 10; // margen para los comentarios
         private string modo;
         private string idpost;
-        public Comentarios(string modo,string idpost)
+        private string user;
+        public Comentarios(string modo,string idpost, string user)
         {
             this.modo = modo;
             this.idpost = idpost;
+            this.user = user;
             Iniciar();
+            CreadorComentarios comentario = new CreadorComentarios(user,idpost);
+            comentario.Location = new Point(margin, 0);
+            PanelComentarios.Controls.Add(comentario);
             LoadComments(currentPage);
-            PanelComentarios.Scroll += PanelComments_Scroll;
         }
 
-        static async Task<dynamic> ConseguirComentarios(int id)
+        static async Task<dynamic> ConseguirComentarios(string id)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -37,7 +41,7 @@ namespace Frontend
                     HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/seleccionarTodosLosComentarios?id={id}");
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de nin}guna manera, tengo que hallar alguna forma de pasar los datos
+                    dynamic data = JsonConvert.DeserializeObject<DataTable>(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de nin}guna manera, tengo que hallar alguna forma de pasar los datos
                     return data;
                 }
                 catch
@@ -47,26 +51,19 @@ namespace Frontend
             }
         }
 
-        private void PanelComments_Scroll(object sender, ScrollEventArgs e)
-        {
-            if (PanelComentarios.VerticalScroll.Value + PanelComentarios.ClientSize.Height >= PanelComentarios.VerticalScroll.Maximum)
-            {
-                currentPage++;
-                LoadComments(currentPage);
-            }
-        }
 
         private async void LoadComments(int page)
         {
-            DataTable comentarios=await ConseguirComentarios(int.Parse(idpost));
+            DataTable comentarios=await ConseguirComentarios(idpost);
             if (comentarios != null)
             {
-                for (int i = 0; i <= comentarios.Rows.Count; i++)
+                for (int i = 0; i < comentarios.Rows.Count; i++)
                 {
                     int idcomentario = Convert.ToInt32(comentarios.Rows[i]["id"]);
                     var commentControl = new CommentControl(modo, idpost, idcomentario);
                     commentControl.Size = new Size(465 + margin * 2, 171 + margin * 2);
-                    commentControl.Location = new Point(margin, (page * commentsPerPage + i) * (commentControl.Height + margin));
+                    var lastControl = PanelComentarios.Controls[PanelComentarios.Controls.Count - 1];
+                    commentControl.Location = new Point(margin, lastControl.Bottom);
                     PanelComentarios.Controls.Add(commentControl);
                 }
             }
@@ -89,6 +86,7 @@ namespace Frontend
             this.PanelComentarios.Name = "PanelComentarios";
             this.PanelComentarios.Size = new System.Drawing.Size(800, 450);
             this.PanelComentarios.TabIndex = 0;
+            this.PanelComentarios.BackColor = Color.FromArgb(190, 190, 190);
 
 
             this.Controls.Add(this.PanelComentarios);

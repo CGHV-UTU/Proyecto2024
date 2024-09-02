@@ -30,7 +30,6 @@ namespace Frontend
         private void InitializeComponent()
         {
             this.lblNombre = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.PictureBoxOpcionesPost = new System.Windows.Forms.PictureBox();
             this.PictureBoxCompartir = new System.Windows.Forms.PictureBox();
             this.PictureBoxComentarios = new System.Windows.Forms.PictureBox();
@@ -39,12 +38,14 @@ namespace Frontend
             this.imagen = new System.Windows.Forms.PictureBox();
             this.txtDescripcion = new System.Windows.Forms.Label();
             this.txtUrl = new System.Windows.Forms.Label();
+            this.PictureBoxReportar = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOpcionesPost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCompartir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxComentarios)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxLike)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuarioPost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imagen)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxReportar)).BeginInit();
             this.SuspendLayout();
             // 
             // lblNombre
@@ -56,19 +57,10 @@ namespace Frontend
             this.lblNombre.TabIndex = 28;
             this.lblNombre.Text = "Nombre";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(250, 45);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 27;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // PictureBoxOpcionesPost
             // 
             this.PictureBoxOpcionesPost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.PictureBoxOpcionesPost.BackColor = System.Drawing.Color.Transparent;
             this.PictureBoxOpcionesPost.Cursor = System.Windows.Forms.Cursors.Hand;
             this.PictureBoxOpcionesPost.Image = global::Frontend.Properties.Resources.mas_opciones;
             this.PictureBoxOpcionesPost.Location = new System.Drawing.Point(664, 494);
@@ -77,10 +69,12 @@ namespace Frontend
             this.PictureBoxOpcionesPost.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PictureBoxOpcionesPost.TabIndex = 26;
             this.PictureBoxOpcionesPost.TabStop = false;
+            this.PictureBoxOpcionesPost.Click += new System.EventHandler(this.PictureBoxOpcionesPost_Click);
             // 
             // PictureBoxCompartir
             // 
             this.PictureBoxCompartir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.PictureBoxCompartir.BackColor = System.Drawing.Color.Transparent;
             this.PictureBoxCompartir.Cursor = System.Windows.Forms.Cursors.Hand;
             this.PictureBoxCompartir.Image = global::Frontend.Properties.Resources.compartir;
             this.PictureBoxCompartir.Location = new System.Drawing.Point(608, 494);
@@ -93,6 +87,7 @@ namespace Frontend
             // PictureBoxComentarios
             // 
             this.PictureBoxComentarios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.PictureBoxComentarios.BackColor = System.Drawing.Color.Transparent;
             this.PictureBoxComentarios.Cursor = System.Windows.Forms.Cursors.Hand;
             this.PictureBoxComentarios.Image = global::Frontend.Properties.Resources.comentario;
             this.PictureBoxComentarios.Location = new System.Drawing.Point(553, 494);
@@ -153,14 +148,28 @@ namespace Frontend
             this.txtUrl.TabIndex = 32;
             this.txtUrl.Text = "Nombre";
             // 
+            // PictureBoxReportar
+            // 
+            this.PictureBoxReportar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.PictureBoxReportar.BackColor = System.Drawing.Color.Transparent;
+            this.PictureBoxReportar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.PictureBoxReportar.Image = global::Frontend.Properties.Resources.reportar;
+            this.PictureBoxReportar.Location = new System.Drawing.Point(720, 494);
+            this.PictureBoxReportar.Name = "PictureBoxReportar";
+            this.PictureBoxReportar.Size = new System.Drawing.Size(50, 50);
+            this.PictureBoxReportar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PictureBoxReportar.TabIndex = 33;
+            this.PictureBoxReportar.TabStop = false;
+            this.PictureBoxReportar.Click += new System.EventHandler(this.PictureBoxReportar_Click_1);
+            // 
             // PostControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.PictureBoxReportar);
             this.Controls.Add(this.txtUrl);
             this.Controls.Add(this.txtDescripcion);
             this.Controls.Add(this.lblNombre);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.PictureBoxOpcionesPost);
             this.Controls.Add(this.PictureBoxCompartir);
             this.Controls.Add(this.PictureBoxComentarios);
@@ -175,6 +184,7 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxLike)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuarioPost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imagen)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxReportar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -183,7 +193,6 @@ namespace Frontend
         #endregion
 
         private System.Windows.Forms.Label lblNombre;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox PictureBoxOpcionesPost;
         private System.Windows.Forms.PictureBox PictureBoxCompartir;
         private System.Windows.Forms.PictureBox PictureBoxComentarios;
@@ -192,5 +201,6 @@ namespace Frontend
         private System.Windows.Forms.PictureBox imagen;
         private System.Windows.Forms.Label txtDescripcion;
         private System.Windows.Forms.Label txtUrl;
+        private System.Windows.Forms.PictureBox PictureBoxReportar;
     }
 }
