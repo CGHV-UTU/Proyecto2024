@@ -4,10 +4,12 @@ En este repositorio se encuentra lo referente al proyecto que se relacione con e
 
 La rama principal contiene la carpeta "Documentos", donde se encuentran algunos manuales de instalación, archivos .sh, el boceto de MER y otros diagramas.
 
-Tenemos una rama dedicada para las versiones de la APIs de Post y Eventos.
+Tenemos una rama dedicada para las versiones de la APIs de Post y Eventos, de Usuarios y de Urupos.
 
 Las ramas "Backoffice" tienen un programa que interactúa directamente con una base de datos primitiva.
 
+En nuestras API usamos un token privado que permite la conexión con un repositorio en el que se guardan las imágenes. 
+En el código el token no está disponible por motivos de seguridad
 
 ## Definition of Done del Product Backlog
 
