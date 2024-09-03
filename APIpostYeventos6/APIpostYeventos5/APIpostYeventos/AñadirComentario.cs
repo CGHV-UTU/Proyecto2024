@@ -22,6 +22,10 @@ namespace APIpostYeventos
             InitializeComponent();
             usuario = user;
         }
+        public class Creador
+        {
+            public string NombreCreador { get; set; }
+        }
 
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
@@ -124,40 +128,64 @@ namespace APIpostYeventos
             this.Close();
         }
 
-        private void btnPublicar_Click(object sender, EventArgs e)
+        private async void btnPublicar_Click(object sender, EventArgs e)
         {
             DateTime now = DateTime.Now;
             string fechayhora = now.ToString("yyyy-MM-dd HH:mm:ss");
-            if (string.IsNullOrEmpty(txtNombreDeCuenta.Text) || string.IsNullOrEmpty(txtComentario.Text))
+            int nombrecreador;
+            int.TryParse(txtID.Text, out nombrecreador);
+            string nombreCreador = await ConseguirCreador(nombrecreador);
+
+            if (nombreCreador != null)
             {
-                lblError.Text = "Debe ingresar un nombre de usuario y contenido en el comentario";
-                lblError.Show();
+                await Publicar(usuario, txtID.Text, nombreCreador, txtComentario.Text, fechayhora);
+                MessageBox.Show("El comentario se creó correctamente");
             }
             else
             {
-                Publicar(txtNombreDeCuenta.Text, txtID.Text, txtComentario.Text, fechayhora);
-                lblError.Text = "El comentario se creó correctamente";
-                lblError.Show();
+                MessageBox.Show("Error al obtener el creador");
             }
+            lblError.Show();
         }
-        static async Task Publicar(string NombreDeCuenta, string IdPost, string texto, string fechayhora)
+
+        static async Task Publicar(string NombreDeCuenta, string IdPost, string nombreCreador, string texto, string fechayhora)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { NombreDeCuenta = NombreDeCuenta, IdPost = IdPost, texto = texto, fechayhora = fechayhora };
+
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, IdPost = IdPost, NombreCreador = nombreCreador, texto = texto, fechayhora = fechayhora };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/hacerComentario", content);
                     response.EnsureSuccessStatusCode();
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error: " + ex.Message);
-                    Console.ReadLine();
+                    MessageBox.Show("Error: " + ex.Message);
                 }
             }
         }
+        static async Task<string> ConseguirCreador(int id)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/conseguirCreador?id={id}");
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    return responseBody.Trim('"'); 
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                    return null;
+                }
+            }
+        }
+
+
         //testing
         public dynamic hacerComentario(string NombreDeCuenta = "", string IdPost = "", string texto = "", string fechayhora = "")
         {

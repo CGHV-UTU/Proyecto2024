@@ -120,17 +120,15 @@ namespace APIpostYeventos
         {
             if (pictureBox1.Image != null && !string.IsNullOrEmpty(txtUrl.Text))
             {
-                lblErrorModificar.Show();
-                lblErrorModificar.Text = "No se puede publicar una imagen y un enlace al mismo tiempo";
+                MessageBox.Show("No se puede publicar una imagen y un enlace al mismo tiempo");
             }
             else
             {
                 if (pictureBox1.Image == null)
                 {
                     byte[] imagen = new byte[0];
-                    Modificar(txtID.Text, txtTexto.Text, txtUrl.Text, imagen);
-                    lblErrorModificar.Show();
-                    lblErrorModificar.Text = "El post se modificó correctamente";
+                    await Modificar(txtID.Text, txtTexto.Text, txtUrl.Text, imagen);
+                    MessageBox.Show("El post se modificó correctamente");
                 }
                 else
                 {
@@ -140,7 +138,7 @@ namespace APIpostYeventos
                     byte[] imagen = ms.ToArray();
                     Modificar(txtID.Text, txtTexto.Text, txtUrl.Text, imagen);
                     lblErrorModificar.Show();
-                    lblErrorModificar.Text = "El post se modificó correctamente";
+                    MessageBox.Show("El post se modificó correctamente");
                 }
                 CargarTabla();
             }

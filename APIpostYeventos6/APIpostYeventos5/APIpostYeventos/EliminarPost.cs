@@ -50,16 +50,15 @@ namespace APIpostYeventos
                 var respuesta = await Existe(int.Parse(txtID.Text));
                 if (respuesta)
                 {
-                    Eliminar(txtID.Text);
+                    await Eliminar(txtID.Text);
                     lblError.Show();
-                    lblError.Text = "El Post se eliminó correctamente";
+                    MessageBox.Show("El Post se eliminó correctamente");
                     CargarTabla();
                     ModificarTabla();
                 }
                 else
                 {
-                    lblError.Show();
-                    lblError.Text = "No se encontró la ID";
+                    MessageBox.Show("No se encontro la ID");
                 }
             }
         }

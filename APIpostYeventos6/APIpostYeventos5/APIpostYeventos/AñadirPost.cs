@@ -51,15 +51,13 @@ namespace APIpostYeventos
         {
             if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtEnlace.Text))
             {
-                lblError.Show();
-                lblError.Text = "Todos los campos no pueden estar vacíos";
+                MessageBox.Show("Todos los campos no pueden estar vacíos");
             }
             else
             {
                 if (pbxImagen.Image != null && !string.IsNullOrEmpty(txtEnlace.Text))
                 {
-                    lblError.Show();
-                    lblError.Text = "No se puede publicar una imagen y un enlace al mismo tiempo";
+                    MessageBox.Show("No se puede publicar una imagen y un enlace al mismo tiempo");
                 }
                 else
                 {
@@ -67,8 +65,7 @@ namespace APIpostYeventos
                     {
                         byte[] data = new byte[0];
                         await Publicar(txtTexto.Text, txtEnlace.Text, data);
-                        lblError.Text = "El post se creó correctamente";
-                        lblError.Show();  
+                        MessageBox.Show("El post se creó correctamente");
                     }
                     else
                     {
@@ -76,8 +73,7 @@ namespace APIpostYeventos
                         pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                         byte[] data = ms.ToArray();
                         await Publicar(txtTexto.Text, txtEnlace.Text, data);
-                        lblError.Text = "El post se creó correctamente";
-                        lblError.Show();
+                        MessageBox.Show("El post se creó correctamente");
                     }
 
                 }
@@ -97,8 +93,7 @@ namespace APIpostYeventos
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error: " + ex.Message);
-                    Console.ReadLine();
+                    MessageBox.Show("Error: " + ex.Message);
                 }
             }
         }

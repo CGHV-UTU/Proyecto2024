@@ -49,6 +49,8 @@ namespace APIpostYeventos
             this.txtDescripcion = new System.Windows.Forms.TextBox();
             this.lblError = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.txtNombreGrupo = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
             this.SuspendLayout();
             // 
@@ -98,7 +100,7 @@ namespace APIpostYeventos
             // 
             // txtTitulo
             // 
-            this.txtTitulo.Location = new System.Drawing.Point(95, 23);
+            this.txtTitulo.Location = new System.Drawing.Point(95, 32);
             this.txtTitulo.Name = "txtTitulo";
             this.txtTitulo.Size = new System.Drawing.Size(150, 20);
             this.txtTitulo.TabIndex = 26;
@@ -189,7 +191,7 @@ namespace APIpostYeventos
             // lblTitulo
             // 
             this.lblTitulo.AutoSize = true;
-            this.lblTitulo.Location = new System.Drawing.Point(17, 26);
+            this.lblTitulo.Location = new System.Drawing.Point(17, 35);
             this.lblTitulo.Name = "lblTitulo";
             this.lblTitulo.Size = new System.Drawing.Size(33, 13);
             this.lblTitulo.TabIndex = 16;
@@ -230,11 +232,29 @@ namespace APIpostYeventos
             this.label1.TabIndex = 35;
             this.label1.Text = "label1";
             // 
+            // txtNombreGrupo
+            // 
+            this.txtNombreGrupo.Location = new System.Drawing.Point(95, 6);
+            this.txtNombreGrupo.Name = "txtNombreGrupo";
+            this.txtNombreGrupo.Size = new System.Drawing.Size(150, 20);
+            this.txtNombreGrupo.TabIndex = 36;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(21, 9);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(76, 13);
+            this.label4.TabIndex = 37;
+            this.label4.Text = "Nombre Grupo";
+            // 
             // AñadirEvento
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(589, 292);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtNombreGrupo);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.txtDescripcion);
@@ -284,5 +304,7 @@ namespace APIpostYeventos
         private System.Windows.Forms.TextBox txtDescripcion;
         private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtNombreGrupo;
+        private System.Windows.Forms.Label label4;
     }
 }

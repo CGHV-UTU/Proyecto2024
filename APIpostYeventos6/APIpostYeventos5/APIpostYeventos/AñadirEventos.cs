@@ -26,6 +26,14 @@ namespace APIpostYeventos
             dtpFecha.MaxDate = new DateTime(año, 12, 31);
             int hora = DateTime.Now.Hour;
             int minuto = DateTime.Now.Minute + 5;
+            if (minuto >= 60)
+            { minuto -= 60;
+                hora += 1;
+            }
+            if (hora >= 24)
+            {
+                hora = 0;
+            }
             dtpHora.MinDate = new DateTime(año, 12, 31, hora, minuto, 0);
             usuario = user;
         }
@@ -53,7 +61,7 @@ namespace APIpostYeventos
             this.Close();
         }
 
-        private void btnPublicar_Click(object sender, EventArgs e)
+        private async void btnPublicar_Click(object sender, EventArgs e)
         {
             string[] fecha = dtpFecha.Text.Split('/');
             string[] hora = dtpHora.Text.Split(':');
@@ -70,26 +78,65 @@ namespace APIpostYeventos
                 MemoryStream ms = new MemoryStream();
                 pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                 byte[] data = ms.ToArray();
-                Publicar(txtTitulo.Text, txtUbicacion.Text, txtDescripcion.Text, data, fechayhora);
-                lblError.Text = "El evento se creó correctamente";
-                lblError.Show();
+                await Publicar(txtNombreGrupo.Text,usuario,txtTitulo.Text, txtUbicacion.Text, txtDescripcion.Text, data, fechayhora);
+                MessageBox.Show("Evento creado correctamente");
             }
         }
-        static async Task Publicar(string titulo, string ubicacion, string descripcion, byte[] imagen, string fechayhora)
+        static async Task Publicar(string nombreGrupoVisible, string usuario, string titulo, string ubicacion, string descripcion, byte[] imagen, string fechayhora)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { titulo = titulo, ubicacion = ubicacion, descripcion = descripcion,imagen = Convert.ToBase64String(imagen), fechayhora = fechayhora, user = usuario};
-                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/hacerEvento", content);
-                    response.EnsureSuccessStatusCode();
+                    string baseUrl1 = $"https://localhost:44304/ObtenerGruposPorNombreVisibleYUsuario?nombreVisible={nombreGrupoVisible}&nombreDeCuenta={usuario}";
+                    string baseUrl2 = "https://localhost:44340/hacerEvento";
+                    Console.WriteLine($"Sending GET request to {baseUrl1}");
+                    HttpResponseMessage response1 = await client.GetAsync(baseUrl1);
+                    if (!response1.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show($"Error fetching 'nombreReal': {response1.StatusCode} ({response1.ReasonPhrase})");
+                        return;
+                    }
+                    string responseBody1 = await response1.Content.ReadAsStringAsync();
+                    Console.WriteLine("Response from ObtenerGruposPorNombreVisibleYUsuario: " + responseBody1);
+                    List<dynamic> grupos = JsonConvert.DeserializeObject<List<dynamic>>(responseBody1);
+
+                    if (grupos.Count > 0)
+                    {
+                        string nombreReal = grupos[0].nombreReal;
+                        Console.WriteLine("Nombre Real obtenido: " + nombreReal);
+                        var datos2 = new
+                        {
+                            nombreReal = nombreReal,
+                            titulo = titulo,
+                            ubicacion = ubicacion,
+                            descripcion = descripcion,
+                            imagen = Convert.ToBase64String(imagen),
+                            fechayhora = fechayhora,
+                            user = usuario
+                        };
+                        var content2 = new StringContent(JsonConvert.SerializeObject(datos2), Encoding.UTF8, "application/json");
+                        Console.WriteLine($"Sending POST request to {baseUrl2} with data: {JsonConvert.SerializeObject(datos2)}");
+                        HttpResponseMessage response2 = await client.PostAsync(baseUrl2, content2);
+
+                        if (!response2.IsSuccessStatusCode)
+                        {
+                            MessageBox.Show($"Error creating event: {response2.StatusCode} ({response2.ReasonPhrase})");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se encontraron Grupos para el usuario especificado.");
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    MessageBox.Show($"HTTP Request Error: {ex.Message}");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error: " + ex.Message);
-                    Console.ReadLine();
+                    MessageBox.Show("Error: " + ex.Message);
                 }
             }
         }
