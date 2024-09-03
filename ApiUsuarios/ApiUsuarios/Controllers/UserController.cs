@@ -391,6 +391,24 @@ namespace ApiUsuarios.Controllers
         }
 
         [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("agregarNotificaciones")]
+        public dynamic AgregarNotificaciones(string user, string notificaciones)
+        {
+            if (!string.IsNullOrEmpty(user) && !string.IsNullOrEmpty(notificaciones))
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET notificaciones = CONCAT(notificaciones, @notificaciones) WHERE nombreDeCuenta = @nombreDeCuenta", conn);
+                cmd.Parameters.AddWithValue("@nombreDeCuenta", user);
+                cmd.Parameters.AddWithValue("@notificaciones", notificaciones);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return Json("Correcto");
+            }
+            return Json("valor nulo: " + user + ", " + notificaciones);
+        }
+
+        [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("ConseguirNotificaciones")]
         public dynamic ConseguirNotificaciones([FromBody] usuario user)
         {
