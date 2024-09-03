@@ -262,3 +262,29 @@ C:\Users\FedeG\Downloads\3108front\Proyecto2024\Frontend\obj\Debug\Frontend.pdb
 C:\Users\FedeG\Downloads\3108front\Proyecto2024\Frontend\obj\Debug\Frontend.CrearComentario.resources
 C:\Users\FedeG\Downloads\3108front\Proyecto2024\Frontend\obj\Debug\Frontend.CreadorComentarios.resources
 C:\Users\FedeG\Downloads\3108front\Proyecto2024\Frontend\obj\Debug\Frontend.ReportarPost.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\bin\Debug\Frontend.exe.config
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\bin\Debug\Frontend.exe
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\bin\Debug\Frontend.pdb
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\bin\Debug\Newtonsoft.Json.dll
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\bin\Debug\Newtonsoft.Json.xml
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.AssemblyReference.cache
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.Comentarios.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.CommentControl.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.Configuracion.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.CreadorComentarios.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.CrearComentario.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.IniciarSesion.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.Inicio.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.NotificacionControl.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.Notificaciones.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.Post.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.PostControl.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.Posts.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.Properties.Resources.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.Registrarse.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.ReportarPost.resources
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.GenerateResource.cache
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CoreCompileInputs.cache
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CopyComplete
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.exe
+C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.pdb

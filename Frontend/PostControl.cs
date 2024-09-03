@@ -99,6 +99,83 @@ namespace Frontend
             }
         }
 
+        public static async Task<string> obtenerCreador(int idpost)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/conseguirCreador?id={idpost}");
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de nin}guna manera, tengo que hallar alguna forma de pasar los datos
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        public static async Task<dynamic> AgregarNotificaciones(string user, string notificaciones)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                { 
+                    var payload = new
+                    {
+                        user = user,
+                        notificaciones = notificaciones
+                    };
+
+                    // Serializar el objeto a JSON
+                    string jsonPayload = JsonConvert.SerializeObject(payload);
+                    var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/agregarNotificaciones", content);
+                    response.EnsureSuccessStatusCode();
+
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    return $"Error al enviar la solicitud: {ex.Message}";
+                }
+            }
+        }
+
+        public async Task EnviarNotificacion()
+        {
+            try
+            {
+                dynamic creador = await obtenerCreador(idpost);
+                if (creador != null)
+                {
+                    string notificacion = $"Like:Usuario le ha dado like a tu publicación";
+                    dynamic response = await AgregarNotificaciones(creador, notificacion);
+                    // Asegúrate de que 'response' tiene una propiedad 'success'
+                    if (response != null && response.success)
+                    {
+                        MessageBox.Show("Like enviado con éxito a " + creador);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al enviar la notificación.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo obtener el creador del post.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error: " + ex.Message);
+            }
+        }
+
+
 
         private void ConfigurarPostControl(string postType)
         {
@@ -150,12 +227,18 @@ namespace Frontend
         private bool isImage1 = true;
         private void PictureBoxLike_Click(object sender, EventArgs e)
         {
+            HandleLikeClick();
+        }
+
+        private async Task HandleLikeClick()
+        {
             if (modo.Equals("Oscuro"))
             {
                 if (isImage1)
                 {
                     PictureBoxLike.Image = Properties.Resources.like_claro_relleno;
                     isImage1 = false;
+                    await EnviarNotificacion();  // Llamada asíncrona
                 }
                 else
                 {
@@ -229,7 +312,7 @@ namespace Frontend
             this.PictureBoxLike.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxLike.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxLike.Image = Frontend.Properties.Resources.like_infini;
-            this.PictureBoxLike.Click += PictureBoxLike_Click;
+            this.PictureBoxLike.Click += PictureBoxLike_Click; //Acá salta error cuando cambio el evento a async
             this.PictureBoxLike.Cursor = Cursors.Hand;
 
             // comentarios

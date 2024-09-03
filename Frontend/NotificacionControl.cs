@@ -21,6 +21,12 @@ namespace Frontend
             AjustarTamaño();
         }
 
+        public Image ImagenNotificacion
+        {
+            get { return PictureBoxNotificacion.Image; }
+            set { PictureBoxNotificacion.Image = value; }
+        }
+
         private void AjustarTamaño()
         {
             lblNoti.Size = new Size(this.Width - 70, this.Height - 20);

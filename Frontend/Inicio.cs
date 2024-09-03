@@ -47,7 +47,8 @@ namespace Frontend
         {
             if (!PanelNotificaciones.Visible)
             {
-                MostrarNotificacionesEjemplo(); // Método para mostrar las notificaciones de ejemplo
+                //MostrarNotificacionesEjemplo(); // Método para mostrar las notificaciones de ejemplo
+                MostrarNotificacionesReales();
                 PanelNotificaciones.Visible = true; // Mostrar el panel de notificaciones
             } else {
                 PanelNotificaciones.Visible = false; // Quitar el panel de notificaciones
@@ -82,17 +83,43 @@ namespace Frontend
 
         private async void MostrarNotificacionesReales()
         {
-            PanelNotificaciones.Controls.Clear(); // Limpiar cualquier notificación existente
+            PanelNotificaciones.Controls.Clear(); // Limpio el panel
             int margin = 10;
             string notificaciones = await conseguirNotificaciones(user);
-            string[] array = notificaciones.Split(';');
-            for (int i = 0; i < 5; i++)
+            string[] notificacionesArray = notificaciones.Split(';');
+
+            // Me fijo si tiene algo
+            if (notificacionesArray.Length > 0 && !string.IsNullOrEmpty(notificacionesArray[0]))
             {
-                NotificacionControl notificacionControl = new NotificacionControl($"Notificación ejemplo {i + 1}");
+                for (int i = 0; i < notificacionesArray.Length && i < 10; i++)
+                {
+                    // Cada notificación tiene este formato  "Tipo:Texto". Lo dividimos con el ":"
+                    string[] partes = notificacionesArray[i].Split(':');
+
+                    // Verificamos que haya exactamente 2 partes, tipo y texto
+                    if (partes.Length == 2)
+                    {
+                        string tipo = partes[0];  // Tipo de la notificación
+                        string texto = partes[1]; // Texto de la notificación
+
+                        // Crear control de notificación con el texto
+                        NotificacionControl notificacionControl = new NotificacionControl(texto);
+                        notificacionControl.Size = new Size(500 - margin * 2, 100);
+                        notificacionControl.Location = new Point(margin, i * (notificacionControl.Height + margin));
+                        cambiarFotoNotificaciones(tipo, notificacionControl);
+                        PanelNotificaciones.Controls.Add(notificacionControl);
+                    }
+                }
+            }
+            else
+            {
+                NotificacionControl notificacionControl = new NotificacionControl("No tienes notificaciones");
                 notificacionControl.Size = new Size(500 - margin * 2, 100);
-                notificacionControl.Location = new Point(margin, i * (notificacionControl.Height + margin));
+                notificacionControl.ImagenNotificacion = Properties.Resources.buscar;
+               // notificacionControl.Location = new Point(margin, i * (notificacionControl.Height + margin));
                 PanelNotificaciones.Controls.Add(notificacionControl);
             }
+            
         }
 
         // cargar form de posts. -Puse un fondo gris para distinguirlo    
@@ -241,6 +268,27 @@ namespace Frontend
         {
             PanelPostear.Visible = false;
             PanelPosts.Visible = true;
+        }
+         
+        private void cambiarFotoNotificaciones(string tipo, NotificacionControl control)
+        {
+           // string[] tipo = notificacion.Split(':');
+            switch (tipo)
+            {
+                case ("Like"):
+                    control.ImagenNotificacion = Properties.Resources.notificacionLike;
+                    break;
+
+                case ("Etiquetado"):
+                    control.ImagenNotificacion = Properties.Resources.mas_opciones;
+                    break;
+
+                default:
+                    control.ImagenNotificacion = Properties.Resources.campana;
+                    break;
+        
+            }
+
         }
 
         public static async Task<string> conseguirConfig(string usuario)
