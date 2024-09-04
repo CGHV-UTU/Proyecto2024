@@ -20,6 +20,7 @@ namespace Frontend
         private string modo;
         private string idpost;
         private string user;
+        public event EventHandler<PersonalizedArgs> ReportarComentario;
         public Comentarios(string modo,string idpost, string user)
         {
             this.modo = modo;
@@ -64,11 +65,15 @@ namespace Frontend
                     commentControl.Size = new Size(465 + margin * 2, 171 + margin * 2);
                     var lastControl = PanelComentarios.Controls[PanelComentarios.Controls.Count - 1];
                     commentControl.Location = new Point(margin, lastControl.Bottom);
+                    commentControl.ReportarComentario += CommentControl_ReportarComentario;
                     PanelComentarios.Controls.Add(commentControl);
                 }
             }
         }
-
+        private void CommentControl_ReportarComentario(object sender, PersonalizedArgs e)
+        {
+            ReportarComentario?.Invoke(this, new PersonalizedArgs(e.arg,e.arg2));
+        }
 
         private void Iniciar()
         {

@@ -111,7 +111,7 @@ namespace Frontend
         private void PostControl_ReportarPost(object sender, PersonalizedArgs e)
         {
             // Disparar el evento para que lo maneje quien esté suscrito (en este caso, Inicio)
-            AbrirComentarios?.Invoke(this, new PersonalizedArgs(e.arg));
+            ReportarPost?.Invoke(this, new PersonalizedArgs(e.arg));
         }
         private void Iniciar()
         {

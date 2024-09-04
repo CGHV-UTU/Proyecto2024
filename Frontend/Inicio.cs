@@ -142,7 +142,7 @@ namespace Frontend
             post.FormBorderStyle = FormBorderStyle.None;
             post.Dock = DockStyle.Fill;
             post.AbrirComentarios += PostControl_AbrirComentarios;
-            post.ReportarPost += PostControl_AbrirComentarios;
+            post.ReportarPost += PostControl_ReportarPost;
             PanelPosts.Controls.Add(post);
             post.Show();
         }
@@ -155,23 +155,19 @@ namespace Frontend
         private void PostControl_ReportarPost(object sender, PersonalizedArgs e)
         {
             ReportarPost(e.arg);
-            PanelComentarios.Visible = true;
-            PictureBoxSalir.Visible = true;
         }
-        private void ReportarPost(string idpost)
+        private void ReportarPost(string idpost, string idcomentario="")
         {
+            PanelComentarios.Visible = false;
             PanelPostear.Controls.Clear();
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            Post post = new Post(user);
+            ReportarPost post = new ReportarPost(idpost,idcomentario);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
             post.BackColor = Color.LightGray;
             post.Dock = DockStyle.Fill;
-            post.Creado += Post_Creado;
-            post.Salir += Post_Salir;
-            post.CambiaTamaño += Post_CambiaTamaño;
             post.BackColor = Color.FromArgb(34, 67, 220);
             PanelPostear.Controls.Add(post);
             post.Show();
@@ -185,8 +181,14 @@ namespace Frontend
             comentario.FormBorderStyle = FormBorderStyle.None;
             comentario.BackColor = Color.LightGray;
             comentario.Dock = DockStyle.Fill;
+            comentario.ReportarComentario += CommentControl_ReportarComentario;
             PanelComentarios.Controls.Add(comentario);
             comentario.Show();
+        }
+
+        private void CommentControl_ReportarComentario(object sender, PersonalizedArgs e)
+        {
+            ReportarPost(e.arg, e.arg2);
         }
 
         private void PictureBoxSalir_Click(object sender, EventArgs e)

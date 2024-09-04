@@ -16,6 +16,7 @@ namespace Frontend
     {
         private string idpost;
         private int idcomentario;
+        public event EventHandler<PersonalizedArgs> ReportarComentario;
         public CommentControl(string modo,string idpost, int idcomentario)
         {
             this.idpost = idpost;
@@ -118,6 +119,7 @@ namespace Frontend
             this.PictureBoxReportar.Size = new System.Drawing.Size(50,50);
             this.PictureBoxReportar.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxReportar.Image = Properties.Resources.reportar;
+            this.PictureBoxReportar.Click += PictureBoxReportar_Click;
             this.Cursor = Cursors.Hand;
 
             // Añadir controles al CommentControl
@@ -134,6 +136,11 @@ namespace Frontend
             this.Size = new System.Drawing.Size(465, 171);
             this.ResumeLayout(false);
             this.PerformLayout();
+        }
+
+        private void PictureBoxReportar_Click(object sender, EventArgs e)
+        {
+            ReportarComentario?.Invoke(this, new PersonalizedArgs("" + idpost, ""+idcomentario));
         }
     }
 }

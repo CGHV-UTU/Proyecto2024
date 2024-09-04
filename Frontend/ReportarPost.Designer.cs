@@ -84,6 +84,7 @@ namespace Frontend
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Image = global::Frontend.Properties.Resources.reportarbtn_removebg_preview;
             this.pictureBox1.Location = new System.Drawing.Point(106, 295);
             this.pictureBox1.Name = "pictureBox1";

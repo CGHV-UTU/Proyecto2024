@@ -282,14 +282,13 @@ namespace Frontend
             this.SuspendLayout();
 
             // reportar
-            this.PictureBoxReportar.Visible = false;
-            this.PictureBoxUsuarioPost.Location = new System.Drawing.Point(720, 494);
-            this.PictureBoxUsuarioPost.Name = "PictureBoxUsuarioPost";
-            this.PictureBoxUsuarioPost.Size = new System.Drawing.Size(50, 50);
-            this.PictureBoxUsuarioPost.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.PictureBoxUsuarioPost.Image = Frontend.Properties.Resources.reportar;
+            this.PictureBoxReportar.Location = new System.Drawing.Point(497, 494);
+            this.PictureBoxReportar.Name = "PictureBoxReportar";
+            this.PictureBoxReportar.Size = new System.Drawing.Size(50, 50);
+            this.PictureBoxReportar.SizeMode = PictureBoxSizeMode.StretchImage;
+            this.PictureBoxReportar.Image = Frontend.Properties.Resources.reportar;
             this.PictureBoxReportar.Click += PictureBoxReportar_Click_1;
-            this.PictureBoxUsuarioPost.Cursor = Cursors.Hand;
+            this.PictureBoxReportar.Cursor = Cursors.Hand;
 
             // lblTitle
             this.lblNombre.AutoSize = true;
@@ -337,7 +336,7 @@ namespace Frontend
             this.PictureBoxOpcionesPost.Name = "PictureBoxOpcionesPost";
             this.PictureBoxOpcionesPost.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxOpcionesPost.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.PictureBoxOpcionesPost.Image = Frontend.Properties.Resources.mas_opciones;
+            this.PictureBoxOpcionesPost.Image = Frontend.Properties.Resources.reportar;
             this.PictureBoxOpcionesPost.Click += PictureBoxOpcionesPost_Click;
             this.PictureBoxOpcionesPost.Cursor = Cursors.Hand;
 
@@ -387,7 +386,7 @@ namespace Frontend
                     this.PictureBoxComentarios.Location = new Point(548, imagen.Bottom + 10);
                     this.PictureBoxCompartir.Location = new Point(604, imagen.Bottom + 10);
                     this.PictureBoxOpcionesPost.Location = new Point(660, imagen.Bottom + 10);
-                    this.PictureBoxUsuarioPost.Location = new System.Drawing.Point(720, imagen.Bottom + 10);
+                    this.PictureBoxReportar.Location = new System.Drawing.Point(497, imagen.Bottom + 10);
                     break;
 
                 case "imageOnly":
@@ -407,7 +406,7 @@ namespace Frontend
                     this.PictureBoxComentarios.Location = new Point(548, txtUrl.Bottom + 10);
                     this.PictureBoxCompartir.Location = new Point(604, txtUrl.Bottom + 10);
                     this.PictureBoxOpcionesPost.Location = new Point(660, txtUrl.Bottom + 10);
-                    this.PictureBoxUsuarioPost.Location = new System.Drawing.Point(720, txtUrl.Bottom + 10);
+                    this.PictureBoxReportar.Location = new System.Drawing.Point(497, txtUrl.Bottom+10);
                     this.imagen.Visible = false;
                     break;
 
@@ -420,6 +419,7 @@ namespace Frontend
                     this.PictureBoxComentarios.Location = new Point(548, txtDescripcion.Bottom + 10);
                     this.PictureBoxCompartir.Location = new Point(604, txtDescripcion.Bottom + 10);
                     this.PictureBoxOpcionesPost.Location = new Point(660, txtDescripcion.Bottom + 10);
+                    this.PictureBoxReportar.Location = new System.Drawing.Point(497, txtDescripcion.Bottom+10);
                     this.Height = PictureBoxLike.Bottom + 10;
                     break;
 
@@ -433,6 +433,7 @@ namespace Frontend
                     this.PictureBoxComentarios.Location = new Point(548, txtUrl.Bottom + 10);
                     this.PictureBoxCompartir.Location = new Point(604, txtUrl.Bottom + 10);
                     this.PictureBoxOpcionesPost.Location = new Point(660, txtUrl.Bottom + 10);
+                    this.PictureBoxReportar.Location = new System.Drawing.Point(497, txtUrl.Bottom + 10);
                     break;
             }
             if (modo.Equals("Oscuro"))
@@ -447,7 +448,8 @@ namespace Frontend
             }
             else
             {
-                this.PictureBoxOpcionesPost.Image = Properties.Resources.mas_opciones;
+                this.PictureBoxReportar.Image = Frontend.Properties.Resources.reportar;
+                this.PictureBoxOpcionesPost.Image = Properties.Resources.reportar;
                 this.PictureBoxCompartir.Image = Properties.Resources.compartir;
                 this.PictureBoxLike.Image = Properties.Resources.like_infini;
                 this.PictureBoxComentarios.Image = Properties.Resources.comentario;
@@ -464,6 +466,7 @@ namespace Frontend
         private void PictureBoxOpcionesPost_Click(object sender, EventArgs e)
         {
             this.PictureBoxReportar.Visible = true;
+            ReportarPost?.Invoke(this, new PersonalizedArgs("" + idpost));
         }
 
 

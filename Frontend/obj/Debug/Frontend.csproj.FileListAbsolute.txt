@@ -288,3 +288,29 @@ C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.cspro
 C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CopyComplete
 C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.exe
 C:\Cosas\Códigos\Frontend Infini\Proyecto2024\Frontend\obj\Debug\Frontend.pdb
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\bin\Debug\Frontend.exe.config
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\bin\Debug\Frontend.exe
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\bin\Debug\Frontend.pdb
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\bin\Debug\Newtonsoft.Json.dll
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\bin\Debug\Newtonsoft.Json.xml
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.AssemblyReference.cache
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.Comentarios.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.CommentControl.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.Configuracion.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.CreadorComentarios.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.CrearComentario.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.IniciarSesion.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.Inicio.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.NotificacionControl.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.Notificaciones.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.Post.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.PostControl.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.Posts.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.Properties.Resources.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.Registrarse.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.ReportarPost.resources
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.GenerateResource.cache
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CoreCompileInputs.cache
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CopyComplete
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.exe
+C:\Users\FedeG\Downloads\0309front\Proyecto2024\Frontend\obj\Debug\Frontend.pdb

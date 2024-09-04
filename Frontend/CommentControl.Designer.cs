@@ -59,6 +59,7 @@ namespace Frontend
             this.PictureBoxReportar.TabIndex = 32;
             this.PictureBoxReportar.TabStop = false;
             this.PictureBoxReportar.Visible = false;
+            this.PictureBoxReportar.Click += new System.EventHandler(this.PictureBoxReportar_Click);
             // 
             // PictureBoxLike
             // 

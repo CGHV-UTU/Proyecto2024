@@ -154,7 +154,7 @@ namespace Frontend
             this.PictureBoxReportar.BackColor = System.Drawing.Color.Transparent;
             this.PictureBoxReportar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.PictureBoxReportar.Image = global::Frontend.Properties.Resources.reportar;
-            this.PictureBoxReportar.Location = new System.Drawing.Point(720, 494);
+            this.PictureBoxReportar.Location = new System.Drawing.Point(497, 494);
             this.PictureBoxReportar.Name = "PictureBoxReportar";
             this.PictureBoxReportar.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxReportar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
