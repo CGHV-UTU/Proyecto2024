@@ -95,5 +95,44 @@ namespace Testing
             Assert.AreEqual(respuestaEsperada, respuestaRecibida);
         }
 
+        [TestMethod]
+        public void TestMethod8()
+        {
+            string nombreDeCuenta = "nombre";
+            string configuraciones = "configuraciones cambiadas";
+            var controller = new ApiUsuarios.Controllers.UserController();
+            var jsonResponse = controller.PRCambiarConfiguracion(nombreDeCuenta, configuraciones);
+            dynamic response = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+            Assert.AreEqual("Configuracion correcta", (string)response);
+        }
+        [TestMethod]
+        public void TestMethod9()
+        {
+            string nombreDeCuenta = "nombre";
+            var controller = new ApiUsuarios.Controllers.UserController();
+            var jsonResponse = controller.PRConseguirConfiguracion(nombreDeCuenta);
+            dynamic response = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+            Assert.AreEqual("configuraciones cambiadas", (string)response);
+        }
+        [TestMethod]
+        public void TestMethoda1()
+        {
+            string nombreDeCuenta = "nombre";
+            string notificaciones = "notificaciones cambiadas";
+            var controller = new ApiUsuarios.Controllers.UserController();
+            var jsonResponse = controller.PRActualizarNotificaciones(nombreDeCuenta, notificaciones);
+            dynamic response = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+            Assert.AreEqual("Correcto", (string)response);
+        }
+        [TestMethod]
+        public void TestMethoda2()
+        {
+            string nombreDeCuenta = "nombre";
+            var controller = new ApiUsuarios.Controllers.UserController();
+            var jsonResponse = controller.PRConseguirNotificaciones(nombreDeCuenta);
+            dynamic response = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+            Assert.AreEqual("notificaciones cambiadas", (string)response);
+        }
+
     }
 }
