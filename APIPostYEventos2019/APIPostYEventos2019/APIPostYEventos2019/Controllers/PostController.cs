@@ -56,11 +56,12 @@ namespace APIPostYEventos2019.Controllers
         }
         public class ReportePostOComentario
         {
-            public int numeroReporte { get; set; }
             public string usuario { get; set; }
             public int id { get; set; }
+            public string tipo { get; set; }
+            public string descripcion { get; set; }
         }
-        public async Task<string> SubirImagenAGitHub(string imagen,string carpeta)
+        public async Task<string> SubirImagenAGitHub(string imagen, string carpeta)
         {
             using (var client = new HttpClient())
             {
@@ -68,7 +69,7 @@ namespace APIPostYEventos2019.Controllers
                 {
                     string token = "token"; // Token para repositorio privado. Cambiar por el token real
                     string nombreDeImagen = GenerarIdAleatorio(8) + ".png"; // nombre aleatorio para que el nombre del archivo no se repita // Carpeta de GitHub en donde se guarda la imagen
-                                               
+
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     client.DefaultRequestHeaders.UserAgent.ParseAdd("request");
                     var content = new { message = "Nueva imagen", content = imagen };
@@ -260,7 +261,7 @@ namespace APIPostYEventos2019.Controllers
                     {
                         url = reader["video"].ToString();
                     }
-                    var data = new { texto = texto, imagen = imagen, url = url , fechaYhora = fechaYhora};
+                    var data = new { texto = texto, imagen = imagen, url = url, fechaYhora = fechaYhora };
                     return Json(data);
                 }
                 else
@@ -573,7 +574,7 @@ namespace APIPostYEventos2019.Controllers
                     {
                         imagen = await CargarImagenDeGitHub(reader["foto"].ToString());
                     }
-                    var data = new { nombreReal = reader["nombreReal"].ToString(),titulo = reader["titulo"].ToString(), ubicacion = ubicacion, descripcion = reader["descripcion"].ToString(), foto = imagen, fechayhora = reader["fechaYHora"].ToString() };
+                    var data = new { nombreReal = reader["nombreReal"].ToString(), titulo = reader["titulo"].ToString(), ubicacion = ubicacion, descripcion = reader["descripcion"].ToString(), foto = imagen, fechayhora = reader["fechaYHora"].ToString() };
                     return Json(data);
                 }
                 else
@@ -672,7 +673,7 @@ namespace APIPostYEventos2019.Controllers
                 string IdPost = commentdata.IdPost;
                 string texto = commentdata.texto;
                 string fechayhora = commentdata.fechayhora;
-                cmd = new MySqlCommand("INSERT INTO Comentarios (nombreDeCuenta, idPost, nombreCreador, texto, fechaYHora) VALUES (@NombreDeCuenta,@IdPost, @nombreCreador,@Texto,@FechayHora)", conn); 
+                cmd = new MySqlCommand("INSERT INTO Comentarios (nombreDeCuenta, idPost, nombreCreador, texto, fechaYHora) VALUES (@NombreDeCuenta,@IdPost, @nombreCreador,@Texto,@FechayHora)", conn);
                 cmd.Parameters.AddWithValue("@NombreDeCuenta", NombreDeCuenta);
                 cmd.Parameters.AddWithValue("@nombreCreador", commentdata.NombreCreador);
                 cmd.Parameters.AddWithValue("@IdPost", IdPost);
@@ -1018,7 +1019,7 @@ namespace APIPostYEventos2019.Controllers
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
-                    if(dataTable.Rows[0]["id"].ToString()!= null)
+                    if (dataTable.Rows[0]["id"].ToString() != null)
                     {
                         return Json(dataTable);
                     }
@@ -1044,10 +1045,11 @@ namespace APIPostYEventos2019.Controllers
             {
                 MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO ReportePost (numeroDeReporte,nombreDeCuenta,idPost) VALUES (@reporte,@Nombre, @id)", conn);
-                cmd.Parameters.AddWithValue("@reporte", reporte.numeroReporte);
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO ReportePost (nombreDeCuenta,idPost,tipo, descripcion) VALUES (@Nombre, @id, @tipo, @descripcion)", conn);
                 cmd.Parameters.AddWithValue("@nombre", reporte.usuario);
                 cmd.Parameters.AddWithValue("@id", reporte.id);
+                cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
                 cmd.ExecuteNonQuery();
                 conn.Close();
                 return Json("Reporte correcto");
@@ -1066,10 +1068,11 @@ namespace APIPostYEventos2019.Controllers
             {
                 MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO ReporteComentario (numeroDeReporte,nombreDeCuenta,idComentario) VALUES (@reporte,@Nombre, @id)", conn);
-                cmd.Parameters.AddWithValue("@reporte", reporte.numeroReporte);
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO ReporteComentario (nombreDeCuenta,idComentario, tipo, descripcion) VALUES (@Nombre, @id, @tipo, @descripcion)", conn);
                 cmd.Parameters.AddWithValue("@nombre", reporte.usuario);
                 cmd.Parameters.AddWithValue("@id", reporte.id);
+                cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
                 cmd.ExecuteNonQuery();
                 conn.Close();
                 return Json("Reporte correcto");
