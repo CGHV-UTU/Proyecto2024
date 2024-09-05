@@ -233,6 +233,16 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap editar_removebg_preview {
+            get {
+                object obj = ResourceManager.GetObject("editar-removebg-preview", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap fondoPost {
             get {
                 object obj = ResourceManager.GetObject("fondoPost", resourceCulture);

@@ -319,7 +319,7 @@ namespace Frontend
             AbrirComentarios?.Invoke(this, new PersonalizedArgs(""+idpost));
         }
 
-        private void iniciar(string postType)
+        private async void iniciar(string postType)
         {
             this.lblNombre = new Label();
             this.PictureBoxUsuarioPost = new PictureBox();
@@ -328,19 +328,19 @@ namespace Frontend
             this.PictureBoxComentarios = new PictureBox();
             this.PictureBoxCompartir = new PictureBox();
             this.PictureBoxOpcionesPost = new PictureBox();
-            this.PictureBoxReportar = new PictureBox();
+            this.PictureBoxEditar = new PictureBox();
             this.txtDescripcion = new Label();
             this.txtUrl = new Label();
             this.SuspendLayout();
 
-            // reportar
-            this.PictureBoxReportar.Location = new System.Drawing.Point(497, 494);
-            this.PictureBoxReportar.Name = "PictureBoxReportar";
-            this.PictureBoxReportar.Size = new System.Drawing.Size(50, 50);
-            this.PictureBoxReportar.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.PictureBoxReportar.Image = Frontend.Properties.Resources.reportar;
-            this.PictureBoxReportar.Click += PictureBoxReportar_Click_1;
-            this.PictureBoxReportar.Cursor = Cursors.Hand;
+            //editar
+            this.PictureBoxEditar.Location = new System.Drawing.Point(497, 440);
+            this.PictureBoxEditar.Name = "PictureBoxEditar";
+            this.PictureBoxEditar.Size = new System.Drawing.Size(50, 50);
+            this.PictureBoxEditar.SizeMode = PictureBoxSizeMode.StretchImage;
+            this.PictureBoxEditar.Image = Frontend.Properties.Resources.editar_removebg_preview;
+            this.PictureBoxEditar.Click += PictureBoxEditar_Click;
+            this.PictureBoxEditar.Cursor = Cursors.Hand;
 
             // lblTitle
             this.lblNombre.AutoSize = true;
@@ -421,6 +421,7 @@ namespace Frontend
             this.Controls.Add(this.PictureBoxOpcionesPost);
             this.Controls.Add(this.txtDescripcion);
             this.Controls.Add(this.txtUrl);
+            this.Controls.Add(this.PictureBoxEditar);
             this.Name = "PostControl";
             this.Size = new System.Drawing.Size(787, 578);
 
@@ -438,7 +439,7 @@ namespace Frontend
                     this.PictureBoxComentarios.Location = new Point(548, imagen.Bottom + 10);
                     this.PictureBoxCompartir.Location = new Point(604, imagen.Bottom + 10);
                     this.PictureBoxOpcionesPost.Location = new Point(660, imagen.Bottom + 10);
-                    this.PictureBoxReportar.Location = new System.Drawing.Point(497, imagen.Bottom + 10);
+                    this.PictureBoxEditar.Location = new Point(497, imagen.Bottom + 10);
                     break;
 
                 case "imageOnly":
@@ -458,7 +459,7 @@ namespace Frontend
                     this.PictureBoxComentarios.Location = new Point(548, txtUrl.Bottom + 10);
                     this.PictureBoxCompartir.Location = new Point(604, txtUrl.Bottom + 10);
                     this.PictureBoxOpcionesPost.Location = new Point(660, txtUrl.Bottom + 10);
-                    this.PictureBoxReportar.Location = new System.Drawing.Point(497, txtUrl.Bottom+10);
+                    this.PictureBoxEditar.Location = new Point(497, txtUrl.Bottom + 10);
                     this.imagen.Visible = false;
                     this.Height = PictureBoxLike.Bottom + 10;
                     break;
@@ -472,7 +473,7 @@ namespace Frontend
                     this.PictureBoxComentarios.Location = new Point(548, txtDescripcion.Bottom + 10);
                     this.PictureBoxCompartir.Location = new Point(604, txtDescripcion.Bottom + 10);
                     this.PictureBoxOpcionesPost.Location = new Point(660, txtDescripcion.Bottom + 10);
-                    this.PictureBoxReportar.Location = new System.Drawing.Point(497, txtDescripcion.Bottom+10);
+                    this.PictureBoxEditar.Location = new Point(497, txtDescripcion.Bottom + 10);
                     this.Height = PictureBoxLike.Bottom + 10;
                     break;
 
@@ -486,7 +487,7 @@ namespace Frontend
                     this.PictureBoxComentarios.Location = new Point(548, txtUrl.Bottom + 10);
                     this.PictureBoxCompartir.Location = new Point(604, txtUrl.Bottom + 10);
                     this.PictureBoxOpcionesPost.Location = new Point(660, txtUrl.Bottom + 10);
-                    this.PictureBoxReportar.Location = new System.Drawing.Point(497, txtUrl.Bottom + 10);
+                    this.PictureBoxEditar.Location = new Point(497, txtUrl.Bottom + 10);
                     break;
             }
             if (modo.Equals("Oscuro"))
@@ -495,37 +496,110 @@ namespace Frontend
                 this.PictureBoxCompartir.Image = Properties.Resources.compartir_claro;
                 this.PictureBoxLike.Image = Properties.Resources.like_claro;
                 this.PictureBoxComentarios.Image = Properties.Resources.comentario_claro;
+                this.PictureBoxEditar.Image = Frontend.Properties.Resources.editar_removebg_preview;
                 this.txtUrl.ForeColor = Color.White;
                 this.txtDescripcion.ForeColor = Color.White;
                 this.lblNombre.ForeColor = Color.White;
             }
             else
             {
-                this.PictureBoxReportar.Image = Frontend.Properties.Resources.reportar;
                 this.PictureBoxOpcionesPost.Image = Properties.Resources.reportar;
                 this.PictureBoxCompartir.Image = Properties.Resources.compartir;
                 this.PictureBoxLike.Image = Properties.Resources.like_infini;
                 this.PictureBoxComentarios.Image = Properties.Resources.comentario;
+                this.PictureBoxEditar.Image = Frontend.Properties.Resources.editar_removebg_preview;
                 this.txtUrl.ForeColor = Color.Black;
                 this.txtDescripcion.ForeColor = Color.Black;
                 this.lblNombre.ForeColor = Color.Black;
             }
             this.ResumeLayout(false);
             this.PerformLayout();
+            string creador = await obtenerCreador(idpost);
+            if (creador.Equals(user))
+            {
+                this.PictureBoxEditar.Visible = true;
+            }
+            else
+            {
+                this.PictureBoxEditar.Visible = false;
+            }
         }
 
 
 
         private void PictureBoxOpcionesPost_Click(object sender, EventArgs e)
         {
-            this.PictureBoxReportar.Visible = true;
             ReportarPost?.Invoke(this, new PersonalizedArgs("" + idpost));
         }
-
-
-        private void PictureBoxReportar_Click_1(object sender, EventArgs e)
+        public bool editando = false;
+        private void PictureBoxEditar_Click(object sender, EventArgs e)
         {
-            ReportarPost?.Invoke(this, new PersonalizedArgs("" + idpost));
+            if (editando==false)
+            {
+                switch (tipo)
+                {
+                    case "textAndImage":
+                        this.txtDescripcion.Visible = false;
+                        this.txtDescripcionEditar = new TextBox(); //falla acá
+                        this.Controls.Add(this.txtDescripcionEditar);
+                        // txtDescripcion
+                        this.txtDescripcionEditar.Location = new Point(76, 80);
+                        this.txtDescripcionEditar.Name = "txtDescripcionEditar"; //falta añadir las cosas para imagen
+                        this.txtDescripcionEditar.Size = new Size(634, 22);
+                        break;
+                    case "imageOnly": //falta esto
+                        break;
+                    case "textAndUrl":
+                        this.txtDescripcionEditar.Visible = true;
+                        this.txtDescripcion.Visible = false;
+                        this.txtUrlEditar.Visible = true;
+                        this.txtUrl.Visible = false;
+                        this.txtDescripcionEditar.Location = new Point(76, 85);
+                        this.txtUrlEditar.Location = new Point(76, txtDescripcion.Bottom + 10);
+                        this.Controls.Add(this.txtDescripcionEditar);
+                        this.Controls.Add(this.txtUrlEditar);
+                        break;
+                    case "textOnly":
+                        this.txtDescripcion.Visible = false;
+                        this.txtDescripcionEditar = new TextBox();
+                        this.Controls.Add(this.txtDescripcionEditar);
+                        // txtDescripcion
+                        this.txtDescripcionEditar.Location = new Point(76, 80);
+                        this.txtDescripcionEditar.Name = "txtDescripcionEditar";
+                        this.txtDescripcionEditar.Size = new Size(634, 22);
+                        break;
+                    case "urlOnly":
+                        this.txtUrl.Visible = false;
+                        this.txtUrlEditar = new TextBox();
+                        this.Controls.Add(this.txtUrlEditar);
+                        // txtDescripcion
+                        this.txtUrlEditar.Location = new Point(76, 80);
+                        this.txtUrlEditar.Name = "txtUrlEditar";
+                        this.txtUrlEditar.Size = new Size(634, 22);
+                        break;
+                }
+            }
+            else
+            {
+                switch (tipo)
+                {
+                    case "textAndImage":
+                        this.Controls.Remove(this.txtDescripcionEditar); //falta imagen
+                        break;
+                    case "imageOnly": //falta esto
+                        break;
+                    case "textAndUrl":
+                        this.Controls.Remove(this.txtDescripcionEditar);
+                        this.Controls.Remove(this.txtUrlEditar);
+                        break;
+                    case "textOnly":
+                        this.Controls.Remove(this.txtDescripcionEditar);
+                        break;
+                    case "urlOnly":
+                        this.Controls.Remove(this.txtUrlEditar);
+                        break;
+                }
+            }
         }
     }
 }

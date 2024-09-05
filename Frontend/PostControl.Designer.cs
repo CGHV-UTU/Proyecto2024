@@ -30,22 +30,24 @@ namespace Frontend
         private void InitializeComponent()
         {
             this.lblNombre = new System.Windows.Forms.Label();
+            this.txtDescripcion = new System.Windows.Forms.Label();
+            this.txtUrl = new System.Windows.Forms.Label();
+            this.PictureBoxEditar = new System.Windows.Forms.PictureBox();
             this.PictureBoxOpcionesPost = new System.Windows.Forms.PictureBox();
             this.PictureBoxCompartir = new System.Windows.Forms.PictureBox();
             this.PictureBoxComentarios = new System.Windows.Forms.PictureBox();
             this.PictureBoxLike = new System.Windows.Forms.PictureBox();
             this.PictureBoxUsuarioPost = new System.Windows.Forms.PictureBox();
             this.imagen = new System.Windows.Forms.PictureBox();
-            this.txtDescripcion = new System.Windows.Forms.Label();
-            this.txtUrl = new System.Windows.Forms.Label();
-            this.PictureBoxReportar = new System.Windows.Forms.PictureBox();
+            this.txtDescripcionEditar = new System.Windows.Forms.TextBox();
+            this.txtUrlEditar = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxEditar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOpcionesPost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCompartir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxComentarios)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxLike)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuarioPost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imagen)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxReportar)).BeginInit();
             this.SuspendLayout();
             // 
             // lblNombre
@@ -56,6 +58,38 @@ namespace Frontend
             this.lblNombre.Size = new System.Drawing.Size(44, 13);
             this.lblNombre.TabIndex = 28;
             this.lblNombre.Text = "Nombre";
+            // 
+            // txtDescripcion
+            // 
+            this.txtDescripcion.AutoSize = true;
+            this.txtDescripcion.Location = new System.Drawing.Point(86, 77);
+            this.txtDescripcion.Name = "txtDescripcion";
+            this.txtDescripcion.Size = new System.Drawing.Size(44, 13);
+            this.txtDescripcion.TabIndex = 31;
+            this.txtDescripcion.Text = "Nombre";
+            // 
+            // txtUrl
+            // 
+            this.txtUrl.AutoSize = true;
+            this.txtUrl.Location = new System.Drawing.Point(86, 469);
+            this.txtUrl.Name = "txtUrl";
+            this.txtUrl.Size = new System.Drawing.Size(44, 13);
+            this.txtUrl.TabIndex = 32;
+            this.txtUrl.Text = "Nombre";
+            // 
+            // PictureBoxEditar
+            // 
+            this.PictureBoxEditar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.PictureBoxEditar.BackColor = System.Drawing.Color.Transparent;
+            this.PictureBoxEditar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.PictureBoxEditar.Image = global::Frontend.Properties.Resources.editar_removebg_preview;
+            this.PictureBoxEditar.Location = new System.Drawing.Point(497, 494);
+            this.PictureBoxEditar.Name = "PictureBoxEditar";
+            this.PictureBoxEditar.Size = new System.Drawing.Size(50, 50);
+            this.PictureBoxEditar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PictureBoxEditar.TabIndex = 33;
+            this.PictureBoxEditar.TabStop = false;
+            this.PictureBoxEditar.Click += new System.EventHandler(this.PictureBoxEditar_Click);
             // 
             // PictureBoxOpcionesPost
             // 
@@ -130,43 +164,27 @@ namespace Frontend
             this.imagen.TabIndex = 21;
             this.imagen.TabStop = false;
             // 
-            // txtDescripcion
+            // txtDescripcionEditar
             // 
-            this.txtDescripcion.AutoSize = true;
-            this.txtDescripcion.Location = new System.Drawing.Point(86, 77);
-            this.txtDescripcion.Name = "txtDescripcion";
-            this.txtDescripcion.Size = new System.Drawing.Size(44, 13);
-            this.txtDescripcion.TabIndex = 31;
-            this.txtDescripcion.Text = "Nombre";
+            this.txtDescripcionEditar.Location = new System.Drawing.Point(194, 74);
+            this.txtDescripcionEditar.Name = "txtDescripcionEditar";
+            this.txtDescripcionEditar.Size = new System.Drawing.Size(520, 20);
+            this.txtDescripcionEditar.TabIndex = 34;
             // 
-            // txtUrl
+            // txtUrlEditar
             // 
-            this.txtUrl.AutoSize = true;
-            this.txtUrl.Location = new System.Drawing.Point(86, 469);
-            this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(44, 13);
-            this.txtUrl.TabIndex = 32;
-            this.txtUrl.Text = "Nombre";
-            // 
-            // PictureBoxReportar
-            // 
-            this.PictureBoxReportar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.PictureBoxReportar.BackColor = System.Drawing.Color.Transparent;
-            this.PictureBoxReportar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PictureBoxReportar.Image = global::Frontend.Properties.Resources.reportar;
-            this.PictureBoxReportar.Location = new System.Drawing.Point(497, 494);
-            this.PictureBoxReportar.Name = "PictureBoxReportar";
-            this.PictureBoxReportar.Size = new System.Drawing.Size(50, 50);
-            this.PictureBoxReportar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PictureBoxReportar.TabIndex = 33;
-            this.PictureBoxReportar.TabStop = false;
-            this.PictureBoxReportar.Click += new System.EventHandler(this.PictureBoxReportar_Click_1);
+            this.txtUrlEditar.Location = new System.Drawing.Point(194, 47);
+            this.txtUrlEditar.Name = "txtUrlEditar";
+            this.txtUrlEditar.Size = new System.Drawing.Size(520, 20);
+            this.txtUrlEditar.TabIndex = 35;
             // 
             // PostControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.PictureBoxReportar);
+            this.Controls.Add(this.txtUrlEditar);
+            this.Controls.Add(this.txtDescripcionEditar);
+            this.Controls.Add(this.PictureBoxEditar);
             this.Controls.Add(this.txtUrl);
             this.Controls.Add(this.txtDescripcion);
             this.Controls.Add(this.lblNombre);
@@ -178,13 +196,13 @@ namespace Frontend
             this.Controls.Add(this.imagen);
             this.Name = "PostControl";
             this.Size = new System.Drawing.Size(787, 578);
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxEditar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOpcionesPost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCompartir)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxComentarios)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxLike)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuarioPost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imagen)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxReportar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -201,6 +219,8 @@ namespace Frontend
         private System.Windows.Forms.PictureBox imagen;
         private System.Windows.Forms.Label txtDescripcion;
         private System.Windows.Forms.Label txtUrl;
-        private System.Windows.Forms.PictureBox PictureBoxReportar;
+        private System.Windows.Forms.PictureBox PictureBoxEditar;
+        private System.Windows.Forms.TextBox txtDescripcionEditar;
+        private System.Windows.Forms.TextBox txtUrlEditar;
     }
 }

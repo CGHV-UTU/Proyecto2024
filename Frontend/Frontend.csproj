@@ -319,6 +319,7 @@
     <None Include="Resources\crear claro.jpeg" />
     <None Include="Resources\compartir claro.jpeg" />
     <None Include="Resources\comentario claro.jpeg" />
+    <None Include="Resources\editar-removebg-preview.png" />
     <Content Include="Resources\IconoInfini.ico" />
     <None Include="Resources\Logo_Infini_Completo.jpeg" />
     <None Include="Resources\salir.png" />
