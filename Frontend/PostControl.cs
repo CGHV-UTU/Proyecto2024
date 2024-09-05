@@ -531,11 +531,15 @@ namespace Frontend
         {
             ReportarPost?.Invoke(this, new PersonalizedArgs("" + idpost));
         }
+
         public bool editando = false;
         private void PictureBoxEditar_Click(object sender, EventArgs e)
         {
             if (editando==false)
             {
+                editando = true;
+                this.btnConfirmarCambios = new PictureBox();
+                
                 switch (tipo)
                 {
                     case "textAndImage":
@@ -546,6 +550,15 @@ namespace Frontend
                         this.txtDescripcionEditar.Location = new Point(76, 80);
                         this.txtDescripcionEditar.Name = "txtDescripcionEditar"; //falta añadir las cosas para imagen
                         this.txtDescripcionEditar.Size = new Size(634, 22);
+                        this.txtDescripcionEditar.Text = this.txtDescripcion.Text;
+                        // seleccionarimagen
+                        this.btnSeleccionarImagen = new PictureBox();
+                        this.Controls.Add(this.btnSeleccionarImagen);
+                        this.btnSeleccionarImagen.Location = new Point(260, imagen.Bottom + 10);
+                        this.btnSeleccionarImagen.Name = "btnSeleccionarImagen"; //falta añadir las cosas para imagen
+                        this.btnSeleccionarImagen.Size = new Size(50, 50);
+                        this.btnSeleccionarImagen.Image = Frontend.Properties.Resources.editar_removebg_preview;
+                        this.btnSeleccionarImagen.Click += btnSeleccionarImagen_Click;
                         break;
                     case "imageOnly": //falta esto
                         break;
@@ -556,6 +569,8 @@ namespace Frontend
                         this.txtUrl.Visible = false;
                         this.txtDescripcionEditar.Location = new Point(76, 85);
                         this.txtUrlEditar.Location = new Point(76, txtDescripcion.Bottom + 10);
+                        this.txtDescripcionEditar.Text = this.txtDescripcion.Text;
+                        this.txtUrlEditar.Text = this.txtUrl.Text;
                         this.Controls.Add(this.txtDescripcionEditar);
                         this.Controls.Add(this.txtUrlEditar);
                         break;
@@ -576,30 +591,54 @@ namespace Frontend
                         this.txtUrlEditar.Location = new Point(76, 80);
                         this.txtUrlEditar.Name = "txtUrlEditar";
                         this.txtUrlEditar.Size = new Size(634, 22);
+                        this.txtUrlEditar.Text = this.txtUrl.Text;
                         break;
                 }
             }
             else
             {
+                editando = false;
                 switch (tipo)
                 {
                     case "textAndImage":
                         this.Controls.Remove(this.txtDescripcionEditar); //falta imagen
+                        this.txtDescripcion.Visible = true;
                         break;
                     case "imageOnly": //falta esto
                         break;
                     case "textAndUrl":
                         this.Controls.Remove(this.txtDescripcionEditar);
                         this.Controls.Remove(this.txtUrlEditar);
+                        this.txtDescripcion.Visible = true;
+                        this.txtUrl.Visible = true;
                         break;
                     case "textOnly":
                         this.Controls.Remove(this.txtDescripcionEditar);
+                        this.txtDescripcion.Visible = true;
                         break;
                     case "urlOnly":
                         this.Controls.Remove(this.txtUrlEditar);
+                        this.txtUrl.Visible = true;
                         break;
                 }
             }
+        }
+
+        private void btnSeleccionarImagen_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    imagen.Image = Image.FromFile(ofd.FileName);
+                    imagen.SizeMode = PictureBoxSizeMode.StretchImage;
+                }
+            }
+        }
+
+        private void btnConfirmarCambios_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
