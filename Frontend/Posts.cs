@@ -18,9 +18,11 @@ namespace Frontend
         public event EventHandler<PersonalizedArgs> ReportarPost;
         private int currentPage = 0;
         private string modo;
-        public Posts(string modo)
+        private string user;
+        public Posts(string modo,string user)
         {
             this.modo = modo;
+            this.user = user;
             Iniciar();
             LoadPosts(currentPage);
             panel1.Scroll += PanelPosts_Scroll;
@@ -77,12 +79,12 @@ namespace Frontend
             var cantPost = await CuantosPost();
 
             // Simulación de carga de posts
-            for (int i = 0; i < int.Parse(cantPost); i++)
+            for (int i = int.Parse(cantPost)-1; i > 0; i--)
             {
                 var existe = await Existe(i);
                 if (existe)
                 {
-                    var postControl = new PostControl(i + 1, modo);
+                    var postControl = new PostControl(i + 1, modo,user);
                     postControl.AbrirComentarios += PostControl_AbrirComentarios;
                     postControl.ReportarPost += PostControl_ReportarPost;
                     await postControl.aplicarDatos();

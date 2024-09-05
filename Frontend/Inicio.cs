@@ -128,7 +128,7 @@ namespace Frontend
             string config = await conseguirConfig(user);
             string[] configure = config.Split(';');    
             idioma = configure[1];
-            Posts post = new Posts(configure[0]);
+            Posts post = new Posts(configure[0],user);
             if (configure[0].Equals("Oscuro"))
             {
                 BackColor = Color.FromArgb(20, 20, 20);
@@ -223,7 +223,8 @@ namespace Frontend
         private void Post_Creado(object sender, EventArgs e)
         {
             PanelPostear.Visible = false;
-            PanelPosts.Visible = true;
+            PanelPosts.Controls.Clear();
+            VerPosts();
         }
         private void Post_Salir(object sender,EventArgs e)
         {

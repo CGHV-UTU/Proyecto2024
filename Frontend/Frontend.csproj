@@ -37,6 +37,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -46,6 +47,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>
@@ -98,6 +100,11 @@
     </Compile>
     <Compile Include="CrearComentario.Designer.cs">
       <DependentUpon>CrearComentario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Font.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Font.resx</DependentUpon>
     </Compile>
     <Compile Include="PersonalizedArgs.cs" />
     <Compile Include="Registrarse.cs">
@@ -171,6 +178,10 @@
     <EmbeddedResource Include="CrearComentario.resx">
       <DependentUpon>CrearComentario.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Font.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Font.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="IniciarSesion.resx">
       <DependentUpon>IniciarSesion.cs</DependentUpon>
     </EmbeddedResource>
@@ -238,6 +249,7 @@
     <None Include="Resources\Logo_Infini.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\PressStart2P-Regular.ttf" />
     <None Include="Resources\Usuario.png" />
   </ItemGroup>
   <ItemGroup>

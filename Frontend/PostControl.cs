@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,10 +22,12 @@ namespace Frontend
         private string modo;
         private int idpost;
         public string tipo;
-        public PostControl(int idpost, string modo)
+        private string user;
+        public PostControl(int idpost, string modo, string user)
         {
             this.modo = modo;
             this.idpost = idpost;
+            this.user = user;
         }
 
         public async Task aplicarDatos()
@@ -77,6 +81,12 @@ namespace Frontend
                     this.imagen.Image = bitmap;
                     this.imagen.SizeMode = PictureBoxSizeMode.StretchImage;
                 }
+            }
+            string creador = await obtenerCreador(idpost);
+            bool Like = await dioLike(user,idpost,creador);
+            if (Like)
+            {
+                HandleLikeClick();
             }
         }
 
@@ -154,7 +164,6 @@ namespace Frontend
                 {
                     string notificacion = $"Like:Usuario le ha dado like a tu publicación";
                     dynamic response = await AgregarNotificaciones(creador, notificacion);
-                    // Asegúrate de que 'response' tiene una propiedad 'success'
                     if (response != null && response.success)
                     {
                         MessageBox.Show("Like enviado con éxito a " + creador);
@@ -175,7 +184,47 @@ namespace Frontend
             }
         }
 
-
+        static async Task<string> darLike(string NombreDeCuenta, int IdPost, string nombreCreador)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador};
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/darLike", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ERROR" + ex);
+                    return "like erroneo";
+                }
+            }
+        }
+        static async Task<bool> dioLike(string NombreDeCuenta, int IdPost, string nombreCreador)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/dioLike", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
 
         private void ConfigurarPostControl(string postType)
         {
@@ -223,10 +272,13 @@ namespace Frontend
             txtUrl.Visible = mostrarUrl;
         }
 
+
         // Dar like. Puse lo de isImage porque no me andaba normal
         private bool isImage1 = true;
-        private void PictureBoxLike_Click(object sender, EventArgs e)
+        private async void PictureBoxLike_Click(object sender, EventArgs e)
         {
+            string creador = await obtenerCreador(idpost);
+            string respuesta=await darLike(user, idpost, creador);
             HandleLikeClick();
         }
 
@@ -238,7 +290,7 @@ namespace Frontend
                 {
                     PictureBoxLike.Image = Properties.Resources.like_claro_relleno;
                     isImage1 = false;
-                    await EnviarNotificacion();  // Llamada asíncrona
+                    await EnviarNotificacion();
                 }
                 else
                 {
@@ -408,6 +460,7 @@ namespace Frontend
                     this.PictureBoxOpcionesPost.Location = new Point(660, txtUrl.Bottom + 10);
                     this.PictureBoxReportar.Location = new System.Drawing.Point(497, txtUrl.Bottom+10);
                     this.imagen.Visible = false;
+                    this.Height = PictureBoxLike.Bottom + 10;
                     break;
 
                 case "textOnly":
