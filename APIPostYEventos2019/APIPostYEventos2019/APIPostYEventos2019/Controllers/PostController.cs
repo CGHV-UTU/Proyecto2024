@@ -61,6 +61,12 @@ namespace APIPostYEventos2019.Controllers
             public string tipo { get; set; }
             public string descripcion { get; set; }
         }
+        public class like
+        {
+            public string nombreDeCuenta { get; set; }
+            public int idpost { get; set; }
+            public string nombredeCreador { get; set; }
+        }
         public async Task<string> SubirImagenAGitHub(string imagen, string carpeta)
         {
             using (var client = new HttpClient())
@@ -356,7 +362,7 @@ namespace APIPostYEventos2019.Controllers
                         cmd.Parameters.AddWithValue("@Imagen", null);
                         cmd.ExecuteNonQuery();
                         conn.Close();
-                        return "Modificacion correcta";
+                        return Json("Modificacion correcta");
                     }
                     else
                     {
@@ -370,7 +376,7 @@ namespace APIPostYEventos2019.Controllers
                             cmd.Parameters.AddWithValue("@url", null);
                             cmd.ExecuteNonQuery();
                             conn.Close();
-                            return "Modificacion correcta";
+                            return Json("Modificacion correcta");
                         }
                         else
                         {
@@ -381,7 +387,7 @@ namespace APIPostYEventos2019.Controllers
                             cmd.Parameters.AddWithValue("@Imagen", null);
                             cmd.ExecuteNonQuery();
                             conn.Close();
-                            return "Modificacion correcta";
+                            return Json("Modificacion correcta");
                         }
                     }
                 }
@@ -397,7 +403,7 @@ namespace APIPostYEventos2019.Controllers
                         cmd.Parameters.AddWithValue("@url", null);
                         cmd.ExecuteNonQuery();
                         conn.Close();
-                        return "Modificacion correcta";
+                        return Json("Modificacion correcta");
                     }
                     else
                     {
@@ -409,13 +415,13 @@ namespace APIPostYEventos2019.Controllers
                         cmd.Parameters.AddWithValue("@Imagen", null);
                         cmd.ExecuteNonQuery();
                         conn.Close();
-                        return "Modificacion correcta";
+                        return Json("Modificacion correcta");
                     }
                 }
             }
             catch (Exception)
             {
-                return "Modificación incorrecta";
+                return Json("Modificacion incorrecta");
             }
         }
 
@@ -457,7 +463,7 @@ namespace APIPostYEventos2019.Controllers
                     cmd2.Parameters.AddWithValue("@nombreReal", eventdata.nombreReal);
                     cmd2.ExecuteNonQuery();
                     conn.Close();
-                    return "guardado correcto";
+                    return Json("guardado correcto");
                 }
                 else
                 {
@@ -474,7 +480,7 @@ namespace APIPostYEventos2019.Controllers
                     cmd2.Parameters.AddWithValue("@nombreReal", eventdata.nombreReal);
                     cmd2.ExecuteNonQuery();
                     conn.Close();
-                    return "guardado correcto";
+                    return Json("guardado correcto");
                 }
             }
             else
@@ -494,7 +500,7 @@ namespace APIPostYEventos2019.Controllers
                     cmd2.Parameters.AddWithValue("@nombreReal", eventdata.nombreReal);
                     cmd2.ExecuteNonQuery();
                     conn.Close();
-                    return "guardado correcto";
+                    return Json("guardado correcto");
                 }
                 else
                 {
@@ -508,7 +514,7 @@ namespace APIPostYEventos2019.Controllers
                     cmd2.Parameters.AddWithValue("@nombreReal", eventdata.nombreReal);
                     cmd2.ExecuteNonQuery();
                     conn.Close();
-                    return "guardado correcto";
+                    return Json("guardado correcto");
                 }
             }
         }
@@ -525,11 +531,11 @@ namespace APIPostYEventos2019.Controllers
                 command.Parameters.AddWithValue("@Id", int.Parse(id));
                 command.ExecuteNonQuery();
                 conn.Close();
-                return "Evento eliminado";
+                return Json("Evento eliminado");
             }
             catch
             {
-                return "Evento no eliminado";
+                return Json("Evento no eliminado");
             }
         }
 
@@ -617,7 +623,7 @@ namespace APIPostYEventos2019.Controllers
                 }
                 else
                 {
-                    return "modificacion erronea";
+                    return Json("modificacion erronea");
                 }
                 if (!string.IsNullOrEmpty(eventdata.descripcion))
                 {
@@ -633,7 +639,7 @@ namespace APIPostYEventos2019.Controllers
                 }
                 else
                 {
-                    return "modificacion erronea";
+                    return Json("modificacion erronea");
                 }
                 if (!string.IsNullOrEmpty(eventdata.fechayhora))
                 {
@@ -641,17 +647,17 @@ namespace APIPostYEventos2019.Controllers
                 }
                 else
                 {
-                    return "modificacion erronea";
+                    return Json("modificacion erronea");
                 }
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
                 conn.Close();
-                return "modificacion correcta";
+                return Json("modificacion correcta");
 
             }
             catch
             {
-                return "modificación incorrecta";
+                return Json("modificacion erronea");
             }
         }
 
@@ -727,16 +733,16 @@ namespace APIPostYEventos2019.Controllers
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.ExecuteNonQuery();
                     conn.Close();
-                    return "Modificaciòn correcta";
+                    return Json("Modificaciòn correcta");
                 }
                 else
                 {
-                    return "Modificaciòn incorrecta";
+                    return Json("Modificaciòn incorrecta");
                 }
             }
             catch (Exception)
             {
-                return "no se encuentra";
+                return Json("no se encuentra");
             }
         }
         [HttpGet]
@@ -766,12 +772,12 @@ namespace APIPostYEventos2019.Controllers
                 }
                 else
                 {
-                    return "no se encuentra";
+                    return Json("no se encuentra");
                 }
             }
             catch (Exception)
             {
-                return "no se encuentra";
+                return Json("no se encuentra");
             }
 
         }
@@ -808,7 +814,6 @@ namespace APIPostYEventos2019.Controllers
                 return null;
             }
 
-            //devuelve un tipo reader para desempaquetar su contenido en la ventana principal
         }
 
         [HttpGet]
@@ -839,8 +844,6 @@ namespace APIPostYEventos2019.Controllers
             {
                 return null;
             }
-
-            //devuelve un tipo reader para desempaquetar su contenido en la ventana principal
         }
 
         [HttpGet]
@@ -872,7 +875,6 @@ namespace APIPostYEventos2019.Controllers
                 return null;
             }
 
-            //devuelve un tipo reader para desempaquetar su contenido en la ventana principal
         }
 
         //Seleccionar último
@@ -976,7 +978,7 @@ namespace APIPostYEventos2019.Controllers
             }
             catch (Exception)
             {
-                return "Error al cargar Datagrid";
+                return Json("Error al cargar Datagrid");
             }
         }
 
@@ -1000,7 +1002,7 @@ namespace APIPostYEventos2019.Controllers
             }
             catch (Exception)
             {
-                return "Error al cargar Datagrid";
+                return Json("Error al cargar Datagrid");
             }
         }
 
@@ -1031,7 +1033,7 @@ namespace APIPostYEventos2019.Controllers
             }
             catch (Exception)
             {
-                return "Error al cargar Datagrid";
+                return Json("Error al cargar Datagrid");
             }
         }
 
@@ -1080,6 +1082,61 @@ namespace APIPostYEventos2019.Controllers
             catch
             {
                 return Json("Reporte incorrecto");
+            }
+        }
+        [HttpPost]
+        [Route("darLike")]
+        public async Task<dynamic> darLike([FromBody] like like)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO DaLike (nombreDeCuenta, idPost, nombredeCreador) VALUES (@nombreDeCuenta, @idPost, @nombredeCreador)", conn);
+                cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
+                cmd.Parameters.AddWithValue("@idPost", like.idpost);
+                cmd.Parameters.AddWithValue("@nombredeCreador", like.nombredeCreador);
+                cmd.ExecuteNonQuery();
+                return Json("like correcto");
+            }
+            catch
+            {
+                return Json("like incorrecto");
+            }
+        }
+
+        [HttpPost]
+        [Route("dioLike")]
+        public async Task<dynamic> dioLike([FromBody] like like)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT idPost FROM DaLike WHERE idPost=@idpost AND nombreDeCuenta=@nombreDeCuenta AND nombredeCreador=@nombredeCreador", conn);
+                cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
+                cmd.Parameters.AddWithValue("@idPost", like.idpost);
+                cmd.Parameters.AddWithValue("@nombredeCreador", like.nombredeCreador);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    if (reader["idPost"].ToString().Equals(Convert.ToString(like.idpost)))
+                    {
+                        return Json(true);
+                    }
+                    else
+                    {
+                        return Json(false);
+                    }
+                }
+                else
+                {
+                    return Json(false);
+                }
+            }
+            catch
+            {
+                return Json(false);
             }
         }
     }
