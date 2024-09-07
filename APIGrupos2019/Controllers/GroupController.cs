@@ -12,6 +12,10 @@ using Newtonsoft.Json;
 using Org.BouncyCastle.Security;
 using static API_Grupos.Controllers.GroupController;
 using RouteAttribute = System.Web.Mvc.RouteAttribute;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Text;
 
 namespace API_Grupos.Controllers
 {
@@ -43,10 +47,70 @@ namespace API_Grupos.Controllers
 
         public string connectionString = "Server=localhost; database=infini; uID=root; pwd=;";
 
+        public async Task<string> SubirImagenAGitHub(string imagen)
+        {
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    string token = "Token"; // Token para repositorio privado. Cambiar por el token real
+                    string nombreDeImagen = GenerarIdAleatorio(8) + ".png"; // nombre aleatorio para que el nombre del archivo no se repita
+                    string carpeta = "GroupImages"; // Carpeta de GitHub en donde se guarda la imagen
+                                                   // No es necesario crear la carpeta a mano, se crea si le intentas subir algo.
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    client.DefaultRequestHeaders.UserAgent.ParseAdd("request");
+                    var content = new { message = "Nueva imagen", content = imagen };
+                    var jsonContent = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+                    var response = await client.PutAsync($"https://api.github.com/repos/imagesinfini/publicImages/contents/{carpeta}/{nombreDeImagen}", jsonContent);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        throw new Exception($"Error al subir la imagen: {response.StatusCode} - {error}");
+                    }
+                    var resultado = await response.Content.ReadAsStringAsync();
+                    dynamic json = JsonConvert.DeserializeObject(resultado);
+
+                    string linkAImagen = $"https://github.com/imagesinfini/publicImages/raw/main/{carpeta}/{nombreDeImagen}";
+                    return linkAImagen;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
+        public string GenerarIdAleatorio(int longitud)
+        {
+            var random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, longitud)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        private async Task<string> CargarImagenDeGitHub(string urlImagen)
+        {
+            using (var client = new HttpClient())
+            {
+                string token = "Token"; // Token para repositorio privado. Cambiar por el token real
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await client.GetAsync(urlImagen);
+                if (response.IsSuccessStatusCode)
+                {
+                    byte[] imagenBytes = await response.Content.ReadAsByteArrayAsync();
+                    return Convert.ToBase64String(imagenBytes);
+                }
+                else
+                {
+                    throw new Exception("No se pudo descargar la imagen desde GitHub.");
+                }
+            }
+        }
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("RegistrarGrupo")]
-        public dynamic RegistrarGrupo([FromBody] Grupo group)
+        public async Task<dynamic> RegistrarGrupo([FromBody] Grupo group)
         {
+            string linkImagen = null;
             try
             {
                 group.nombreReal = crearNombreGrupo();
@@ -56,6 +120,7 @@ namespace API_Grupos.Controllers
                 {
                     return Json("Valores nulos");
                 }
+                linkImagen = await SubirImagenAGitHub(group.imagen);
 
                 MySqlConnection conn = new MySqlConnection(connectionString);
                 conn.Open();
@@ -63,7 +128,7 @@ namespace API_Grupos.Controllers
                 cmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
                 cmd.Parameters.AddWithValue("@nombreVisible", group.nombreVisible);
                 cmd.Parameters.AddWithValue("@configuracion", group.configuracion);
-                cmd.Parameters.AddWithValue("@foto", group.imagen);
+                cmd.Parameters.AddWithValue("@foto", linkImagen);
                 cmd.ExecuteNonQuery();
                 if (!string.IsNullOrEmpty(group.descripcion))
                 {
@@ -86,20 +151,45 @@ namespace API_Grupos.Controllers
         {
             try
             {
+                // Validación de campos
                 if (string.IsNullOrEmpty(ug.nombreReal) || string.IsNullOrEmpty(ug.nombreDeCuenta))
                 {
-                    return Json("Valores nulos");
+                    return Json("Valores nulos o vacíos");
                 }
 
-                MySqlConnection conn = new MySqlConnection(connectionString);
-                conn.Open();
-                string insertQuery = "INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, 'c')";
-                MySqlCommand cmd = new MySqlCommand(insertQuery, conn);
-                cmd.Parameters.AddWithValue("@nombreReal", ug.nombreReal);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", ug.nombreDeCuenta);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("Registro correcto");
+                // Cadena de conexión a la base de datos
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    // Consulta de inserción
+                    string insertQuery = "INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, 'c')";
+
+                    // Creación del comando SQL
+                    using (MySqlCommand cmd = new MySqlCommand(insertQuery, conn))
+                    {
+                        // Agregando parámetros
+                        cmd.Parameters.AddWithValue("@nombreReal", ug.nombreReal);
+                        cmd.Parameters.AddWithValue("@nombreDeCuenta", ug.nombreDeCuenta);
+
+                        // Ejecución de la consulta
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        // Verificación de la inserción
+                        if (rowsAffected > 0)
+                        {
+                            return Json("Registro correcto");
+                        }
+                        else
+                        {
+                            return Json("No se pudo insertar el registro. Filas afectadas: " + rowsAffected);
+                        }
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                return Json($"Error en la base de datos: {ex.Message}");
             }
             catch (Exception ex)
             {
@@ -107,9 +197,11 @@ namespace API_Grupos.Controllers
             }
         }
 
+
+
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("ObtenerGruposPorNombreVisibleYUsuario")] 
-        public dynamic ObtenerGruposPorNombreVisibleYUsuario(string nombreVisible, string nombreDeCuenta)
+        public async Task<dynamic> ObtenerGruposPorNombreVisibleYUsuario(string nombreVisible, string nombreDeCuenta)
         {
             try
             {
@@ -137,7 +229,7 @@ namespace API_Grupos.Controllers
                                 string nombreReal = reader["nombreReal"].ToString();
                                 string configuracion = reader["configuracion"].ToString();
                                 string descripcion = reader["descripcion"].ToString();
-                                string foto = reader["foto"].ToString();
+                                string foto = await CargarImagenDeGitHub(reader["foto"].ToString());
 
                                 var grupo = new
                                 {
@@ -261,8 +353,9 @@ namespace API_Grupos.Controllers
 
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("EditarGrupo")]
-        public dynamic EditarGrupo([FromBody] Grupo group)
+        public async Task<dynamic> EditarGrupo([FromBody] Grupo group)
         {
+            string linkImagen = null;
             if (string.IsNullOrEmpty(group.nombreReal)
                     || string.IsNullOrEmpty(group.nombreVisible)
                     || string.IsNullOrEmpty(group.configuracion)
@@ -285,7 +378,7 @@ namespace API_Grupos.Controllers
                 cmd.Parameters.AddWithValue("@nombreVisible", group.nombreVisible);
                 cmd.Parameters.AddWithValue("@configuracion", group.configuracion);
                 cmd.Parameters.AddWithValue("@descripcion", group.descripcion);
-                cmd.Parameters.AddWithValue("@foto", group.imagen);
+                cmd.Parameters.AddWithValue("@foto", linkImagen = await SubirImagenAGitHub(group.imagen));
                 cmd.ExecuteNonQuery();
                 conn.Close();
                 return Json("Se editó el grupo correctamente");
@@ -326,6 +419,7 @@ namespace API_Grupos.Controllers
         [System.Web.Http.Route("EditarGrupoUG")]
         public dynamic EditarGrupoUG([FromBody] Grupo group, string usuario)
         {
+
             if (string.IsNullOrEmpty(group.nombreReal)
                     || string.IsNullOrEmpty(group.nombreVisible)
                     || string.IsNullOrEmpty(group.configuracion)
@@ -355,7 +449,7 @@ namespace API_Grupos.Controllers
         //Grupos al que pertenece un usuario
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("ObtenerGruposPorUsuario")]
-        public dynamic ObtenerGruposPorUsuario(string nombreDeCuenta)
+        public async Task<dynamic> ObtenerGruposPorUsuario(string nombreDeCuenta)
         {
             try
             {
@@ -380,7 +474,7 @@ namespace API_Grupos.Controllers
                         nombreVisible = reader["nombreVisible"].ToString(),
                         configuracion = reader["configuracion"].ToString(),
                         descripcion = reader["descripcion"].ToString(),
-                        imagen = reader["foto"].ToString()
+                        imagen = await CargarImagenDeGitHub(reader["foto"].ToString())
                     };
                     Grupos.Add(grupo);
                 }
@@ -856,9 +950,6 @@ namespace API_Grupos.Controllers
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-
-                    // Verificar si la persona que ingresa los datos es administrador o creador del grupo
-                    //Puede ser que no funcione con "Rol" como varchar
                     string permisosQuery = "SELECT rol FROM Participa WHERE nombreReal = @nombreGrupo AND nombreDeCuenta = @nombreAdminOCreador AND (rol = 'a' OR rol = 'c')";
                     using (MySqlCommand permisosCmd = new MySqlCommand(permisosQuery, conn))
                     {
