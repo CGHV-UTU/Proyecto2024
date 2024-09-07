@@ -122,7 +122,7 @@ namespace PruebasAPIGrupos
             this.btnIniciarSesion.TabIndex = 25;
             this.btnIniciarSesion.Text = "Iniciar Sesión";
             this.btnIniciarSesion.UseVisualStyleBackColor = true;
-            this.btnIniciarSesion.Click += new System.EventHandler(this.btnIniciarSesion_Click);
+            this.btnIniciarSesion.Click += new System.EventHandler(this.btnIniciarSesion_ClickAsync);
             // 
             // btnMenuGrupos
             // 
@@ -158,7 +158,7 @@ namespace PruebasAPIGrupos
 
         private void btnIniciarSesion_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            
         }
 
         #endregion

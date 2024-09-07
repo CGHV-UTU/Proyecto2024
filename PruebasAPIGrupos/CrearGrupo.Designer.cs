@@ -34,10 +34,12 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.txtDescripcion = new System.Windows.Forms.TextBox();
-            this.txtImagen = new System.Windows.Forms.TextBox();
             this.rbtnTodosHablan = new System.Windows.Forms.RadioButton();
             this.rbtnAdminHabla = new System.Windows.Forms.RadioButton();
             this.btnCrear = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnImagen = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // lblNombre
@@ -61,11 +63,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(23, 163);
+            this.label3.Location = new System.Drawing.Point(348, 36);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(92, 13);
+            this.label3.Size = new System.Drawing.Size(42, 13);
             this.label3.TabIndex = 2;
-            this.label3.Text = "URL de la imagen";
+            this.label3.Text = "Imagen";
             // 
             // label4
             // 
@@ -92,14 +94,6 @@
             this.txtDescripcion.Name = "txtDescripcion";
             this.txtDescripcion.Size = new System.Drawing.Size(193, 92);
             this.txtDescripcion.TabIndex = 5;
-            // 
-            // txtImagen
-            // 
-            this.txtImagen.Location = new System.Drawing.Point(127, 160);
-            this.txtImagen.MaxLength = 200;
-            this.txtImagen.Name = "txtImagen";
-            this.txtImagen.Size = new System.Drawing.Size(193, 20);
-            this.txtImagen.TabIndex = 6;
             // 
             // rbtnTodosHablan
             // 
@@ -133,13 +127,32 @@
             this.btnCrear.UseVisualStyleBackColor = true;
             this.btnCrear.Click += new System.EventHandler(this.btnCrear_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(326, 52);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(185, 138);
+            this.pictureBox1.TabIndex = 10;
+            this.pictureBox1.TabStop = false;
+            // 
+            // btnImagen
+            // 
+            this.btnImagen.Location = new System.Drawing.Point(378, 196);
+            this.btnImagen.Name = "btnImagen";
+            this.btnImagen.Size = new System.Drawing.Size(75, 23);
+            this.btnImagen.TabIndex = 11;
+            this.btnImagen.Text = "Seleccionar";
+            this.btnImagen.UseVisualStyleBackColor = true;
+            this.btnImagen.Click += new System.EventHandler(this.btnImagen_Click);
+            // 
             // Form2
             // 
             this.ClientSize = new System.Drawing.Size(523, 318);
+            this.Controls.Add(this.btnImagen);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnCrear);
             this.Controls.Add(this.rbtnAdminHabla);
             this.Controls.Add(this.rbtnTodosHablan);
-            this.Controls.Add(this.txtImagen);
             this.Controls.Add(this.txtDescripcion);
             this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.label4);
@@ -147,6 +160,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblNombre);
             this.Name = "Form2";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -161,9 +175,10 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.TextBox txtDescripcion;
-        private System.Windows.Forms.TextBox txtImagen;
         private System.Windows.Forms.RadioButton rbtnTodosHablan;
         private System.Windows.Forms.RadioButton rbtnAdminHabla;
         private System.Windows.Forms.Button btnCrear;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button btnImagen;
     }
 }
