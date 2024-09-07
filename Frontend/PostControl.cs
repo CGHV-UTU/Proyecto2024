@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
@@ -409,6 +410,8 @@ namespace Frontend
             this.txtUrl.Name = "txtUrl";
             this.txtUrl.Size = new Size(634, 22); // Ajusta el tamaño según necesidad      
 
+            
+
             // PostControl
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
@@ -539,30 +542,74 @@ namespace Frontend
             {
                 editando = true;
                 this.btnConfirmarCambios = new PictureBox();
-                
+                this.btnConfirmarCambios.Name = "btnConfirmarCambios"; //falta añadir las cosas para imagen
+                this.btnConfirmarCambios.Size = new Size(50, 50);
+                this.btnConfirmarCambios.Image = Frontend.Properties.Resources.Usuario;
+                this.btnConfirmarCambios.Click += btnConfirmarCambios_Click;
+                this.btnConfirmarCambios.SizeMode = PictureBoxSizeMode.StretchImage;
+                this.Controls.Add(this.btnConfirmarCambios);
                 switch (tipo)
                 {
                     case "textAndImage":
                         this.txtDescripcion.Visible = false;
                         this.txtDescripcionEditar = new TextBox(); //falla acá
                         this.Controls.Add(this.txtDescripcionEditar);
+
                         // txtDescripcion
                         this.txtDescripcionEditar.Location = new Point(76, 80);
                         this.txtDescripcionEditar.Name = "txtDescripcionEditar"; //falta añadir las cosas para imagen
                         this.txtDescripcionEditar.Size = new Size(634, 22);
                         this.txtDescripcionEditar.Text = this.txtDescripcion.Text;
+
                         // seleccionarimagen
                         this.btnSeleccionarImagen = new PictureBox();
-                        this.Controls.Add(this.btnSeleccionarImagen);
                         this.btnSeleccionarImagen.Location = new Point(260, imagen.Bottom + 10);
                         this.btnSeleccionarImagen.Name = "btnSeleccionarImagen"; //falta añadir las cosas para imagen
                         this.btnSeleccionarImagen.Size = new Size(50, 50);
-                        this.btnSeleccionarImagen.Image = Frontend.Properties.Resources.editar_removebg_preview;
+                        this.btnSeleccionarImagen.Image = Frontend.Properties.Resources.buscar;
                         this.btnSeleccionarImagen.Click += btnSeleccionarImagen_Click;
+                        this.btnSeleccionarImagen.SizeMode = PictureBoxSizeMode.StretchImage;
+                        this.Controls.Add(this.btnSeleccionarImagen);
+
+                        this.btnConfirmarCambios.Location = new Point(350, imagen.Bottom + 10);
+                        //imagenEditar
+                        this.imagen.Visible = false;
+                        this.imagenEditar = new PictureBox();
+                        this.imagenEditar.Location = new System.Drawing.Point(76, 69);
+                        this.imagenEditar.Name = "imagenEditar";
+                        this.imagenEditar.Size = new System.Drawing.Size(634, 365);
+                        this.imagenEditar.SizeMode = PictureBoxSizeMode.StretchImage;
+                        this.Controls.Add(this.imagenEditar);
                         break;
                     case "imageOnly": //falta esto
+                        // seleccionarimagen
+                        this.btnSeleccionarImagen = new PictureBox();
+                        this.btnSeleccionarImagen.Location = new Point(260, imagen.Bottom + 10);
+                        this.btnSeleccionarImagen.Name = "btnSeleccionarImagen"; //falta añadir las cosas para imagen
+                        this.btnSeleccionarImagen.Size = new Size(50, 50);
+                        this.btnSeleccionarImagen.Image = Frontend.Properties.Resources.buscar;
+                        this.btnSeleccionarImagen.SizeMode = PictureBoxSizeMode.StretchImage;
+                        this.btnSeleccionarImagen.Click += btnSeleccionarImagen_Click;
+                        this.Controls.Add(this.btnSeleccionarImagen);
+                        this.btnConfirmarCambios.Location = new Point(350, imagen.Bottom + 10);
+
+                        //imagenEditar
+                        this.imagen.Visible = false;
+                        this.imagenEditar = new PictureBox();
+                        this.imagenEditar.Location = new System.Drawing.Point(76, 69);
+                        this.imagenEditar.Name = "imagenEditar";
+                        this.imagenEditar.Size = new System.Drawing.Size(634, 365);
+                        this.imagenEditar.SizeMode = PictureBoxSizeMode.StretchImage;
+                        this.Controls.Add(this.imagenEditar);
                         break;
                     case "textAndUrl":
+                        this.txtDescripcion.Visible = false;
+                        this.txtDescripcionEditar = new TextBox(); //falla acá
+                        this.Controls.Add(this.txtDescripcionEditar);
+                        this.txtUrl.Visible = false;
+                        this.txtUrlEditar = new TextBox(); //falla acá
+                        this.Controls.Add(this.txtUrlEditar);
+
                         this.txtDescripcionEditar.Visible = true;
                         this.txtDescripcion.Visible = false;
                         this.txtUrlEditar.Visible = true;
@@ -573,6 +620,8 @@ namespace Frontend
                         this.txtUrlEditar.Text = this.txtUrl.Text;
                         this.Controls.Add(this.txtDescripcionEditar);
                         this.Controls.Add(this.txtUrlEditar);
+
+                        this.btnConfirmarCambios.Location = new Point(350, txtUrlEditar.Bottom + 10);
                         break;
                     case "textOnly":
                         this.txtDescripcion.Visible = false;
@@ -582,6 +631,8 @@ namespace Frontend
                         this.txtDescripcionEditar.Location = new Point(76, 80);
                         this.txtDescripcionEditar.Name = "txtDescripcionEditar";
                         this.txtDescripcionEditar.Size = new Size(634, 22);
+                        this.txtDescripcionEditar.Text = this.txtDescripcion.Text;
+                        this.btnConfirmarCambios.Location = new Point(350, txtDescripcion.Bottom + 10);
                         break;
                     case "urlOnly":
                         this.txtUrl.Visible = false;
@@ -592,6 +643,7 @@ namespace Frontend
                         this.txtUrlEditar.Name = "txtUrlEditar";
                         this.txtUrlEditar.Size = new Size(634, 22);
                         this.txtUrlEditar.Text = this.txtUrl.Text;
+                        this.btnConfirmarCambios.Location = new Point(350, txtUrl.Bottom + 10);
                         break;
                 }
             }
@@ -601,23 +653,34 @@ namespace Frontend
                 switch (tipo)
                 {
                     case "textAndImage":
-                        this.Controls.Remove(this.txtDescripcionEditar); //falta imagen
+                        this.Controls.Remove(this.txtDescripcionEditar); 
+                        this.Controls.Remove(this.btnConfirmarCambios);
+                        this.Controls.Remove(this.btnSeleccionarImagen);
+                        this.Controls.Remove(this.imagenEditar);
                         this.txtDescripcion.Visible = true;
+                        this.imagen.Visible = true;
                         break;
-                    case "imageOnly": //falta esto
+                    case "imageOnly":
+                        this.Controls.Remove(this.btnSeleccionarImagen);
+                        this.Controls.Remove(this.btnConfirmarCambios);
+                        this.Controls.Remove(this.imagenEditar);
+                        this.imagen.Visible = true;
                         break;
                     case "textAndUrl":
                         this.Controls.Remove(this.txtDescripcionEditar);
                         this.Controls.Remove(this.txtUrlEditar);
+                        this.Controls.Remove(this.btnConfirmarCambios);
                         this.txtDescripcion.Visible = true;
                         this.txtUrl.Visible = true;
                         break;
                     case "textOnly":
                         this.Controls.Remove(this.txtDescripcionEditar);
+                        this.Controls.Remove(this.btnConfirmarCambios);
                         this.txtDescripcion.Visible = true;
                         break;
                     case "urlOnly":
                         this.Controls.Remove(this.txtUrlEditar);
+                        this.Controls.Remove(this.btnConfirmarCambios);
                         this.txtUrl.Visible = true;
                         break;
                 }
@@ -630,15 +693,95 @@ namespace Frontend
             {
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    imagen.Image = Image.FromFile(ofd.FileName);
-                    imagen.SizeMode = PictureBoxSizeMode.StretchImage;
+                    imagenEditar.Image = Image.FromFile(ofd.FileName);
+                    imagenEditar.SizeMode = PictureBoxSizeMode.StretchImage;
                 }
             }
         }
 
-        private void btnConfirmarCambios_Click(object sender, EventArgs e)
+        static async Task<dynamic> Modificar(string id, string texto, string url, byte[] imagen)
         {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var data = new { id = id, text = texto, link = url, image = Convert.ToBase64String(imagen) };
+                    var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/modificarPost", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic resultado = JsonConvert.DeserializeObject(responseBody);
+                    return resultado;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("ERROR DE CONEXIÓN");
+                    return "MAL";
+                }
+            }
+        }
 
+        private async void btnConfirmarCambios_Click(object sender, EventArgs e)
+        {
+            byte[] imagenfalsa = new byte[0];
+            MemoryStream ms = new MemoryStream();
+            string resultado;
+            switch (tipo)
+            {
+                case "textAndImage":
+                    this.imagenEditar.Image.Save(ms, ImageFormat.Jpeg);
+                    byte[] imagen = ms.ToArray();
+                    resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, "", imagen);
+                    this.imagen.Image = this.imagenEditar.Image;
+                    this.txtDescripcion.Text = txtDescripcionEditar.Text;
+                    MessageBox.Show(resultado);
+                    this.Controls.Remove(this.txtDescripcionEditar);
+                    this.Controls.Remove(this.btnConfirmarCambios);
+                    this.Controls.Remove(this.btnSeleccionarImagen);
+                    this.Controls.Remove(this.imagenEditar);
+                    this.txtDescripcion.Visible = true;
+                    this.imagen.Visible = true;
+                    break;
+                case "imageOnly": //falta esto
+                    this.imagenEditar.Image.Save(ms, ImageFormat.Jpeg);
+                    byte[] image = ms.ToArray();
+                    resultado = await Modificar(Convert.ToString(idpost), "", "", image);
+                    this.imagen.Image = this.imagenEditar.Image;
+                    MessageBox.Show(resultado);
+                    this.Controls.Remove(this.btnConfirmarCambios);
+                    this.Controls.Remove(this.btnSeleccionarImagen);
+                    this.Controls.Remove(this.imagenEditar);
+                    this.txtDescripcion.Visible = true;
+                    this.imagen.Visible = true;
+                    break;
+                case "textAndUrl":
+                    resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, txtUrlEditar.Text, imagenfalsa);
+                    this.txtDescripcion.Text = txtDescripcionEditar.Text;
+                    this.txtUrl.Text = txtUrlEditar.Text;
+                    MessageBox.Show(resultado);
+                    this.Controls.Remove(this.txtDescripcionEditar);
+                    this.Controls.Remove(this.txtUrlEditar);
+                    this.Controls.Remove(this.btnConfirmarCambios);
+                    this.txtDescripcion.Visible = true;
+                    this.txtUrl.Visible = true;
+                    break;
+                case "textOnly":
+                    resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, "", imagenfalsa);
+                    this.txtDescripcion.Text = txtDescripcionEditar.Text;
+                    MessageBox.Show(resultado);
+                    this.Controls.Remove(this.txtDescripcionEditar);
+                    this.Controls.Remove(this.btnConfirmarCambios);
+                    this.txtDescripcion.Visible = true;
+                    break;
+                case "urlOnly":
+                    resultado=await Modificar(Convert.ToString(idpost), "", txtUrlEditar.Text, imagenfalsa);
+                    this.txtUrl.Text = txtUrlEditar.Text;
+                    MessageBox.Show(resultado);
+                    this.Controls.Remove(this.txtUrlEditar);
+                    this.Controls.Remove(this.btnConfirmarCambios);
+                    this.txtUrl.Visible = true;
+                    break;
+            }
         }
     }
 }
