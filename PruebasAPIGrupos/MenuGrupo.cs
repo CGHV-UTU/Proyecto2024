@@ -54,7 +54,7 @@ namespace PruebasAPIGrupos
                     modificarGrupo.Visible = true;
                     break;
                 case "Reportar":
-                    Reportar reportar = new Reportar();
+                    Reportar reportar = new Reportar(user);
                     reportar.Visible = true;
                     break;
             }

@@ -34,9 +34,6 @@
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
-            this.clmnNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.clmnDescripcion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.clmnConfig = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGrupos)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,10 +60,6 @@
             this.dataGridViewGrupos.AllowUserToDeleteRows = false;
             this.dataGridViewGrupos.AllowUserToResizeRows = false;
             this.dataGridViewGrupos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewGrupos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.clmnNombre,
-            this.clmnDescripcion,
-            this.clmnConfig});
             this.dataGridViewGrupos.Location = new System.Drawing.Point(15, 89);
             this.dataGridViewGrupos.Name = "dataGridViewGrupos";
             this.dataGridViewGrupos.Size = new System.Drawing.Size(348, 152);
@@ -99,21 +92,6 @@
             this.btnEliminar.UseVisualStyleBackColor = true;
             this.btnEliminar.Click += new System.EventHandler(this.button2_Click);
             // 
-            // clmnNombre
-            // 
-            this.clmnNombre.HeaderText = "Nombre";
-            this.clmnNombre.Name = "clmnNombre";
-            // 
-            // clmnDescripcion
-            // 
-            this.clmnDescripcion.HeaderText = "Descripción";
-            this.clmnDescripcion.Name = "clmnDescripcion";
-            // 
-            // clmnConfig
-            // 
-            this.clmnConfig.HeaderText = "Configuración";
-            this.clmnConfig.Name = "clmnConfig";
-            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -141,8 +119,5 @@
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.Button btnEliminar;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clmnNombre;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clmnDescripcion;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clmnConfig;
     }
 }

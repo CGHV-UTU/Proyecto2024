@@ -32,25 +32,24 @@
             this.btnBuscar = new System.Windows.Forms.Button();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.dataGridViewGrupos = new System.Windows.Forms.DataGridView();
-            this.clmnNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.clmnDescripcion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.clmnConfig = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.rbtnAdminHabla = new System.Windows.Forms.RadioButton();
             this.rbtnTodosHablan = new System.Windows.Forms.RadioButton();
-            this.txtImagen = new System.Windows.Forms.TextBox();
             this.txtDescripcion = new System.Windows.Forms.TextBox();
             this.txtNombreVisible = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblNombre = new System.Windows.Forms.Label();
+            this.btnImagen = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGrupos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnModificar
             // 
-            this.btnModificar.Location = new System.Drawing.Point(15, 447);
+            this.btnModificar.Location = new System.Drawing.Point(20, 647);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(348, 23);
             this.btnModificar.TabIndex = 11;
@@ -81,29 +80,10 @@
             this.dataGridViewGrupos.AllowUserToDeleteRows = false;
             this.dataGridViewGrupos.AllowUserToResizeRows = false;
             this.dataGridViewGrupos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewGrupos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.clmnNombre,
-            this.clmnDescripcion,
-            this.clmnConfig});
             this.dataGridViewGrupos.Location = new System.Drawing.Point(15, 66);
             this.dataGridViewGrupos.Name = "dataGridViewGrupos";
             this.dataGridViewGrupos.Size = new System.Drawing.Size(348, 152);
             this.dataGridViewGrupos.TabIndex = 8;
-            // 
-            // clmnNombre
-            // 
-            this.clmnNombre.HeaderText = "Nombre";
-            this.clmnNombre.Name = "clmnNombre";
-            // 
-            // clmnDescripcion
-            // 
-            this.clmnDescripcion.HeaderText = "Descripción";
-            this.clmnDescripcion.Name = "clmnDescripcion";
-            // 
-            // clmnConfig
-            // 
-            this.clmnConfig.HeaderText = "Configuración";
-            this.clmnConfig.Name = "clmnConfig";
             // 
             // label1
             // 
@@ -117,7 +97,7 @@
             // rbtnAdminHabla
             // 
             this.rbtnAdminHabla.AutoSize = true;
-            this.rbtnAdminHabla.Location = new System.Drawing.Point(113, 424);
+            this.rbtnAdminHabla.Location = new System.Drawing.Point(125, 624);
             this.rbtnAdminHabla.Name = "rbtnAdminHabla";
             this.rbtnAdminHabla.Size = new System.Drawing.Size(209, 17);
             this.rbtnAdminHabla.TabIndex = 20;
@@ -128,21 +108,13 @@
             // rbtnTodosHablan
             // 
             this.rbtnTodosHablan.AutoSize = true;
-            this.rbtnTodosHablan.Location = new System.Drawing.Point(113, 389);
+            this.rbtnTodosHablan.Location = new System.Drawing.Point(125, 589);
             this.rbtnTodosHablan.Name = "rbtnTodosHablan";
             this.rbtnTodosHablan.Size = new System.Drawing.Size(205, 17);
             this.rbtnTodosHablan.TabIndex = 19;
             this.rbtnTodosHablan.TabStop = true;
             this.rbtnTodosHablan.Text = "Todos los participantes pueden hablar";
             this.rbtnTodosHablan.UseVisualStyleBackColor = true;
-            // 
-            // txtImagen
-            // 
-            this.txtImagen.Location = new System.Drawing.Point(125, 347);
-            this.txtImagen.MaxLength = 200;
-            this.txtImagen.Name = "txtImagen";
-            this.txtImagen.Size = new System.Drawing.Size(238, 20);
-            this.txtImagen.TabIndex = 18;
             // 
             // txtDescripcion
             // 
@@ -164,20 +136,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(21, 393);
+            this.label4.Location = new System.Drawing.Point(33, 593);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(72, 13);
             this.label4.TabIndex = 15;
             this.label4.Text = "Configuración";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(21, 350);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(92, 13);
-            this.label3.TabIndex = 14;
-            this.label3.Text = "URL de la imagen";
             // 
             // label2
             // 
@@ -197,18 +160,46 @@
             this.lblNombre.TabIndex = 12;
             this.lblNombre.Text = "Nombre";
             // 
+            // btnImagen
+            // 
+            this.btnImagen.Location = new System.Drawing.Point(156, 528);
+            this.btnImagen.Name = "btnImagen";
+            this.btnImagen.Size = new System.Drawing.Size(75, 23);
+            this.btnImagen.TabIndex = 23;
+            this.btnImagen.Text = "Seleccionar";
+            this.btnImagen.UseVisualStyleBackColor = true;
+            this.btnImagen.Click += new System.EventHandler(this.btnImagen_Click_1);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(104, 384);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(185, 138);
+            this.pictureBox1.TabIndex = 22;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(126, 368);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(42, 13);
+            this.label5.TabIndex = 21;
+            this.label5.Text = "Imagen";
+            // 
             // ModificarGrupo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(396, 498);
+            this.ClientSize = new System.Drawing.Size(382, 685);
+            this.Controls.Add(this.btnImagen);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.rbtnAdminHabla);
             this.Controls.Add(this.rbtnTodosHablan);
-            this.Controls.Add(this.txtImagen);
             this.Controls.Add(this.txtDescripcion);
             this.Controls.Add(this.txtNombreVisible);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblNombre);
             this.Controls.Add(this.btnModificar);
@@ -219,6 +210,7 @@
             this.Name = "ModificarGrupo";
             this.Text = "Modificar grupo";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGrupos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -230,18 +222,16 @@
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.DataGridView dataGridViewGrupos;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clmnNombre;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clmnDescripcion;
-        private System.Windows.Forms.DataGridViewTextBoxColumn clmnConfig;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RadioButton rbtnAdminHabla;
         private System.Windows.Forms.RadioButton rbtnTodosHablan;
-        private System.Windows.Forms.TextBox txtImagen;
         private System.Windows.Forms.TextBox txtDescripcion;
         private System.Windows.Forms.TextBox txtNombreVisible;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblNombre;
+        private System.Windows.Forms.Button btnImagen;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label5;
     }
 }

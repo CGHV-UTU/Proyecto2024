@@ -28,18 +28,15 @@ namespace PruebasAPIGrupos
             public string descripcion { get; set; }
             public string imagen { get; set; }
             public char rol { get; set; }
+            public string nombreDeCuenta { get; set; }
+
         }
 
         private Boolean verificarDatos(string txtNombreVisible, string txtImagen, string configuracion)
         {
-            Boolean correcto = false;
-            if (!string.IsNullOrEmpty(txtNombreVisible)
+            return !string.IsNullOrEmpty(txtNombreVisible)
                 && !string.IsNullOrEmpty(txtImagen)
-                && !string.IsNullOrEmpty(configuracion))
-            {
-                correcto = true;
-            }
-            return correcto;
+                && !string.IsNullOrEmpty(configuracion);
         }
 
         private async void btnCrear_Click(object sender, EventArgs e)
@@ -61,19 +58,17 @@ namespace PruebasAPIGrupos
                 }
                 Grupo grupo = new Grupo
                 {
-                    //nombreReal = user, // Asegúrate de tener un campo para el nombre real del grupo
                     nombreVisible = txtNombre.Text,
                     descripcion = txtDescripcion.Text,
                     imagen = foto,
-                    configuracion = configuracion
-                };
+                    configuracion = configuracion,
+                    nombreDeCuenta = user
 
+                };
                 try
                 {
                     string resultadoGrupo = await RegistrarGrupo(grupo);
-                    string resultadoUsuarioGrupo = await RegistrarParticipar(grupo.nombreReal, user);
-
-                    MessageBox.Show($"{resultadoGrupo}\n{resultadoUsuarioGrupo}");
+                    MessageBox.Show($"{resultadoGrupo}");
                 }
                 catch (Exception ex)
                 {
@@ -92,7 +87,6 @@ namespace PruebasAPIGrupos
             {
                 try
                 {
-                    // Registrar el grupo en la tabla "grupos"
                     var contentGrupo = new StringContent(JsonConvert.SerializeObject(grupo), Encoding.UTF8, "application/json");
                     HttpResponseMessage responseGrupo = await client.PostAsync("https://localhost:44304/RegistrarGrupo", contentGrupo);
                     responseGrupo.EnsureSuccessStatusCode();
@@ -105,42 +99,6 @@ namespace PruebasAPIGrupos
                 }
             }
         }
-
-        public static async Task<string> RegistrarParticipar(string nombreReal, string usuario)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    var usuarioGrupo = new
-                    {
-                        nombreReal = nombreReal,
-                        nombreDeCuenta = usuario,
-                    };
-
-                    var contentUsuarioGrupo = new StringContent(JsonConvert.SerializeObject(usuarioGrupo), Encoding.UTF8, "application/json");
-                    HttpResponseMessage responseUsuarioGrupo = await client.PostAsync("https://localhost:44304/RegistrarGrupoUG", contentUsuarioGrupo);
-
-                    // Verifica si la respuesta es exitosa
-                    if (responseUsuarioGrupo.IsSuccessStatusCode)
-                    {
-                        return $"Relación Participa creada correctamente {responseUsuarioGrupo}";
-                    }
-                    else
-                    {
-                        // Lee el contenido de la respuesta en caso de error
-                        var errorContent = await responseUsuarioGrupo.Content.ReadAsStringAsync();
-                        return $"Error en la creación: {responseUsuarioGrupo.StatusCode} - {errorContent}";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return $"No se pudo crear la relación Participa: {ex.Message}";
-                }
-            }
-        }
-
-
         private void btnImagen_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();

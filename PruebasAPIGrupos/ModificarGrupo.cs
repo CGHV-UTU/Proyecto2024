@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -15,7 +17,7 @@ namespace PruebasAPIGrupos
     public partial class ModificarGrupo : Form
     {
         private string user;
-        private List<dynamic> listaGrupos = new List<dynamic>();
+        private List<Grupo> listaGrupos = new List<Grupo>();
 
         public class Grupo
         {
@@ -24,6 +26,7 @@ namespace PruebasAPIGrupos
             public string configuracion { get; set; }
             public string descripcion { get; set; }
             public string imagen { get; set; }
+            public string nombreDeCuenta { get; set; }
         }
 
         public ModificarGrupo(string usuario)
@@ -49,14 +52,14 @@ namespace PruebasAPIGrupos
             return correcto;
         }
 
-        public async Task<dynamic> EditarGrupo(Grupo grupo, string usuario)
+        public async Task<dynamic> EditarGrupo(Grupo grupo)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
                     var content = new StringContent(JsonConvert.SerializeObject(grupo), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/EditarGrupoUG?usuario={Uri.EscapeDataString(usuario)}", content);
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/EditarGrupo", content);
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -78,15 +81,16 @@ namespace PruebasAPIGrupos
                     string url = $"https://localhost:44304/ObtenerGruposPorNombreVisibleYUsuario?nombreVisible={nombreGrupo}&nombreDeCuenta={usuario}";
                     HttpResponseMessage response = await client.GetAsync(url);
                     response.EnsureSuccessStatusCode();
-                    var responseBody = await response.Content.ReadAsStringAsync();
-                    listaGrupos = JsonConvert.DeserializeObject<List<dynamic>>(responseBody);
 
-                    // Rellenar el DataGridView
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    listaGrupos = JsonConvert.DeserializeObject<List<Grupo>>(responseBody);
+
                     dataGridViewGrupos.DataSource = listaGrupos.Select(g => new
                     {
-                        clmnNombre = g.nombreVisible,
-                        clmnDescripcion = g.Descripcion,
-                        clmnConfig = g.Configuracion
+                        NombreReal = g.nombreReal,
+                        Nombre = g.nombreVisible,
+                        Descripcion = g.descripcion,
+                        Configuración = g.configuracion
                     }).ToList();
                 }
                 catch (Exception ex)
@@ -94,7 +98,6 @@ namespace PruebasAPIGrupos
                     MessageBox.Show($"Error al cargar los grupos: {ex.Message}");
                 }
             }
-
         }
 
         private async void btnModificar_Click(object sender, EventArgs e)
@@ -105,29 +108,63 @@ namespace PruebasAPIGrupos
                 configuracion = "AdminHabla";
             }
 
-            if (verificarDatos(txtNombre.Text, txtImagen.Text, configuracion))
+            MemoryStream ms = new MemoryStream();
+            pictureBox1.Image.Save(ms, ImageFormat.Jpeg);
+            byte[] imagen = ms.ToArray();
+            string foto = Convert.ToBase64String(imagen);
+
+            if (verificarDatos(txtNombre.Text, foto, configuracion))
             {
                 if (string.IsNullOrEmpty(txtDescripcion.Text))
                 {
                     txtDescripcion.Text = "";
                 }
-                Grupo grupo = new Grupo
-                {
-                    nombreReal = listaGrupos[dataGridViewGrupos.CurrentCell.RowIndex].nombreReal,
-                    nombreVisible = txtNombre.Text,
-                    descripcion = txtDescripcion.Text,
-                    imagen = txtImagen.Text,
-                    configuracion = configuracion
-                };
 
-                try
+                if (dataGridViewGrupos.CurrentCell != null && dataGridViewGrupos.CurrentCell.Selected)
                 {
-                    dynamic resultado = await EditarGrupo(grupo, user);
-                    MessageBox.Show(resultado.ToString());
+                    int indice = dataGridViewGrupos.CurrentCell.RowIndex;
+
+                    if (indice >= 0 && indice < listaGrupos.Count)
+                    {
+                        Grupo grupoSeleccionado = listaGrupos[indice];
+
+                        Grupo grupoModificado = new Grupo
+                        {
+                            nombreReal = grupoSeleccionado.nombreReal,
+                            nombreVisible = txtNombreVisible.Text,
+                            descripcion = txtDescripcion.Text,
+                            imagen = foto,
+                            configuracion = configuracion,
+                            nombreDeCuenta = user
+                        };
+
+                        try
+                        {
+                            dynamic resultado = await EditarGrupo(grupoModificado);
+                            MessageBox.Show(resultado.ToString());
+                            listaGrupos[indice] = grupoModificado;
+
+                            dataGridViewGrupos.DataSource = listaGrupos.Select(g => new
+                            {
+                                NombreReal = g.nombreReal,
+                                Nombre = g.nombreVisible,
+                                Descripcion = g.descripcion,
+                                Configuración = g.configuracion
+                            }).ToList();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Ocurrió un error al modificar el grupo: {ex.Message}");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("El índice seleccionado está fuera de los límites.");
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show($"Ocurrió un error al modificar el grupo: {ex.Message}");
+                    MessageBox.Show("No seleccionaste un grupo");
                 }
             }
             else
@@ -138,8 +175,15 @@ namespace PruebasAPIGrupos
 
 
 
-
-
-
+        private void btnImagen_Click_1(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                Image selectedImage = Image.FromFile(ofd.FileName);
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox1.Image = selectedImage;
+            }
+        }
     }
 }

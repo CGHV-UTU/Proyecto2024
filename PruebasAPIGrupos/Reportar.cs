@@ -14,23 +14,58 @@ namespace PruebasAPIGrupos
 {
     public partial class Reportar : Form
     {
-        public Reportar()
+        private static string user;
+        private List<Grupo> listaGrupos = new List<Grupo>();
+        public class Grupo
+        {
+            public string nombreReal { get; set; }
+            public string nombreVisible { get; set; }
+            public string configuracion { get; set; }
+            public string descripcion { get; set; }
+            public string imagen { get; set; }
+            public string nombreDeCuenta { get; set; }
+        }
+
+        public Reportar(string Usuario)
         {
             InitializeComponent();
+            user = Usuario;
         }
 
         private async void btnReportar_Click(object sender, EventArgs e)
         {
-            var respuesta = await Reporta(txtUsuario.Text, txtTipo.Text, txtDesc.Text);
-            if (respuesta.Equals("Reporte correcto"))
-                lblResultado.Text = "BIEN";
+            if (dataGridViewGrupos.CurrentCell != null && dataGridViewGrupos.CurrentCell.Selected)
             {
-                var ultimo = await UltimoReporte();
-                if (int.Parse(ultimo) > 0)
+                int indice = dataGridViewGrupos.CurrentCell.RowIndex;
+
+                if (indice >= 0 && indice < listaGrupos.Count)
                 {
-                    var resultado = await ReportaGrupo(int.Parse(ultimo), txtUsuario.Text, txtGrupo.Text);
-                    lblResultado.Text = resultado;
+                    Grupo grupoSeleccionado = listaGrupos[indice];
+
+                    Grupo grupoModificado = new Grupo
+                    {
+                        nombreReal = grupoSeleccionado.nombreReal,
+                    };
+
+                    try
+                    {
+                        var resultado = await ReportaGrupo(grupoModificado.nombreReal, txtTipo.Text, txtDesc.Text);
+                        lblResultado.Text = resultado;
+                        MessageBox.Show(resultado.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ocurrió un error al modificar el grupo: {ex.Message}");
+                    }
                 }
+                else
+                {
+                    MessageBox.Show("El índice seleccionado está fuera de los límites.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("No seleccionaste un grupo");
             }
         }
 
@@ -55,27 +90,13 @@ namespace PruebasAPIGrupos
             }
         }
 
-        public static async Task<string> UltimoReporte()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-
-                HttpResponseMessage response = await client.GetAsync("https://localhost:44383/user/UltimoReporte");
-                response.EnsureSuccessStatusCode();
-                var responseBody = await response.Content.ReadAsStringAsync();
-                dynamic data = JsonConvert.DeserializeObject(responseBody);
-                return data;
-
-            }
-        }
-
-        public static async Task<string> ReportaGrupo(int numeroReporte, string usuario, string nombreReal)
+        public static async Task<string> ReportaGrupo(string nombreReal , string tipo, string descripcion)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { numeroReporte = numeroReporte, usuario = usuario, nombreReal = nombreReal };
+                    var datos = new { nombreReal = nombreReal , tipo = tipo, descripcion = descripcion};
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44304/ReportarGrupo", content);
                     response.EnsureSuccessStatusCode();
@@ -88,6 +109,38 @@ namespace PruebasAPIGrupos
                     return "Falla";
                 }
             }
+        }
+        public async Task Buscar(string usuario, string nombreGrupo)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    string url = $"https://localhost:44304/ObtenerGruposPorNombreVisibleYUsuario?nombreVisible={nombreGrupo}&nombreDeCuenta={usuario}";
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    listaGrupos = JsonConvert.DeserializeObject<List<Grupo>>(responseBody);
+
+                    dataGridViewGrupos.DataSource = listaGrupos.Select(g => new
+                    {
+                        NombreReal = g.nombreReal,
+                        Nombre = g.nombreVisible,
+                        Descripcion = g.descripcion,
+                        Configuración = g.configuracion
+                    }).ToList();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al cargar los grupos: {ex.Message}");
+                }
+            }
+        }
+
+        private async void btnBuscar_Click(object sender, EventArgs e)
+        {
+            await Buscar(txtUsuario.Text, txtGrupo.Text);
         }
     }
 }

@@ -166,6 +166,9 @@
     <EmbeddedResource Include="Form4.resx">
       <DependentUpon>Form4.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GruposUsuario.resx">
+      <DependentUpon>GruposUsuario.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ModificarGrupo.resx">
       <DependentUpon>ModificarGrupo.cs</DependentUpon>
     </EmbeddedResource>

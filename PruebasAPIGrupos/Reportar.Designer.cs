@@ -39,6 +39,9 @@ namespace PruebasAPIGrupos
             this.txtTipo = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.dataGridViewGrupos = new System.Windows.Forms.DataGridView();
+            this.btnBuscar = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGrupos)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -75,7 +78,7 @@ namespace PruebasAPIGrupos
             // 
             // btnReportar
             // 
-            this.btnReportar.Location = new System.Drawing.Point(93, 266);
+            this.btnReportar.Location = new System.Drawing.Point(102, 477);
             this.btnReportar.Name = "btnReportar";
             this.btnReportar.Size = new System.Drawing.Size(75, 23);
             this.btnReportar.TabIndex = 4;
@@ -86,7 +89,7 @@ namespace PruebasAPIGrupos
             // lblResultado
             // 
             this.lblResultado.AutoSize = true;
-            this.lblResultado.Location = new System.Drawing.Point(12, 300);
+            this.lblResultado.Location = new System.Drawing.Point(21, 511);
             this.lblResultado.Name = "lblResultado";
             this.lblResultado.Size = new System.Drawing.Size(61, 13);
             this.lblResultado.TabIndex = 5;
@@ -94,7 +97,7 @@ namespace PruebasAPIGrupos
             // 
             // txtDesc
             // 
-            this.txtDesc.Location = new System.Drawing.Point(93, 172);
+            this.txtDesc.Location = new System.Drawing.Point(102, 383);
             this.txtDesc.Multiline = true;
             this.txtDesc.Name = "txtDesc";
             this.txtDesc.Size = new System.Drawing.Size(163, 76);
@@ -102,7 +105,7 @@ namespace PruebasAPIGrupos
             // 
             // txtTipo
             // 
-            this.txtTipo.Location = new System.Drawing.Point(93, 115);
+            this.txtTipo.Location = new System.Drawing.Point(102, 326);
             this.txtTipo.Name = "txtTipo";
             this.txtTipo.Size = new System.Drawing.Size(163, 20);
             this.txtTipo.TabIndex = 8;
@@ -110,7 +113,7 @@ namespace PruebasAPIGrupos
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 175);
+            this.label3.Location = new System.Drawing.Point(21, 386);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(63, 13);
             this.label3.TabIndex = 7;
@@ -120,17 +123,40 @@ namespace PruebasAPIGrupos
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 122);
+            this.label4.Location = new System.Drawing.Point(21, 333);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(38, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "Razón";
             // 
+            // dataGridViewGrupos
+            // 
+            this.dataGridViewGrupos.AllowUserToAddRows = false;
+            this.dataGridViewGrupos.AllowUserToDeleteRows = false;
+            this.dataGridViewGrupos.AllowUserToResizeRows = false;
+            this.dataGridViewGrupos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewGrupos.Location = new System.Drawing.Point(10, 152);
+            this.dataGridViewGrupos.Name = "dataGridViewGrupos";
+            this.dataGridViewGrupos.Size = new System.Drawing.Size(314, 154);
+            this.dataGridViewGrupos.TabIndex = 10;
+            // 
+            // btnBuscar
+            // 
+            this.btnBuscar.Location = new System.Drawing.Point(10, 107);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(314, 23);
+            this.btnBuscar.TabIndex = 11;
+            this.btnBuscar.Text = "Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
+            // 
             // Reportar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(278, 338);
+            this.ClientSize = new System.Drawing.Size(336, 538);
+            this.Controls.Add(this.btnBuscar);
+            this.Controls.Add(this.dataGridViewGrupos);
             this.Controls.Add(this.txtDesc);
             this.Controls.Add(this.txtTipo);
             this.Controls.Add(this.label3);
@@ -143,6 +169,7 @@ namespace PruebasAPIGrupos
             this.Controls.Add(this.label1);
             this.Name = "Reportar";
             this.Text = "Reportar";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGrupos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -160,5 +187,7 @@ namespace PruebasAPIGrupos
         private System.Windows.Forms.TextBox txtTipo;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DataGridView dataGridViewGrupos;
+        private System.Windows.Forms.Button btnBuscar;
     }
 }
