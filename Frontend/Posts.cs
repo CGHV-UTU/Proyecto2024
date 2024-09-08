@@ -87,6 +87,7 @@ namespace Frontend
                     var postControl = new PostControl(i + 1, modo,user);
                     postControl.AbrirComentarios += PostControl_AbrirComentarios;
                     postControl.ReportarPost += PostControl_ReportarPost;
+                    postControl.RecargarFeed += PostControl_RecargarFeed;
                     await postControl.aplicarDatos();
                     // Calcula la ubicación Y acumulada
                     int currentYPosition = 0;
@@ -104,6 +105,11 @@ namespace Frontend
                     panel1.Controls.Add(postControl);
                 }
             }
+        }
+        private void PostControl_RecargarFeed(object sender, EventArgs e)
+        {
+            panel1.Controls.Clear();
+            LoadPosts(1);
         }
         private void PostControl_AbrirComentarios(object sender, PersonalizedArgs e)
         {

@@ -15,12 +15,14 @@ namespace Frontend
     public partial class CommentControl : UserControl
     {
         private string idpost;
+        private string user;
         private int idcomentario;
         public event EventHandler<PersonalizedArgs> ReportarComentario;
-        public CommentControl(string modo,string idpost, int idcomentario)
+        public CommentControl(string modo,string idpost, int idcomentario,string user)
         {
             this.idpost = idpost;
             this.idcomentario = idcomentario;
+            this.user = user;
             InitializeComponent();
             Iniciar();
             txtBox.ReadOnly = true;
@@ -56,6 +58,19 @@ namespace Frontend
             var data = await BuscarComentario(idcomentario);
             lblNombre.Text = data[0];
             txtBox.Text = data[1];
+            if (lblNombre.Text.Equals(user))
+            {
+                //editar
+                this.PictureBoxMasOpciones = new PictureBox();
+                this.PictureBoxMasOpciones.Location = new System.Drawing.Point(410, 3);
+                this.PictureBoxMasOpciones.Name = "PictureBoxMasOpciones";
+                this.PictureBoxMasOpciones.Size = new System.Drawing.Size(50, 50);
+                this.PictureBoxMasOpciones.SizeMode = PictureBoxSizeMode.StretchImage;
+                this.PictureBoxMasOpciones.Image = Frontend.Properties.Resources.mas_opciones;
+                this.PictureBoxMasOpciones.Click += PictureBoxMasOpciones_Click;
+                this.PictureBoxMasOpciones.Cursor = Cursors.Hand;
+                this.Controls.Add(this.PictureBoxMasOpciones);
+            }
         }
 
         private bool isImage1 = true;
@@ -76,6 +91,7 @@ namespace Frontend
 
         private void Iniciar()
         {
+            this.txtBoxEditar.Visible = false;
             this.lblNombre = new Label();
             this.txtBox = new RichTextBox();
             this.PictureBoxLike = new PictureBox();
@@ -141,6 +157,118 @@ namespace Frontend
         private void PictureBoxReportar_Click(object sender, EventArgs e)
         {
             ReportarComentario?.Invoke(this, new PersonalizedArgs("" + idpost, ""+idcomentario));
+        }
+        private bool opciones = false;
+        private void PictureBoxMasOpciones_Click(object sender, EventArgs e)
+        {
+            if (!opciones)
+            {
+                this.btnEditar = new Label();
+                this.btnEditar.Location = new System.Drawing.Point(360, 3);
+                this.btnEditar.Name = "btnEditar";
+                this.btnEditar.Size = new System.Drawing.Size(34, 13);
+                this.btnEditar.TabIndex = 34;
+                this.btnEditar.Click += btnEditar_Click;
+                this.btnEditar.BackColor = Color.Blue;
+                this.btnEditar.Text = "Editar";
+                this.btnEditar.BringToFront();
+                this.Controls.Add(this.btnEditar);
+
+                this.btnEliminar = new Label();
+                this.btnEliminar.Location = new System.Drawing.Point(360, 25);
+                this.btnEliminar.Name = "btnEliminar";
+                this.btnEliminar.Size = new System.Drawing.Size(34, 13);
+                this.btnEliminar.TabIndex = 35;
+                this.btnEliminar.Click += btnEliminar_Click;
+                this.btnEliminar.BackColor = Color.Red;
+                this.btnEliminar.Text = "Eliminar";
+                this.btnEliminar.BringToFront();
+                this.Controls.Add(this.btnEliminar);
+                opciones = true;
+            }
+            else
+            {
+                this.Controls.Remove(this.btnEditar);
+                this.Controls.Remove(this.btnEliminar);
+                opciones = false;
+            }
+        }
+        private bool editando = false;
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            if (!editando)
+            {
+                this.txtBox.Visible = false;
+                this.txtBoxEditar = new RichTextBox();
+                this.txtBoxEditar.Location = new System.Drawing.Point(3, 53);
+                this.txtBoxEditar.Name = "txtBoxEditar";
+                this.txtBoxEditar.Size = new System.Drawing.Size(this.txtBoxEditar.Width, this.txtBoxEditar.Height);
+                this.txtBoxEditar.TabIndex = 31;
+                this.txtBoxEditar.Text = this.txtBox.Text;
+                this.txtBoxEditar.ReadOnly = false;
+                this.Controls.Add(txtBoxEditar);
+
+                this.PictureBoxConfirmarCambios = new PictureBox();
+                this.PictureBoxConfirmarCambios.Location = new System.Drawing.Point(202, 3);
+                this.PictureBoxConfirmarCambios.Name = "PictureBoxConfirmarCambios";
+                this.PictureBoxConfirmarCambios.Size = new System.Drawing.Size(50, 50);
+                this.PictureBoxConfirmarCambios.SizeMode = PictureBoxSizeMode.StretchImage;
+                this.PictureBoxConfirmarCambios.Image = Frontend.Properties.Resources.mas_opciones;
+                this.PictureBoxConfirmarCambios.Click += PictureBoxConfirmarCambios_Click;
+                this.PictureBoxConfirmarCambios.Cursor = Cursors.Hand;
+                this.Controls.Add(this.PictureBoxConfirmarCambios);
+                editando = true;
+            }
+            else
+            {
+                this.Controls.Remove(this.txtBoxEditar);
+                this.Controls.Remove(this.PictureBoxConfirmarCambios);
+                this.txtBox.Visible = true;
+                editando = false;
+            }
+        }
+        static async Task Eliminar(string id)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.DeleteAsync($"https://localhost:44340/eliminarComentario?id={id}");
+                    response.EnsureSuccessStatusCode();
+                    MessageBox.Show("Comentario eliminado con éxito");
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Fallo al eliminar comentario");
+                }
+            }
+        }
+
+        private async void btnEliminar_Click(object sender, EventArgs e)
+        {
+            await Eliminar(Convert.ToString(idcomentario));
+        }
+        static async Task Modificar(string id, string texto)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var data = new { id = id, texto = texto, };
+                    var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/modificarComentario", content);
+                    response.EnsureSuccessStatusCode();
+                    MessageBox.Show("Comentario modificado correctamente");
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error");
+                }
+            }
+        }
+        private async void PictureBoxConfirmarCambios_Click(object sender, EventArgs e)
+        {
+            await Modificar(Convert.ToString(idcomentario),this.txtBoxEditar.Text);
         }
     }
 }

@@ -61,7 +61,7 @@ namespace Frontend
                 for (int i = 0; i < comentarios.Rows.Count; i++)
                 {
                     int idcomentario = Convert.ToInt32(comentarios.Rows[i]["id"]);
-                    var commentControl = new CommentControl(modo, idpost, idcomentario);
+                    var commentControl = new CommentControl(modo, idpost, idcomentario,user);
                     commentControl.Size = new Size(465 + margin * 2, 171 + margin * 2);
                     var lastControl = PanelComentarios.Controls[PanelComentarios.Controls.Count - 1];
                     commentControl.Location = new Point(margin, lastControl.Bottom);

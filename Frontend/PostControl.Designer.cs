@@ -44,6 +44,8 @@ namespace Frontend
             this.btnConfirmarCambios = new System.Windows.Forms.PictureBox();
             this.btnSeleccionarImagen = new System.Windows.Forms.PictureBox();
             this.imagenEditar = new System.Windows.Forms.PictureBox();
+            this.btnEliminar = new System.Windows.Forms.Label();
+            this.btnReportar = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxEditar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOpcionesPost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCompartir)).BeginInit();
@@ -123,6 +125,7 @@ namespace Frontend
             this.PictureBoxCompartir.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PictureBoxCompartir.TabIndex = 25;
             this.PictureBoxCompartir.TabStop = false;
+            this.PictureBoxCompartir.Click += new System.EventHandler(this.PictureBoxCompartir_Click);
             // 
             // PictureBoxComentarios
             // 
@@ -212,16 +215,38 @@ namespace Frontend
             // 
             this.imagenEditar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.imagenEditar.Location = new System.Drawing.Point(80, 133);
+            this.imagenEditar.Location = new System.Drawing.Point(80, 123);
             this.imagenEditar.Name = "imagenEditar";
             this.imagenEditar.Size = new System.Drawing.Size(634, 365);
             this.imagenEditar.TabIndex = 39;
             this.imagenEditar.TabStop = false;
             // 
+            // btnEliminar
+            // 
+            this.btnEliminar.AutoSize = true;
+            this.btnEliminar.Location = new System.Drawing.Point(666, 453);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(43, 13);
+            this.btnEliminar.TabIndex = 41;
+            this.btnEliminar.Text = "Eliminar";
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+            // 
+            // btnReportar
+            // 
+            this.btnReportar.AutoSize = true;
+            this.btnReportar.Location = new System.Drawing.Point(666, 475);
+            this.btnReportar.Name = "btnReportar";
+            this.btnReportar.Size = new System.Drawing.Size(48, 13);
+            this.btnReportar.TabIndex = 41;
+            this.btnReportar.Text = "Reportar";
+            this.btnReportar.Click += new System.EventHandler(this.btnReportar_Click);
+            // 
             // PostControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnReportar);
+            this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.imagenEditar);
             this.Controls.Add(this.btnSeleccionarImagen);
             this.Controls.Add(this.btnConfirmarCambios);
@@ -271,5 +296,7 @@ namespace Frontend
         private System.Windows.Forms.PictureBox btnConfirmarCambios;
         private System.Windows.Forms.PictureBox btnSeleccionarImagen;
         private System.Windows.Forms.PictureBox imagenEditar;
+        private System.Windows.Forms.Label btnEliminar;
+        private System.Windows.Forms.Label btnReportar;
     }
 }
