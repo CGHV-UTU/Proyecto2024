@@ -36,22 +36,6 @@ namespace UnitTest1
         [TestMethod]
         public void TestMethod1_PRRegistrarGrupo()
         {
-
-            string respuestaEsperada = "Registro correcto";
-            API_Grupos.Controllers.GroupController controller = new API_Grupos.Controllers.GroupController();
-            API_Grupos.Controllers.GroupController.Grupo grupo = new API_Grupos.Controllers.GroupController.Grupo()
-            {
-                nombreVisible = "Grupo Visible",
-                configuracion = "Configuración del grupo",
-                descripcion = "Descripción del grupo",
-                imagen = "grupo.jpg"
-            };
-
-            var resultadoGrupoJson = controller.PRRegistrarGrupo(grupo);
-            var resultadoGrupo = JsonConvert.DeserializeObject<string>(resultadoGrupoJson);
-            Assert.AreEqual("Registro correcto", resultadoGrupo);
-
-            nombreRealGenerado = grupo.nombreReal;
             string nombreVisibleUsuario = "Usuario Visible";
             string email = "usuario@test.com";
             string foto = "foto.jpg";
@@ -78,17 +62,24 @@ namespace UnitTest1
                 cmdUsuario.Parameters.AddWithValue("@estadoDeCuenta", estadoDeCuenta);
                 cmdUsuario.ExecuteNonQuery();
                 conn.Close();
-            }
 
-            API_Grupos.Controllers.GroupController.UsuarioGrupo usuarioGrupo = new API_Grupos.Controllers.GroupController.UsuarioGrupo()
+                string respuestaEsperada = "Registro correcto";
+            API_Grupos.Controllers.GroupController controller = new API_Grupos.Controllers.GroupController();
+            API_Grupos.Controllers.GroupController.Grupo grupo = new API_Grupos.Controllers.GroupController.Grupo()
             {
-                nombreReal = nombreRealGenerado,
+                nombreVisible = "Grupo Visible",
+                configuracion = "Configuración del grupo",
+                descripcion = "Descripción del grupo",
+                imagen = "grupo.jpg",
                 nombreDeCuenta = "UsuarioTest"
             };
 
-            var resultadoJson = controller.PRRegistrarGrupoUG(usuarioGrupo);
-            var resultado = JsonConvert.DeserializeObject<string>(resultadoJson);
-            Assert.AreEqual(respuestaEsperada, resultado);
+            var resultadoGrupoJson = controller.PRRegistrarGrupo(grupo);
+            var resultadoGrupo = JsonConvert.DeserializeObject<string>(resultadoGrupoJson);
+            Assert.AreEqual("Registro correcto", resultadoGrupo);
+
+
+            }
             Cleanup();
         }
 
@@ -182,59 +173,7 @@ namespace UnitTest1
             Cleanup();
         }
 
-        [TestMethod]
-        public void TestMethod5_PREditarGrupoUG()
-        {
-            API_Grupos.Controllers.GroupController controller = new API_Grupos.Controllers.GroupController();
-            API_Grupos.Controllers.GroupController.Grupo grupo = new API_Grupos.Controllers.GroupController.Grupo()
-            {
-                nombreVisible = "Grupo Visible",
-                configuracion = "Configuración del grupo",
-                descripcion = "Descripción del grupo",
-                imagen = "grupo.jpg"
-            };
-
-            var resultadoGrupoJson = controller.PRRegistrarGrupo(grupo);
-            var resultadoGrupo = JsonConvert.DeserializeObject<string>(resultadoGrupoJson);
-            Assert.AreEqual("Registro correcto", resultadoGrupo);
-            string nombreRealGenerado = grupo.nombreReal;
-
-            string usuario = "UsuarioTest";
-            using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
-            {
-                conn.Open();
-
-                var cmdInsertarUsuario = new MySqlCommand(@"
-            INSERT INTO Usuarios (nombreDeCuenta, nombreVisible, email, descripcion, foto, configuraciones, genero, fechaDeNacimiento, estadoDeCuenta) 
-            VALUES (@nombreDeCuenta, @nombreVisible, @correo, @descripcion, @foto, @configuraciones, @genero, @fechaNacimiento, @estado)
-            ON DUPLICATE KEY UPDATE nombreDeCuenta = nombreDeCuenta;", conn);
-                cmdInsertarUsuario.Parameters.AddWithValue("@nombreDeCuenta", usuario);
-                cmdInsertarUsuario.Parameters.AddWithValue("@nombreVisible", "Usuario Visible");
-                cmdInsertarUsuario.Parameters.AddWithValue("@correo", "usuario@test.com");
-                cmdInsertarUsuario.Parameters.AddWithValue("@descripcion", "Descripción de usuario");
-                cmdInsertarUsuario.Parameters.AddWithValue("@foto", "foto.jpg");
-                cmdInsertarUsuario.Parameters.AddWithValue("@configuraciones", "configuración inicial");
-                cmdInsertarUsuario.Parameters.AddWithValue("@genero", "no especificado");
-                cmdInsertarUsuario.Parameters.AddWithValue("@fechaNacimiento", new DateTime(1990, 1, 15));
-                cmdInsertarUsuario.Parameters.AddWithValue("@estado", "activo");
-                cmdInsertarUsuario.ExecuteNonQuery();
-
-                var cmdPermiso = new MySqlCommand(@"
-            INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) 
-            VALUES (@nombreReal, @nombreDeCuenta, 'a')
-            ON DUPLICATE KEY UPDATE rol = 'a';", conn);
-                cmdPermiso.Parameters.AddWithValue("@nombreReal", nombreRealGenerado);
-                cmdPermiso.Parameters.AddWithValue("@nombreDeCuenta", usuario);
-                cmdPermiso.ExecuteNonQuery();
-                conn.Close();
-            }
-            var resultadoEditarGrupoJson = controller.PREditarGrupoUG(nombreRealGenerado, usuario);
-            var resultadoEditarGrupo = JsonConvert.DeserializeObject<string>(resultadoEditarGrupoJson);
-            // Verificar que la respuesta sea la esperada
-            Assert.AreEqual("Se editó el grupo correctamente", resultadoEditarGrupo);
-            Cleanup();
-        }
-
+       
 
         [TestMethod]
         public void TestMethod6_PRObtenerGruposPorUsuario()

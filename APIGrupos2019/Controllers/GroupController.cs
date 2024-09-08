@@ -29,17 +29,12 @@ namespace API_Grupos.Controllers
             public string descripcion { get; set; }
             public string imagen { get; set; }
             public string chatGrupal { get; set; }
-        }
 
-        public class UsuarioGrupo
-        {
-            public string nombreReal { get; set; }
             public string nombreDeCuenta { get; set; }
         }
 
         public class Reporte
         {
-            public int numeroReporte { get; set; }
             public string nombreReal { get; set; }
             public string tipo { get; set; }
             public string descripcion { get; set; }
@@ -53,7 +48,7 @@ namespace API_Grupos.Controllers
             {
                 try
                 {
-                    string token = "Token"; // Token para repositorio privado. Cambiar por el token real
+                    string token = "token"; // Token para repositorio privado. Cambiar por el token real
                     string nombreDeImagen = GenerarIdAleatorio(8) + ".png"; // nombre aleatorio para que el nombre del archivo no se repita
                     string carpeta = "GroupImages"; // Carpeta de GitHub en donde se guarda la imagen
                                                    // No es necesario crear la carpeta a mano, se crea si le intentas subir algo.
@@ -91,7 +86,7 @@ namespace API_Grupos.Controllers
         {
             using (var client = new HttpClient())
             {
-                string token = "Token"; // Token para repositorio privado. Cambiar por el token real
+                string token = "token"; // Token para repositorio privado. Cambiar por el token real
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var response = await client.GetAsync(urlImagen);
@@ -116,27 +111,41 @@ namespace API_Grupos.Controllers
                 group.nombreReal = crearNombreGrupo();
                 if (string.IsNullOrEmpty(group.nombreVisible)
                     || string.IsNullOrEmpty(group.configuracion)
-                    || string.IsNullOrEmpty(group.imagen))
+                    || string.IsNullOrEmpty(group.imagen)
+                    || string.IsNullOrEmpty(group.nombreDeCuenta))
                 {
                     return Json("Valores nulos");
                 }
-                linkImagen = await SubirImagenAGitHub(group.imagen);
 
-                MySqlConnection conn = new MySqlConnection(connectionString);
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("insert into Grupos (nombreReal, nombreVisible, configuracion, foto) values (@nombreReal, @nombreVisible, @configuracion, @foto)", conn);
-                cmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
-                cmd.Parameters.AddWithValue("@nombreVisible", group.nombreVisible);
-                cmd.Parameters.AddWithValue("@configuracion", group.configuracion);
-                cmd.Parameters.AddWithValue("@foto", linkImagen);
-                cmd.ExecuteNonQuery();
-                if (!string.IsNullOrEmpty(group.descripcion))
+                linkImagen = await SubirImagenAGitHub(group.imagen);
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
-                    MySqlCommand cmd2 = new MySqlCommand("update Grupos set descripcion = @descripcion where nombreReal = @nombreReal", conn);
-                    cmd2.Parameters.AddWithValue("@descripcion", group.descripcion);
-                    cmd2.ExecuteNonQuery();
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Grupos (nombreReal, nombreVisible, configuracion, foto) VALUES (@nombreReal, @nombreVisible, @configuracion, @foto)", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                        cmd.Parameters.AddWithValue("@nombreVisible", group.nombreVisible);
+                        cmd.Parameters.AddWithValue("@configuracion", group.configuracion);
+                        cmd.Parameters.AddWithValue("@foto", linkImagen);
+                        cmd.ExecuteNonQuery();
+                    }
+                    using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, 'c')", conn))
+                    {
+                        cmd2.Parameters.AddWithValue("@nombreDeCuenta", group.nombreDeCuenta);
+                        cmd2.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                        cmd2.ExecuteNonQuery();
+                    }
+                    if (!string.IsNullOrEmpty(group.descripcion))
+                    {
+                        using (MySqlCommand cmd3 = new MySqlCommand("UPDATE Grupos SET descripcion = @descripcion WHERE nombreReal = @nombreReal", conn))
+                        {
+                            cmd3.Parameters.AddWithValue("@descripcion", group.descripcion);
+                            cmd3.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                            cmd3.ExecuteNonQuery();
+                        }
+                    }
                 }
-                conn.Close();
+
                 return Json("Registro correcto");
             }
             catch (Exception ex)
@@ -145,62 +154,9 @@ namespace API_Grupos.Controllers
             }
         }
 
-        [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("RegistrarGrupoUG")]
-        public dynamic RegistrarGrupoUG([FromBody] UsuarioGrupo ug)
-        {
-            try
-            {
-                // Validación de campos
-                if (string.IsNullOrEmpty(ug.nombreReal) || string.IsNullOrEmpty(ug.nombreDeCuenta))
-                {
-                    return Json("Valores nulos o vacíos");
-                }
-
-                // Cadena de conexión a la base de datos
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
-                {
-                    conn.Open();
-
-                    // Consulta de inserción
-                    string insertQuery = "INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, 'c')";
-
-                    // Creación del comando SQL
-                    using (MySqlCommand cmd = new MySqlCommand(insertQuery, conn))
-                    {
-                        // Agregando parámetros
-                        cmd.Parameters.AddWithValue("@nombreReal", ug.nombreReal);
-                        cmd.Parameters.AddWithValue("@nombreDeCuenta", ug.nombreDeCuenta);
-
-                        // Ejecución de la consulta
-                        int rowsAffected = cmd.ExecuteNonQuery();
-
-                        // Verificación de la inserción
-                        if (rowsAffected > 0)
-                        {
-                            return Json("Registro correcto");
-                        }
-                        else
-                        {
-                            return Json("No se pudo insertar el registro. Filas afectadas: " + rowsAffected);
-                        }
-                    }
-                }
-            }
-            catch (MySqlException ex)
-            {
-                return Json($"Error en la base de datos: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                return Json($"Registro fallido: {ex.Message}");
-            }
-        }
-
-
 
         [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("ObtenerGruposPorNombreVisibleYUsuario")] 
+        [System.Web.Http.Route("ObtenerGruposPorNombreVisibleYUsuario")]
         public async Task<dynamic> ObtenerGruposPorNombreVisibleYUsuario(string nombreVisible, string nombreDeCuenta)
         {
             try
@@ -210,10 +166,10 @@ namespace API_Grupos.Controllers
                     conn.Open();
 
                     string query = @"
-                SELECT g.nombreReal, g.nombreVisible, g.configuracion, g.descripcion, g.foto
-                FROM Grupos g
-                JOIN Participa ug ON g.nombreReal = ug.nombreReal
-                WHERE g.nombreVisible = @nombreVisible AND ug.nombreDeCuenta = @nombreDeCuenta";
+            SELECT g.nombreReal, g.nombreVisible, g.configuracion, g.descripcion, g.foto
+            FROM Grupos g
+            JOIN Participa ug ON g.nombreReal = ug.nombreReal
+            WHERE g.nombreVisible = @nombreVisible AND ug.nombreDeCuenta = @nombreDeCuenta";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
@@ -262,6 +218,7 @@ namespace API_Grupos.Controllers
                 return Json($"Error al obtener los Grupos: {e.Message}");
             }
         }
+
 
         [System.Web.Http.HttpGet]
         [Route("prueba")]
@@ -339,7 +296,11 @@ namespace API_Grupos.Controllers
             {
                 MySqlConnection conn = new MySqlConnection(connectionString);
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("delete from Grupos where nombreReal = @nombreReal", conn);
+                MySqlCommand cmd = new MySqlCommand("DELETE FROM ReporteGrupo WHERE nombreReal = @nombreReal;" +
+                    "DELETE FROM Participa WHERE nombreReal = @nombreReal;" +
+                    "DELETE FROM PostGrupo WHERE nombreReal = @nombreReal;" +
+                    "DELETE FROM Eventos WHERE nombreReal = @nombreReal;" +
+                    "DELETE FROM Grupos WHERE nombreReal = @nombreReal", conn);
                 cmd.Parameters.AddWithValue("@nombreReal", nombreReal);
                 cmd.ExecuteNonQuery();
                 conn.Close();
@@ -388,6 +349,7 @@ namespace API_Grupos.Controllers
                 return Json("No se pudo editar el grupo");
             }
         }
+
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("ActualizarMensajes")]
         public dynamic ActualizarMensajes(string nombreReal, string chatGrupal)
@@ -415,38 +377,6 @@ namespace API_Grupos.Controllers
             }
         }
 
-        [System.Web.Http.HttpPut]
-        [System.Web.Http.Route("EditarGrupoUG")]
-        public dynamic EditarGrupoUG([FromBody] Grupo group, string usuario)
-        {
-
-            if (string.IsNullOrEmpty(group.nombreReal)
-                    || string.IsNullOrEmpty(group.nombreVisible)
-                    || string.IsNullOrEmpty(group.configuracion)
-                    || string.IsNullOrEmpty(group.imagen)
-                    || string.IsNullOrEmpty(usuario))
-            {
-                return Json("Datos inválidos");
-            }
-            try
-            {
-                MySqlConnection conn = new MySqlConnection(connectionString);
-                conn.Open();
-                string permisosQuery = "SELECT rol FROM Participa WHERE nombreReal = @nombreReal AND nombreDeCuenta = @nombreDeCuenta AND (rol = 'c' OR rol = 'a')";
-                MySqlCommand permisosCmd = new MySqlCommand(permisosQuery, conn);
-                permisosCmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
-                permisosCmd.Parameters.AddWithValue("@nombreDeCuenta", usuario);
-                MySqlDataReader reader = permisosCmd.ExecuteReader();
-                conn.Close();
-                return Json("Se editó el grupo correctamente");
-            }
-            catch (Exception ex)
-            {
-                return Json($"No se pudo editar el grupo: {ex.Message}");
-            }
-        }
-
-        //Grupos al que pertenece un usuario
         [System.Web.Http.HttpGet]
         [System.Web.Http.Route("ObtenerGruposPorUsuario")]
         public async Task<dynamic> ObtenerGruposPorUsuario(string nombreDeCuenta)
@@ -608,7 +538,7 @@ namespace API_Grupos.Controllers
 
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("ReportarGrupo")]
-        public dynamic ReportarGrupo([FromBody] Reporte reporte) //Lo cambié porque hablaba de un nombre de usuario
+        public dynamic ReportarGrupo([FromBody] Reporte reporte) 
         {
             try
             {
@@ -617,8 +547,7 @@ namespace API_Grupos.Controllers
                     conn.Open();
 
                     // Insertar el reporte en la base de datos
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO ReporteGrupo (numeroDeReporte, nombreReal, tipo) VALUES (@reporte, @nombreReal, @tipo)", conn);
-                    cmd.Parameters.AddWithValue("@reporte", reporte.numeroReporte);
+                    MySqlCommand cmd = new MySqlCommand("INSERT INTO ReporteGrupo (nombreReal, tipo) VALUES ( @nombreReal, @tipo)", conn);
                     cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
                     cmd.Parameters.AddWithValue("@nombreReal", reporte.nombreReal);
                     cmd.ExecuteNonQuery();
@@ -626,9 +555,8 @@ namespace API_Grupos.Controllers
                     // Actualizar la descripción si no es nula
                     if (!string.IsNullOrEmpty(reporte.descripcion))
                     {
-                        MySqlCommand cmd2 = new MySqlCommand("UPDATE ReporteGrupo SET descripcion = @descripcion WHERE numeroDeReporte = @reporte AND nombreReal = @nombreReal", conn);
+                        MySqlCommand cmd2 = new MySqlCommand("UPDATE ReporteGrupo SET descripcion = @descripcion WHERE nombreReal = @nombreReal", conn);
                         cmd2.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                        cmd2.Parameters.AddWithValue("@reporte", reporte.numeroReporte);
                         cmd2.Parameters.AddWithValue("@nombreReal", reporte.nombreReal);
                         cmd2.ExecuteNonQuery();
                     }
@@ -658,59 +586,50 @@ namespace API_Grupos.Controllers
         }
 
         //Testing
-        public dynamic PRRegistrarGrupo(Grupo group)
+
+        public async Task<dynamic> PRRegistrarGrupo([FromBody] Grupo group)
         {
+            string linkImagen = null;
             try
             {
                 group.nombreReal = crearNombreGrupo();
                 if (string.IsNullOrEmpty(group.nombreVisible)
                     || string.IsNullOrEmpty(group.configuracion)
-                    || string.IsNullOrEmpty(group.imagen))
-                {
-                    return JsonConvert.SerializeObject("Valores nulos");
-                }
-
-                MySqlConnection conn = new MySqlConnection(connectionString);
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("insert into Grupos (nombreReal, nombreVisible, configuracion, foto) values (@nombreReal, @nombreVisible, @configuracion, @foto)", conn);
-                cmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
-                cmd.Parameters.AddWithValue("@nombreVisible", group.nombreVisible);
-                cmd.Parameters.AddWithValue("@configuracion", group.configuracion);
-                cmd.Parameters.AddWithValue("@foto", group.imagen);
-                cmd.ExecuteNonQuery();
-                if (!string.IsNullOrEmpty(group.descripcion))
-                {
-                    MySqlCommand cmd2 = new MySqlCommand("update Grupos set descripcion = @descripcion where nombreReal = @nombreReal", conn);
-                    cmd2.Parameters.AddWithValue("@descripcion", group.descripcion);
-                    cmd2.Parameters.AddWithValue("@nombreReal", group.nombreReal);
-                    cmd2.ExecuteNonQuery();
-                }
-                conn.Close();
-                return JsonConvert.SerializeObject("Registro correcto");
-            }
-            catch (Exception ex)
-            {
-                return JsonConvert.SerializeObject($"Registro fallido: {ex.Message}");
-            }
-        }
-        public dynamic PRRegistrarGrupoUG(UsuarioGrupo ug)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(ug.nombreReal) || string.IsNullOrEmpty(ug.nombreDeCuenta))
+                    || string.IsNullOrEmpty(group.imagen)
+                    || string.IsNullOrEmpty(group.nombreDeCuenta))
                 {
                     return Json("Valores nulos");
                 }
 
-                MySqlConnection conn = new MySqlConnection(connectionString);
-                conn.Open();
-                //Debería funcionar incluso cuando "Rol" es un varchar y no un char.
-                string insertQuery = "INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, 'a')";
-                MySqlCommand cmd = new MySqlCommand(insertQuery, conn);
-                cmd.Parameters.AddWithValue("@nombreReal", ug.nombreReal);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", ug.nombreDeCuenta);
-                cmd.ExecuteNonQuery();
-                conn.Close();
+                linkImagen = await SubirImagenAGitHub(group.imagen);
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Grupos (nombreReal, nombreVisible, configuracion, foto) VALUES (@nombreReal, @nombreVisible, @configuracion, @foto)", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                        cmd.Parameters.AddWithValue("@nombreVisible", group.nombreVisible);
+                        cmd.Parameters.AddWithValue("@configuracion", group.configuracion);
+                        cmd.Parameters.AddWithValue("@foto", linkImagen);
+                        cmd.ExecuteNonQuery();
+                    }
+                    using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, 'c')", conn))
+                    {
+                        cmd2.Parameters.AddWithValue("@nombreDeCuenta", group.nombreDeCuenta);
+                        cmd2.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                        cmd2.ExecuteNonQuery();
+                    }
+                    if (!string.IsNullOrEmpty(group.descripcion))
+                    {
+                        using (MySqlCommand cmd3 = new MySqlCommand("UPDATE Grupos SET descripcion = @descripcion WHERE nombreReal = @nombreReal", conn))
+                        {
+                            cmd3.Parameters.AddWithValue("@descripcion", group.descripcion);
+                            cmd3.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                            cmd3.ExecuteNonQuery();
+                        }
+                    }
+                }
+
                 return JsonConvert.SerializeObject("Registro correcto");
             }
             catch (Exception ex)
@@ -854,7 +773,7 @@ namespace API_Grupos.Controllers
         }
 
 
-        public dynamic PREditarGrupoUG(string nombreReal, string usuario)
+       /* public dynamic PREditarGrupoUG(string nombreReal, string usuario)
         {
             if (string.IsNullOrEmpty(nombreReal) && string.IsNullOrEmpty(usuario))
             {
@@ -878,7 +797,7 @@ namespace API_Grupos.Controllers
             {
                 return JsonConvert.SerializeObject($"No se pudo editar el grupo: {ex.Message}");
             }
-        }
+        }*/
 
         public dynamic PRObtenerGruposPorUsuario(string nombreDeCuenta)
         {
@@ -1038,7 +957,6 @@ namespace API_Grupos.Controllers
 
                     // Insertar el reporte en la base de datos
                     MySqlCommand cmd = new MySqlCommand("INSERT INTO ReporteGrupo (numeroDeReporte, nombreReal, tipo) VALUES (@reporte, @nombreReal, @tipo)", conn);
-                    cmd.Parameters.AddWithValue("@reporte", reporte.numeroReporte);
                     cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
                     cmd.Parameters.AddWithValue("@nombreReal", reporte.nombreReal);
                     cmd.ExecuteNonQuery();
@@ -1048,7 +966,6 @@ namespace API_Grupos.Controllers
                     {
                         MySqlCommand cmd2 = new MySqlCommand("UPDATE ReporteGrupo SET descripcion = @descripcion WHERE numeroDeReporte = @reporte AND nombreReal = @nombreReal", conn);
                         cmd2.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                        cmd2.Parameters.AddWithValue("@reporte", reporte.numeroReporte);
                         cmd2.Parameters.AddWithValue("@nombreReal", reporte.nombreReal);
                         cmd2.ExecuteNonQuery();
                     }
