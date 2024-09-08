@@ -325,9 +325,21 @@ namespace APIPostYEventos2019.Controllers
             {
                 MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
-                MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id;DELETE FROM PostPublico WHERE idPost = @Id;DELETE FROM PostGrupo WHERE idPost = @Id;DELETE FROM Posts WHERE idPost = @Id; ", conn);
+                MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", conn);
+                MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", conn);
+                MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost = @Id", conn);
+                MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost = @Id", conn);
+                MySqlCommand command5 = new MySqlCommand("DELETE FROM Posts WHERE idPost = @Id", conn);
                 command.Parameters.AddWithValue("@Id", id);
+                command2.Parameters.AddWithValue("@Id", id);
+                command3.Parameters.AddWithValue("@Id", id);
+                command4.Parameters.AddWithValue("@Id", id);
+                command5.Parameters.AddWithValue("@Id", id);
                 command.ExecuteNonQuery();
+                command2.ExecuteNonQuery();
+                command3.ExecuteNonQuery();
+                command4.ExecuteNonQuery();
+                command5.ExecuteNonQuery();
                 conn.Close();
                 return Json("Post eliminado");
             }
@@ -355,7 +367,7 @@ namespace APIPostYEventos2019.Controllers
                     if (!postdata.link.Equals(""))
                     {
                         string url = postdata.link;
-                        cmd = new MySqlCommand("UPDATE Posts SET texto=@texto,imagen=@imagen,url=@url WHERE idPost=@id", conn);
+                        cmd = new MySqlCommand("UPDATE Posts SET texto=@texto,imagen=@imagen,video=@url WHERE idPost=@id", conn);
                         cmd.Parameters.AddWithValue("@Texto", texto);
                         cmd.Parameters.AddWithValue("@url", url);
                         cmd.Parameters.AddWithValue("@id", id);
