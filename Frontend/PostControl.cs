@@ -92,7 +92,33 @@ namespace Frontend
             {
                 HandleLikeClick();
             }
+            this.lblNombre.Text = creador;
+            string imagenB64 = await conseguirImagenDelCreador(creador);
+            byte[] imagen2 = Convert.FromBase64String(imagenB64);
+            MemoryStream ms2 = new MemoryStream(imagen2);
+            Bitmap bitmap2 = new Bitmap(ms2);
+            this.PictureBoxUsuarioPost.Image = bitmap2;
         }
+
+        static async Task<string> conseguirImagenDelCreador(string creador)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44383/user/obtenerImagenUsuario?nombredecuenta={creador}");
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic imagen = JsonConvert.DeserializeObject(responseBody);
+                    return imagen;
+                }
+                catch
+                {
+                    MessageBox.Show("Error de conexión");
+                    return "error";
+                }
+            }
+        } 
 
         static async Task<string[]> Buscar(int id)
         {
@@ -283,6 +309,7 @@ namespace Frontend
         {
             string creador = await obtenerCreador(idpost);
             string respuesta=await darLike(user, idpost, creador);
+            MessageBox.Show(respuesta);
             HandleLikeClick();
         }
 
@@ -552,10 +579,11 @@ namespace Frontend
         {
             if (!opciones)
             {
+                this.imagen.SendToBack();
                 this.btnReportar = new Label();
-                this.btnReportar.Location = new System.Drawing.Point(660, this.PictureBoxOpcionesPost.Top - 50);
+                this.btnReportar.Location = new System.Drawing.Point(this.PictureBoxComentarios.Left-100, this.PictureBoxLike.Location.Y+20);
                 this.btnReportar.Name = "btnReportar";
-                this.btnReportar.Size = new System.Drawing.Size(45, 50);
+                this.btnReportar.Size = new System.Drawing.Size(48, 20);
                 this.btnReportar.TabIndex = 41;
                 this.btnReportar.Click += btnReportar_Click;
                 this.btnReportar.BackColor = Color.Blue;
@@ -565,7 +593,7 @@ namespace Frontend
                 if (this.creador.Equals(user))
                 {
                     this.btnEliminar = new Label();
-                    this.btnEliminar.Location = new System.Drawing.Point(660, this.btnReportar.Top - 30);
+                    this.btnEliminar.Location = new System.Drawing.Point(this.PictureBoxComentarios.Left - 100, this.btnReportar.Top - 20);
                     this.btnEliminar.Name = "btnEliminar";
                     this.btnEliminar.Size = new System.Drawing.Size(43, 20);
                     this.btnEliminar.TabIndex = 41;

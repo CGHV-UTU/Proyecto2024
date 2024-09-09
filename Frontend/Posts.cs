@@ -78,13 +78,13 @@ namespace Frontend
         {
             var cantPost = await CuantosPost();
 
-            // Simulación de carga de posts
-            for (int i = int.Parse(cantPost)-1; i > 0; i--)
+            // carga de posts
+            for (int i = int.Parse(cantPost); i > 0; i--)
             {
                 var existe = await Existe(i);
                 if (existe)
                 {
-                    var postControl = new PostControl(i + 1, modo,user);
+                    var postControl = new PostControl(i, modo,user);
                     postControl.AbrirComentarios += PostControl_AbrirComentarios;
                     postControl.ReportarPost += PostControl_ReportarPost;
                     postControl.RecargarFeed += PostControl_RecargarFeed;

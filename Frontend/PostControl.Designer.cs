@@ -167,7 +167,7 @@ namespace Frontend
             // 
             this.imagen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.imagen.Location = new System.Drawing.Point(80, 101);
+            this.imagen.Location = new System.Drawing.Point(80, 138);
             this.imagen.Name = "imagen";
             this.imagen.Size = new System.Drawing.Size(634, 365);
             this.imagen.TabIndex = 21;
@@ -247,7 +247,6 @@ namespace Frontend
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.btnReportar);
             this.Controls.Add(this.btnEliminar);
-            this.Controls.Add(this.imagenEditar);
             this.Controls.Add(this.btnSeleccionarImagen);
             this.Controls.Add(this.btnConfirmarCambios);
             this.Controls.Add(this.txtUrlEditar);
@@ -261,6 +260,7 @@ namespace Frontend
             this.Controls.Add(this.PictureBoxComentarios);
             this.Controls.Add(this.PictureBoxLike);
             this.Controls.Add(this.PictureBoxUsuarioPost);
+            this.Controls.Add(this.imagenEditar);
             this.Controls.Add(this.imagen);
             this.Name = "PostControl";
             this.Size = new System.Drawing.Size(787, 578);

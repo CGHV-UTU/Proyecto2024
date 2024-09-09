@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -47,6 +48,25 @@ namespace Frontend
                 }
             }
         }
+        static async Task<string> conseguirImagenDelCreador(string creador)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44383/user/obtenerImagenUsuario?nombredecuenta={creador}");
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic imagen = JsonConvert.DeserializeObject(responseBody);
+                    return imagen;
+                }
+                catch
+                {
+                    MessageBox.Show("Error de conexión");
+                    return "error";
+                }
+            }
+        }
 
         private void AjustarTamaño()
         {
@@ -71,6 +91,11 @@ namespace Frontend
                 this.PictureBoxMasOpciones.Cursor = Cursors.Hand;
                 this.Controls.Add(this.PictureBoxMasOpciones);
             }
+            string imagenB64 = await conseguirImagenDelCreador(lblNombre.Text);
+            byte[] imagen = Convert.FromBase64String(imagenB64);
+            MemoryStream ms = new MemoryStream(imagen);
+            Bitmap bitmap = new Bitmap(ms);
+            this.PictureBoxUsuario.Image = bitmap;
         }
 
         private bool isImage1 = true;
