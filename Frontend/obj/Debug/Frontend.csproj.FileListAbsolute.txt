@@ -369,3 +369,4 @@ C:\Users\FedeG\Downloads\0509front\Proyecto2024\Frontend\obj\Debug\Frontend.cspr
 C:\Users\FedeG\Downloads\0509front\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CopyComplete
 C:\Users\FedeG\Downloads\0509front\Proyecto2024\Frontend\obj\Debug\Frontend.exe
 C:\Users\FedeG\Downloads\0509front\Proyecto2024\Frontend\obj\Debug\Frontend.pdb
+C:\Users\FedeG\Downloads\0509front\Proyecto2024\Frontend\obj\Debug\Frontend.PaginaDeUsuario.resources

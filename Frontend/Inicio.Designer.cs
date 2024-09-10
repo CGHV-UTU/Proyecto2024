@@ -31,6 +31,7 @@ namespace Frontend
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Inicio));
             this.PanelPosts = new System.Windows.Forms.Panel();
+            this.PanelMostrarUsuario = new System.Windows.Forms.Panel();
             this.PanelPostear = new System.Windows.Forms.Panel();
             this.PanelComentarios = new System.Windows.Forms.Panel();
             this.PictureBoxSalir = new System.Windows.Forms.PictureBox();
@@ -42,6 +43,7 @@ namespace Frontend
             this.PictureBoxCrear = new System.Windows.Forms.PictureBox();
             this.PictureBoxBuscar = new System.Windows.Forms.PictureBox();
             this.PanelNotificaciones = new System.Windows.Forms.Panel();
+            this.PanelPosts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxSalir)).BeginInit();
             this.PanelSuperior.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).BeginInit();
@@ -55,10 +57,19 @@ namespace Frontend
             // PanelPosts
             // 
             this.PanelPosts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.PanelPosts.Controls.Add(this.PanelMostrarUsuario);
             this.PanelPosts.Location = new System.Drawing.Point(128, 56);
             this.PanelPosts.Name = "PanelPosts";
             this.PanelPosts.Size = new System.Drawing.Size(1012, 613);
             this.PanelPosts.TabIndex = 12;
+            // 
+            // PanelMostrarUsuario
+            // 
+            this.PanelMostrarUsuario.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.PanelMostrarUsuario.Location = new System.Drawing.Point(0, 0);
+            this.PanelMostrarUsuario.Name = "PanelMostrarUsuario";
+            this.PanelMostrarUsuario.Size = new System.Drawing.Size(1012, 613);
+            this.PanelMostrarUsuario.TabIndex = 13;
             // 
             // PanelPostear
             // 
@@ -212,6 +223,7 @@ namespace Frontend
             this.MinimumSize = new System.Drawing.Size(960, 539);
             this.Name = "Inicio";
             this.Text = "Inicio";
+            this.PanelPosts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxSalir)).EndInit();
             this.PanelSuperior.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).EndInit();
@@ -238,6 +250,7 @@ namespace Frontend
         private System.Windows.Forms.PictureBox PictureBoxSalir;
         private System.Windows.Forms.Panel PanelPostear;
         private System.Windows.Forms.Panel PanelNotificaciones;
+        private System.Windows.Forms.Panel PanelMostrarUsuario;
     }
 }
 

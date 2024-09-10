@@ -162,6 +162,7 @@ namespace Frontend
             this.PictureBoxUsuarioPost.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PictureBoxUsuarioPost.TabIndex = 22;
             this.PictureBoxUsuarioPost.TabStop = false;
+            this.PictureBoxUsuarioPost.Click += new System.EventHandler(this.PictureBoxUsuarioPost_Click);
             // 
             // imagen
             // 

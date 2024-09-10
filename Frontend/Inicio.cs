@@ -17,6 +17,7 @@ namespace Frontend
     {
         private string user;
         private string idioma;
+        private string modo;
         public Inicio(string usuario)
         {
             InitializeComponent();
@@ -26,6 +27,7 @@ namespace Frontend
             PictureBoxSalir.Visible = false;
             PanelPostear.Visible = false;
             PanelNotificaciones.Visible = false;
+            PanelMostrarUsuario.Visible = false;
         }
 
         // Método para inicializar componentes adicionales, incluido el PanelNotificaciones
@@ -128,6 +130,7 @@ namespace Frontend
             string config = await conseguirConfig(user);
             string[] configure = config.Split(';');    
             idioma = configure[1];
+            this.modo = configure[0];
             Posts post = new Posts(configure[0],user);
             if (configure[0].Equals("Oscuro"))
             {
@@ -143,6 +146,7 @@ namespace Frontend
             post.Dock = DockStyle.Fill;
             post.AbrirComentarios += PostControl_AbrirComentarios;
             post.ReportarPost += PostControl_ReportarPost;
+            post.AbrirPaginaUsuario += PostControl_AbrirPaginaUsuario;
             PanelPosts.Controls.Add(post);
             post.Show();
         }
@@ -155,6 +159,25 @@ namespace Frontend
         private void PostControl_ReportarPost(object sender, PersonalizedArgs e)
         {
             ReportarPost(e.arg);
+        }
+        private void PostControl_AbrirPaginaUsuario(object sender, PersonalizedArgs e)
+        {
+            PanelComentarios.Visible = false;
+            PanelPosts.Visible = false;
+            PanelMostrarUsuario.Visible = true;
+            PanelMostrarUsuario.Parent = this;
+            PanelMostrarUsuario.Location = PanelPosts.Location;
+            PaginaDeUsuario paginaDeUsuario = new PaginaDeUsuario(e.arg, modo, user);
+            paginaDeUsuario.TopLevel = false;
+            paginaDeUsuario.FormBorderStyle = FormBorderStyle.None;
+            paginaDeUsuario.BackColor = Color.LightGray;
+            paginaDeUsuario.Dock = DockStyle.Fill;
+            PanelMostrarUsuario.BackColor = Color.LightGray;
+            paginaDeUsuario.BackColor = Color.FromArgb(34, 67, 220);
+            paginaDeUsuario.ReportarPost += PostControl_ReportarPost;
+            paginaDeUsuario.AbrirComentarios += PostControl_AbrirComentarios;
+            PanelMostrarUsuario.Controls.Add(paginaDeUsuario);
+            paginaDeUsuario.Show();
         }
         private void ReportarPost(string idpost, string idcomentario="")
         {
@@ -271,6 +294,7 @@ namespace Frontend
         {
             PanelPostear.Visible = false;
             PanelPosts.Visible = true;
+            PanelMostrarUsuario.Controls.Clear();
         }
          
         private void cambiarFotoNotificaciones(string tipo, NotificacionControl control)

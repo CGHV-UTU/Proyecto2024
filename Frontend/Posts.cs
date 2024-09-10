@@ -16,6 +16,7 @@ namespace Frontend
     {
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarPost;
+        public event EventHandler<PersonalizedArgs> AbrirPaginaUsuario;
         private int currentPage = 0;
         private string modo;
         private string user;
@@ -88,6 +89,7 @@ namespace Frontend
                     postControl.AbrirComentarios += PostControl_AbrirComentarios;
                     postControl.ReportarPost += PostControl_ReportarPost;
                     postControl.RecargarFeed += PostControl_RecargarFeed;
+                    postControl.AbrirPaginaUsuario += PostControl_AbrirPaginaUsuario;
                     await postControl.aplicarDatos();
                     // Calcula la ubicación Y acumulada
                     int currentYPosition = 0;
@@ -120,6 +122,10 @@ namespace Frontend
         {
             // Disparar el evento para que lo maneje quien esté suscrito (en este caso, Inicio)
             ReportarPost?.Invoke(this, new PersonalizedArgs(e.arg));
+        }
+        private void PostControl_AbrirPaginaUsuario(object sender, PersonalizedArgs e)
+        {
+            AbrirPaginaUsuario?.Invoke(this, new PersonalizedArgs(e.arg));
         }
         private void Iniciar()
         {

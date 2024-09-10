@@ -20,6 +20,7 @@ namespace Frontend
     {
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarPost;
+        public event EventHandler<PersonalizedArgs> AbrirPaginaUsuario;
         public event EventHandler RecargarFeed;
         private string modo;
         private int idpost;
@@ -391,6 +392,7 @@ namespace Frontend
             this.PictureBoxUsuarioPost.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxUsuarioPost.Image = Frontend.Properties.Resources.User;
             this.PictureBoxUsuarioPost.Cursor = Cursors.Hand;
+            this.PictureBoxUsuarioPost.Click += PictureBoxUsuarioPost_Click;
 
             // like
             this.PictureBoxLike.Location = new System.Drawing.Point(76, 440);
@@ -904,6 +906,11 @@ namespace Frontend
         private void btnReportar_Click(object sender, EventArgs e)
         {
             ReportarPost?.Invoke(this, new PersonalizedArgs(Convert.ToString(idpost)));
+        }
+
+        private void PictureBoxUsuarioPost_Click(object sender, EventArgs e)
+        {
+            AbrirPaginaUsuario?.Invoke(this, new PersonalizedArgs(creador));
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Frontend
                     HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/seleccionarTodosLosComentarios?id={id}");
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject<DataTable>(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de nin}guna manera, tengo que hallar alguna forma de pasar los datos
+                    dynamic data = JsonConvert.DeserializeObject<DataTable>(responseBody);
                     return data;
                 }
                 catch

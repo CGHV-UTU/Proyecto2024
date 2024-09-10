@@ -106,6 +106,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Font.resx</DependentUpon>
     </Compile>
+    <Compile Include="PaginaDeUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PaginaDeUsuario.Designer.cs">
+      <DependentUpon>PaginaDeUsuario.cs</DependentUpon>
+    </Compile>
     <Compile Include="PersonalizedArgs.cs" />
     <Compile Include="Registrarse.cs">
       <SubType>Form</SubType>
@@ -193,6 +199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Notificaciones.resx">
       <DependentUpon>Notificaciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PaginaDeUsuario.resx">
+      <DependentUpon>PaginaDeUsuario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Post.resx">
       <DependentUpon>Post.cs</DependentUpon>
