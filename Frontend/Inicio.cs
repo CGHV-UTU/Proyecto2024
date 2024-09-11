@@ -240,6 +240,7 @@ namespace Frontend
             post.Salir += Post_Salir;
             post.CambiaTamaño += Post_CambiaTamaño;
             post.BackColor = Color.FromArgb(34, 67, 220);
+            PanelPostear.BackColor = Color.LightGray;
             PanelPostear.Controls.Add(post);
             post.Show();
         }

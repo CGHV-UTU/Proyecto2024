@@ -19,6 +19,7 @@ namespace Frontend
         {
             InitializeComponent();
             usuario = user;
+            this.BackColor = Color.LightGray;
         }
         public event EventHandler<ConfiguraEventArgs> CambiarModo;
         

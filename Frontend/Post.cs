@@ -22,6 +22,7 @@ namespace Frontend
             InitializeComponent();
             txtUrl.Visible = false;
             user = usuario;
+            this.BackColor = Color.LightGray;
         }
         public event EventHandler Creado;
         public event EventHandler Salir;

@@ -72,7 +72,7 @@ namespace Frontend
             DataTable posts = await ConseguirPosts(nombreDeCreador);
             if (posts != null)
             {
-                for (int i = 0; i < posts.Rows.Count; i++)
+                for (int i = posts.Rows.Count-1; i >= 0 ; i--)
                 {
                     int idpost = Convert.ToInt32(posts.Rows[i]["idPost"]);
                     var postControl = new PostControl(idpost, modo, user);
@@ -80,7 +80,7 @@ namespace Frontend
                     postControl.ReportarPost += PostControl_ReportarPost;
                     await postControl.aplicarDatos();
                     // Calcula la ubicación Y acumulada
-                    int currentYPosition = 0;
+                    int currentYPosition = PictureBoxUsuario.Bottom+10;
                     if (panelPosts.Controls.Count > 0)
                     {
                         var lastControl = panelPosts.Controls[panelPosts.Controls.Count - 1];
@@ -108,6 +108,7 @@ namespace Frontend
 
         private async void Iniciar()
         {
+            
             var datos=await obtenerImagenNombreVyDescUsuario(nombreDeCreador);
             if (datos != null)
             {
@@ -121,17 +122,15 @@ namespace Frontend
                 this.PictureBoxUsuario.SizeMode = PictureBoxSizeMode.StretchImage;
                 this.lblNombre.Text = nombreDeCreador;
             }
-            this.panelPosts = new Panel();
             this.SuspendLayout();
-
             // panelPosts
             this.panelPosts.AutoScroll = true;
             this.panelPosts.Dock = DockStyle.Fill;
-            this.panelPosts.Location = new System.Drawing.Point(12, 138);
+            this.panelPosts.Location = new System.Drawing.Point(12, 200);
             this.panelPosts.Name = "panelPosts";
             this.panelPosts.Size = new System.Drawing.Size(972, 424);
             this.panelPosts.TabIndex = 0;
-
+            this.BackColor = Color.LightGray;
             // Form1
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;

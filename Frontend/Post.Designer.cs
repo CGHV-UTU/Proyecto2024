@@ -44,7 +44,7 @@ namespace Frontend
             // 
             // txtTexto
             // 
-            this.txtTexto.BackColor = System.Drawing.Color.MediumPurple;
+            this.txtTexto.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.txtTexto.Location = new System.Drawing.Point(12, 37);
             this.txtTexto.Multiline = true;
             this.txtTexto.Name = "txtTexto";
@@ -53,7 +53,7 @@ namespace Frontend
             // 
             // txtUrl
             // 
-            this.txtUrl.BackColor = System.Drawing.Color.MediumPurple;
+            this.txtUrl.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.txtUrl.Location = new System.Drawing.Point(12, 244);
             this.txtUrl.Name = "txtUrl";
             this.txtUrl.Size = new System.Drawing.Size(381, 20);
@@ -61,7 +61,6 @@ namespace Frontend
             // 
             // pbxImagen
             // 
-            this.pbxImagen.BackgroundImage = global::Frontend.Properties.Resources.fondoPost;
             this.pbxImagen.Location = new System.Drawing.Point(12, 241);
             this.pbxImagen.Name = "pbxImagen";
             this.pbxImagen.Size = new System.Drawing.Size(381, 212);
@@ -129,8 +128,7 @@ namespace Frontend
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.SlateBlue;
-            this.BackgroundImage = global::Frontend.Properties.Resources.fondoPost;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(400, 450);
             this.Controls.Add(this.X);
             this.Controls.Add(this.txtUrl);

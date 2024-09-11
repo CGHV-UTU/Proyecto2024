@@ -256,6 +256,27 @@ namespace Frontend
                 }
             }
         }
+        static async Task<string> quitarLike(string NombreDeCuenta, int IdPost, string nombreCreador)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/quitarLike", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ERROR" + ex);
+                    return "like erroneo";
+                }
+            }
+        }
 
         private void ConfigurarPostControl(string postType)
         {
@@ -309,8 +330,14 @@ namespace Frontend
         private async void PictureBoxLike_Click(object sender, EventArgs e)
         {
             string creador = await obtenerCreador(idpost);
-            string respuesta=await darLike(user, idpost, creador);
-            MessageBox.Show(respuesta);
+            if (!isImage1)
+            {
+                string respuesta = await quitarLike(user, idpost, creador);
+            }
+            else
+            {
+                string respuesta = await darLike(user, idpost, creador);
+            }
             HandleLikeClick();
         }
 

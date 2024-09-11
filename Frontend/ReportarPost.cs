@@ -21,6 +21,7 @@ namespace Frontend
             this.idpost = idpost;
             this.idcomentario = idcomentario;
             InitializeComponent();
+            this.BackColor = Color.LightGray;
         }
 
         static async Task<dynamic> conseguirCreador(int id)
