@@ -16,6 +16,7 @@ namespace ApiUsuarios.Controllers
     [System.Web.Mvc.RoutePrefix("user")]
     public class UserController : Controller
     {
+        private MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
         public class usuario
         {
             public string nombreDeCuenta { get; set;}
@@ -104,7 +105,7 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+                using (conn)
                 {
                     string linkImagen = null;
 
@@ -124,6 +125,7 @@ namespace ApiUsuarios.Controllers
                         DateTime fechaNacimiento;
                         if (!DateTime.TryParse(user.fechaDeNacimiento, out fechaNacimiento))
                         {
+                            conn.Close();
                             return Json("guardado incorrecto: formato de fecha inválido");
                         }
 
@@ -163,6 +165,7 @@ namespace ApiUsuarios.Controllers
                     }
                     else
                     {
+                        conn.Close();
                         return Json("guardado incorrecto1");
                     }
                 }
@@ -187,11 +190,10 @@ namespace ApiUsuarios.Controllers
 
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("obtenerUsuario")]
-        public dynamic ObtenerUsuario(string nombredecuenta)
+        public async Task<dynamic> ObtenerUsuario(string nombredecuenta)
         {
             try
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand command = new MySqlCommand("SELECT nombreVisible,email,descripcion,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
                 command.Parameters.AddWithValue("@nombreDeCuenta", nombredecuenta);
@@ -203,22 +205,85 @@ namespace ApiUsuarios.Controllers
                         nombreVisible = reader["nombreVisible"].ToString(),
                         email = reader["email"].ToString(),
                         descripcion = reader["descripcion"].ToString() ?? "",
-                        foto = reader["foto"].ToString() ?? "",
+                        foto = await CargarImagenDeGitHub(reader["foto"].ToString()),
                         configuraciones = reader["configuraciones"].ToString(),
                         genero = reader["genero"].ToString(),
                         fechaDeNacimiento = reader["fechaDeNacimiento"].ToString(),
                         estadoDeCuenta = reader["estadoDeCuenta"].ToString()
                     };
+                    conn.Close();
                     return Json(data);
                 }
                 else
                 {
+                    conn.Close();
                     return Json("no se encuentra");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return Json("no se encuentra");
+            }
+        }
+
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("obtenerImagenUsuario")]
+        public async Task<dynamic> obtenerImagenUsuario(string nombredecuenta)
+        {
+            try
+            {
+                conn.Open();
+                MySqlCommand command = new MySqlCommand("SELECT foto FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                command.Parameters.AddWithValue("@nombreDeCuenta", nombredecuenta);
+                MySqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    string foto = await CargarImagenDeGitHub(reader["foto"].ToString());
+                    conn.Close();
+                    return Json(foto, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    conn.Close();
+                    return Json("no se encuentra "+nombredecuenta, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+                return Json("no se encuentra " + nombredecuenta, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.Route("obtenerImagenNombreVyDescUsuario")]
+        public async Task<dynamic> obtenerImagenNombreVyDescUsuario(string nombredecuenta)
+        {
+            try
+            {
+                conn.Open();
+                MySqlCommand command = new MySqlCommand("SELECT nombreVisible,descripcion,foto FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                command.Parameters.AddWithValue("@nombreDeCuenta", nombredecuenta);
+                MySqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    var data = new
+                    {
+                        nombreVisible = reader["nombreVisible"].ToString(),
+                        descripcion = reader["descripcion"].ToString() ?? "",
+                        foto = await CargarImagenDeGitHub(reader["foto"].ToString()),
+                    };
+                    conn.Close();
+                    return Json(data, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    conn.Close();
+                    return Json("no se encuentra", JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json("no se encuentra", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -228,7 +293,7 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+                using (conn)
                 {
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT 1 FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
@@ -260,7 +325,7 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+                using (conn)
                 {
                     string linkImagen = null;
 
@@ -287,6 +352,7 @@ namespace ApiUsuarios.Controllers
                     DateTime fechaNacimiento;
                     if (!DateTime.TryParse(user.fechaDeNacimiento, out fechaNacimiento))
                     {
+                        conn.Close();
                         return Json("guardado incorrecto: formato de fecha inválido");
                     }
 
@@ -314,6 +380,7 @@ namespace ApiUsuarios.Controllers
                         cmd.Parameters.AddWithValue("@EstadoDeCuenta", user.estadoDeCuenta);
                         cmd.ExecuteNonQuery();
                     }
+                    conn.Close();
                     return Json(new { mensaje = "Guardado correcto" });
                 }
             }
@@ -334,7 +401,6 @@ namespace ApiUsuarios.Controllers
             }
             else
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET configuraciones=@configuraciones WHERE nombreDeCuenta=@nombreDeCuenta", conn);
                 cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
@@ -355,17 +421,18 @@ namespace ApiUsuarios.Controllers
             }
             else
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("SELECT configuraciones FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
                 cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
+                    conn.Close();
                     return Json(reader["configuraciones"].ToString());
                 }
                 else
                 {
+                    conn.Close();
                     return Json("Hubo un error"+user.nombreDeCuenta);
                 }
             }
@@ -381,7 +448,6 @@ namespace ApiUsuarios.Controllers
             }
             else
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET notificaciones=@notificaciones WHERE nombreDeCuenta=@nombreDeCuenta", conn);
                 cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
@@ -398,7 +464,6 @@ namespace ApiUsuarios.Controllers
         {
             if (!string.IsNullOrEmpty(user) && !string.IsNullOrEmpty(notificaciones))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET notificaciones = CONCAT(notificaciones, @notificaciones) WHERE nombreDeCuenta = @nombreDeCuenta", conn);
                 cmd.Parameters.AddWithValue("@nombreDeCuenta", user);
@@ -420,17 +485,18 @@ namespace ApiUsuarios.Controllers
             }
             else
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("SELECT notificaciones FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
                 cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
+                    conn.Close();
                     return Json(reader["notificaciones"].ToString());
                 }
                 else
                 {
+                    conn.Close();
                     return Json("Hubo un error" + user.nombreDeCuenta);
                 }
             }
@@ -446,7 +512,6 @@ namespace ApiUsuarios.Controllers
             }
             else
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("INSERT INTO ReporteUsuario (nombreDeUsuario,tipo,descripcion) VALUES (@nombre, @tipo, @descripcion)", conn);
                 cmd.Parameters.AddWithValue("@nombre", user.usuario);
@@ -463,7 +528,7 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+                using (conn)
                 {
                     conn.Open();
 
@@ -481,6 +546,7 @@ namespace ApiUsuarios.Controllers
                         DateTime fechaNacimiento;
                         if (!DateTime.TryParse(user.fechaDeNacimiento, out fechaNacimiento))
                         {
+                            conn.Close();
                             return JsonConvert.SerializeObject("guardado incorrecto: formato de fecha inválido");
                         }
 
@@ -523,6 +589,7 @@ namespace ApiUsuarios.Controllers
                     }
                     else
                     {
+                        conn.Close();
                         return JsonConvert.SerializeObject("guardado incorrecto1");
                     }
                 }
@@ -538,7 +605,6 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand command = new MySqlCommand("SELECT nombreVisible,email,descripcion,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
                 command.Parameters.AddWithValue("@nombreDeCuenta", nombredecuenta);
@@ -556,10 +622,12 @@ namespace ApiUsuarios.Controllers
                         fechaDeNacimiento = reader["fechaDeNacimiento"].ToString(),
                         estadoDeCuenta = reader["estadoDeCuenta"].ToString()
                     };
+                    conn.Close();
                     return JsonConvert.SerializeObject(data);
                 }
                 else
                 {
+                    conn.Close();
                     return JsonConvert.SerializeObject("no se encuentra");
                 }
             }
@@ -573,7 +641,7 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+                using (conn)
                 {
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT 1 FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
@@ -602,7 +670,7 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+                using (conn)
                 {
                     conn.Open();
                     if (!string.IsNullOrEmpty(user.nombreDeCuenta)
@@ -638,10 +706,12 @@ namespace ApiUsuarios.Controllers
                             cmd.Parameters.AddWithValue("@EstadoDeCuenta", user.estadoDeCuenta);
                             cmd.ExecuteNonQuery();
                         }
+                        conn.Close();
                         return JsonConvert.SerializeObject(new { mensaje = "Guardado correcto" });
                     }
                     else
                     {
+                        conn.Close();
                         return JsonConvert.SerializeObject(new { mensaje = "Guardado incorrecto: faltan datos" });
                     }
                 }
@@ -660,7 +730,6 @@ namespace ApiUsuarios.Controllers
             }
             else
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("INSERT INTO ReporteUsuario (nombreDeUsuario,tipo,descripcion) VALUES (@nombre, @tipo, @descripcion)", conn);
                 cmd.Parameters.AddWithValue("@nombre", user.usuario);
@@ -680,7 +749,6 @@ namespace ApiUsuarios.Controllers
             }
             else
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET configuraciones=@configuraciones WHERE nombreDeCuenta=@nombreDeCuenta", conn);
                 cmd.Parameters.AddWithValue("@nombreDeCuenta", nombreDeCuenta);
@@ -698,17 +766,18 @@ namespace ApiUsuarios.Controllers
             }
             else
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("SELECT configuraciones FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
                 cmd.Parameters.AddWithValue("@nombreDeCuenta", nombreDeCuenta);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
+                    conn.Close();
                     return JsonConvert.SerializeObject(reader["configuraciones"].ToString());
                 }
                 else
                 {
+                    conn.Close();
                     return JsonConvert.SerializeObject("Hubo un error" + nombreDeCuenta);
                 }
             }
@@ -721,7 +790,6 @@ namespace ApiUsuarios.Controllers
             }
             else
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET notificaciones=@notificaciones WHERE nombreDeCuenta=@nombreDeCuenta", conn);
                 cmd.Parameters.AddWithValue("@nombreDeCuenta", nombreDeCuenta);
@@ -739,17 +807,18 @@ namespace ApiUsuarios.Controllers
             }
             else
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("SELECT notificaciones FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
                 cmd.Parameters.AddWithValue("@nombreDeCuenta", nombreDeCuenta);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
+                    conn.Close();
                     return JsonConvert.SerializeObject(reader["notificaciones"].ToString());
                 }
                 else
                 {
+                    conn.Close();
                     return JsonConvert.SerializeObject("Hubo un error" + nombreDeCuenta);
                 }
             }
