@@ -427,8 +427,9 @@ namespace ApiUsuarios.Controllers
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
+                    string configuraciones = reader["configuraciones"].ToString();
                     conn.Close();
-                    return Json(reader["configuraciones"].ToString());
+                    return Json(configuraciones);
                 }
                 else
                 {
@@ -491,8 +492,9 @@ namespace ApiUsuarios.Controllers
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
+                    string notificaciones = reader["notificaciones"].ToString();
+                    return Json(notificaciones);
                     conn.Close();
-                    return Json(reader["notificaciones"].ToString());
                 }
                 else
                 {
@@ -772,8 +774,9 @@ namespace ApiUsuarios.Controllers
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    conn.Close();
-                    return JsonConvert.SerializeObject(reader["configuraciones"].ToString());
+                    string configuraciones = reader["configuraciones"].ToString();
+                    conn.Close(); 
+                    return JsonConvert.SerializeObject(configuraciones);
                 }
                 else
                 {
@@ -813,8 +816,9 @@ namespace ApiUsuarios.Controllers
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
+                    string notificaciones = reader["notificaciones"].ToString();
                     conn.Close();
-                    return JsonConvert.SerializeObject(reader["notificaciones"].ToString());
+                    return JsonConvert.SerializeObject(notificaciones);
                 }
                 else
                 {
