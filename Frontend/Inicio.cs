@@ -249,6 +249,7 @@ namespace Frontend
             PanelPostear.Visible = false;
             PanelPosts.Controls.Clear();
             VerPosts();
+            PanelPosts.Visible = true;
         }
         private void Post_Salir(object sender,EventArgs e)
         {

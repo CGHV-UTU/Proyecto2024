@@ -78,35 +78,37 @@ namespace Frontend
         private async void LoadPosts(int page)
         {
             var cantPost = await CuantosPost();
-
-            // carga de posts
-            for (int i = int.Parse(cantPost); i > 0; i--)
+            if (cantPost!=null)
             {
-                var existe = await Existe(i);
-                if (existe)
+                // carga de posts
+                for (int i = int.Parse(cantPost); i > 0; i--)
                 {
-                    var postControl = new PostControl(i, modo,user);
-                    postControl.AbrirComentarios += PostControl_AbrirComentarios;
-                    postControl.ReportarPost += PostControl_ReportarPost;
-                    postControl.RecargarFeed += PostControl_RecargarFeed;
-                    postControl.AbrirPaginaUsuario += PostControl_AbrirPaginaUsuario;
-                    await postControl.aplicarDatos();
-                    // Calcula la ubicación Y acumulada
-                    int currentYPosition = 0;
-                    if (panel1.Controls.Count > 0)
+                    var existe = await Existe(i);
+                    if (existe)
                     {
-                        var lastControl = panel1.Controls[panel1.Controls.Count - 1];
-                        if (postControl.tipo.Equals("imageOnly") || postControl.tipo.Equals("textAndImage"))
+                        var postControl = new PostControl(i, modo, user);
+                        postControl.AbrirComentarios += PostControl_AbrirComentarios;
+                        postControl.ReportarPost += PostControl_ReportarPost;
+                        postControl.RecargarFeed += PostControl_RecargarFeed;
+                        postControl.AbrirPaginaUsuario += PostControl_AbrirPaginaUsuario;
+                        await postControl.aplicarDatos();
+                        // Calcula la ubicación Y acumulada
+                        int currentYPosition = 0;
+                        if (panel1.Controls.Count > 0)
                         {
-                            await Task.Delay(300);
+                            var lastControl = panel1.Controls[panel1.Controls.Count - 1];
+                            if (postControl.tipo.Equals("imageOnly") || postControl.tipo.Equals("textAndImage"))
+                            {
+                                await Task.Delay(300);
+                            }
+                            currentYPosition = lastControl.Bottom;  // La posición inferior del último control agregado
                         }
-                        currentYPosition = lastControl.Bottom;  // La posición inferior del último control agregado
-                    }
-                    postControl.Location = new Point(0, currentYPosition);
+                        postControl.Location = new Point(0, currentYPosition);
 
-                    panel1.Controls.Add(postControl);
+                        panel1.Controls.Add(postControl);
+                    }
                 }
-            }
+            }  
         }
         private void PostControl_RecargarFeed(object sender, EventArgs e)
         {
