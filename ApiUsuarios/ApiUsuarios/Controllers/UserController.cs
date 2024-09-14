@@ -44,6 +44,15 @@ namespace ApiUsuarios.Controllers
             public string tipo { get; set; }
             public string descripcion { get; set; }
         }
+        public class Notificaciones
+        {
+            public string nombreDeCuenta { get; set; }
+            public string idNotificacion { get; set; }
+            public string tipo { get; set; }
+            public string texto { get; set; }
+            public string fechaYhora { get; set; }
+            public string imagen { get; set; }
+        }
 
         //Conexiones con el repositorio de github
         public async Task<string> SubirImagenAGitHub(string imagen)
@@ -52,7 +61,7 @@ namespace ApiUsuarios.Controllers
             {
                 try
                 {
-                    string token = "HayQueCambiarEsto11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
+                    string token = "11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
                     string nombreDeImagen = GenerarIdAleatorio(8) + ".png"; // nombre aleatorio para que el nombre del archivo no se repita
                     string carpeta = "UserImages"; // Carpeta de GitHub en donde se guarda la imagen
                                                    // No es necesario crear la carpeta a mano, se crea si le intentas subir algo.
@@ -90,7 +99,7 @@ namespace ApiUsuarios.Controllers
         {
             using (var client = new HttpClient())
             {
-                string token = "HAYQUECAMBIARESTO11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
+                string token = "11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var response = await client.GetAsync(urlImagen);
@@ -435,427 +444,216 @@ namespace ApiUsuarios.Controllers
         }
 
         [System.Web.Mvc.HttpPost]
-        [System.Web.Mvc.Route("ActualizarNotificaciones")]
-        public dynamic ActualizarNotificaciones([FromBody] usuario user)
+        [System.Web.Mvc.Route("agregarNotificaciones")]
+        public async Task<dynamic> AgregarNotificaciones([FromBody] Notificaciones notificaciones)
         {
-            if (user == null)
+
+            if (notificaciones == null ||
+                string.IsNullOrEmpty(notificaciones.nombreDeCuenta) ||
+                string.IsNullOrEmpty(notificaciones.texto) ||
+                string.IsNullOrEmpty(notificaciones.tipo) ||
+                string.IsNullOrEmpty(notificaciones.imagen))
             {
-                return Json("nulo");
+                return Json("Faltan datos obligatorios.");
             }
-            else
+            string linkImagen = null;
+            linkImagen = await SubirImagenAGitHub(notificaciones.imagen);
+            try
             {
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET notificaciones=@notificaciones WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
-                cmd.Parameters.AddWithValue("@notificaciones", user.notificaciones);
+                MySqlCommand cmd = new MySqlCommand(
+                    "INSERT INTO Notificaciones (tipo, texto, fechaYHora, imagen, nombreDeCuenta) VALUES (@tipo, @texto, @fechaYHora, @imagen, @nombreDeCuenta)", conn);
+                cmd.Parameters.AddWithValue("@tipo", notificaciones.tipo);
+                cmd.Parameters.AddWithValue("@texto", notificaciones.texto);
+                cmd.Parameters.AddWithValue("@fechaYHora", DateTime.Now);
+                cmd.Parameters.AddWithValue("@imagen", linkImagen);
+                cmd.Parameters.AddWithValue("@nombreDeCuenta", notificaciones.nombreDeCuenta);
                 cmd.ExecuteNonQuery();
                 conn.Close();
                 return Json("Correcto");
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return Json("Error: " + ex.Message);
             }
         }
 
+
+
         [System.Web.Mvc.HttpPost]
-        [System.Web.Mvc.Route("agregarNotificaciones")]
-        public dynamic AgregarNotificaciones([FromBody] usuario user)
+        [System.Web.Mvc.Route("ActualizarNotificaciones")]
+        public async Task<dynamic> ActualizarNotificaciones([FromBody] Notificaciones notificaciones)
         {
-            if (!string.IsNullOrEmpty(user.nombreDeCuenta) && !string.IsNullOrEmpty(user.notificaciones))
+            string linkImagen = null;
+            if (notificaciones == null ||
+                string.IsNullOrEmpty(notificaciones.nombreDeCuenta) ||
+                string.IsNullOrEmpty(notificaciones.texto) ||
+                string.IsNullOrEmpty(notificaciones.tipo) ||
+                string.IsNullOrEmpty(notificaciones.imagen))
+            {
+                return Json("Valor nulo: Faltan datos obligatorios.");
+            }
+            linkImagen = await SubirImagenAGitHub(notificaciones.imagen);
+            try
             {
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET notificaciones = CONCAT(notificaciones, @notificaciones) WHERE nombreDeCuenta = @nombreDeCuenta", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
-                cmd.Parameters.AddWithValue("@notificaciones", user.notificaciones);
+                MySqlCommand cmd = new MySqlCommand(
+                    "UPDATE Notificaciones SET texto = @texto, tipo = @tipo, fechaYHora = @fechaYHora, imagen = @imagen WHERE nombreDeCuenta = @nombreDeCuenta", conn);
+                cmd.Parameters.AddWithValue("@nombreDeCuenta", notificaciones.nombreDeCuenta);
+                cmd.Parameters.AddWithValue("@texto", notificaciones.texto);
+                cmd.Parameters.AddWithValue("@tipo", notificaciones.tipo);
+                cmd.Parameters.AddWithValue("@fechaYHora", DateTime.Now);
+                cmd.Parameters.AddWithValue("@imagen", linkImagen);
                 cmd.ExecuteNonQuery();
                 conn.Close();
                 return Json("Correcto");
             }
-            return Json("valor nulo: " + user.nombreDeCuenta + ", " + user.notificaciones);
+            catch (Exception ex)
+            {
+                conn.Close();
+                return Json("Error: " + ex.Message);
+            }
         }
+
 
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("ConseguirNotificaciones")]
-        public dynamic ConseguirNotificaciones([FromBody] usuario user)
+        public async Task<JsonResult> ConseguirNotificaciones([FromBody] Notificaciones notificaciones)
         {
-            if (user == null)
+            if (notificaciones == null || string.IsNullOrEmpty(notificaciones.nombreDeCuenta))
             {
-                return Json("nulo");
+                return Json("Valor nulo: nombreDeCuenta es obligatorio.");
             }
-            else
+
+            try
             {
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT notificaciones FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                MySqlCommand cmd = new MySqlCommand("SELECT texto, tipo, fechaYHora, imagen FROM Notificaciones WHERE nombreDeCuenta = @nombreDeCuenta", conn);
+                cmd.Parameters.AddWithValue("@nombreDeCuenta", notificaciones.nombreDeCuenta);
                 MySqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
+
+                List<dynamic> notificacionesList = new List<dynamic>();
+
+                while (reader.Read())
                 {
-                    string notificaciones = reader["notificaciones"].ToString();
-                    return Json(notificaciones);
-                    conn.Close();
+                    notificacionesList.Add(new
+                    {
+                        texto = reader["texto"].ToString(),
+                        tipo = reader["tipo"].ToString(),
+                        fechaYHora = reader["fechaYHora"].ToString(),
+                        imagen = await CargarImagenDeGitHub(reader["imagen"].ToString())
+                    });
+                }
+
+                conn.Close();
+
+                if (notificacionesList.Count > 0)
+                {
+                    return Json(notificacionesList);
                 }
                 else
                 {
-                    conn.Close();
-                    return Json("Hubo un error" + user.nombreDeCuenta);
+                    return Json("No se encontraron notificaciones para el usuario: " + notificaciones.nombreDeCuenta);
                 }
             }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return Json("Error: " + ex.Message);
+            }
         }
-        
+
+
+
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("Reportar")]
         public async Task<dynamic> Reportar([FromBody] Reportes reporte)
         {
-            if (reporte.nombreDeCuenta == null)
+            if (string.IsNullOrEmpty(reporte.nombreDeCuenta))
             {
                 return Json("Debe existir un usuario que reporta");
             }
-            else
-            {
-                conn.Open();
-                if (!string.IsNullOrEmpty(reporte.cuentaReporteUsuario)) 
-                { 
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO Reportes (nombreDeCuenta,cuentaReporteUsuario,tipo,descripcion) VALUES (@nombreDeCuenta,@cuentaReporteUsuario, @tipo, @descripcion)", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
-                cmd.Parameters.AddWithValue("@cuentaReporteUsuario", reporte.cuentaReporteUsuario);
-                cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
-                cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("Se ha reportado correctamente al usuario: "+ reporte.cuentaReporteUsuario);
-                }
-                if (!string.IsNullOrEmpty(reporte.idPost) && !string.IsNullOrEmpty(reporte.creadorDelPost))
-                {
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO Reportes (nombreDeCuenta,idPost,creadorDelPost,tipo,descripcion) VALUES (@nombreDeCuenta,@idPost,@creadorDelPost,@tipo,@descripcion)", conn);
-                    cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
-                    cmd.Parameters.AddWithValue("@idPost", int.Parse(reporte.idPost));
-                    cmd.Parameters.AddWithValue("@creadorDelPost", reporte.creadorDelPost);
-                    cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
-                    cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                    return Json("Se ha reportado correctamente al Post: " + reporte.idPost);
-                }
-                if (!string.IsNullOrEmpty(reporte.idComentario) && !string.IsNullOrEmpty(reporte.creadorDelComentario))
-                {
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO Reportes (nombreDeCuenta,idComentario,creadorDelComentario,tipo,descripcion) VALUES (@nombreDeCuenta,@idComentario,@creadorDelComentario,@tipo,@descripcion)", conn);
-                    cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
-                    cmd.Parameters.AddWithValue("@idComentario", int.Parse(reporte.idComentario));
-                    cmd.Parameters.AddWithValue("@creadorDelComentario", reporte.creadorDelComentario);
-                    cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
-                    cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                    return Json("Se ha reportado correctamente al Comentario: " + reporte.idComentario);
-                }
-                if (!string.IsNullOrEmpty(reporte.nombreGrupo))
-                {
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO Reportes (nombreDeCuenta,nombreGrupo,tipo,descripcion) VALUES (@nombreDeCuenta,@nombreGrupo,@tipo,@descripcion)", conn);
-                    cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
-                    cmd.Parameters.AddWithValue("@nombreGrupo", reporte.nombreGrupo);
-                    cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
-                    cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                    return Json("Se ha reportado correctamente al Grupo: " + reporte.nombreGrupo);
-                }
-                if (!string.IsNullOrEmpty(reporte.idEvento))
-                {
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO Reportes (nombreDeCuenta,idEvento,tipo,descripcion) VALUES (@nombreDeCuenta,@idEvento,@tipo,@descripcion)", conn);
-                    cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
-                    cmd.Parameters.AddWithValue("@idEvento", int.Parse(reporte.idEvento));
-                    cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
-                    cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                    return Json("Se ha reportado correctamente al Evento: " + reporte.idEvento);
-                }
-                conn.Close();
-                return Json("Debe existir algo a lo que reportar");
-            }
-        }
 
-        //pruebas de la lógica de la API
-        public dynamic PRRegistrarUsuario(usuario user)
-        {
             try
             {
-                using (conn)
+                using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;")) // Creo pq me obliga el testing
                 {
-                    conn.Open();
+                    await conn.OpenAsync(); 
 
-                    if (!string.IsNullOrEmpty(user.nombreDeCuenta)
-                        && !string.IsNullOrEmpty(user.nombreVisible)
-                        && !string.IsNullOrEmpty(user.email)
-                        && !string.IsNullOrEmpty(user.foto)
-                        && !string.IsNullOrEmpty(user.configuraciones)
-                        && !string.IsNullOrEmpty(user.genero)
-                        && !string.IsNullOrEmpty(user.fechaDeNacimiento)
-                        && !string.IsNullOrEmpty(user.estadoDeCuenta)
-                        && !string.IsNullOrEmpty(user.contraseña))
+                    if (!string.IsNullOrEmpty(reporte.cuentaReporteUsuario))
                     {
-                        // Convertir fechaDeNacimiento de string a DateTime
-                        DateTime fechaNacimiento;
-                        if (!DateTime.TryParse(user.fechaDeNacimiento, out fechaNacimiento))
-                        {
-                            conn.Close();
-                            return JsonConvert.SerializeObject("guardado incorrecto: formato de fecha inválido");
-                        }
-
-                        // Inserción en la tabla USUARIOS
-                        string query = string.IsNullOrEmpty(user.descripcion) ?
-                            "INSERT INTO Usuarios (nombreDeCuenta,nombreVisible,email,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta) " +
-                            "VALUES (@nombredecuenta,@nombrevisible,@email,@foto,@configuraciones,@genero,@fechaDeNacimiento,@estadoDeCuenta)" :
-                            "INSERT INTO Usuarios (nombreDeCuenta,nombreVisible,email,descripcion,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta) " +
-                            "VALUES (@nombredecuenta,@nombrevisible,@email,@descripcion,@foto,@configuraciones,@genero,@fechaDeNacimiento,@estadoDeCuenta)";
-
-                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
-                            cmd.Parameters.AddWithValue("@nombrevisible", user.nombreVisible);
-                            cmd.Parameters.AddWithValue("@email", user.email);
-                            cmd.Parameters.AddWithValue("@foto", user.foto);
-                            cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
-                            cmd.Parameters.AddWithValue("@genero", user.genero);
-                            cmd.Parameters.AddWithValue("@fechaDeNacimiento", fechaNacimiento);
-                            cmd.Parameters.AddWithValue("@estadoDeCuenta", user.estadoDeCuenta);
-
-                            if (!string.IsNullOrEmpty(user.descripcion))
-                            {
-                                cmd.Parameters.AddWithValue("@descripcion", user.descripcion);
-                            }
-
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        // Inserción en la tabla LOGIN
-                        using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Login (nombreDeCuenta, contrasena) VALUES (@nombredecuenta, @contraseña)", conn))
-                        {
-                            cmd2.Parameters.AddWithValue("@nombredecuenta", user.nombreDeCuenta);
-                            cmd2.Parameters.AddWithValue("@contraseña", user.contraseña);
-                            cmd2.ExecuteNonQuery();
-                        }
-
-                        conn.Close();
-                        return JsonConvert.SerializeObject("guardado correcto");
+                        MySqlCommand cmd = new MySqlCommand(
+                            "INSERT INTO Reportes (nombreDeCuenta, cuentaReporteUsuario, tipo, descripcion) VALUES (@nombreDeCuenta, @cuentaReporteUsuario, @tipo, @descripcion)", conn);
+                        cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                        cmd.Parameters.AddWithValue("@cuentaReporteUsuario", reporte.cuentaReporteUsuario);
+                        cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                        cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                        await cmd.ExecuteNonQueryAsync();
+                        return Json("Se ha reportado correctamente al usuario: " + reporte.cuentaReporteUsuario);
                     }
-                    else
+
+                    if (!string.IsNullOrEmpty(reporte.idPost) && !string.IsNullOrEmpty(reporte.creadorDelPost))
                     {
-                        conn.Close();
-                        return JsonConvert.SerializeObject("guardado incorrecto1");
+                        MySqlCommand cmd = new MySqlCommand(
+                            "INSERT INTO Reportes (nombreDeCuenta, idPost, creadorDelPost, tipo, descripcion) VALUES (@nombreDeCuenta, @idPost, @creadorDelPost, @tipo, @descripcion)", conn);
+                        cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                        cmd.Parameters.AddWithValue("@idPost", int.Parse(reporte.idPost));
+                        cmd.Parameters.AddWithValue("@creadorDelPost", reporte.creadorDelPost);
+                        cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                        cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                        await cmd.ExecuteNonQueryAsync();
+                        return Json("Se ha reportado correctamente al Post: " + reporte.idPost);
                     }
+
+                    if (!string.IsNullOrEmpty(reporte.idComentario) && !string.IsNullOrEmpty(reporte.creadorDelComentario))
+                    {
+                        MySqlCommand cmd = new MySqlCommand(
+                            "INSERT INTO Reportes (nombreDeCuenta, idComentario, creadorDelComentario, tipo, descripcion) VALUES (@nombreDeCuenta, @idComentario, @creadorDelComentario, @tipo, @descripcion)", conn);
+                        cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                        cmd.Parameters.AddWithValue("@idComentario", int.Parse(reporte.idComentario));
+                        cmd.Parameters.AddWithValue("@creadorDelComentario", reporte.creadorDelComentario);
+                        cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                        cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                        await cmd.ExecuteNonQueryAsync();
+                        return Json("Se ha reportado correctamente al Comentario: " + reporte.idComentario);
+                    }
+
+                    if (!string.IsNullOrEmpty(reporte.nombreGrupo))
+                    {
+                        MySqlCommand cmd = new MySqlCommand(
+                            "INSERT INTO Reportes (nombreDeCuenta, nombreGrupo, tipo, descripcion) VALUES (@nombreDeCuenta, @nombreGrupo, @tipo, @descripcion)", conn);
+                        cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                        cmd.Parameters.AddWithValue("@nombreGrupo", reporte.nombreGrupo);
+                        cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                        cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                        await cmd.ExecuteNonQueryAsync();
+                        return Json("Se ha reportado correctamente al Grupo: " + reporte.nombreGrupo);
+                    }
+
+                    if (!string.IsNullOrEmpty(reporte.idEvento))
+                    {
+                        MySqlCommand cmd = new MySqlCommand(
+                            "INSERT INTO Reportes (nombreDeCuenta, idEvento, tipo, descripcion) VALUES (@nombreDeCuenta, @idEvento, @tipo, @descripcion)", conn);
+                        cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                        cmd.Parameters.AddWithValue("@idEvento", int.Parse(reporte.idEvento));
+                        cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                        cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                        await cmd.ExecuteNonQueryAsync();
+                        return Json("Se ha reportado correctamente al Evento: " + reporte.idEvento);
+                    }
+
+                    return Json("Debe existir algo a lo que reportar");
                 }
             }
             catch (Exception ex)
             {
-                return JsonConvert.SerializeObject($"guardado incorrecto2: {ex.Message}");
+                return Json("Error: " + ex.Message);
             }
         }
 
-
-        public dynamic PRObtenerUsuario(string nombredecuenta)
-        {
-            try
-            {
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT nombreVisible,email,descripcion,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                command.Parameters.AddWithValue("@nombreDeCuenta", nombredecuenta);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
-                {
-                    var data = new
-                    {
-                        nombreVisible = reader["nombreVisible"].ToString(),
-                        email = reader["email"].ToString(),
-                        descripcion = reader["descripcion"].ToString() ?? "",
-                        foto = reader["foto"].ToString() ?? "",
-                        configuraciones = reader["configuraciones"].ToString(),
-                        genero = reader["genero"].ToString(),
-                        fechaDeNacimiento = reader["fechaDeNacimiento"].ToString(),
-                        estadoDeCuenta = reader["estadoDeCuenta"].ToString()
-                    };
-                    conn.Close();
-                    return JsonConvert.SerializeObject(data);
-                }
-                else
-                {
-                    conn.Close();
-                    return JsonConvert.SerializeObject("no se encuentra");
-                }
-            }
-            catch (Exception)
-            {
-                return JsonConvert.SerializeObject("no se encuentra");
-            }
-        }
-
-        public dynamic PRexisteUsuario(string nombredecuenta)
-        {
-            try
-            {
-                using (conn)
-                {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT 1 FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                    cmd.Parameters.AddWithValue("@nombreDeCuenta", nombredecuenta);
-
-                    var result = cmd.ExecuteScalar();
-
-                    conn.Close();
-
-                    if (result != null)
-                    {
-                        return JsonConvert.SerializeObject(new { mensaje = "El usuario existe", existe = true });
-                    }
-                    else
-                    {
-                        return JsonConvert.SerializeObject(new { mensaje = "El usuario no existe", existe = false });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return JsonConvert.SerializeObject(new { mensaje = "Error en la consulta", error = ex.Message });
-            }
-        }
-        public dynamic PRModificarUsuario([FromBody] usuario user)
-        {
-            try
-            {
-                using (conn)
-                {
-                    conn.Open();
-                    if (!string.IsNullOrEmpty(user.nombreDeCuenta)
-                        && !string.IsNullOrEmpty(user.nombreVisible)
-                        && !string.IsNullOrEmpty(user.email)
-                        && !string.IsNullOrEmpty(user.foto)
-                        && !string.IsNullOrEmpty(user.configuraciones)
-                        && !string.IsNullOrEmpty(user.genero)
-                        && !string.IsNullOrEmpty(user.fechaDeNacimiento)
-                        && !string.IsNullOrEmpty(user.estadoDeCuenta))
-                    {
-                        string query = @"UPDATE Usuarios 
-                                 SET nombreVisible=@nombreVisible, 
-                                     email=@Email, 
-                                     descripcion=@Descripcion, 
-                                     foto=@Foto, 
-                                     configuraciones=@Configuraciones, 
-                                     genero=@Genero, 
-                                     fechaDeNacimiento=@FechaDeNacimiento, 
-                                     estadoDeCuenta=@EstadoDeCuenta 
-                                 WHERE nombreDeCuenta=@NombreDeCuenta";
-
-                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@NombreDeCuenta", user.nombreDeCuenta);
-                            cmd.Parameters.AddWithValue("@NombreVisible", user.nombreVisible);
-                            cmd.Parameters.AddWithValue("@Email", user.email);
-                            cmd.Parameters.AddWithValue("@Descripcion", user.descripcion ?? string.Empty);
-                            cmd.Parameters.AddWithValue("@Foto", user.foto);
-                            cmd.Parameters.AddWithValue("@Configuraciones", user.configuraciones);
-                            cmd.Parameters.AddWithValue("@Genero", user.genero);
-                            cmd.Parameters.AddWithValue("@FechaDeNacimiento", user.fechaDeNacimiento);
-                            cmd.Parameters.AddWithValue("@EstadoDeCuenta", user.estadoDeCuenta);
-                            cmd.ExecuteNonQuery();
-                        }
-                        conn.Close();
-                        return JsonConvert.SerializeObject(new { mensaje = "Guardado correcto" });
-                    }
-                    else
-                    {
-                        conn.Close();
-                        return JsonConvert.SerializeObject(new { mensaje = "Guardado incorrecto: faltan datos" });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return JsonConvert.SerializeObject(new { mensaje = "Guardado incorrecto: error en el servidor", error = ex.Message });
-            }
-
-        }
-
-
-        public dynamic PRCambiarConfiguracion(string nombreDeCuenta, string configuraciones)
-        {
-            if (string.IsNullOrEmpty(nombreDeCuenta) && string.IsNullOrEmpty(configuraciones))
-            {
-                return JsonConvert.SerializeObject("Datos invalidos");
-            }
-            else
-            {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET configuraciones=@configuraciones WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", nombreDeCuenta);
-                cmd.Parameters.AddWithValue("@configuraciones", configuraciones);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return JsonConvert.SerializeObject("Configuracion correcta");
-            }
-        }
-        public dynamic PRConseguirConfiguracion(string nombreDeCuenta)
-        {
-            if (string.IsNullOrEmpty(nombreDeCuenta))
-            {
-                return JsonConvert.SerializeObject("nulo");
-            }
-            else
-            {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT configuraciones FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", nombreDeCuenta);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    string configuraciones = reader["configuraciones"].ToString();
-                    conn.Close(); 
-                    return JsonConvert.SerializeObject(configuraciones);
-                }
-                else
-                {
-                    conn.Close();
-                    return JsonConvert.SerializeObject("Hubo un error" + nombreDeCuenta);
-                }
-            }
-        }
-        public dynamic PRActualizarNotificaciones(string nombreDeCuenta, string notificaciones)
-        {
-            if (string.IsNullOrEmpty(nombreDeCuenta) && string.IsNullOrEmpty(notificaciones))
-            {
-                return JsonConvert.SerializeObject("nulo");
-            }
-            else
-            {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET notificaciones=@notificaciones WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", nombreDeCuenta);
-                cmd.Parameters.AddWithValue("@notificaciones", notificaciones);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return JsonConvert.SerializeObject("Correcto");
-            }
-        }
-        public dynamic PRConseguirNotificaciones(string nombreDeCuenta)
-        {
-            if (string.IsNullOrEmpty(nombreDeCuenta))
-            {
-                return JsonConvert.SerializeObject("nulo");
-            }
-            else
-            {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT notificaciones FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", nombreDeCuenta);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    string notificaciones = reader["notificaciones"].ToString();
-                    conn.Close();
-                    return JsonConvert.SerializeObject(notificaciones);
-                }
-                else
-                {
-                    conn.Close();
-                    return JsonConvert.SerializeObject("Hubo un error" + nombreDeCuenta);
-                }
-            }
-        }
     }
+
+
 }
+
