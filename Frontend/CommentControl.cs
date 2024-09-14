@@ -36,7 +36,9 @@ namespace Frontend
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/conseguirComentario?id={id}");
+                    var datos = new { id=id };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/conseguirComentario",content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -67,7 +69,68 @@ namespace Frontend
                 }
             }
         }
-
+        static async Task<string> darLike(string NombreDeCuenta, int IdPost, string nombreCreador)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/darLikeComentario", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ERROR" + ex);
+                    return "like erroneo";
+                }
+            }
+        }
+        static async Task<bool> dioLike(string NombreDeCuenta, int IdPost, string nombreCreador)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/dioLikeComentario", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+        static async Task<string> quitarLike(string NombreDeCuenta, int IdPost, string nombreCreador)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/quitarLikeComentario", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ERROR" + ex);
+                    return "like erroneo";
+                }
+            }
+        }
         private void AjustarTamaño()
         {
             txtBox.Size = new Size(this.Width - 70, this.Height - 65);
@@ -258,7 +321,9 @@ namespace Frontend
             {
                 try
                 {
-                    HttpResponseMessage response = await client.DeleteAsync($"https://localhost:44340/eliminarComentario?id={id}");
+                    var datos = new { id=id};
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/eliminarComentario",content);
                     response.EnsureSuccessStatusCode();
                     MessageBox.Show("Comentario eliminado con éxito");
                 }
@@ -294,6 +359,11 @@ namespace Frontend
         private async void PictureBoxConfirmarCambios_Click(object sender, EventArgs e)
         {
             await Modificar(Convert.ToString(idcomentario),this.txtBoxEditar.Text);
+        }
+
+        private void PictureBoxLike_Click_1(object sender, EventArgs e)
+        {
+            
         }
     }
 }

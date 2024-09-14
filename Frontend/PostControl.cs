@@ -127,7 +127,9 @@ namespace Frontend
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/postPorId?id={id}");
+                    var dato = new { id=id };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/postPorId",content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de nin}guna manera, tengo que hallar alguna forma de pasar los datos
@@ -146,10 +148,12 @@ namespace Frontend
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/conseguirCreador?id={idpost}");
+                    var dato = new { id=idpost  };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirCreador",content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de nin}guna manera, tengo que hallar alguna forma de pasar los datos
+                    dynamic data = JsonConvert.DeserializeObject(responseBody); 
                     return data;
                 }
                 catch
@@ -244,7 +248,7 @@ namespace Frontend
                 {
                     var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/dioLike", content);
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/dioLike", content);
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -264,7 +268,7 @@ namespace Frontend
                 {
                     var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/quitarLike", content);
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/quitarLike", content);
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -337,6 +341,7 @@ namespace Frontend
             else
             {
                 string respuesta = await darLike(user, idpost, creador);
+                MessageBox.Show(respuesta);
             }
             HandleLikeClick();
         }
@@ -900,7 +905,9 @@ namespace Frontend
             {
                 try
                 {
-                    HttpResponseMessage response = await client.DeleteAsync($"https://localhost:44340/eliminarPost?id={id}");
+                    var datos = new { id=id };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/eliminarPost",content);
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic result = JsonConvert.DeserializeObject(responseBody);

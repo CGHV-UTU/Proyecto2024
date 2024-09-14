@@ -54,7 +54,9 @@ namespace Frontend
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/seleccionarTodosLosPostDelUsuario?nombreDeCuenta={nombreDeCreador}");
+                    var dato = new { user = nombreDeCreador };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/seleccionarTodosLosPostDelUsuario",content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject<DataTable>(responseBody);

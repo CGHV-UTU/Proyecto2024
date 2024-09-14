@@ -41,16 +41,18 @@ namespace Frontend
             }
         }
 
-        static async Task<dynamic> conseguirCreador(int id)
+        public static async Task<string> obtenerCreador(int idpost)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/conseguirCreador?id={id}");
+                    var dato = new { id = idpost };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirCreador", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de nin}guna manera, tengo que hallar alguna forma de pasar los datos
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
                     return data;
                 }
                 catch
@@ -64,7 +66,7 @@ namespace Frontend
         {
             DateTime now = DateTime.Now;
             string fechayhora = now.ToString("yyyy-MM-dd HH:mm:ss");
-            var creadorPost = await conseguirCreador(int.Parse(idpost));
+            var creadorPost = await obtenerCreador(int.Parse(idpost));
             await Publicar(user, idpost, creadorPost, textBox1.Text, fechayhora);
         }
     }

@@ -79,6 +79,7 @@ namespace Frontend
             this.PictureBoxLike.TabIndex = 30;
             this.PictureBoxLike.TabStop = false;
             this.PictureBoxLike.Visible = false;
+            this.PictureBoxLike.Click += new System.EventHandler(this.PictureBoxLike_Click_1);
             // 
             // PictureBoxUsuario
             // 

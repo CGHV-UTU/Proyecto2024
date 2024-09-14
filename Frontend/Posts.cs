@@ -35,7 +35,9 @@ namespace Frontend
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/existePost?id={id}");
+                    var dato = new { id=id };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/existePost", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject<bool>(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de ninguna manera, tengo que hallar alguna forma de pasar los datos
@@ -78,7 +80,7 @@ namespace Frontend
         private async void LoadPosts(int page)
         {
             var cantPost = await CuantosPost();
-            if (cantPost!=null)
+            if (!cantPost.Equals("no se encuentra"))
             {
                 // carga de posts
                 for (int i = int.Parse(cantPost); i > 0; i--)
