@@ -75,7 +75,9 @@ namespace PruebasDeApiUsuarios
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44383/user/ExisteUsuario?nombreDeCuenta={nombreCuenta}");
+                    var datos = new { nombreDeCuenta = nombreCuenta };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/ExisteUsuario", content);
                     response.EnsureSuccessStatusCode(); // Lanza una excepción si el código de estado no es exitoso
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic result = JsonConvert.DeserializeObject(responseBody);
@@ -125,7 +127,7 @@ namespace PruebasDeApiUsuarios
                         nombreVisible = nombreVisible,
                         email = email,
                         descripcion = descripcion,
-                        imagen = imagenBase64,
+                        foto = imagenBase64,
                         configuraciones = configuraciones,
                         genero = genero,
                         fechaDeNacimiento = fechaDeNacimiento,

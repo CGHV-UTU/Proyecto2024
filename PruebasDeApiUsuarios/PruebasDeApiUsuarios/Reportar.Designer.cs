@@ -37,6 +37,7 @@ namespace PruebasDeApiUsuarios
             this.txtDesc = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.lblResultado = new System.Windows.Forms.Label();
+            this.lblUser = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -109,11 +110,21 @@ namespace PruebasDeApiUsuarios
             this.lblResultado.TabIndex = 7;
             this.lblResultado.Text = "Resultado: ";
             // 
+            // lblUser
+            // 
+            this.lblUser.AutoSize = true;
+            this.lblUser.Location = new System.Drawing.Point(23, 9);
+            this.lblUser.Name = "lblUser";
+            this.lblUser.Size = new System.Drawing.Size(61, 13);
+            this.lblUser.TabIndex = 8;
+            this.lblUser.Text = "Resultado: ";
+            // 
             // Reportar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(362, 345);
+            this.Controls.Add(this.lblUser);
             this.Controls.Add(this.lblResultado);
             this.Controls.Add(this.txtDesc);
             this.Controls.Add(this.label3);
@@ -139,5 +150,6 @@ namespace PruebasDeApiUsuarios
         private System.Windows.Forms.TextBox txtDesc;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblResultado;
+        private System.Windows.Forms.Label lblUser;
     }
 }

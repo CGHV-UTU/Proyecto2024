@@ -28,7 +28,6 @@ namespace PruebasDeApiUsuarios
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 Image selectedImage = Image.FromFile(ofd.FileName);
-               //pictureBox1.ImageLocation = ofd.FileName;
                 pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
                 redondearPictureBox(selectedImage);
             }
@@ -64,7 +63,7 @@ namespace PruebasDeApiUsuarios
             {
                 try
                 {
-                    var datos = new { nombreDeCuenta = nombreCuenta, nombreVisible = nombreVisible, email = email, descripcion=descripcion,imagen=imagen,configuraciones="nada",genero=género, fechaDeNacimiento=fechaDeNacimiento, estadoDeCuenta = "activo", contraseña=contraseña };
+                    var datos = new { nombreDeCuenta = nombreCuenta, nombreVisible = nombreVisible, email = email, descripcion=descripcion,foto=imagen,configuraciones="nada",genero=género, fechaDeNacimiento=fechaDeNacimiento, estadoDeCuenta = "activo", contraseña=contraseña };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/RegistrarUsuario", content);
                     response.EnsureSuccessStatusCode();
@@ -85,7 +84,9 @@ namespace PruebasDeApiUsuarios
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44383/user/ExisteUsuario?nombreDeCuenta={nombreCuenta}");
+                    var datos = new { nombreDeCuenta = nombreCuenta};
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/ExisteUsuario",content);
                     response.EnsureSuccessStatusCode(); // Lanza una excepción si el código de estado no es exitoso
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic result = JsonConvert.DeserializeObject(responseBody);

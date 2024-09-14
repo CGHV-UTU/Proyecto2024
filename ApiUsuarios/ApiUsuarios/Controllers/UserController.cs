@@ -31,9 +31,16 @@ namespace ApiUsuarios.Controllers
             public string contraseña { get; set; }
             public string notificaciones { get; set; }
         }
-        public class Reporte
+        public class Reportes
         {
-            public string usuario { get; set; }
+            public string nombreDeCuenta { get; set; }
+            public string cuentaReporteUsuario { get; set; }
+            public string idPost { get; set; }
+            public string creadorDelPost { get; set; }
+            public string idComentario { get; set; }
+            public string creadorDelComentario { get; set; }
+            public string nombreGrupo { get; set; }
+            public string idEvento { get; set; }
             public string tipo { get; set; }
             public string descripcion { get; set; }
         }
@@ -45,7 +52,7 @@ namespace ApiUsuarios.Controllers
             {
                 try
                 {
-                    string token = "token"; // Token para repositorio privado. Cambiar por el token real
+                    string token = "HayQueCambiarEsto11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
                     string nombreDeImagen = GenerarIdAleatorio(8) + ".png"; // nombre aleatorio para que el nombre del archivo no se repita
                     string carpeta = "UserImages"; // Carpeta de GitHub en donde se guarda la imagen
                                                    // No es necesario crear la carpeta a mano, se crea si le intentas subir algo.
@@ -83,7 +90,7 @@ namespace ApiUsuarios.Controllers
         {
             using (var client = new HttpClient())
             {
-                string token = "token"; // Token para repositorio privado. Cambiar por el token real
+                string token = "HAYQUECAMBIARESTO11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var response = await client.GetAsync(urlImagen);
@@ -176,27 +183,15 @@ namespace ApiUsuarios.Controllers
             }
         }
 
-        public class pruebas
-        {
-            public string User { get; set; }
-        }
-
-        [System.Web.Mvc.HttpPost]
-        [System.Web.Mvc.Route("prueba")]
-        public dynamic prueba([FromBody] pruebas pruebas)
-        {
-            return pruebas.User+" si";
-        }
-
-        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.HttpPut]
         [System.Web.Mvc.Route("obtenerUsuario")]
-        public async Task<dynamic> ObtenerUsuario(string nombredecuenta)
+        public async Task<dynamic> ObtenerUsuario([FromBody] usuario user)
         {
             try
             {
                 conn.Open();
                 MySqlCommand command = new MySqlCommand("SELECT nombreVisible,email,descripcion,foto,configuraciones,genero,fechaDeNacimiento,estadoDeCuenta FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                command.Parameters.AddWithValue("@nombreDeCuenta", nombredecuenta);
+                command.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
                 MySqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
@@ -226,15 +221,15 @@ namespace ApiUsuarios.Controllers
             }
         }
 
-        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.HttpPut]
         [System.Web.Mvc.Route("obtenerImagenUsuario")]
-        public async Task<dynamic> obtenerImagenUsuario(string nombredecuenta)
+        public async Task<dynamic> obtenerImagenUsuario([FromBody] usuario user)
         {
             try
             {
                 conn.Open();
                 MySqlCommand command = new MySqlCommand("SELECT foto FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                command.Parameters.AddWithValue("@nombreDeCuenta", nombredecuenta);
+                command.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
                 MySqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
@@ -245,24 +240,24 @@ namespace ApiUsuarios.Controllers
                 else
                 {
                     conn.Close();
-                    return Json("no se encuentra "+nombredecuenta, JsonRequestBehavior.AllowGet);
+                    return Json("no se encuentra "+user.nombreDeCuenta, JsonRequestBehavior.AllowGet);
                 }
             }
             catch
             {
-                return Json("no se encuentra " + nombredecuenta, JsonRequestBehavior.AllowGet);
+                return Json("no se encuentra " + user.nombreDeCuenta, JsonRequestBehavior.AllowGet);
             }
         }
 
-        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.HttpPut]
         [System.Web.Mvc.Route("obtenerImagenNombreVyDescUsuario")]
-        public async Task<dynamic> obtenerImagenNombreVyDescUsuario(string nombredecuenta)
+        public async Task<dynamic> obtenerImagenNombreVyDescUsuario([FromBody] usuario user)
         {
             try
             {
                 conn.Open();
                 MySqlCommand command = new MySqlCommand("SELECT nombreVisible,descripcion,foto FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                command.Parameters.AddWithValue("@nombreDeCuenta", nombredecuenta);
+                command.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
                 MySqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
@@ -287,9 +282,9 @@ namespace ApiUsuarios.Controllers
             }
         }
 
-        [System.Web.Mvc.HttpGet]
+        [System.Web.Mvc.HttpPut]
         [System.Web.Mvc.Route ("ExisteUsuario")]
-        public dynamic ExisteUsuario( string nombreDeCuenta)
+        public dynamic ExisteUsuario([FromBody] usuario user)
         {
             try
             {
@@ -297,7 +292,7 @@ namespace ApiUsuarios.Controllers
                 {
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT 1 FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                    cmd.Parameters.AddWithValue("@nombreDeCuenta", nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
 
                     var result = cmd.ExecuteScalar();
 
@@ -461,19 +456,19 @@ namespace ApiUsuarios.Controllers
 
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("agregarNotificaciones")]
-        public dynamic AgregarNotificaciones(string user, string notificaciones)
+        public dynamic AgregarNotificaciones([FromBody] usuario user)
         {
-            if (!string.IsNullOrEmpty(user) && !string.IsNullOrEmpty(notificaciones))
+            if (!string.IsNullOrEmpty(user.nombreDeCuenta) && !string.IsNullOrEmpty(user.notificaciones))
             {
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET notificaciones = CONCAT(notificaciones, @notificaciones) WHERE nombreDeCuenta = @nombreDeCuenta", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", user);
-                cmd.Parameters.AddWithValue("@notificaciones", notificaciones);
+                cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                cmd.Parameters.AddWithValue("@notificaciones", user.notificaciones);
                 cmd.ExecuteNonQuery();
                 conn.Close();
                 return Json("Correcto");
             }
-            return Json("valor nulo: " + user + ", " + notificaciones);
+            return Json("valor nulo: " + user.nombreDeCuenta + ", " + user.notificaciones);
         }
 
         [System.Web.Mvc.HttpPost]
@@ -505,23 +500,75 @@ namespace ApiUsuarios.Controllers
         }
         
         [System.Web.Mvc.HttpPost]
-        [System.Web.Mvc.Route("ReportarUsuario")]
-        public dynamic ReportarUsuario([FromBody] Reporte user)
+        [System.Web.Mvc.Route("Reportar")]
+        public async Task<dynamic> Reportar([FromBody] Reportes reporte)
         {
-            if (user == null)
+            if (reporte.nombreDeCuenta == null)
             {
-                return Json("nulo");
+                return Json("Debe existir un usuario que reporta");
             }
             else
             {
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO ReporteUsuario (nombreDeUsuario,tipo,descripcion) VALUES (@nombre, @tipo, @descripcion)", conn);
-                cmd.Parameters.AddWithValue("@nombre", user.usuario);
-                cmd.Parameters.AddWithValue("@tipo", user.tipo);
-                cmd.Parameters.AddWithValue("@descripcion", user.descripcion);
+                if (!string.IsNullOrEmpty(reporte.cuentaReporteUsuario)) 
+                { 
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO Reportes (nombreDeCuenta,cuentaReporteUsuario,tipo,descripcion) VALUES (@nombreDeCuenta,@cuentaReporteUsuario, @tipo, @descripcion)", conn);
+                cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                cmd.Parameters.AddWithValue("@cuentaReporteUsuario", reporte.cuentaReporteUsuario);
+                cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
                 cmd.ExecuteNonQuery();
                 conn.Close();
-                return Json("Reporte correcto");
+                return Json("Se ha reportado correctamente al usuario: "+ reporte.cuentaReporteUsuario);
+                }
+                if (!string.IsNullOrEmpty(reporte.idPost) && !string.IsNullOrEmpty(reporte.creadorDelPost))
+                {
+                    MySqlCommand cmd = new MySqlCommand("INSERT INTO Reportes (nombreDeCuenta,idPost,creadorDelPost,tipo,descripcion) VALUES (@nombreDeCuenta,@idPost,@creadorDelPost,@tipo,@descripcion)", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@idPost", int.Parse(reporte.idPost));
+                    cmd.Parameters.AddWithValue("@creadorDelPost", reporte.creadorDelPost);
+                    cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                    cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Se ha reportado correctamente al Post: " + reporte.idPost);
+                }
+                if (!string.IsNullOrEmpty(reporte.idComentario) && !string.IsNullOrEmpty(reporte.creadorDelComentario))
+                {
+                    MySqlCommand cmd = new MySqlCommand("INSERT INTO Reportes (nombreDeCuenta,idComentario,creadorDelComentario,tipo,descripcion) VALUES (@nombreDeCuenta,@idComentario,@creadorDelComentario,@tipo,@descripcion)", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@idComentario", int.Parse(reporte.idComentario));
+                    cmd.Parameters.AddWithValue("@creadorDelComentario", reporte.creadorDelComentario);
+                    cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                    cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Se ha reportado correctamente al Comentario: " + reporte.idComentario);
+                }
+                if (!string.IsNullOrEmpty(reporte.nombreGrupo))
+                {
+                    MySqlCommand cmd = new MySqlCommand("INSERT INTO Reportes (nombreDeCuenta,nombreGrupo,tipo,descripcion) VALUES (@nombreDeCuenta,@nombreGrupo,@tipo,@descripcion)", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@nombreGrupo", reporte.nombreGrupo);
+                    cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                    cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Se ha reportado correctamente al Grupo: " + reporte.nombreGrupo);
+                }
+                if (!string.IsNullOrEmpty(reporte.idEvento))
+                {
+                    MySqlCommand cmd = new MySqlCommand("INSERT INTO Reportes (nombreDeCuenta,idEvento,tipo,descripcion) VALUES (@nombreDeCuenta,@idEvento,@tipo,@descripcion)", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@idEvento", int.Parse(reporte.idEvento));
+                    cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                    cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Se ha reportado correctamente al Evento: " + reporte.idEvento);
+                }
+                conn.Close();
+                return Json("Debe existir algo a lo que reportar");
             }
         }
 
@@ -724,24 +771,7 @@ namespace ApiUsuarios.Controllers
             }
 
         }
-        public dynamic PRReportarUsuario([FromBody] Reporte user)
-        {
-            if (user == null)
-            {
-                return JsonConvert.SerializeObject("nulo");
-            }
-            else
-            {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO ReporteUsuario (nombreDeUsuario,tipo,descripcion) VALUES (@nombre, @tipo, @descripcion)", conn);
-                cmd.Parameters.AddWithValue("@nombre", user.usuario);
-                cmd.Parameters.AddWithValue("@tipo", user.tipo);
-                cmd.Parameters.AddWithValue("@descripcion", user.descripcion);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return JsonConvert.SerializeObject("Reporte correcto");
-            }
-        }
+
 
         public dynamic PRCambiarConfiguracion(string nombreDeCuenta, string configuraciones)
         {

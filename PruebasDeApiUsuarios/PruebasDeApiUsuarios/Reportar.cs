@@ -14,35 +14,39 @@ namespace PruebasDeApiUsuarios
 {
     public partial class Reportar : Form
     {
-        public Reportar()
+        public string usuario;
+        public Reportar(string user)
         {
             InitializeComponent();
+            usuario = user;
+            lblUser.Text = "Usuario reportando = " + usuario;
         }
 
         private async void btnReportar_Click(object sender, EventArgs e)
         {
-            var existe = await ExisteUser(txtUsuario.Text);
-            if (existe)
+            bool userExists = await ExisteUser(txtUsuario.Text);
+            Console.WriteLine(userExists);
+            if (userExists == true)
             {
-                var resultado = await Reporta(txtUsuario.Text, txtTipo.Text, txtDesc.Text);
-                lblResultado.Text = resultado;
+                var resultado = await Reporta(usuario,txtUsuario.Text, txtTipo.Text, txtDesc.Text);
+                MessageBox.Show(resultado, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            else { MessageBox.Show("Ha ocurrido un error. No existe alguien con ese nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
-        public static async Task<string> Reporta(string usuario, string tipo, string descripcion)
+        public static async Task<string> Reporta(string nombreDeCuenta,string cuentaReporteUsuario, string tipo, string descripcion)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { usuario = usuario, tipo = tipo, descripcion=descripcion };
+                    var datos = new { nombreDeCuenta = nombreDeCuenta, cuentaReporteUsuario = cuentaReporteUsuario, tipo = tipo, descripcion=descripcion };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/ReportarUsuario", content);
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/Reportar", content);
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
                     return data;
-
                 }
                 catch
                 {
@@ -51,20 +55,24 @@ namespace PruebasDeApiUsuarios
             }
         }
 
-        public static async Task<bool> ExisteUser(string nombreCuenta)
+        private async Task<bool> ExisteUser(string nombreCuenta)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44383/user/existeUsuario?nombredecuenta={nombreCuenta}");
-                    response.EnsureSuccessStatusCode();
+                    var datos = new { nombreDeCuenta = nombreCuenta };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/ExisteUsuario", content);
+                    response.EnsureSuccessStatusCode(); // Lanza una excepción si el código de estado no es exitoso
                     var responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody);
-                    return data;
+                    dynamic result = JsonConvert.DeserializeObject(responseBody);
+
+                    return result.existe;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    MessageBox.Show("Error al conectarse al servidor: " + ex.Message);
                     return false;
                 }
             }

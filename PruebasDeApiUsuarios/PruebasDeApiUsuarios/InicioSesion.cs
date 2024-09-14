@@ -18,7 +18,7 @@ namespace PruebasDeApiUsuarios
         {
             InitializeComponent();
         }
-
+        public string user;
         private async void btnIniciarSesion_ClickAsync(object sender, EventArgs e)
         {
             var token = await HacerPeticion(txtUsuario.Text, txtContraseña.Text);
@@ -29,6 +29,7 @@ namespace PruebasDeApiUsuarios
                 if (resultado)
                 {
                     lblResultado.Text = "Resultado: Inicio correcto";
+                    user = txtUsuario.Text;
                 }
                 else
                 {
@@ -99,7 +100,7 @@ namespace PruebasDeApiUsuarios
 
         private void btnReporte_Click(object sender, EventArgs e)
         {
-            Reportar f = new Reportar();
+            Reportar f = new Reportar(user);
             f.Visible = true;
         }
         private void btnModificarUsuario_Click(object sender, EventArgs e)
