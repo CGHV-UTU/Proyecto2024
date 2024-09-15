@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.34902.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIPostYEventos2019", "APIPostYEventos2019\APIPostYEventos2019.csproj", "{EA12AAC2-4219-4A96-972E-E2064E526367}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{FF91F1AD-E438-4B99-9E9D-2CB048D68050}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{EA12AAC2-4219-4A96-972E-E2064E526367}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA12AAC2-4219-4A96-972E-E2064E526367}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA12AAC2-4219-4A96-972E-E2064E526367}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF91F1AD-E438-4B99-9E9D-2CB048D68050}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF91F1AD-E438-4B99-9E9D-2CB048D68050}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF91F1AD-E438-4B99-9E9D-2CB048D68050}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF91F1AD-E438-4B99-9E9D-2CB048D68050}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

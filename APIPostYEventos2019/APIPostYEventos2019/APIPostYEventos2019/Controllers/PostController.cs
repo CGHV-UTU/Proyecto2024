@@ -236,7 +236,7 @@ namespace APIPostYEventos2019.Controllers
                     }
                 }
                 conn.Close();
-                return new { mensaje = "Guardado correcto" };
+                return Json("Guardado correcto");
             }
         }
 
@@ -290,7 +290,7 @@ namespace APIPostYEventos2019.Controllers
                     {
                         url = reader["video"].ToString();
                     }
-                    var data = new { texto = texto, imagen = imagen, url = url, fechaYhora = fechaYhora };
+                    var data = new PostData{ text = texto, image = imagen, link = url, fechayhora = fechaYhora };
                     conn.Close();
                     return Json(data);
                 }
@@ -337,7 +337,7 @@ namespace APIPostYEventos2019.Controllers
                 else
                 {
                     conn.Close();
-                    return Json("no se encuentra");
+                    return Json($"no se encuentra");
                 }
             }
             catch
@@ -576,6 +576,9 @@ namespace APIPostYEventos2019.Controllers
                 conn.Open();
                 MySqlCommand command = new MySqlCommand("DELETE FROM PostEvento WHERE idEvento=@Id", conn);
                 MySqlCommand command1 = new MySqlCommand("DELETE FROM Eventos WHERE idEvento=@Id", conn);
+                MySqlCommand command2 = new MySqlCommand("DELETE FROM ParticipaEvento WHERE idEvento=@Id", conn);
+                command2.Parameters.AddWithValue("@Id", int.Parse(eventdata.id));
+                command2.ExecuteNonQuery();
                 command.Parameters.AddWithValue("@Id", int.Parse(eventdata.id));
                 command.ExecuteNonQuery();
                 command1.Parameters.AddWithValue("@Id", int.Parse(eventdata.id));
@@ -591,7 +594,7 @@ namespace APIPostYEventos2019.Controllers
 
         [HttpPut]
         [Route("eventoPorId")]
-        public async Task<dynamic> conseguirEvento([FromBody]EventData eventData)
+        public async Task<dynamic> eventoPorId([FromBody]EventData eventData)
         {
             try
             {
@@ -630,7 +633,7 @@ namespace APIPostYEventos2019.Controllers
                     {
                         foto = await CargarImagenDeGitHub(reader["foto"].ToString());
                     }
-                    var data = new { titulo = reader["titulo"].ToString(), ubicacion = ubicacion, descripcion = reader["descripcion"].ToString(), foto = foto, fechaYhora_Inicio = reader["fechaYhora_Inicio"].ToString(), fechaYhora_Final = reader["fechaYhora_Final"].ToString() };
+                    var data = new EventData{ titulo = reader["titulo"].ToString(), ubicacion = ubicacion, descripcion = reader["descripcion"].ToString(), foto = foto, fechaYhora_Inicio = reader["fechaYhora_Inicio"].ToString(), fechaYhora_Final = reader["fechaYhora_Final"].ToString() };
                     conn.Close();
                     return Json(data);
                 }
@@ -675,7 +678,7 @@ namespace APIPostYEventos2019.Controllers
                 }
                 else
                 {
-                    return Json("modificacion erronea");
+                    return JsonConvert.SerializeObject("modificacion erronea");
                 }
                 if (!string.IsNullOrEmpty(eventdata.descripcion))
                 {
@@ -830,7 +833,7 @@ namespace APIPostYEventos2019.Controllers
                     string fechayhora;
                     fechayhora = reader["fechaYHora"].ToString();
 
-                    var data = new { NombreDeCuenta = NombreDeCuenta, texto = texto, fechayhora = fechayhora };
+                    var data = new CommentData{ NombreDeCuenta = NombreDeCuenta, texto = texto, fechayhora = fechayhora };
                     conn.Close();
                     return Json(data);
                 }
@@ -1140,56 +1143,10 @@ namespace APIPostYEventos2019.Controllers
                 return Json("Error al cargar Datagrid");
             }
         }
-        //Reportes
 
-        [HttpPost]
-        [Route("ReportarPost")]
-        public dynamic ReportarPost([FromBody] ReportePostOComentario reporte)
-        {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO ReportePost (nombreDeCuenta,idPost,tipo, descripcion) VALUES (@Nombre, @id, @tipo, @descripcion)", conn);
-                cmd.Parameters.AddWithValue("@nombre", reporte.usuario);
-                cmd.Parameters.AddWithValue("@id", reporte.id);
-                cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
-                cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("Reporte correcto");
-            }
-            catch
-            {
-                return Json("Reporte incorrecto");
-            }
-        }
-
-        [HttpPost]
-        [Route("ReportarComentario")]
-        public dynamic ReportarComentario([FromBody] ReportePostOComentario reporte)
-        {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO ReporteComentario (nombreDeCuenta,idComentario, tipo, descripcion) VALUES (@Nombre, @id, @tipo, @descripcion)", conn);
-                cmd.Parameters.AddWithValue("@nombre", reporte.usuario);
-                cmd.Parameters.AddWithValue("@id", reporte.id);
-                cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
-                cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("Reporte correcto");
-            }
-            catch
-            {
-                return Json("Reporte incorrecto");
-            }
-        }
         [HttpPost]
         [Route("darLike")]
-        public async Task<dynamic> darLike([FromBody] like like)
+        public dynamic darLike([FromBody] like like)
         {
             try
             {
@@ -1211,7 +1168,7 @@ namespace APIPostYEventos2019.Controllers
 
         [HttpPut]
         [Route("dioLike")]
-        public async Task<dynamic> dioLike([FromBody] like like)
+        public dynamic dioLike([FromBody] like like)
         {
             try
             {
@@ -1249,7 +1206,7 @@ namespace APIPostYEventos2019.Controllers
 
         [HttpPut]
         [Route("quitarLike")]
-        public async Task<dynamic> quitarLike([FromBody] like like)
+        public dynamic quitarLike([FromBody] like like)
         {
             try
             {
@@ -1270,7 +1227,7 @@ namespace APIPostYEventos2019.Controllers
         }
         [HttpPost]
         [Route("darLikeComentario")]
-        public async Task<dynamic> darLikeComentario([FromBody] like like)
+        public dynamic darLikeComentario([FromBody] like like)
         {
             try
             {
@@ -1292,7 +1249,7 @@ namespace APIPostYEventos2019.Controllers
 
         [HttpPut]
         [Route("dioLikeComentario")]
-        public async Task<dynamic> dioLikeComentario([FromBody] like like)
+        public dynamic dioLikeComentario([FromBody] like like)
         {
             try
             {
@@ -1305,7 +1262,7 @@ namespace APIPostYEventos2019.Controllers
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    if (reader["idPost"].ToString().Equals(Convert.ToString(like.idpost)))
+                    if (reader["idComentario"].ToString().Equals(Convert.ToString(like.idpost)))
                     {
                         conn.Close();
                         return Json(true);
@@ -1330,7 +1287,7 @@ namespace APIPostYEventos2019.Controllers
 
         [HttpPut]
         [Route("quitarLikeComentario")]
-        public async Task<dynamic> quitarLikeComentario([FromBody] like like)
+        public dynamic quitarLikeComentario([FromBody] like like)
         {
             try
             {
