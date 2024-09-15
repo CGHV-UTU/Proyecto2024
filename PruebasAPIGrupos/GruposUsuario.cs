@@ -39,8 +39,9 @@ namespace PruebasAPIGrupos
             {
                 try
                 {
-                    string url = $"https://localhost:44304/ObtenerGruposPorUsuario?nombreDeCuenta={usuario}";
-                    HttpResponseMessage response = await client.GetAsync(url);
+                    var datos = new { nombreDeCuenta = usuario };
+                    var contentGrupo = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44304/ObtenerGruposPorUsuario", contentGrupo);
                     response.EnsureSuccessStatusCode();
 
                     var responseBody = await response.Content.ReadAsStringAsync();

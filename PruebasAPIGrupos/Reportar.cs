@@ -68,7 +68,7 @@ namespace PruebasAPIGrupos
                 MessageBox.Show("No seleccionaste un grupo");
             }
         }
-
+        /*
         public static async Task<string> Reporta(string usuario, string tipo, string descripcion)
         {
             using (HttpClient client = new HttpClient())
@@ -89,16 +89,16 @@ namespace PruebasAPIGrupos
                 }
             }
         }
-
+        */
         public static async Task<string> ReportaGrupo(string nombreReal , string tipo, string descripcion)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { nombreReal = nombreReal , tipo = tipo, descripcion = descripcion};
+                    var datos = new { nombreDeCuenta = user, nombreGrupo = nombreReal , tipo = tipo, descripcion = descripcion};
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44304/ReportarGrupo", content);
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/Reportar", content);
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -116,8 +116,9 @@ namespace PruebasAPIGrupos
             {
                 try
                 {
-                    string url = $"https://localhost:44304/ObtenerGruposPorNombreVisibleYUsuario?nombreVisible={nombreGrupo}&nombreDeCuenta={usuario}";
-                    HttpResponseMessage response = await client.GetAsync(url);
+                    var datos = new { nombreDeCuenta = usuario, nombreVisible = nombreGrupo };
+                    var contentGrupo = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44304/ObtenerGruposPorNombreVisibleYUsuario", contentGrupo);
                     response.EnsureSuccessStatusCode();
 
                     var responseBody = await response.Content.ReadAsStringAsync();

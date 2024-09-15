@@ -63,7 +63,6 @@ namespace PruebasAPIGrupos
                     imagen = foto,
                     configuracion = configuracion,
                     nombreDeCuenta = user
-
                 };
                 try
                 {
