@@ -107,7 +107,9 @@ namespace Frontend
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44383/user/obtenerImagenUsuario?nombredecuenta={creador}");
+                    var dato = new { nombreDeCuenta = creador};
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/obtenerImagenUsuario", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic imagen = JsonConvert.DeserializeObject(responseBody);
@@ -133,7 +135,7 @@ namespace Frontend
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de nin}guna manera, tengo que hallar alguna forma de pasar los datos
-                    return new string[] { data.texto, data.url, data.imagen };
+                    return new string[] { data.text, data.link, data.image };
                 }
                 catch
                 {

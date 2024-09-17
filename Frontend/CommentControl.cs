@@ -69,13 +69,13 @@ namespace Frontend
                 }
             }
         }
-        static async Task<string> darLike(string NombreDeCuenta, int IdPost, string nombreCreador)
+        static async Task<string> darLike(string NombreDeCuenta, int Id, string nombreCreador)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador };
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = Id, nombredeCreador = nombreCreador };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/darLikeComentario", content);
                     response.EnsureSuccessStatusCode();
@@ -90,13 +90,13 @@ namespace Frontend
                 }
             }
         }
-        static async Task<bool> dioLike(string NombreDeCuenta, int IdPost, string nombreCreador)
+        static async Task<bool> dioLike(string NombreDeCuenta, int Id, string nombreCreador)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador };
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = Id, nombredeCreador = nombreCreador };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/dioLikeComentario", content);
                     response.EnsureSuccessStatusCode();
@@ -110,13 +110,13 @@ namespace Frontend
                 }
             }
         }
-        static async Task<string> quitarLike(string NombreDeCuenta, int IdPost, string nombreCreador)
+        static async Task<string> quitarLike(string NombreDeCuenta, int Id, string nombreCreador)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador };
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = Id, nombredeCreador = nombreCreador };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/quitarLikeComentario", content);
                     response.EnsureSuccessStatusCode();
@@ -131,6 +131,28 @@ namespace Frontend
                 }
             }
         }
+
+        public static async Task<string> obtenerCreador(int id)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var dato = new { id = id };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirCreador", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
         private void AjustarTamaño()
         {
             txtBox.Size = new Size(this.Width - 70, this.Height - 65);
@@ -159,20 +181,41 @@ namespace Frontend
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);
             this.PictureBoxUsuario.Image = bitmap;
+            var creador = await obtenerCreador(idcomentario);
+            var Like = await dioLike(user, idcomentario, creador);
+            if (Like)
+            {
+                HandleLikeClick();
+            }
         }
 
         private bool isImage1 = true;
 
-        private void PictureBoxLike_Click(object sender, EventArgs e)
+        private async void PictureBoxLike_Click(object sender, EventArgs e)
+        {
+            string creador = await obtenerCreador(idcomentario);
+            if (!isImage1)
+            {
+                string respuesta = await quitarLike(user, idcomentario, creador);
+            }
+            else
+            {
+                string respuesta = await darLike(user, idcomentario, creador);
+                MessageBox.Show(respuesta);
+            }
+            HandleLikeClick();
+        }
+
+        private async Task HandleLikeClick()
         {
             if (isImage1)
             {
-                PictureBoxLike.Image = Properties.Resources.Like_Relleno; 
+                PictureBoxLike.Image = Properties.Resources.Like_Relleno;
                 isImage1 = false;
             }
             else
             {
-                PictureBoxLike.Image = Properties.Resources.like_infini; 
+                PictureBoxLike.Image = Properties.Resources.like_infini;
                 isImage1 = true;
             }
         }
@@ -359,11 +402,6 @@ namespace Frontend
         private async void PictureBoxConfirmarCambios_Click(object sender, EventArgs e)
         {
             await Modificar(Convert.ToString(idcomentario),this.txtBoxEditar.Text);
-        }
-
-        private void PictureBoxLike_Click_1(object sender, EventArgs e)
-        {
-            
         }
     }
 }
