@@ -49,16 +49,17 @@ namespace Frontend
             // 
             this.cbxRazon.FormattingEnabled = true;
             this.cbxRazon.Items.AddRange(new object[] {
-            "Contenido sexual",
-            "Contenido violento o repugnante",
-            "Contenido vejatorio o que incite al odio",
+            "Sexual",
+            "Violento o repugnante",
+            "Vejatorio",
             "Hostigamiento o acoso",
             "Actividades dañinas o peligrosas",
             "Desinformación",
             "Maltrato infantil",
-            "Fomenta el terrorismo",
-            "Engañoso o fraudulento",
-            "Problema legal"});
+            "Terrorismo",
+            "Fraude",
+            "Problema legal",
+            "Otros"});
             this.cbxRazon.Location = new System.Drawing.Point(124, 44);
             this.cbxRazon.Name = "cbxRazon";
             this.cbxRazon.Size = new System.Drawing.Size(121, 21);

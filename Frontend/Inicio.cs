@@ -186,7 +186,7 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            ReportarPost post = new ReportarPost(idpost,idcomentario);
+            ReportarPost post = new ReportarPost(idpost, user, idcomentario);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
             post.BackColor = Color.LightGray;

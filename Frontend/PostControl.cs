@@ -622,7 +622,6 @@ namespace Frontend
                 this.btnReportar.Size = new System.Drawing.Size(48, 20);
                 this.btnReportar.TabIndex = 41;
                 this.btnReportar.Click += btnReportar_Click;
-                this.btnReportar.BackColor = Color.Blue;
                 this.btnReportar.Text = "Reportar";
                 this.btnReportar.BringToFront();
                 this.Controls.Add(this.btnReportar);
@@ -634,7 +633,6 @@ namespace Frontend
                     this.btnEliminar.Size = new System.Drawing.Size(43, 20);
                     this.btnEliminar.TabIndex = 41;
                     this.btnEliminar.Click += btnEliminar_Click;
-                    this.btnEliminar.BackColor = Color.Red;
                     this.btnEliminar.BringToFront();
                     this.btnEliminar.Text = "Eliminar";
                     this.Controls.Add(this.btnEliminar);

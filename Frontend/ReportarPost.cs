@@ -16,21 +16,25 @@ namespace Frontend
     {
         private string idpost;
         private string idcomentario;
-        public ReportarPost(string idpost, string idcomentario="")
+        private string usuario;
+        public ReportarPost(string idpost, string user, string idcomentario="")
         {
             this.idpost = idpost;
             this.idcomentario = idcomentario;
+            this.usuario = user;
             InitializeComponent();
             this.BackColor = Color.LightGray;
         }
 
-        static async Task<dynamic> conseguirCreador(int id)
+        public static async Task<string> obtenerCreador(int id)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/conseguirCreador?id={id}");
+                    var dato = new { id = id };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirCreador", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -43,13 +47,15 @@ namespace Frontend
             }
         }
 
-        static async Task<dynamic> conseguirCreadorComentario(int id)
+        public static async Task<string> obtenerCreadorComentario(int id)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/conseguirCreadorComentario?id={id}");
+                    var dato = new { id = id };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirCreadorComentario", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -62,15 +68,15 @@ namespace Frontend
             }
         }
 
-        public static async Task<string> ReportaPost(string usuario, int id, string tipo, string descripcion)
+        public static async Task<string> ReportaPost(string usuario, string creadorDelPost, int id, string tipo, string descripcion)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { usuario = usuario, id = id , tipo=tipo, descripcion=descripcion};
+                    var datos = new { nombreDeCuenta = usuario, creadorDelPost = creadorDelPost, idPost = id , tipo=tipo, descripcion=descripcion};
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/ReportarPost", content);
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/Reportar", content);
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -83,15 +89,15 @@ namespace Frontend
             }
         }
 
-        public static async Task<string> ReportaComentario(string usuario, int id, string tipo, string descripcion)
+        public static async Task<string> ReportaComentario(string usuario, string creadorDelComentario, string id, string tipo, string descripcion)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { usuario = usuario, id = id, tipo = tipo, descripcion = descripcion };
+                    var datos = new { nombreDeCuenta = usuario, creadorDelComentario = creadorDelComentario, idComentario = id, tipo = tipo, descripcion = descripcion };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/ReportarComentario", content);
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/Reportar", content);
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -108,16 +114,14 @@ namespace Frontend
         {
             if (string.IsNullOrEmpty(idcomentario))
             {
-                string creadorPost = await conseguirCreador(int.Parse(idpost));
-                var respuesta = await ReportaPost(creadorPost, int.Parse(idpost), cbxRazon.SelectedItem.ToString(), txtDescripcion.Text);
+                string creadorPost = await obtenerCreador(int.Parse(idpost));
+                var respuesta = await ReportaPost(usuario,creadorPost, int.Parse(idpost), cbxRazon.SelectedItem.ToString(), txtDescripcion.Text);
                 MessageBox.Show(respuesta);
             }
             else
             {
-                MessageBox.Show(idcomentario);
-                string creadorComentario = await conseguirCreadorComentario(int.Parse(idcomentario));
-                MessageBox.Show(creadorComentario);
-                var respuesta = await ReportaComentario(creadorComentario, int.Parse(idcomentario), cbxRazon.SelectedItem.ToString(), txtDescripcion.Text);
+                string creadorComentario = await obtenerCreadorComentario(int.Parse(idcomentario));
+                var respuesta = await ReportaComentario(usuario,creadorComentario, idcomentario, cbxRazon.SelectedItem.ToString(), txtDescripcion.Text);
                 MessageBox.Show(respuesta);
             }
         }
