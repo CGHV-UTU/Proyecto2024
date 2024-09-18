@@ -94,6 +94,8 @@ namespace Frontend
                 HandleLikeClick();
             }
             this.lblNombre.Text = creador;
+            string[] fecha = data[3].Split(' ');
+            this.lblFechaYhora.Text = fecha[0];
             string imagenB64 = await conseguirImagenDelCreador(creador);
             byte[] imagen2 = Convert.FromBase64String(imagenB64);
             MemoryStream ms2 = new MemoryStream(imagen2);
@@ -135,7 +137,7 @@ namespace Frontend
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de nin}guna manera, tengo que hallar alguna forma de pasar los datos
-                    return new string[] { data.text, data.link, data.image };
+                    return new string[] { data.text, data.link, data.image, data.fechayhora };
                 }
                 catch
                 {
@@ -336,16 +338,19 @@ namespace Frontend
         private async void PictureBoxLike_Click(object sender, EventArgs e)
         {
             string creador = await obtenerCreador(idpost);
-            if (!isImage1)
+            if (!user.Equals(creador))
             {
-                string respuesta = await quitarLike(user, idpost, creador);
+                if (!isImage1)
+                {
+                    string respuesta = await quitarLike(user, idpost, creador);
+                }
+                else
+                {
+                    string respuesta = await darLike(user, idpost, creador);
+                    MessageBox.Show(respuesta);
+                }
+                HandleLikeClick();
             }
-            else
-            {
-                string respuesta = await darLike(user, idpost, creador);
-                MessageBox.Show(respuesta);
-            }
-            HandleLikeClick();
         }
 
         private async Task HandleLikeClick()
@@ -396,6 +401,7 @@ namespace Frontend
             this.PictureBoxOpcionesPost = new PictureBox();
             this.txtDescripcion = new Label();
             this.txtUrl = new Label();
+            this.lblFechaYhora= new Label();
             this.SuspendLayout();
 
             if (this.creador.Equals(user))
@@ -480,7 +486,12 @@ namespace Frontend
             this.txtUrl.Name = "txtUrl";
             this.txtUrl.Size = new Size(634, 22); // Ajusta el tamaño según necesidad      
 
-            
+            // lblFechaYhora
+            this.lblFechaYhora.AutoSize = true;
+            this.lblFechaYhora.Location = new System.Drawing.Point(170, 50);
+            this.lblFechaYhora.Name = "lblFechaYhora";
+            this.lblFechaYhora.Size = new System.Drawing.Size(44, 13);
+            this.lblFechaYhora.TabIndex = 42;
 
             // PostControl
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -494,6 +505,7 @@ namespace Frontend
             this.Controls.Add(this.PictureBoxOpcionesPost);
             this.Controls.Add(this.txtDescripcion);
             this.Controls.Add(this.txtUrl);
+            this.Controls.Add(this.lblFechaYhora);
             this.Name = "PostControl";
             this.Size = new System.Drawing.Size(787, 578);
 
@@ -659,7 +671,7 @@ namespace Frontend
                 this.btnConfirmarCambios = new PictureBox();
                 this.btnConfirmarCambios.Name = "btnConfirmarCambios"; //falta añadir las cosas para imagen
                 this.btnConfirmarCambios.Size = new Size(50, 50);
-                this.btnConfirmarCambios.Image = Frontend.Properties.Resources.Usuario;
+                this.btnConfirmarCambios.Image = Frontend.Properties.Resources.aceptar;
                 this.btnConfirmarCambios.Click += btnConfirmarCambios_Click;
                 this.btnConfirmarCambios.SizeMode = PictureBoxSizeMode.StretchImage;
                 this.Controls.Add(this.btnConfirmarCambios);
@@ -681,7 +693,7 @@ namespace Frontend
                         this.btnSeleccionarImagen.Location = new Point(260, imagen.Bottom + 10);
                         this.btnSeleccionarImagen.Name = "btnSeleccionarImagen"; 
                         this.btnSeleccionarImagen.Size = new Size(50, 50);
-                        this.btnSeleccionarImagen.Image = Frontend.Properties.Resources.buscar;
+                        this.btnSeleccionarImagen.Image = Frontend.Properties.Resources.Foto;
                         this.btnSeleccionarImagen.Click += btnSeleccionarImagen_Click;
                         this.btnSeleccionarImagen.SizeMode = PictureBoxSizeMode.StretchImage;
                         this.Controls.Add(this.btnSeleccionarImagen);

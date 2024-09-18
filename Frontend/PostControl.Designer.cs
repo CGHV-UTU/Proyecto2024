@@ -46,6 +46,7 @@ namespace Frontend
             this.imagenEditar = new System.Windows.Forms.PictureBox();
             this.btnEliminar = new System.Windows.Forms.Label();
             this.btnReportar = new System.Windows.Forms.Label();
+            this.lblFechaYhora = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxEditar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOpcionesPost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCompartir)).BeginInit();
@@ -183,7 +184,7 @@ namespace Frontend
             // 
             // txtUrlEditar
             // 
-            this.txtUrlEditar.Location = new System.Drawing.Point(194, 47);
+            this.txtUrlEditar.Location = new System.Drawing.Point(199, 13);
             this.txtUrlEditar.Name = "txtUrlEditar";
             this.txtUrlEditar.Size = new System.Drawing.Size(520, 20);
             this.txtUrlEditar.TabIndex = 35;
@@ -193,7 +194,7 @@ namespace Frontend
             this.btnConfirmarCambios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnConfirmarCambios.BackColor = System.Drawing.Color.Transparent;
             this.btnConfirmarCambios.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnConfirmarCambios.Image = global::Frontend.Properties.Resources.editar_removebg_preview;
+            this.btnConfirmarCambios.Image = global::Frontend.Properties.Resources.aceptar;
             this.btnConfirmarCambios.Location = new System.Drawing.Point(355, 494);
             this.btnConfirmarCambios.Name = "btnConfirmarCambios";
             this.btnConfirmarCambios.Size = new System.Drawing.Size(50, 50);
@@ -204,6 +205,7 @@ namespace Frontend
             // 
             // btnSeleccionarImagen
             // 
+            this.btnSeleccionarImagen.Image = global::Frontend.Properties.Resources.Foto;
             this.btnSeleccionarImagen.Location = new System.Drawing.Point(179, 494);
             this.btnSeleccionarImagen.Name = "btnSeleccionarImagen";
             this.btnSeleccionarImagen.Size = new System.Drawing.Size(61, 50);
@@ -242,10 +244,20 @@ namespace Frontend
             this.btnReportar.Text = "Reportar";
             this.btnReportar.Click += new System.EventHandler(this.btnReportar_Click);
             // 
+            // lblFechaYhora
+            // 
+            this.lblFechaYhora.AutoSize = true;
+            this.lblFechaYhora.Location = new System.Drawing.Point(196, 50);
+            this.lblFechaYhora.Name = "lblFechaYhora";
+            this.lblFechaYhora.Size = new System.Drawing.Size(34, 13);
+            this.lblFechaYhora.TabIndex = 42;
+            this.lblFechaYhora.Text = "fecha";
+            // 
             // PostControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblFechaYhora);
             this.Controls.Add(this.btnReportar);
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.btnSeleccionarImagen);
@@ -299,5 +311,6 @@ namespace Frontend
         private System.Windows.Forms.PictureBox imagenEditar;
         private System.Windows.Forms.Label btnEliminar;
         private System.Windows.Forms.Label btnReportar;
+        private System.Windows.Forms.Label lblFechaYhora;
     }
 }

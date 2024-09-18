@@ -183,6 +183,8 @@ namespace Frontend
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);
             this.PictureBoxUsuario.Image = bitmap;
+            string[] fecha = data[2].Split(' ');
+            this.lblFechaYhora.Text = fecha[0];
             var Like = await dioLike(user, idcomentario, lblNombre.Text);
             if (Like)
             {
@@ -194,16 +196,19 @@ namespace Frontend
 
         private async void PictureBoxLike_Click(object sender, EventArgs e)
         {
-            if (!isImage1)
+            if (!user.Equals(lblNombre.Text))
             {
-                string respuesta = await quitarLike(user, idcomentario, lblNombre.Text);
+                if (!isImage1)
+                {
+                    string respuesta = await quitarLike(user, idcomentario, lblNombre.Text);
+                }
+                else
+                {
+                    string respuesta = await darLike(user, idcomentario, lblNombre.Text);
+                    MessageBox.Show(respuesta);
+                }
+                HandleLikeClick();
             }
-            else
-            {
-                string respuesta = await darLike(user, idcomentario, lblNombre.Text);
-                MessageBox.Show(respuesta);
-            }
-            HandleLikeClick();
         }
 
         private async Task HandleLikeClick()
@@ -224,6 +229,7 @@ namespace Frontend
         {
             this.txtBoxEditar.Visible = false;
             this.lblNombre = new Label();
+            this.lblFechaYhora= new Label();
             this.txtBox = new RichTextBox();
             this.PictureBoxLike = new PictureBox();
             this.PictureBoxReportar = new PictureBox();
@@ -236,6 +242,13 @@ namespace Frontend
             this.lblNombre.Name = "lblNombre";
             this.lblNombre.Size = new System.Drawing.Size(44, 13);
             this.lblNombre.TabIndex = 0;
+
+            // lblFechaYhora
+            this.lblFechaYhora.AutoSize = true;
+            this.lblFechaYhora.Location = new System.Drawing.Point(109, 37);
+            this.lblFechaYhora.Name = "lblFechaYhora";
+            this.lblFechaYhora.Size = new System.Drawing.Size(44, 13);
+            this.lblFechaYhora.TabIndex = 38;
 
             // txtBox
             this.txtBox.Location = new System.Drawing.Point(3, 53);
@@ -271,6 +284,7 @@ namespace Frontend
 
             // Añadir controles al CommentControl
             this.Controls.Add(this.lblNombre);
+            this.Controls.Add(this.lblFechaYhora);
             this.Controls.Add(this.txtBox);
             this.Controls.Add(this.PictureBoxLike);
             this.Controls.Add(this.PictureBoxReportar);
@@ -342,7 +356,7 @@ namespace Frontend
                 this.PictureBoxConfirmarCambios.Name = "PictureBoxConfirmarCambios";
                 this.PictureBoxConfirmarCambios.Size = new System.Drawing.Size(50, 50);
                 this.PictureBoxConfirmarCambios.SizeMode = PictureBoxSizeMode.StretchImage;
-                this.PictureBoxConfirmarCambios.Image = Frontend.Properties.Resources.mas_opciones;
+                this.PictureBoxConfirmarCambios.Image = Frontend.Properties.Resources.aceptar;
                 this.PictureBoxConfirmarCambios.Click += PictureBoxConfirmarCambios_Click;
                 this.PictureBoxConfirmarCambios.Cursor = Cursors.Hand;
                 this.Controls.Add(this.PictureBoxConfirmarCambios);

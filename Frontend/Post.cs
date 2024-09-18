@@ -35,10 +35,12 @@ namespace Frontend
             }
             else
             {
+                DateTime fechayhoraactual = DateTime.Now;
+                string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
                 if (pbxImagen.Image == null)
                 {
                     byte[] data = new byte[0];
-                    Publicar(txtTexto.Text, txtUrl.Text, data);
+                    Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString);
                     MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Creado?.Invoke(this, EventArgs.Empty);
                 }
@@ -47,7 +49,7 @@ namespace Frontend
                     MemoryStream ms = new MemoryStream();
                     pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                     byte[] data = ms.ToArray();
-                    Publicar(txtTexto.Text, txtUrl.Text, data);
+                    Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString);
                     MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Creado?.Invoke(this, EventArgs.Empty);
                 }
@@ -102,13 +104,13 @@ namespace Frontend
             }
         }
 
-        public static async Task Publicar(string texto, string url, byte[] imagen)
+        public static async Task Publicar(string texto, string url, byte[] imagen, string fechaHora)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user };
+                    var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user , fechayhora =fechaHora};
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
                     response.EnsureSuccessStatusCode();
