@@ -16,11 +16,11 @@ El sistema consiste en tres APIs con sus interfaces gráficas de prueba contenid
  
 # Aclaraciones:
 
-Para que funcione el token de github hay que escribir “github_pat_” en el string “token” de los métodos “SubirImagenAGithub” y “CargarImagenDeGithub”.
+- Para que funcione el token de github hay que escribir “github_pat_” en el string “token” de los métodos “SubirImagenAGithub” y “CargarImagenDeGithub”.
 
-Para el funcionamiento del testing de API post y eventos es necesario crear un usuario con nombreDeCuenta “UsuarioDePrueba” .
+- Para el funcionamiento del testing de API post y eventos es necesario crear un usuario con nombreDeCuenta “UsuarioDePrueba” .
 
-En Backoffice, eliminamos las opciones de modificación de contenido privado previamente hechas por privacidad.
+- En Backoffice, eliminamos las opciones de modificación de contenido privado previamente hechas por privacidad.
 
 
 
