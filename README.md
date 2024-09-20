@@ -22,7 +22,12 @@ El sistema consiste en tres APIs con sus interfaces gráficas de prueba contenid
 
 - En Backoffice, eliminamos las opciones de modificación de contenido privado previamente hechas por privacidad.
 
+# Consultas
+Puede comunicarse con el coordinador o subcoordinador del equipo mediante e-mail.
+- Coordinador: federicogerardogonzalez44@gmail.com
+- Subcoordinador: santiagohornosw@gmail.com
 
+  
 
 ## Definition of Done del Product Backlog
 
