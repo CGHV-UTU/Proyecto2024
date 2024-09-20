@@ -5,6 +5,8 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,7 +16,7 @@ namespace BackofficeDeAdministracion
 {
     public partial class GestionarPosts : Form
     {
-        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
         public GestionarPosts()
         {
             InitializeComponent();        
@@ -23,28 +25,15 @@ namespace BackofficeDeAdministracion
             this.ActiveControl = txtID;
         }
 
-        //Cargar tabla
-        private void InicializarTablaPosts()
-        {
-            DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle();
-            columnHeaderStyle.BackColor = Color.Beige;
-            columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
-            dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;
-            dataGridView1.Columns["id"].Width = 45;
-            dataGridView1.Columns["likes"].Width = 65;
-            dataGridView1.Columns["comentarios"].HeaderText = "coment";
-            dataGridView1.Columns["comentarios"].Width = 75;
-            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
-        }
         private void CargarTabla()
         {
-            string connectionString = "server = localhost; database = base; uid = root; ";
+            string connectionString = "server = localhost; database = infini; uid = root; ";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
-                    string query = "SELECT id, texto, url, categorias, comentarios, likes FROM posts";
+                    string query = "SELECT Posts.idPost,Posts.texto,Posts.video,Posts.categoria,Posts.comentarios,COUNT(DaLike.idPost) AS cantidadLikes FROM Posts LEFT JOIN DaLike ON Posts.idPost=DaLike.idPost GROUP BY Posts.idPost,Posts.texto,Posts.video,Posts.categoria,Posts.comentarios;";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     DataTable dataTable = new DataTable();
@@ -58,8 +47,48 @@ namespace BackofficeDeAdministracion
             }
         }
 
+        //Cargar tabla
+        private void InicializarTablaPosts()
+        {
+            DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle();
+            columnHeaderStyle.BackColor = Color.Beige;
+            columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
+            dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;        
+            dataGridView1.BorderStyle = BorderStyle.None;
+            dataGridView1.EnableHeadersVisualStyles = false;         
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+            dataGridView1.Columns["cantidadLikes"].Width = 75;
+            dataGridView1.Columns["idPost"].HeaderText = "likes";
+            dataGridView1.Columns["idPost"].Width = 51;
+            dataGridView1.Columns["idPost"].HeaderText = "id";         
+            dataGridView1.Columns["texto"].Width = 147;
+            dataGridView1.Columns["comentarios"].Width = 75;
+            dataGridView1.Columns["comentarios"].HeaderText = "Coment";
+        }
+
+
+        private async Task<string> CargarImagenDeGitHub(string urlImagen)
+        {
+            using (var client = new HttpClient())
+            {
+                string token = "11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await client.GetAsync(urlImagen);
+                if (response.IsSuccessStatusCode)
+                {
+                    byte[] imagenBytes = await response.Content.ReadAsByteArrayAsync();
+                    return Convert.ToBase64String(imagenBytes);
+                }
+                else
+                {
+                    throw new Exception("No se pudo descargar la imagen desde GitHub.");
+                }
+            }
+        }
+
         //Buscar post
-        private void btnBuscar_Click(object sender, EventArgs e)
+        private async void btnBuscar_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(txtID.Text))
             {
@@ -72,7 +101,7 @@ namespace BackofficeDeAdministracion
                         if (row.Cells[0].Value != null && int.Parse(row.Cells[0].Value.ToString()) == id)
                         {
                             conn.Open();
-                            MySqlCommand command = new MySqlCommand("SELECT texto, imagen, url, categorias, likes FROM posts WHERE id=@id", conn);
+                            MySqlCommand command = new MySqlCommand("SELECT texto, imagen, video, categoria FROM Posts WHERE idPost=@id", conn);
                             command.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
                             MySqlDataReader reader = command.ExecuteReader();
                             if (reader.Read())
@@ -80,21 +109,30 @@ namespace BackofficeDeAdministracion
                                 txtTexto.Text = reader["texto"].ToString();
                                 try
                                 {
-                                    lblLikesDeComentario.Text = reader["likes"].ToString();
-                                    MemoryStream ms = new MemoryStream((byte[])reader["imagen"]);
-                                    Bitmap bitmap = new Bitmap(ms);
-                                    pictureBox1.Image = bitmap;
-                                    pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                                    string imagen = await CargarImagenDeGitHub(reader["imagen"].ToString());
+                                    byte[] imagenBytes = Convert.FromBase64String(imagen);
+                                    using (MemoryStream ms = new MemoryStream(imagenBytes))
+                                    {
+                                        Bitmap bitmap = new Bitmap(ms);
+                                        pictureBox1.Image = bitmap;
+                                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                                    }
                                 }
                                 catch
                                 {
 
                                 }
-                                txtURL.Text = reader["url"].ToString();
-                                txtCategorias.Text = reader["categorias"].ToString();
                             }
+                            reader.Close();
+                            MySqlCommand commandLikes = new MySqlCommand("SELECT COUNT(*) AS cantidadLikes FROM DaLike WHERE idPost=@id", conn);
+                            commandLikes.Parameters.AddWithValue("@id", id);
+                            MySqlDataReader readerLikes = commandLikes.ExecuteReader();
+                            if (readerLikes.Read())
+                            {
+                                lblLikesDePost.Text = readerLikes["cantidadLikes"].ToString();
+                            }
+                            readerLikes.Close();
                             conn.Close();
-                            dataGridView1.ClearSelection();
                             row.Selected = true;
                             encontrado = true;
                             return;
@@ -144,11 +182,7 @@ namespace BackofficeDeAdministracion
             try
             {
                 DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
-                selectedRow.Cells[1].Value = txtTexto.Text;
-                selectedRow.Cells[2].Value = txtURL.Text;
-                selectedRow.Cells[3].Value = txtCategorias.Text;
                 selectedRow.Cells[4].Value = EstadoComentarios();
-                selectedRow.Cells[5].Value = Int32.Parse(lblLikesDeComentario.Text);
             }
             catch (Exception)
             {
@@ -162,7 +196,7 @@ namespace BackofficeDeAdministracion
             try
             {
                 var filaSeleccionada = dataGridView1.CurrentRow;
-                string id = filaSeleccionada.Cells[0].Value.ToString();
+                string id = txtID.Text;
                 dataGridView1.Rows.Remove(filaSeleccionada);
                 GuardarId(id);
             }
@@ -191,34 +225,44 @@ namespace BackofficeDeAdministracion
                     {
                         continue;
                     }
-                    int id = Convert.ToInt32(row.Cells["id"].Value);
-                    string texto = row.Cells["texto"].Value.ToString();
-                    string url = row.Cells["url"].Value.ToString();
-                    string categorias = row.Cells["categorias"].Value.ToString();
+                    int id = Convert.ToInt32(row.Cells["idPost"].Value);
                     bool comentarios = Convert.ToBoolean(row.Cells["comentarios"].Value);
-                    int likes = Convert.ToInt32(row.Cells["likes"].Value);
-                    string query = "INSERT INTO posts (id, texto, url, categorias, comentarios, likes) " + "VALUES (@id, @texto, @url, @categorias, @comentarios, @likes) " + "ON DUPLICATE KEY UPDATE " + "texto=@texto, url=@url, categorias=@categorias, comentarios=@comentarios, likes=@likes";
+                    string query = "INSERT INTO Posts (idPost, comentarios) " + "VALUES (@id, @comentarios) " + "ON DUPLICATE KEY UPDATE " + "comentarios=@comentarios";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", id);
-                    cmd.Parameters.AddWithValue("@texto", texto);
-                    cmd.Parameters.AddWithValue("@url", url);
-                    cmd.Parameters.AddWithValue("@categorias", categorias);
                     cmd.Parameters.AddWithValue("@comentarios", comentarios);
-                    cmd.Parameters.AddWithValue("@likes", likes);
                     cmd.ExecuteNonQuery();
                 }
                 //Para remover de la base de datos los posts eliminados
                 foreach (string id in eliminarDatos)
-                {
-                    string query = "DELETE FROM posts WHERE id = @id";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteNonQuery();
+                {                   
+                    MySqlCommand command = new MySqlCommand("DELETE FROM Reportes WHERE idPost=@Id;", conn);
+                    MySqlCommand command8 = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", conn);
+                    MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", conn);
+                    MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost = @Id", conn);
+                    MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost = @Id", conn);
+                    MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost = @Id", conn);
+                    MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost = @Id", conn);
+                    MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=(SELECT id FROM Comentarios WHERE idPost=@id)", conn);
+                    command.Parameters.AddWithValue("@Id", id);
+                    command8.Parameters.AddWithValue("@Id", id);
+                    command2.Parameters.AddWithValue("@Id", id);
+                    command3.Parameters.AddWithValue("@Id", id);
+                    command4.Parameters.AddWithValue("@Id", id);
+                    command5.Parameters.AddWithValue("@Id", id);
+                    command6.Parameters.AddWithValue("@Id", id);
+                    command7.Parameters.AddWithValue("@Id", id);
+                    command7.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
+                    command2.ExecuteNonQuery();
+                    command3.ExecuteNonQuery();
+                    command4.ExecuteNonQuery();
+                    command5.ExecuteNonQuery();
+                    command6.ExecuteNonQuery();
                 }
                 eliminarDatos.Clear();
                 conn.Close();
                 MessageBox.Show("Información guardada con éxito");
-                this.Close();
             }
             catch (MySqlException ex)
             {
@@ -230,252 +274,13 @@ namespace BackofficeDeAdministracion
             }
         }
 
-
-        //Botones para gestión de likes  
-
-        //Sumar Likes fijo
-        private void btnSumar1Like_Click(object sender, EventArgs e)
-        {
-            int textoOriginal = int.Parse(lblLikesDeComentario.Text);
-            int textoNuevo = textoOriginal + 1;
-            lblLikesDeComentario.Text = textoNuevo.ToString();
-        }
-        private void btnSumar5Likes_Click(object sender, EventArgs e)
-        {
-            int textoOriginal = int.Parse(lblLikesDeComentario.Text);
-            int textoNuevo = textoOriginal + 5;
-            lblLikesDeComentario.Text = textoNuevo.ToString();
-        }
-        private void btnSumar10Likes_Click(object sender, EventArgs e)
-        {
-            int textoOriginal = int.Parse(lblLikesDeComentario.Text);
-            int textoNuevo = textoOriginal + 10;
-            lblLikesDeComentario.Text = textoNuevo.ToString();
-        }
-       
-        //para evitar likes negativos
-        private void VerificarMinimo(int nuevoValor) 
-        {
-            if (nuevoValor >= 0)
-            {
-                lblLikesDeComentario.Text = nuevoValor.ToString();
-            }
-            else
-            {
-                lblLikesDeComentario.Text = "0";
-            }
-        }
-
-        //Restar Likes fijo
-        private void btnRestar1Like_Click(object sender, EventArgs e)
-        {
-            int textoOriginal = int.Parse(lblLikesDeComentario.Text);
-            int textoNuevo = textoOriginal - 1;
-            VerificarMinimo(textoNuevo);       
-        }
-        private void btnRestar5Likes_Click_1(object sender, EventArgs e)
-        {
-            int textoOriginal = int.Parse(lblLikesDeComentario.Text);
-            int textoNuevo = textoOriginal - 5;
-            VerificarMinimo(textoNuevo);
-        }
-        private void btnRestar10Likes_Click(object sender, EventArgs e)
-        {
-            int textoOriginal = int.Parse(lblLikesDeComentario.Text);
-            int textoNuevo = textoOriginal - 10;
-            VerificarMinimo(textoNuevo);           
-        }
-      
-        //Cambiar likes Personalizado
-        private void btnAgregarLikes_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(txtLikesPersonalizados.Text))
-            {
-                int textoOriginal = int.Parse(lblLikesDeComentario.Text);
-                int textoNuevo = textoOriginal + int.Parse(txtLikesPersonalizados.Text);
-                lblLikesDeComentario.Text = textoNuevo.ToString();
-            }
-        }
-        private void btnRestarLikes_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(txtLikesPersonalizados.Text))
-            {
-                int textoOriginal = int.Parse(lblLikesDeComentario.Text);
-                int textoNuevo = textoOriginal - int.Parse(txtLikesPersonalizados.Text);
-                VerificarMinimo(textoNuevo);
-            }
-        }
-
         //Para limitar la escritura de los txt a solo numeros
-        private void txtLikesPersonalizados_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                MessageBox.Show("Solo se permiten números", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                e.Handled = true;
-            }
-        }
         private void txtID_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 MessageBox.Show("Solo se permiten números", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 e.Handled = true;
-            }
-        }
-        private void btnVolver_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("¿desea salir del programa? Los datos no guardados se perderán", "Confirmar salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                Close();
-            }
-        }
-
-
-
-
-        //testing 
-        public string ModificarPost(string id, string link = "", string text = "", string image = "")
-        {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd;
-                if (!string.IsNullOrEmpty(text))
-                {
-                    string texto = text;
-                    if (!string.IsNullOrEmpty(link))
-                    {
-                        string url = link;
-                        cmd = new MySqlCommand("UPDATE posts SET texto=@texto,url=@url WHERE id=@id", conn);
-                        cmd.Parameters.AddWithValue("@Texto", texto);
-                        cmd.Parameters.AddWithValue("@url", link);
-                        cmd.Parameters.AddWithValue("@id", id);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return "Modificacion correcta";
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(image))
-                        {
-                            byte[] imagen = Convert.FromBase64String(image);
-                            cmd = new MySqlCommand("UPDATE posts SET texto=@texto,imagen=@imagen WHERE id=@id", conn);
-                            cmd.Parameters.AddWithValue("@Texto", texto);
-                            cmd.Parameters.AddWithValue("@Imagen", imagen);
-                            cmd.Parameters.AddWithValue("@id", id);
-                            cmd.ExecuteNonQuery();
-                            conn.Close();
-                            return "Modificacion correcta";
-                        }
-                        else
-                        {
-                            cmd = new MySqlCommand("UPDATE posts SET texto=@texto WHERE id=@id", conn);
-                            cmd.Parameters.AddWithValue("@Texto", texto);
-                            cmd.Parameters.AddWithValue("@id", id);
-                            cmd.ExecuteNonQuery();
-                            conn.Close();
-                            return "Modificacion correcta";
-                        }
-                    }
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(image))
-                    {
-                        byte[] imagen = Convert.FromBase64String(image);
-                        cmd = new MySqlCommand("UPDATE posts SET imagen=@imagen WHERE id=@id", conn);
-                        cmd.Parameters.AddWithValue("@Imagen", imagen);
-                        cmd.Parameters.AddWithValue("@id", id);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return "Modificacion correcta";
-                    }
-                    else
-                    {
-                        string url = link;
-                        cmd = new MySqlCommand("UPDATE posts SET url=@url WHERE id=@id", conn);
-                        cmd.Parameters.AddWithValue("@url", url);
-                        cmd.Parameters.AddWithValue("@id", id);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return "Modificacion correcta";
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return "Modificación incorrecta";
-            }
-        }
-        public string UltimoPost()
-        {
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-            conn.Open();
-            MySqlCommand command = new MySqlCommand("SELECT id FROM posts ORDER BY id DESC LIMIT 1", conn);
-            MySqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                string id = reader["id"].ToString();
-                return id;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public string ConseguirPost(int id)
-        {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT texto,imagen,url FROM posts WHERE id=@Id", conn);
-                command.Parameters.AddWithValue("@Id", id);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
-                {
-                    string texto;
-                    if (string.IsNullOrEmpty(reader["texto"].ToString()))
-                    {
-                        texto = "";
-                    }
-                    else
-                    {
-                        texto = reader["texto"].ToString();
-                    }
-                    string imagen;
-                    if (string.IsNullOrEmpty(reader["imagen"].ToString()))
-                    {
-                        imagen = "";
-                    }
-                    else
-                    {
-                        imagen = reader["imagen"].ToString();
-                    }
-                    string url;
-                    if (string.IsNullOrEmpty(reader["url"].ToString()))
-                    {
-                        url = "";
-                    }
-                    else
-                    {
-                        url = reader["url"].ToString();
-                    }
-                    var data = new { imagen = imagen, url = url, texto = texto };
-                    return texto;
-                }
-                else
-                {
-                    return "no se encuentra";
-                }
-            }
-            catch (Exception)
-            {
-                return "no se encuentra";
             }
         }
     }  

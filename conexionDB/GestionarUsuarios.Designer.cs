@@ -33,13 +33,10 @@ namespace BackofficeDeAdministracion
             this.lblNom = new System.Windows.Forms.Label();
             this.txtID = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.btnVolver = new System.Windows.Forms.Button();
             this.lblNombre = new System.Windows.Forms.Label();
             this.lblEstado = new System.Windows.Forms.Label();
-            this.lblReportes = new System.Windows.Forms.Label();
             this.lblNombreDeCuenta = new System.Windows.Forms.Label();
             this.lblEstadoDeCuenta = new System.Windows.Forms.Label();
-            this.lblReportesDeCuenta = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblFoto = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -50,7 +47,8 @@ namespace BackofficeDeAdministracion
             this.dtpHora = new System.Windows.Forms.DateTimePicker();
             this.dtpFecha = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
-            this.btnVerReportes = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblDescripcion = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -95,18 +93,6 @@ namespace BackofficeDeAdministracion
             this.dataGridView1.Size = new System.Drawing.Size(565, 167);
             this.dataGridView1.TabIndex = 65;
             // 
-            // btnVolver
-            // 
-            this.btnVolver.BackColor = System.Drawing.Color.Red;
-            this.btnVolver.ForeColor = System.Drawing.Color.White;
-            this.btnVolver.Location = new System.Drawing.Point(0, 0);
-            this.btnVolver.Name = "btnVolver";
-            this.btnVolver.Size = new System.Drawing.Size(89, 23);
-            this.btnVolver.TabIndex = 67;
-            this.btnVolver.Text = " ⬅️ Volver";
-            this.btnVolver.UseVisualStyleBackColor = false;
-            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
-            // 
             // lblNombre
             // 
             this.lblNombre.AutoSize = true;
@@ -120,22 +106,12 @@ namespace BackofficeDeAdministracion
             // lblEstado
             // 
             this.lblEstado.AutoSize = true;
-            this.lblEstado.Location = new System.Drawing.Point(9, 302);
+            this.lblEstado.Location = new System.Drawing.Point(10, 280);
             this.lblEstado.Name = "lblEstado";
             this.lblEstado.Size = new System.Drawing.Size(43, 13);
             this.lblEstado.TabIndex = 72;
             this.lblEstado.Text = "Estado:";
             this.lblEstado.Visible = false;
-            // 
-            // lblReportes
-            // 
-            this.lblReportes.AutoSize = true;
-            this.lblReportes.Location = new System.Drawing.Point(10, 342);
-            this.lblReportes.Name = "lblReportes";
-            this.lblReportes.Size = new System.Drawing.Size(100, 13);
-            this.lblReportes.TabIndex = 73;
-            this.lblReportes.Text = "Número de reportes";
-            this.lblReportes.Visible = false;
             // 
             // lblNombreDeCuenta
             // 
@@ -148,35 +124,25 @@ namespace BackofficeDeAdministracion
             // lblEstadoDeCuenta
             // 
             this.lblEstadoDeCuenta.AutoSize = true;
-            this.lblEstadoDeCuenta.Location = new System.Drawing.Point(138, 292);
+            this.lblEstadoDeCuenta.Location = new System.Drawing.Point(138, 280);
             this.lblEstadoDeCuenta.Name = "lblEstadoDeCuenta";
             this.lblEstadoDeCuenta.Size = new System.Drawing.Size(40, 13);
             this.lblEstadoDeCuenta.TabIndex = 76;
             this.lblEstadoDeCuenta.Text = "Estado";
             this.lblEstadoDeCuenta.Visible = false;
             // 
-            // lblReportesDeCuenta
-            // 
-            this.lblReportesDeCuenta.AutoSize = true;
-            this.lblReportesDeCuenta.Location = new System.Drawing.Point(138, 342);
-            this.lblReportesDeCuenta.Name = "lblReportesDeCuenta";
-            this.lblReportesDeCuenta.Size = new System.Drawing.Size(44, 13);
-            this.lblReportesDeCuenta.TabIndex = 77;
-            this.lblReportesDeCuenta.Text = "Numero";
-            this.lblReportesDeCuenta.Visible = false;
-            // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(320, 201);
+            this.pictureBox1.Location = new System.Drawing.Point(306, 201);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(160, 120);
+            this.pictureBox1.Size = new System.Drawing.Size(201, 164);
             this.pictureBox1.TabIndex = 78;
             this.pictureBox1.TabStop = false;
             // 
             // lblFoto
             // 
             this.lblFoto.AutoSize = true;
-            this.lblFoto.Location = new System.Drawing.Point(232, 213);
+            this.lblFoto.Location = new System.Drawing.Point(232, 201);
             this.lblFoto.Name = "lblFoto";
             this.lblFoto.Size = new System.Drawing.Size(68, 13);
             this.lblFoto.TabIndex = 79;
@@ -196,7 +162,7 @@ namespace BackofficeDeAdministracion
             // lblNombreVisible
             // 
             this.lblNombreVisible.AutoSize = true;
-            this.lblNombreVisible.Location = new System.Drawing.Point(138, 247);
+            this.lblNombreVisible.Location = new System.Drawing.Point(138, 241);
             this.lblNombreVisible.Name = "lblNombreVisible";
             this.lblNombreVisible.Size = new System.Drawing.Size(44, 13);
             this.lblNombreVisible.TabIndex = 82;
@@ -206,7 +172,7 @@ namespace BackofficeDeAdministracion
             // lblNomVisible
             // 
             this.lblNomVisible.AutoSize = true;
-            this.lblNomVisible.Location = new System.Drawing.Point(10, 247);
+            this.lblNomVisible.Location = new System.Drawing.Point(10, 241);
             this.lblNomVisible.Name = "lblNomVisible";
             this.lblNomVisible.Size = new System.Drawing.Size(79, 13);
             this.lblNomVisible.TabIndex = 81;
@@ -259,22 +225,32 @@ namespace BackofficeDeAdministracion
             this.label4.TabIndex = 87;
             this.label4.Text = "Banear Temporalmente";
             // 
-            // btnVerReportes
+            // label2
             // 
-            this.btnVerReportes.Location = new System.Drawing.Point(234, 344);
-            this.btnVerReportes.Margin = new System.Windows.Forms.Padding(2);
-            this.btnVerReportes.Name = "btnVerReportes";
-            this.btnVerReportes.Size = new System.Drawing.Size(56, 19);
-            this.btnVerReportes.TabIndex = 88;
-            this.btnVerReportes.Text = "Ver";
-            this.btnVerReportes.UseVisualStyleBackColor = true;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 317);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(66, 13);
+            this.label2.TabIndex = 88;
+            this.label2.Text = "Descripcion:";
+            this.label2.Visible = false;
+            // 
+            // lblDescripcion
+            // 
+            this.lblDescripcion.Location = new System.Drawing.Point(96, 304);
+            this.lblDescripcion.Multiline = true;
+            this.lblDescripcion.Name = "lblDescripcion";
+            this.lblDescripcion.ReadOnly = true;
+            this.lblDescripcion.Size = new System.Drawing.Size(192, 74);
+            this.lblDescripcion.TabIndex = 90;
             // 
             // GestionarUsuarios
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(834, 386);
-            this.Controls.Add(this.btnVerReportes);
+            this.Controls.Add(this.lblDescripcion);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.dtpHora);
             this.Controls.Add(this.dtpFecha);
@@ -285,13 +261,10 @@ namespace BackofficeDeAdministracion
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lblFoto);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.lblReportesDeCuenta);
             this.Controls.Add(this.lblEstadoDeCuenta);
             this.Controls.Add(this.lblNombreDeCuenta);
-            this.Controls.Add(this.lblReportes);
             this.Controls.Add(this.lblEstado);
             this.Controls.Add(this.lblNombre);
-            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.lblNom);
@@ -311,13 +284,10 @@ namespace BackofficeDeAdministracion
         private System.Windows.Forms.Label lblNom;
         private System.Windows.Forms.TextBox txtID;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.Label lblEstado;
-        private System.Windows.Forms.Label lblReportes;
         private System.Windows.Forms.Label lblNombreDeCuenta;
         private System.Windows.Forms.Label lblEstadoDeCuenta;
-        private System.Windows.Forms.Label lblReportesDeCuenta;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblFoto;
         private System.Windows.Forms.Button button1;
@@ -328,6 +298,7 @@ namespace BackofficeDeAdministracion
         private System.Windows.Forms.DateTimePicker dtpHora;
         private System.Windows.Forms.DateTimePicker dtpFecha;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnVerReportes;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox lblDescripcion;
     }
 }

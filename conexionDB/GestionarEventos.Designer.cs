@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnVolver = new System.Windows.Forms.Button();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -43,26 +42,13 @@
             this.txtUbicacion = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnGuardar = new System.Windows.Forms.Button();
-            this.btnModificar = new System.Windows.Forms.Button();
-            this.dtpFecha = new System.Windows.Forms.DateTimePicker();
             this.lblFechayHora = new System.Windows.Forms.Label();
-            this.dtpHora = new System.Windows.Forms.DateTimePicker();
-            this.btnSeleccionar = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lblFin = new System.Windows.Forms.Label();
+            this.lblInicio = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // btnVolver
-            // 
-            this.btnVolver.BackColor = System.Drawing.Color.Red;
-            this.btnVolver.ForeColor = System.Drawing.Color.White;
-            this.btnVolver.Location = new System.Drawing.Point(1, 0);
-            this.btnVolver.Name = "btnVolver";
-            this.btnVolver.Size = new System.Drawing.Size(89, 23);
-            this.btnVolver.TabIndex = 41;
-            this.btnVolver.Text = " ⬅️ Volver";
-            this.btnVolver.UseVisualStyleBackColor = false;
-            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
             // btnBuscar
             // 
@@ -120,6 +106,7 @@
             this.txtTitulo.MaxLength = 100;
             this.txtTitulo.Multiline = true;
             this.txtTitulo.Name = "txtTitulo";
+            this.txtTitulo.ReadOnly = true;
             this.txtTitulo.Size = new System.Drawing.Size(266, 21);
             this.txtTitulo.TabIndex = 68;
             // 
@@ -155,6 +142,7 @@
             this.txtDescripcion.MaxLength = 100;
             this.txtDescripcion.Multiline = true;
             this.txtDescripcion.Name = "txtDescripcion";
+            this.txtDescripcion.ReadOnly = true;
             this.txtDescripcion.Size = new System.Drawing.Size(266, 65);
             this.txtDescripcion.TabIndex = 72;
             // 
@@ -173,6 +161,7 @@
             this.txtUbicacion.MaxLength = 100;
             this.txtUbicacion.Multiline = true;
             this.txtUbicacion.Name = "txtUbicacion";
+            this.txtUbicacion.ReadOnly = true;
             this.txtUbicacion.Size = new System.Drawing.Size(266, 21);
             this.txtUbicacion.TabIndex = 74;
             // 
@@ -192,69 +181,57 @@
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(812, 22);
             this.btnGuardar.TabIndex = 76;
-            this.btnGuardar.Text = "💾 Guardar y Salir";
+            this.btnGuardar.Text = "💾 Guardar";
             this.btnGuardar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnGuardar.UseVisualStyleBackColor = true;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
-            // btnModificar
-            // 
-            this.btnModificar.Location = new System.Drawing.Point(12, 380);
-            this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(812, 23);
-            this.btnModificar.TabIndex = 75;
-            this.btnModificar.Text = "♻️ Modificar Evento";
-            this.btnModificar.UseVisualStyleBackColor = true;
-            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
-            // 
-            // dtpFecha
-            // 
-            this.dtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFecha.Location = new System.Drawing.Point(376, 336);
-            this.dtpFecha.Name = "dtpFecha";
-            this.dtpFecha.Size = new System.Drawing.Size(200, 20);
-            this.dtpFecha.TabIndex = 77;
-            // 
             // lblFechayHora
             // 
             this.lblFechayHora.AutoSize = true;
-            this.lblFechayHora.Location = new System.Drawing.Point(372, 320);
+            this.lblFechayHora.Location = new System.Drawing.Point(441, 333);
             this.lblFechayHora.Name = "lblFechayHora";
             this.lblFechayHora.Size = new System.Drawing.Size(104, 13);
             this.lblFechayHora.TabIndex = 78;
             this.lblFechayHora.Text = "Fecha y hora previa:";
             // 
-            // dtpHora
+            // label5
             // 
-            this.dtpHora.CustomFormat = "HH:mm";
-            this.dtpHora.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpHora.Location = new System.Drawing.Point(582, 336);
-            this.dtpHora.Name = "dtpHora";
-            this.dtpHora.Size = new System.Drawing.Size(200, 20);
-            this.dtpHora.TabIndex = 80;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(441, 363);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(104, 13);
+            this.label5.TabIndex = 79;
+            this.label5.Text = "Fecha y hora previa:";
             // 
-            // btnSeleccionar
+            // lblFin
             // 
-            this.btnSeleccionar.Location = new System.Drawing.Point(46, 281);
-            this.btnSeleccionar.Name = "btnSeleccionar";
-            this.btnSeleccionar.Size = new System.Drawing.Size(75, 23);
-            this.btnSeleccionar.TabIndex = 81;
-            this.btnSeleccionar.Text = "Seleccionar";
-            this.btnSeleccionar.UseVisualStyleBackColor = true;
-            this.btnSeleccionar.Visible = false;
-            this.btnSeleccionar.Click += new System.EventHandler(this.btnSeleccionar_Click);
+            this.lblFin.AutoSize = true;
+            this.lblFin.Location = new System.Drawing.Point(562, 363);
+            this.lblFin.Name = "lblFin";
+            this.lblFin.Size = new System.Drawing.Size(104, 13);
+            this.lblFin.TabIndex = 81;
+            this.lblFin.Text = "Fecha y hora previa:";
+            // 
+            // lblInicio
+            // 
+            this.lblInicio.AutoSize = true;
+            this.lblInicio.Location = new System.Drawing.Point(562, 333);
+            this.lblInicio.Name = "lblInicio";
+            this.lblInicio.Size = new System.Drawing.Size(104, 13);
+            this.lblInicio.TabIndex = 80;
+            this.lblInicio.Text = "Fecha y hora previa:";
             // 
             // GestionarEventos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(836, 441);
-            this.Controls.Add(this.btnSeleccionar);
-            this.Controls.Add(this.dtpHora);
+            this.Controls.Add(this.lblFin);
+            this.Controls.Add(this.lblInicio);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.lblFechayHora);
-            this.Controls.Add(this.dtpFecha);
             this.Controls.Add(this.btnGuardar);
-            this.Controls.Add(this.btnModificar);
             this.Controls.Add(this.txtUbicacion);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtDescripcion);
@@ -268,7 +245,6 @@
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtID);
-            this.Controls.Add(this.btnVolver);
             this.Name = "GestionarEventos";
             this.Text = "Editar evento";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -279,8 +255,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Label label2;
@@ -295,10 +269,9 @@
         private System.Windows.Forms.TextBox txtUbicacion;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnGuardar;
-        private System.Windows.Forms.Button btnModificar;
-        private System.Windows.Forms.DateTimePicker dtpFecha;
         private System.Windows.Forms.Label lblFechayHora;
-        private System.Windows.Forms.DateTimePicker dtpHora;
-        private System.Windows.Forms.Button btnSeleccionar;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblFin;
+        private System.Windows.Forms.Label lblInicio;
     }
 }

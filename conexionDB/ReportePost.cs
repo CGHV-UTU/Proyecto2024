@@ -13,7 +13,7 @@ namespace BackofficeDeAdministracion
 {
     public partial class ReportePost : Form
     {
-        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
         public ReportePost()
         {
             InitializeComponent();
@@ -24,19 +24,19 @@ namespace BackofficeDeAdministracion
         //Cargar tabla      
         private void cargarTabla()
         {
-            string connectionString = "server = localhost; database = base; uid = root; ";
+            string connectionString = "server = localhost; database = infini; uid = root; ";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
-                    string query = "SELECT NumeroDeReporte, NombreDeUsuario FROM base.Reporte_Post";
+                    string query = "SELECT numeroDeReporte, idPost, creadorDelPost FROM Reportes WHERE idPost IS NOT NULL";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
                     foreach (DataRow row in dataTable.Rows)
-                        dataGridView1.DataSource = dataTable;
+                    dataGridView1.DataSource = dataTable;
                 }
                 catch (Exception ex)
                 {
@@ -46,13 +46,20 @@ namespace BackofficeDeAdministracion
         }
         private void inicializarTablaPosts()
         {
-            DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle();
-            columnHeaderStyle.BackColor = Color.Beige;
-            columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
-            dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;
-            dataGridView1.Columns["NumeroDeReporte"].Width = 80;
-            dataGridView1.Columns["NombreDeUsuario"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+            try
+            {
+                DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle();
+                columnHeaderStyle.BackColor = Color.Beige;
+                columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
+                dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;
+                dataGridView1.Columns["numeroDeReporte"].Width = 80;
+                dataGridView1.Columns["creadorDelPost"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+            }
+            catch
+            {
+
+            }
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
@@ -68,13 +75,21 @@ namespace BackofficeDeAdministracion
                         if (row.Cells[0].Value != null && int.Parse(row.Cells[0].Value.ToString()) == id)
                         {
                             conn.Open();
-                            MySqlCommand command = new MySqlCommand("SELECT NombreDeUsuario, descripcion FROM Reporte_Posts WHERE id=@id", conn);
+                            MySqlCommand command = new MySqlCommand("SELECT creadorDelPost, idPost, tipo, descripcion FROM Reportes WHERE numeroDeReporte=@id", conn);
                             command.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
                             MySqlDataReader reader = command.ExecuteReader();
                             if (reader.Read())
                             {
-                                lblNombreDeCuenta.Text = reader["NombreDeUsuario"].ToString();
+                                lblCuenta.Text = reader["creadorDelPost"].ToString();
                                 lblDescripcionReporte.Text = reader["descripcion"].ToString();
+                                lblTipo.Text = reader["tipo"].ToString();
+                                lblIdPost.Text = reader["idPost"].ToString();
+                                lblNombre.Show();
+                                lblCuenta.Show();
+                                label2.Show();
+                                lblIdPost.Show();
+                                label1.Show();
+                                lblTipo.Show();
                                 lblNombre.Show();
                                 lblDescripcionReporte.Show();
                                 lblDescripcion.Show();
@@ -107,9 +122,7 @@ namespace BackofficeDeAdministracion
         {
             try
             {
-                var filaSeleccionada = dataGridView1.CurrentRow;
-                string id = filaSeleccionada.Cells[0].Value.ToString();
-                dataGridView1.Rows.Remove(filaSeleccionada);
+                string id = lblIdPost.Text;
                 GuardarId(id);
             }
             catch (Exception)
@@ -130,10 +143,29 @@ namespace BackofficeDeAdministracion
             conn.Open();
             foreach (string id in eliminarDatos)
             {
-                string query = "DELETE FROM posts WHERE id = @id";
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.ExecuteNonQuery();
+                MySqlCommand command = new MySqlCommand("DELETE FROM Reportes WHERE idPost=@Id;", conn);
+                MySqlCommand command8 = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", conn);
+                MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", conn);
+                MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost = @Id", conn);
+                MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost = @Id", conn);
+                MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost = @Id", conn);
+                MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost = @Id", conn);
+                MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=(SELECT id FROM Comentarios WHERE idPost=@id)", conn);
+                command.Parameters.AddWithValue("@Id", id);
+                command8.Parameters.AddWithValue("@Id", id);
+                command2.Parameters.AddWithValue("@Id", id);
+                command3.Parameters.AddWithValue("@Id", id);
+                command4.Parameters.AddWithValue("@Id", id);
+                command5.Parameters.AddWithValue("@Id", id);
+                command6.Parameters.AddWithValue("@Id", id);
+                command7.Parameters.AddWithValue("@Id", id);
+                command7.ExecuteNonQuery();
+                command.ExecuteNonQuery();
+                command2.ExecuteNonQuery();
+                command3.ExecuteNonQuery();
+                command4.ExecuteNonQuery();
+                command5.ExecuteNonQuery();
+                command6.ExecuteNonQuery();
             }
             eliminarDatos.Clear();
             conn.Close();

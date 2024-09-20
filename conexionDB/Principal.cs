@@ -12,11 +12,11 @@ using MySql.Data.MySqlClient;
 namespace BackofficeDeAdministracion
 {
     public partial class Principal : Form
-    {      
+    {
+        private bool modo = true;
         public Principal(string usuario)
         {
             InitializeComponent();   
-            VerificarBaneosTemporales.Iniciar();
             lblUsuarioBackoffice.Text = usuario;
             PanelReportes.BringToFront();
             PanelBackoffice.BringToFront();
@@ -85,59 +85,100 @@ namespace BackofficeDeAdministracion
         }
 
         //Botones Secundarios
-        private void ContenidoUsuarios_Click(object sender, EventArgs e)
+        private void VerificarYCargarForm(string nombreForm)
         {
-            CargarForm("BackofficeDeAdministracion.GestionarUsuarios");
+            if (PanelVista.Controls.Count == 0)
+            {
+                CargarForm(nombreForm);
+            }
+            else
+            {
+                DialogResult result = MessageBox.Show("¿Desea salir de la ventana actual? Los datos no guardados se perderán", "Confirmar salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    CargarForm(nombreForm);
+                }
+            }
         }
-
+        private void ContenidoUsuarios_Click(object sender, EventArgs e)
+        {           
+            VerificarYCargarForm("BackofficeDeAdministracion.GestionarUsuarios");
+        }
         private void ContenidoPosts_Click(object sender, EventArgs e)
         {
-            CargarForm("BackofficeDeAdministracion.GestionarPosts");
+            VerificarYCargarForm("BackofficeDeAdministracion.GestionarPosts");
         }
 
         private void ContenidoEventos_Click(object sender, EventArgs e)
         {
-            CargarForm("BackofficeDeAdministracion.GestionarEventos");
+            VerificarYCargarForm("BackofficeDeAdministracion.GestionarEventos");
         }
 
         private void ContenidoComentarios_Click(object sender, EventArgs e)
         {
-            CargarForm("BackofficeDeAdministracion.GestionarComentarios");
+            VerificarYCargarForm("BackofficeDeAdministracion.GestionarComentarios");
         }
 
         private void ContenidoGrupos_Click(object sender, EventArgs e)
         {
-            CargarForm("BackofficeDeAdministracion.GestionarGrupos");
+            VerificarYCargarForm("BackofficeDeAdministracion.GestionarGrupos");
         }
 
         private void ReportesUsuario_Click(object sender, EventArgs e)
         {
-            CargarForm("BackofficeDeAdministracion.ReporteUsuario");
+            VerificarYCargarForm("BackofficeDeAdministracion.ReporteUsuario");
         }
 
         private void ReportesPost_Click(object sender, EventArgs e)
         {
-            CargarForm("BackofficeDeAdministracion.ReportePost");
+            VerificarYCargarForm("BackofficeDeAdministracion.ReportePost");
         }
 
         private void ReportesComentario_Click(object sender, EventArgs e)
         {
-            CargarForm("BackofficeDeAdministracion.ReporteComentario");
+            VerificarYCargarForm("BackofficeDeAdministracion.ReporteComentario");
         }
 
         private void ReportesGrupo_Click(object sender, EventArgs e)
         {
-
+            VerificarYCargarForm("BackofficeDeAdministracion.ReporteGrupo");
         }
 
-        private void BackofficeAgregar_Click(object sender, EventArgs e)
+        private void lblModo_Click(object sender, EventArgs e)
         {
-            CargarForm("BackofficeDeAdministracion.AgregarAdmin");
+            if (modo)
+            {
+                CambiarModo(Color.Black, this);
+                modo = false;
+            }
+            else
+            {
+                CambiarModo(Color.White, this);
+                modo = true;
+            }
+        }
+        private void CambiarModo(Color color, Control control1)
+        {
+            foreach (Control control in control1.Controls)
+            {
+                if (control is Label label)
+                {
+                    label.ForeColor = color;
+                }
+                else if (control.HasChildren)
+                {
+                    if (control.Name.Equals("PanelIzquierdo") && color.Equals(Color.White))
+                    {
+                        control.BackColor = Color.FromArgb(64, 64, 64);
+                    }
+                    else if(control.Name.Equals("PanelIzquierdo") && color.Equals(Color.Black))
+                    {
+                        control.BackColor = Color.Silver;
+                    }
+                    CambiarModo(color, control);
+                }
+            }
         }
 
-        private void BackofficeEliminar_Click(object sender, EventArgs e)
-        {
-            CargarForm("BackofficeDeAdministracion.EliminarAdmin");
-        }
     }
 }

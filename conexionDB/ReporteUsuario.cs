@@ -13,7 +13,7 @@ namespace BackofficeDeAdministracion
 {
     public partial class ReporteUsuario : Form
     {
-        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
         public ReporteUsuario()
         {
             InitializeComponent();
@@ -28,13 +28,13 @@ namespace BackofficeDeAdministracion
         //Cargar tabla      
         private void cargarTabla()
         {
-            string connectionString = "server = localhost; database = base; uid = root; ";
+            string connectionString = "server = localhost; database = infini; uid = root; ";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
-                    string query = "SELECT NumeroDeReporte, NombreDeUsuario FROM base.Reporte";
+                    string query = "SELECT numeroDeReporte, cuentaReporteUsuario, tipo FROM Reportes WHERE cuentaReporteUsuario IS NOT NULL";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     DataTable dataTable = new DataTable();
@@ -54,8 +54,8 @@ namespace BackofficeDeAdministracion
             columnHeaderStyle.BackColor = Color.Beige;
             columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
             dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;
-            dataGridView1.Columns["NumeroDeReporte"].Width = 80;
-            dataGridView1.Columns["NombreDeUsuario"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridView1.Columns["numeroDeReporte"].Width = 80;
+            dataGridView1.Columns["cuentaReporteUsuario"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
         }
 
@@ -72,16 +72,19 @@ namespace BackofficeDeAdministracion
                         if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == nombre)
                         {
                             conn.Open();
-                            MySqlCommand command = new MySqlCommand("SELECT NombreDeUsuario, descripcion FROM base.Reporte WHERE id=@id", conn);
+                            MySqlCommand command = new MySqlCommand("SELECT cuentaReporteUsuario, tipo, descripcion FROM Reportes WHERE numeroDeReporte=@id", conn);
                             command.Parameters.AddWithValue("@id", txtID.Text);
                             MySqlDataReader reader = command.ExecuteReader();
                             if (reader.Read())
                             {
-                                lblNombreDeCuenta.Text = reader["NombreDeUsuario"].ToString();
-                                lblDescripcionReporte.Text = reader["descripcion"].ToString();                           
+                                lblNombreDeCuenta.Text = reader["cuentaReporteUsuario"].ToString();
+                                lblDescripcionReporte.Text = reader["tipo"].ToString();
+                                lblDescripcionReporte.Text = reader["descripcion"].ToString();
                                 lblNombre.Show();
                                 lblDescripcionReporte.Show();
                                 lblDescripcion.Show();
+                                lblTipo.Show();
+                                lblT.Show();
                             }
                             conn.Close();
                             dataGridView1.ClearSelection();
@@ -105,60 +108,52 @@ namespace BackofficeDeAdministracion
                 MessageBox.Show("Debe ingresar una id", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
-
         private void btnBaneoPermanente(object sender, EventArgs e)
         {
             if (lblNombreDeCuenta.Text == "")
             {
                 MessageBox.Show("Debe ingresar un usuario a banear");
+                return;
             }
-            else
+
+            string connectionString = "server=localhost; database=infini; uid=root;";
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                string connectionString = "server = localhost; database = base; uid = root; ";
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                try
                 {
                     conn.Open();
-                    MySqlCommand consultaEstado = new MySqlCommand("SELECT estado_de_cuenta FROM base.usuarios WHERE NombreDeCuenta = @NombreDeCuenta", conn);
+                    MySqlCommand consultaEstado = new MySqlCommand("SELECT idBan FROM Ban WHERE nombreDeUsuario = @NombreDeCuenta", conn);
                     consultaEstado.Parameters.AddWithValue("@NombreDeCuenta", lblNombreDeCuenta.Text);
                     MySqlDataReader reader = consultaEstado.ExecuteReader();
+
                     if (reader.Read())
                     {
-                        if (reader["estado_de_cuenta"].ToString() == "baneado")
-                        {
-                            MessageBox.Show("El usuario ya se encuentra baneado permanentemente");
-                        }
-                        else
-                        {
-                            conn.Close();
-                            MySqlCommand command = new MySqlCommand("UPDATE base.usuarios SET estado_de_cuenta = 'baneado', fechaBaneoTemporal = NULL WHERE NombreDeCuenta = @NombreDeCuenta", conn);
-                            command.Parameters.AddWithValue("@NombreDeCuenta", lblNombreDeCuenta.Text);
-                            try
-                            {
-                                conn.Open();
-                                int rowsAffected = command.ExecuteNonQuery();
-                                if (rowsAffected > 0)
-                                {
-                                    MessageBox.Show("Se ha baneado al usuario correctamente.");
-                                    cargarTabla();
-                                }
-                                else
-                                {
-                                    MessageBox.Show("No se encontró el usuario en la base de datos.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
-                            }
-                            catch (Exception)
-                            {
-                                MessageBox.Show("Error al intentar banear al usuario.");
-                            }
-                        }
+                        MessageBox.Show("El usuario ya se encuentra baneado");
+                        return;
+                    }
+                    reader.Close(); 
+                    MySqlCommand command = new MySqlCommand("INSERT INTO Ban (nombreDeUsuario, fechaInicio, fechaFinalizacion) VALUES (@NombreDeCuenta, NOW(), '3024-12-24 23:59:59')", conn);
+                    command.Parameters.AddWithValue("@NombreDeCuenta", lblNombreDeCuenta.Text);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Se ha baneado al usuario correctamente.");
+                        cargarTabla();
                     }
                     else
                     {
                         MessageBox.Show("No se encontró el usuario en la base de datos.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al intentar banear al usuario: {ex.Message}");
+                }
+                conn.Close();
             }
         }
+     
         private void btnBaneoTemporal(object sender, EventArgs e)
         {
             if (lblNombreDeCuenta.Text == "")
@@ -169,11 +164,10 @@ namespace BackofficeDeAdministracion
             {
                 string fechayhora = dtpFecha.Text + " " + dtpHora.Text;
                 DateTime fechayhora1 = Convert.ToDateTime(fechayhora);
-                Console.WriteLine(fechayhora1);
-                string connectionString = "server=localhost; database=base; uid=root;";
+                string connectionString = "server=localhost; database=infini; uid=root;";
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
-                    MySqlCommand command = new MySqlCommand("UPDATE base.usuarios SET estado_de_cuenta = 'temporal', fechaBaneoTemporal = @FechaBaneoTemporal WHERE NombreDeCuenta = @NombreDeCuenta", conn);
+                    MySqlCommand command = new MySqlCommand("INSERT INTO Ban(nombreDeUsuario, fechaInicio, fechaFinalizacion) VALUES(@NombreDeCuenta, NOW(), @FechaBaneoTemporal)", conn);
                     command.Parameters.AddWithValue("@NombreDeCuenta", lblNombreDeCuenta.Text);
                     command.Parameters.AddWithValue("@FechaBaneoTemporal", fechayhora1);
                     try
@@ -197,7 +191,6 @@ namespace BackofficeDeAdministracion
                 }
             }
         }
-
         private void btnDesbanear(object sender, EventArgs e)
         {
             if (lblNombreDeCuenta.Text == "")
@@ -206,54 +199,44 @@ namespace BackofficeDeAdministracion
             }
             else
             {
-                string connectionString = "server=localhost; database=base; uid=root;";
+                string connectionString = "server=localhost; database=infini; uid=root;";
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    MySqlCommand consultaEstado = new MySqlCommand("SELECT estado_de_cuenta FROM base.usuarios WHERE NombreDeCuenta = @NombreDeCuenta", conn);
+                    MySqlCommand consultaEstado = new MySqlCommand("SELECT nombreDeUsuario FROM Ban WHERE nombreDeUsuario = @NombreDeCuenta", conn);
                     consultaEstado.Parameters.AddWithValue("@NombreDeCuenta", lblNombreDeCuenta.Text);
                     MySqlDataReader reader = consultaEstado.ExecuteReader();
                     if (reader.Read())
                     {
-                        if (reader["estado_de_cuenta"].ToString() == "activo")
+                        conn.Close();
+                        MySqlCommand command = new MySqlCommand("DELETE FROM Ban WHERE nombreDeUsuario = @NombreDeCuenta", conn);
+                        command.Parameters.AddWithValue("@NombreDeCuenta", lblNombreDeCuenta.Text);
+                        try
                         {
-                            MessageBox.Show("El usuario se encuentra activo");
+                            conn.Open();
+                            int rowsAffected = command.ExecuteNonQuery();
+                            if (rowsAffected > 0)
+                            {
+                                MessageBox.Show("Se ha desbaneado al usuario.");
+                                cargarTabla();
+                            }
+                            else
+                            {
+                                MessageBox.Show("No se encontró el usuario en la base de datos.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
-                        else
+                        catch (Exception)
                         {
-                            conn.Close();
-                            MySqlCommand command = new MySqlCommand("UPDATE usuarios SET estado_de_cuenta = 'activo', fechaBaneoTemporal = NULL WHERE NombreDeCuenta = @NombreDeCuenta", conn);
-                            command.Parameters.AddWithValue("@NombreDeCuenta", lblNombreDeCuenta.Text);
-                            try
-                            {
-                                conn.Open();
-                                int rowsAffected = command.ExecuteNonQuery();
-                                if (rowsAffected > 0)
-                                {
-                                    MessageBox.Show("Se ha desbaneado al usuario.");
-                                    cargarTabla();
-                                }
-                                else
-                                {
-                                    MessageBox.Show("No se encontró el usuario en la base de datos.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
-                            }
-                            catch (Exception)
-                            {
-                                MessageBox.Show("Error al intentar desbanear al usuario.");
-                            }
+                            MessageBox.Show("Error al intentar desbanear al usuario.");
                         }
                     }
                     else
                     {
-                        MessageBox.Show("No se encontró el usuario en la base de datos.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("El usuario se encuentra activo");
+                        conn.Close();
                     }
                 }
             }
-        }
-        private void btnVolver_Click(object sender, EventArgs e)
-        {
-            Close();
         }
     }
 }

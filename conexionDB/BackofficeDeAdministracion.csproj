@@ -114,18 +114,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AgregarAdmin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AgregarAdmin.Designer.cs">
-      <DependentUpon>AgregarAdmin.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EliminarAdmin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EliminarAdmin.Designer.cs">
-      <DependentUpon>EliminarAdmin.cs</DependentUpon>
-    </Compile>
     <Compile Include="GestionarComentarios.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -188,13 +176,6 @@
     <Compile Include="ReporteUsuario.Designer.cs">
       <DependentUpon>ReporteUsuario.cs</DependentUpon>
     </Compile>
-    <Compile Include="VerificarBaneosTemporales.cs" />
-    <EmbeddedResource Include="AgregarAdmin.resx">
-      <DependentUpon>AgregarAdmin.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EliminarAdmin.resx">
-      <DependentUpon>EliminarAdmin.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GestionarComentarios.resx">
       <DependentUpon>GestionarComentarios.cs</DependentUpon>
     </EmbeddedResource>

@@ -37,7 +37,6 @@ namespace BackofficeDeAdministracion
             this.lblNombreDeGrupo = new System.Windows.Forms.Label();
             this.lblDesc = new System.Windows.Forms.Label();
             this.lblNombre = new System.Windows.Forms.Label();
-            this.btnVolver = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.lblNom = new System.Windows.Forms.Label();
@@ -124,18 +123,6 @@ namespace BackofficeDeAdministracion
             this.lblNombre.Text = "Nombre de Grupo:";
             this.lblNombre.Visible = false;
             // 
-            // btnVolver
-            // 
-            this.btnVolver.BackColor = System.Drawing.Color.Red;
-            this.btnVolver.ForeColor = System.Drawing.Color.White;
-            this.btnVolver.Location = new System.Drawing.Point(-2, 0);
-            this.btnVolver.Name = "btnVolver";
-            this.btnVolver.Size = new System.Drawing.Size(89, 23);
-            this.btnVolver.TabIndex = 102;
-            this.btnVolver.Text = " ⬅️ Volver";
-            this.btnVolver.UseVisualStyleBackColor = false;
-            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
-            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
@@ -192,7 +179,7 @@ namespace BackofficeDeAdministracion
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(813, 22);
             this.btnGuardar.TabIndex = 112;
-            this.btnGuardar.Text = "💾 Guardar y Salir";
+            this.btnGuardar.Text = "💾 Guardar";
             this.btnGuardar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnGuardar.UseVisualStyleBackColor = true;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
@@ -212,7 +199,6 @@ namespace BackofficeDeAdministracion
             this.Controls.Add(this.lblNombreDeGrupo);
             this.Controls.Add(this.lblDesc);
             this.Controls.Add(this.lblNombre);
-            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.lblNom);
@@ -236,7 +222,6 @@ namespace BackofficeDeAdministracion
         private System.Windows.Forms.Label lblNombreDeGrupo;
         private System.Windows.Forms.Label lblDesc;
         private System.Windows.Forms.Label lblNombre;
-        private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.Label lblNom;

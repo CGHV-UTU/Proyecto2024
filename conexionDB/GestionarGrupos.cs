@@ -6,6 +6,8 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,7 +16,7 @@ namespace BackofficeDeAdministracion
 {
     public partial class GestionarGrupos : Form
     {
-        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
         public GestionarGrupos()
         {
             InitializeComponent();
@@ -25,13 +27,13 @@ namespace BackofficeDeAdministracion
         //Cargar tabla      
         private void CargarTabla()
         {
-            string connectionString = "server = localhost; database = base; uid = root; ";
+            string connectionString = "server = localhost; database = infini; uid = root; ";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
-                    string query = "SELECT nombreReal, nombreVisible FROM grupos";
+                    string query = "SELECT nombreReal, nombreVisible FROM Grupos";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     DataTable dataTable = new DataTable();
@@ -56,8 +58,27 @@ namespace BackofficeDeAdministracion
             dataGridView1.Columns["nombreVisible"].HeaderText = "Nombre Visible";
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
         }
+        private async Task<string> CargarImagenDeGitHub(string urlImagen)
+        {
+            using (var client = new HttpClient())
+            {
+                string token = "11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        private void btnBuscar_Click(object sender, EventArgs e)
+                var response = await client.GetAsync(urlImagen);
+                if (response.IsSuccessStatusCode)
+                {
+                    byte[] imagenBytes = await response.Content.ReadAsByteArrayAsync();
+                    return Convert.ToBase64String(imagenBytes);
+                }
+                else
+                {
+                    throw new Exception("No se pudo descargar la imagen desde GitHub.");
+                }
+            }
+        }
+
+        private async void btnBuscar_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(txtID.Text))
             {
@@ -70,7 +91,7 @@ namespace BackofficeDeAdministracion
                         if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == nombre)
                         {
                             conn.Open();
-                            MySqlCommand command = new MySqlCommand("SELECT nombreReal, nombreVisible, foto, descripcion FROM grupos WHERE nombreReal=@nombreReal", conn);
+                            MySqlCommand command = new MySqlCommand("SELECT nombreReal, nombreVisible, foto, descripcion FROM Grupos WHERE nombreReal=@nombreReal", conn);
                             command.Parameters.AddWithValue("@nombreReal", nombre);
                             MySqlDataReader reader = command.ExecuteReader();
                             if (reader.Read())
@@ -81,10 +102,14 @@ namespace BackofficeDeAdministracion
 
                                 try
                                 {
-                                    MemoryStream ms = new MemoryStream((byte[])reader["foto"]);
-                                    Bitmap bitmap = new Bitmap(ms);
-                                    pictureBox1.Image = bitmap;
-                                    pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                                    string imagen = await CargarImagenDeGitHub(reader["foto"].ToString());
+                                    byte[] imagenBytes = Convert.FromBase64String(imagen);
+                                    using (MemoryStream ms = new MemoryStream(imagenBytes))
+                                    {
+                                        Bitmap bitmap = new Bitmap(ms);
+                                        pictureBox1.Image = bitmap;
+                                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                                    }
                                 }
                                 catch
                                 {
@@ -130,8 +155,6 @@ namespace BackofficeDeAdministracion
             }
             else
             {
-                var filaSeleccionada = dataGridView1.SelectedRows[0];             
-                dataGridView1.Rows.Remove(filaSeleccionada);
                 MessageBox.Show("Grupo eliminado correctamente.");
                 string Nombre = lblNombreDeGrupo.Text;
                 GuardarNombre(Nombre);
@@ -144,7 +167,6 @@ namespace BackofficeDeAdministracion
                     // Verifica si el control es de tipo Label y no es "lblNom"(El Principal Para Buscar grupos)
                     if (control is Label && control.Name != "lblNom")
                     {
-                        // Oculta el control
                         control.Visible = false;
                     }
                 }
@@ -158,71 +180,22 @@ namespace BackofficeDeAdministracion
         {
             eliminarDatos.Add(Nombre);
         }
-
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             conn.Open();
             foreach (string Nombre in eliminarDatos)
             {
-                MySqlCommand command = new MySqlCommand("DELETE FROM base.grupos WHERE nombreReal = @nombreReal", conn);
-                command.Parameters.AddWithValue("@nombreReal", Nombre);                            
-                command.ExecuteNonQuery();
+                MySqlCommand cmd = new MySqlCommand("DELETE FROM Reportes WHERE nombreGrupo = @nombreReal;" +
+                    "DELETE FROM Participa WHERE nombreReal = @nombreReal;" +
+                    "DELETE FROM PostGrupo WHERE nombreReal = @nombreReal;" +
+                    "DELETE FROM Grupos WHERE nombreReal = @nombreReal", conn);
+                cmd.Parameters.AddWithValue("@nombreReal", Nombre);
+                cmd.ExecuteNonQuery();
             }
             eliminarDatos.Clear();
             conn.Close();
             MessageBox.Show("Información guardada con éxito");
             this.Close();
-        }
-        private void btnVolver_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("¿desea salir del programa? Los datos no guardados se perderán", "Confirmar salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                Close();
-            }
-        }
-
-        //testing
-        public string EliminarGrupo(string nombre)
-        {
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;"))
-                {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("DELETE FROM grupos WHERE nombreReal=@nombreReal", conn);
-                    cmd.Parameters.AddWithValue("@nombreReal", nombre);
-                    int rowsAffected = cmd.ExecuteNonQuery();
-                    if (rowsAffected > 0)
-                    {
-                        return "Grupo eliminado";
-                    }
-                    else
-                    {
-                        return "No se encontró el grupo a eliminar";
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return "Error al intentar eliminar grupo";
-            }
-        }
-        public string UltimoGrupo()
-        {
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-            conn.Open();
-            MySqlCommand command = new MySqlCommand("SELECT nombreReal FROM grupos ORDER BY nombreReal DESC LIMIT 1", conn);
-            MySqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                string nombre = reader["nombreReal"].ToString();
-                return nombre;
-            }
-            else
-            {
-                return null;
-            }
         }
     }
 }

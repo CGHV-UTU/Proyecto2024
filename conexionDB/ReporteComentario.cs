@@ -13,7 +13,7 @@ namespace BackofficeDeAdministracion
 {
     public partial class ReporteComentario : Form
     {
-        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
         public ReporteComentario()
         {
             InitializeComponent();
@@ -30,7 +30,7 @@ namespace BackofficeDeAdministracion
                 try
                 {
                     conn.Open();
-                    string query = "SELECT NumeroDeReporte, NombreDeUsuario FROM base.Reporte_Comentario";
+                    string query = "SELECT numeroDeReporte, creadorDelComentario, tipo FROM Reportes WHERE idComentario IS NOT NULL";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     DataTable dataTable = new DataTable();
@@ -50,8 +50,10 @@ namespace BackofficeDeAdministracion
             columnHeaderStyle.BackColor = Color.Beige;
             columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
             dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;
-            dataGridView1.Columns["NumeroDeReporte"].Width = 80;
-            dataGridView1.Columns["NombreDeUsuario"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridView1.Columns["numeroDeReporte"].Width = 60;
+            dataGridView1.Columns["numeroDeReporte"].HeaderText = "Reporte";
+            dataGridView1.Columns["creadorDelComentario"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridView1.Columns["creadorDelComentario"].HeaderText = "Creador";
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
         }
 
@@ -68,16 +70,21 @@ namespace BackofficeDeAdministracion
                         if (row.Cells[0].Value != null && int.Parse(row.Cells[0].Value.ToString()) == id)
                         {
                             conn.Open();
-                            MySqlCommand command = new MySqlCommand("SELECT NombreDeUsuario, descripcion FROM Reporte_Comentario WHERE id=@id", conn);
+                            MySqlCommand command = new MySqlCommand("SELECT idComentario, creadorDelComentario, tipo, descripcion FROM Reportes WHERE numeroDeReporte=@id", conn);
                             command.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
                             MySqlDataReader reader = command.ExecuteReader();
                             if (reader.Read())
                             {
-                                lblNombreDeCuenta.Text = reader["NombreDeUsuario"].ToString();
+                                lblNombreDeCuenta.Text = reader["creadorDelComentario"].ToString();
                                 lblDescripcionReporte.Text = reader["descripcion"].ToString();
+                                lblTipo.Text = reader["tipo"].ToString();
                                 lblNombre.Show();
                                 lblDescripcionReporte.Show();
                                 lblDescripcion.Show();
+                                reader.Close();
+                                MySqlCommand command2 = new MySqlCommand("SELECT texto FROM comentarios WHERE id = @idComentario");
+                                command2.Parameters.AddWithValue("@id", int.Parse(reader["idComentario"].ToString()));
+
                             }
                             conn.Close();
                             dataGridView1.ClearSelection();
@@ -107,9 +114,7 @@ namespace BackofficeDeAdministracion
         {
             try
             {
-                var filaSeleccionada = dataGridView1.CurrentRow;
-                string id = filaSeleccionada.Cells[0].Value.ToString();
-                dataGridView1.Rows.Remove(filaSeleccionada);
+                string id = txtID.Text;
                 GuardarId(id);
             }
             catch (Exception)
@@ -127,18 +132,41 @@ namespace BackofficeDeAdministracion
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            conn.Open();
-            foreach (string id in eliminarDatos)
+            try
             {
-                string query = "DELETE FROM posts WHERE id = @id";
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.ExecuteNonQuery();
+                conn.Open();
+                //Para remover de la base de datos los comentarios eliminados
+                foreach (string id in eliminarDatos)
+                {
+                    string query = "DELETE FROM Comentarios WHERE id = @id";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    try
+                    {
+                        string query2 = "DELETE FROM DaLikeComentario WHERE idComentario=@id";
+                        MySqlCommand cmd2 = new MySqlCommand(query2, conn);
+                        cmd2.Parameters.AddWithValue("@id", id);
+                        cmd2.ExecuteNonQuery();
+                    }
+                    catch
+                    {
+
+                    }
+                    cmd.ExecuteNonQuery();
+                }
+                eliminarDatos.Clear();
+                conn.Close();
+                MessageBox.Show("Información guardada con éxito");
+                this.Close();
             }
-            eliminarDatos.Clear();
-            conn.Close();
-            MessageBox.Show("Información guardada con éxito");
-            this.Close();
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Ocurrió un error: " + ex.Message, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ocurrió un error: " + ex.Message, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
     }   
 }

@@ -13,7 +13,7 @@ namespace BackofficeDeAdministracion
 {
     public partial class Login : Form
     {
-        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
+        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
         public Login()
         {
             InitializeComponent();
@@ -30,12 +30,12 @@ namespace BackofficeDeAdministracion
                 try
                 {                    
                     conn.Open();
-                    MySqlCommand command = new MySqlCommand("SELECT Contraseña FROM AdministradorBackoffice WHERE Nombre=@Nombre", conn);
+                    MySqlCommand command = new MySqlCommand("SELECT contrasena FROM Login WHERE nombreDeCuenta=@Nombre", conn);
                     command.Parameters.AddWithValue("@Nombre", txtUser.Text);
                     MySqlDataReader reader = command.ExecuteReader();
                     if (reader.Read())
                     {
-                        string contReal = reader["Contraseña"].ToString();
+                        string contReal = reader["contrasena"].ToString();
                         if (contReal == txtPass.Text)
                         {
                             MessageBox.Show("Acceso concedido.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -46,18 +46,18 @@ namespace BackofficeDeAdministracion
                         }
                         else
                         {
-                            lblError2.Show();
+                            MessageBox.Show("No encontrado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         }                    
                     }
                     else
                     {
-                        MessageBox.Show("No se encontró el usuario especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBox.Show("No encontrado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                     conn.Close();                                   
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("No se encontró el usuario especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show("No encontrado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
                      
         }
@@ -65,7 +65,7 @@ namespace BackofficeDeAdministracion
         //Verificar conexión con la Base de Datos
         private void VerificarConexión()
         {       
-            MySqlConnection conn = new MySqlConnection("server=localhost;database=base;uid=root;");
+            MySqlConnection conn = new MySqlConnection("server=localhost;database=infini;uid=root;");
             try
             {
                 conn.Open();
