@@ -1,15 +1,28 @@
 # Proyecto UTU 2024
 --- 
-En este repositorio se encuentra lo referente al proyecto que se relacione con el código, como los scripts de bases de datos que usamos en su desarrollo, diagramas o manuales de instalación. 
+En este repositorio se encuentra lo referente al proyecto relacionado al código, como los scripts de bases de datos que usamos en su desarrollo, diagramas o manuales de instalación. 
+
+Utilizamos dos repositorios de Github para nuestro proyecto. Este repositorio es utilizado para versionamiento de código y otro para subir y descargar imágenes.
+
+Link a Repositorio de Imágenes: https://github.com/imagesinfini/publicImages
+Contiene diferentes carpetas para cada tipo de contenido.
+
 
 La rama principal contiene la carpeta "Documentos", donde se encuentran algunos manuales de instalación, archivos .sh, el boceto de MER y otros diagramas.
 
-Tenemos una rama dedicada para las versiones de la APIs de Post y Eventos, de Usuarios y de Urupos.
+En las ramas “Frontend-Infini”, “api_postYeventos”,”api_usuarios”, “API_Grupos_2019”, “PruebasAPIGrupos” y “Backoffice-Infini” se encuentran las últimas versiones de los programas. 
 
-Las ramas "Backoffice" tienen un programa que interactúa directamente con una base de datos primitiva.
+El sistema consiste en tres APIs con sus interfaces gráficas de prueba contenidas en su rama u otra separada, la primera versión del frontend y finalmente una aplicación de gestión que permite acceder y modificar la base de datos. 
+ 
+# Aclaraciones:
 
-En nuestras API usamos un token privado que permite la conexión con un repositorio en el que se guardan las imágenes. 
-En el código el token no está disponible por motivos de seguridad
+Para que funcione el token de github hay que escribir “github_pat_” en el string “token” de los métodos “SubirImagenAGithub” y “CargarImagenDeGithub”.
+
+Para el funcionamiento del testing de API post y eventos es necesario crear un usuario con nombreDeCuenta “UsuarioDePrueba” .
+
+En Backoffice, eliminamos las opciones de modificación de contenido privado previamente hechas por privacidad.
+
+
 
 ## Definition of Done del Product Backlog
 
