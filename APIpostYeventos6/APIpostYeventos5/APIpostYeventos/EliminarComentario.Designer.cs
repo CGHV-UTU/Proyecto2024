@@ -30,23 +30,16 @@ namespace APIpostYeventos
         private void InitializeComponent()
         {
             this.btnVolver = new System.Windows.Forms.Button();
-            this.lblFoto = new System.Windows.Forms.Label();
             this.lblErrorID = new System.Windows.Forms.Label();
             this.btnBuscar = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.txtID = new System.Windows.Forms.TextBox();
             this.lblID = new System.Windows.Forms.Label();
-            this.lblVideo = new System.Windows.Forms.Label();
-            this.lblTexto = new System.Windows.Forms.Label();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.txtUrl = new System.Windows.Forms.Label();
-            this.txtTexto = new System.Windows.Forms.Label();
             this.lblComentario = new System.Windows.Forms.Label();
             this.txtIdComentario = new System.Windows.Forms.TextBox();
             this.lblError2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,17 +52,6 @@ namespace APIpostYeventos
             this.btnVolver.Text = "Volver";
             this.btnVolver.UseVisualStyleBackColor = true;
             this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
-            // 
-            // lblFoto
-            // 
-            this.lblFoto.AutoSize = true;
-            this.lblFoto.Location = new System.Drawing.Point(422, 8);
-            this.lblFoto.Name = "lblFoto";
-            this.lblFoto.Size = new System.Drawing.Size(28, 13);
-            this.lblFoto.TabIndex = 85;
-            this.lblFoto.Text = "Foto";
-            this.lblFoto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblFoto.Visible = false;
             // 
             // lblErrorID
             // 
@@ -91,14 +73,6 @@ namespace APIpostYeventos
             this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(357, 24);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(159, 135);
-            this.pictureBox1.TabIndex = 82;
-            this.pictureBox1.TabStop = false;
-            // 
             // txtID
             // 
             this.txtID.Location = new System.Drawing.Point(95, 21);
@@ -115,29 +89,9 @@ namespace APIpostYeventos
             this.lblID.TabIndex = 80;
             this.lblID.Text = "ID Post";
             // 
-            // lblVideo
-            // 
-            this.lblVideo.AutoSize = true;
-            this.lblVideo.Location = new System.Drawing.Point(17, 116);
-            this.lblVideo.Name = "lblVideo";
-            this.lblVideo.Size = new System.Drawing.Size(60, 13);
-            this.lblVideo.TabIndex = 77;
-            this.lblVideo.Text = "Video de yt";
-            this.lblVideo.Visible = false;
-            // 
-            // lblTexto
-            // 
-            this.lblTexto.AutoSize = true;
-            this.lblTexto.Location = new System.Drawing.Point(17, 78);
-            this.lblTexto.Name = "lblTexto";
-            this.lblTexto.Size = new System.Drawing.Size(34, 13);
-            this.lblTexto.TabIndex = 76;
-            this.lblTexto.Text = "Texto";
-            this.lblTexto.Visible = false;
-            // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(441, 332);
+            this.btnCancelar.Location = new System.Drawing.Point(437, 253);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(75, 23);
             this.btnCancelar.TabIndex = 87;
@@ -148,7 +102,7 @@ namespace APIpostYeventos
             // 
             // btnEliminar
             // 
-            this.btnEliminar.Location = new System.Drawing.Point(12, 332);
+            this.btnEliminar.Location = new System.Drawing.Point(8, 253);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(91, 23);
             this.btnEliminar.TabIndex = 88;
@@ -165,7 +119,7 @@ namespace APIpostYeventos
             this.dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(20, 165);
+            this.dataGridView1.Location = new System.Drawing.Point(16, 86);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
@@ -174,26 +128,10 @@ namespace APIpostYeventos
             this.dataGridView1.TabIndex = 89;
             this.dataGridView1.Visible = false;
             // 
-            // txtUrl
-            // 
-            this.txtUrl.AutoSize = true;
-            this.txtUrl.Location = new System.Drawing.Point(92, 116);
-            this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(0, 13);
-            this.txtUrl.TabIndex = 90;
-            // 
-            // txtTexto
-            // 
-            this.txtTexto.AutoSize = true;
-            this.txtTexto.Location = new System.Drawing.Point(66, 78);
-            this.txtTexto.Name = "txtTexto";
-            this.txtTexto.Size = new System.Drawing.Size(0, 13);
-            this.txtTexto.TabIndex = 91;
-            // 
             // lblComentario
             // 
             this.lblComentario.AutoSize = true;
-            this.lblComentario.Location = new System.Drawing.Point(17, 306);
+            this.lblComentario.Location = new System.Drawing.Point(13, 227);
             this.lblComentario.Name = "lblComentario";
             this.lblComentario.Size = new System.Drawing.Size(71, 13);
             this.lblComentario.TabIndex = 92;
@@ -202,7 +140,7 @@ namespace APIpostYeventos
             // 
             // txtIdComentario
             // 
-            this.txtIdComentario.Location = new System.Drawing.Point(95, 302);
+            this.txtIdComentario.Location = new System.Drawing.Point(91, 223);
             this.txtIdComentario.Name = "txtIdComentario";
             this.txtIdComentario.Size = new System.Drawing.Size(100, 20);
             this.txtIdComentario.TabIndex = 93;
@@ -211,7 +149,7 @@ namespace APIpostYeventos
             // lblError2
             // 
             this.lblError2.AutoSize = true;
-            this.lblError2.Location = new System.Drawing.Point(201, 306);
+            this.lblError2.Location = new System.Drawing.Point(197, 227);
             this.lblError2.Name = "lblError2";
             this.lblError2.Size = new System.Drawing.Size(139, 13);
             this.lblError2.TabIndex = 94;
@@ -226,23 +164,16 @@ namespace APIpostYeventos
             this.Controls.Add(this.lblError2);
             this.Controls.Add(this.txtIdComentario);
             this.Controls.Add(this.lblComentario);
-            this.Controls.Add(this.txtTexto);
-            this.Controls.Add(this.txtUrl);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnVolver);
-            this.Controls.Add(this.lblFoto);
             this.Controls.Add(this.lblErrorID);
             this.Controls.Add(this.btnBuscar);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.txtID);
             this.Controls.Add(this.lblID);
-            this.Controls.Add(this.lblVideo);
-            this.Controls.Add(this.lblTexto);
             this.Name = "EliminarComentario";
             this.Text = "EliminarComentario";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -252,19 +183,13 @@ namespace APIpostYeventos
         #endregion
 
         private System.Windows.Forms.Button btnVolver;
-        private System.Windows.Forms.Label lblFoto;
         private System.Windows.Forms.Label lblErrorID;
         private System.Windows.Forms.Button btnBuscar;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox txtID;
         private System.Windows.Forms.Label lblID;
-        private System.Windows.Forms.Label lblVideo;
-        private System.Windows.Forms.Label lblTexto;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Label txtUrl;
-        private System.Windows.Forms.Label txtTexto;
         private System.Windows.Forms.Label lblComentario;
         private System.Windows.Forms.TextBox txtIdComentario;
         private System.Windows.Forms.Label lblError2;

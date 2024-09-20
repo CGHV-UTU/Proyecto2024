@@ -22,12 +22,17 @@ namespace APIpostYeventos
         {
             InitializeComponent();
             dtpFecha.MinDate = DateTime.Today;
+            dtpFecha2.MinDate = DateTime.Today.AddDays(1);
             int año = DateTime.Now.Year;
             dtpFecha.MaxDate = new DateTime(año, 12, 31);
+            dtpFecha2.MaxDate = new DateTime(año, 12, 31);
+
             int hora = DateTime.Now.Hour;
             int minuto = DateTime.Now.Minute + 5;
+
             if (minuto >= 60)
-            { minuto -= 60;
+            {
+                minuto -= 60;
                 hora += 1;
             }
             if (hora >= 24)
@@ -35,14 +40,25 @@ namespace APIpostYeventos
                 hora = 0;
             }
             dtpHora.MinDate = new DateTime(año, 12, 31, hora, minuto, 0);
+            dtpHora2.MinDate = new DateTime(año, 12, 31, hora, minuto, 0);
+
             usuario = user;
         }
-
+        // Fecha y hora. La fecha de fin de evento es siempre un dia mas que la de inicio
+        private void dtpFecha_ValueChanged(object sender, EventArgs e)
+        {
+            dtpFecha2.MinDate = dtpFecha.Value.AddDays(1); 
+        }
         private void btnSeleccionarFecha_Click(object sender, EventArgs e)
         {
             lblFechaHora.Text = dtpFecha.Text + " " + dtpHora.Text;
         }
+        private void btnSeleccionarFecha2_Click(object sender, EventArgs e)
+        {
+            lblFechaHora2.Text = dtpFecha2.Text + " " + dtpHora2.Text;
+        }
 
+        // Agregar imagen
         private void btnSeleccionar_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -54,6 +70,7 @@ namespace APIpostYeventos
             }
         }
 
+        //Cerrar Form
         private void btnVolver_Click(object sender, EventArgs e)
         {
             Form1 f1 = new Form1(usuario);
@@ -61,6 +78,7 @@ namespace APIpostYeventos
             this.Close();
         }
 
+        //Publicar Evento
         private async void btnPublicar_Click(object sender, EventArgs e)
         {
             string[] fecha = dtpFecha.Text.Split('/');
@@ -74,139 +92,34 @@ namespace APIpostYeventos
             }
             else
             {
-                string fechayhora = dtpFecha.Text + " " + dtpHora.Text;
+                string fechayhora = datetime.ToString("yyyy-MM-dd HH:mm:ss");
+                DateTime datetime2 = dtpFecha2.Value.Date + dtpHora2.Value.TimeOfDay;
+                string fechayhora2 = datetime2.ToString("yyyy-MM-dd HH:mm:ss");
                 MemoryStream ms = new MemoryStream();
                 pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                 byte[] data = ms.ToArray();
-                await Publicar(txtNombreGrupo.Text,usuario,txtTitulo.Text, txtUbicacion.Text, txtDescripcion.Text, data, fechayhora);
+                await Publicar(txtTitulo.Text, txtUbicacion.Text, txtDescripcion.Text, data, fechayhora, fechayhora2);
                 MessageBox.Show("Evento creado correctamente");
             }
         }
-        static async Task Publicar(string nombreGrupoVisible, string usuario, string titulo, string ubicacion, string descripcion, byte[] imagen, string fechayhora)
+
+        
+        //Conexion con API
+        static async Task Publicar(string titulo, string ubicacion, string descripcion, byte[] imagen, string fechayhora, string fechayhora2)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    string baseUrl1 = $"https://localhost:44304/ObtenerGruposPorNombreVisibleYUsuario?nombreVisible={nombreGrupoVisible}&nombreDeCuenta={usuario}";
-                    string baseUrl2 = "https://localhost:44340/hacerEvento";
-                    Console.WriteLine($"Sending GET request to {baseUrl1}");
-                    HttpResponseMessage response1 = await client.GetAsync(baseUrl1);
-                    if (!response1.IsSuccessStatusCode)
-                    {
-                        MessageBox.Show($"Error fetching 'nombreReal': {response1.StatusCode} ({response1.ReasonPhrase})");
-                        return;
-                    }
-                    string responseBody1 = await response1.Content.ReadAsStringAsync();
-                    Console.WriteLine("Response from ObtenerGruposPorNombreVisibleYUsuario: " + responseBody1);
-                    List<dynamic> grupos = JsonConvert.DeserializeObject<List<dynamic>>(responseBody1);
-
-                    if (grupos.Count > 0)
-                    {
-                        string nombreReal = grupos[0].nombreReal;
-                        Console.WriteLine("Nombre Real obtenido: " + nombreReal);
-                        var datos2 = new
-                        {
-                            nombreReal = nombreReal,
-                            titulo = titulo,
-                            ubicacion = ubicacion,
-                            descripcion = descripcion,
-                            imagen = Convert.ToBase64String(imagen),
-                            fechayhora = fechayhora,
-                            user = usuario
-                        };
-                        var content2 = new StringContent(JsonConvert.SerializeObject(datos2), Encoding.UTF8, "application/json");
-                        Console.WriteLine($"Sending POST request to {baseUrl2} with data: {JsonConvert.SerializeObject(datos2)}");
-                        HttpResponseMessage response2 = await client.PostAsync(baseUrl2, content2);
-
-                        if (!response2.IsSuccessStatusCode)
-                        {
-                            MessageBox.Show($"Error creating event: {response2.StatusCode} ({response2.ReasonPhrase})");
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("No se encontraron Grupos para el usuario especificado.");
-                    }
-                }
-                catch (HttpRequestException ex)
-                {
-                    MessageBox.Show($"HTTP Request Error: {ex.Message}");
+                    var datos = new { titulo = titulo, ubicacion = ubicacion, descripcion = descripcion, foto = Convert.ToBase64String(imagen), fechaYhora_Inicio = fechayhora, fechaYhora_Final = fechayhora2, user = usuario };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/hacerEvento", content);
+                    response.EnsureSuccessStatusCode();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: " + ex.Message);
-                }
-            }
-        }
-
-        private void pbxImagen_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        //testing
-        public string hacerEvento(string title, string image, string horario, string ubication = "", string description = "")
-        {
-            string titulo = title;
-            string fechayhora = horario;
-            byte[] imagen = Convert.FromBase64String(image);
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-            conn.Open();
-            if (!string.IsNullOrEmpty(ubication))
-            {
-                if (!string.IsNullOrEmpty(description))
-                {
-                    string ubicacion = ubication;
-                    string descripcion = description;
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO eventos (titulo,ubicacion,descripcion,fechayhora,foto) VALUES (@Titulo,@Ubicacion,@Descripcion,@FechayHora,@Foto)", conn);
-                    cmd.Parameters.AddWithValue("@Titulo", titulo);
-                    cmd.Parameters.AddWithValue("@Ubicacion", ubicacion);
-                    cmd.Parameters.AddWithValue("@Descripcion", descripcion);
-                    cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
-                    cmd.Parameters.AddWithValue("@Foto", imagen);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                    return "guardado correcto";
-                }
-                else
-                {
-                    string ubicacion = ubication;
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO eventos (titulo,ubicacion,fechayhora,foto) VALUES (@Titulo,@Ubicacion,@FechayHora,@Foto)", conn);
-                    cmd.Parameters.AddWithValue("@Titulo", titulo);
-                    cmd.Parameters.AddWithValue("@Ubicacion", ubicacion);
-                    cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
-                    cmd.Parameters.AddWithValue("@Foto", imagen);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                    return "guardado correcto";
-                }
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(description))
-                {
-                    string descripcion = description;
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO eventos (titulo,descripcion,fechayhora,foto) VALUES (@Titulo,@Descripcion,@FechayHora,@Foto)", conn);
-                    cmd.Parameters.AddWithValue("@Titulo", titulo);
-                    cmd.Parameters.AddWithValue("@Descripcion", descripcion);
-                    cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
-                    cmd.Parameters.AddWithValue("@Foto", imagen);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                    return "guardado correcto";
-                }
-                else
-                {
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO eventos (titulo,fechayhora,foto) VALUES (@Titulo,@FechayHora,@Foto)", conn);
-                    cmd.Parameters.AddWithValue("@Titulo", titulo);
-                    cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
-                    cmd.Parameters.AddWithValue("@Foto", imagen);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                    return "guardado correcto";
+                    Console.WriteLine("Error: " + ex.Message);
+                    Console.ReadLine();
                 }
             }
         }

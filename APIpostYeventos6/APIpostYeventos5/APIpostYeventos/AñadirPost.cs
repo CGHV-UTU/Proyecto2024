@@ -61,10 +61,11 @@ namespace APIpostYeventos
                 }
                 else
                 {
+                    string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     if(pbxImagen.Image == null)
                     {
                         byte[] data = new byte[0];
-                        await Publicar(txtTexto.Text, txtEnlace.Text, data);
+                        await Publicar(txtTexto.Text, txtEnlace.Text, data, fecha);
                         MessageBox.Show("El post se creó correctamente");
                     }
                     else
@@ -72,21 +73,20 @@ namespace APIpostYeventos
                         MemoryStream ms = new MemoryStream();
                         pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                         byte[] data = ms.ToArray();
-                        await Publicar(txtTexto.Text, txtEnlace.Text, data);
+                        await Publicar(txtTexto.Text, txtEnlace.Text, data, fecha);
                         MessageBox.Show("El post se creó correctamente");
                     }
 
                 }
             }
         }
-
-        public static async Task Publicar(string texto,string url, byte[]imagen)
+        public static async Task Publicar(string texto,string url, byte[]imagen, string fechayhora)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new {text= texto, link=url, image=Convert.ToBase64String(imagen), user = usuario};
+                    var datos = new {text= texto, link=url, image=Convert.ToBase64String(imagen), user = usuario, fechayhora = fechayhora};
                     var content = new StringContent(JsonConvert.SerializeObject(datos),Encoding.UTF8,"application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
                     response.EnsureSuccessStatusCode();
@@ -95,78 +95,6 @@ namespace APIpostYeventos
                 {
                     MessageBox.Show("Error: " + ex.Message);
                 }
-            }
-        }
-
-        //para el testing
-
-        public string hacerPost(string link = "", string text = "", string image="")
-        {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd;
-                if (!string.IsNullOrEmpty(text))
-                {
-                    string texto = text;
-                    if (!string.IsNullOrEmpty(link))
-                    {
-                        string url = link;
-                        cmd = new MySqlCommand("INSERT INTO posts (texto,url) VALUES (@Texto,@url)", conn);
-                        cmd.Parameters.AddWithValue("@Texto", texto);
-                        cmd.Parameters.AddWithValue("@url", url);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return "El post se creó correctamente";
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(image))
-                        {
-                            byte[] imagen = Convert.FromBase64String(image);
-                            cmd = new MySqlCommand("INSERT INTO posts (texto,imagen) VALUES (@Texto,@Imagen)", conn);
-                            cmd.Parameters.AddWithValue("@Texto", texto);
-                            cmd.Parameters.AddWithValue("@Imagen", imagen);
-                            cmd.ExecuteNonQuery();
-                            conn.Close();
-                            return "El post se creó correctamente";
-                        }
-                        else
-                        {
-                            cmd = new MySqlCommand("INSERT INTO posts (texto) VALUES (@Texto)", conn);
-                            cmd.Parameters.AddWithValue("@Texto", texto);
-                            cmd.ExecuteNonQuery();
-                            conn.Close();
-                            return "El post se creó correctamente";
-                        }
-                    }
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(image))
-                    {
-                        byte[] imagen = Convert.FromBase64String(image);
-                        cmd = new MySqlCommand("INSERT INTO posts (imagen) VALUES (@Imagen)", conn);
-                        cmd.Parameters.AddWithValue("@Imagen", imagen);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return "El post se creó correctamente";
-                    }
-                    else
-                    {
-                        string url = link;
-                        cmd = new MySqlCommand("INSERT INTO posts (url) VALUES (@url)", conn);
-                        cmd.Parameters.AddWithValue("@url", url);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return "El post se creó correctamente";
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return "El post no se creó";
             }
         }
     }

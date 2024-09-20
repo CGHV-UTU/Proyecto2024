@@ -24,18 +24,35 @@ namespace APIpostYeventos
             CargarTabla();
             ModificarTabla();
             dtpFecha.MinDate = DateTime.Today;
+            dtpFecha2.MinDate = DateTime.Today.AddDays(1);
             int año = DateTime.Now.Year;
             dtpFecha.MaxDate = new DateTime(año,12,31);
+            dtpFecha2.MaxDate = new DateTime(año, 12, 31);
+
             int hora = DateTime.Now.Hour;
             int minuto = DateTime.Now.Minute + 5;
+            if (minuto >= 60)
+            {
+                minuto -= 60;
+                hora += 1;
+            }
+            if (hora >= 24)
+            {
+                hora = 0;
+            }
             dtpHora.MinDate = new DateTime(año, 12, 31, hora, minuto, 0);
+            dtpHora2.MinDate = new DateTime(año, 12, 31, hora, minuto, 0);
             usuario = user;
         }
-
+        private void dtpFecha_ValueChanged(object sender, EventArgs e)
+        {
+            dtpFecha2.MinDate = dtpFecha.Value.AddDays(1);
+        }
         private async void CargarTabla()
         {
             dataGridView1.DataSource = await CargarTodosLosEventos();
         }
+
         private void btnSeleccionar_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -64,6 +81,14 @@ namespace APIpostYeventos
             f1.Show();
             this.Close();
         }
+        private void btnSeleccionarFecha_Click(object sender, EventArgs e)
+        {
+            lblFechaHora.Text = dtpFecha.Text + " " + dtpHora.Text;
+        }
+        private void btnSeleccionarFecha2_Click(object sender, EventArgs e)
+        {
+            lblFechaHora2.Text = dtpFecha2.Text + " " + dtpHora2.Text;
+        }
 
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
@@ -77,7 +102,6 @@ namespace APIpostYeventos
                 var respuesta = await Existe(int.Parse(txtID.Text));
                 if(respuesta)
                 {
-                    string fechayhora = dtpFecha.Text + " " + dtpHora.Text;
                     var data = await Buscar(int.Parse(txtID.Text));
                     txtTitulo.Text = data[0];
                     txtUbicacion.Text = data[1];
@@ -101,16 +125,12 @@ namespace APIpostYeventos
                     lblDescripcion.Show();
                     lblFoto.Show();
                     lblFechayHora.Show();
-                    lblFecha.Show();
-                    lblHora.Show();
                     txtTitulo.Show();
                     txtDescripcion.Show();
                     txtUbicacion.Show();
                     btnSeleccionar.Show();
                     btnModificar.Show();
                     btnCancelar.Show();
-                    dtpFecha.Show();
-                    dtpHora.Show();
                     label1.Hide();
                     txtID.Hide();
                     btnBuscar.Hide();
@@ -127,8 +147,13 @@ namespace APIpostYeventos
 
         private async void btnModificar_Click(object sender, EventArgs e)
         {
-            string fechayhora = dtpFecha.Text + " " + dtpHora.Text;
             var data = await Buscar(int.Parse(txtID.Text));
+            string[] fecha = dtpFecha.Text.Split('/');
+            string[] hora = dtpHora.Text.Split(':');
+            DateTime datetime = new DateTime(int.Parse(fecha[2]), int.Parse(fecha[1]), int.Parse(fecha[0]), int.Parse(hora[0]), int.Parse(hora[1]), 0);
+            string fechayhora = datetime.ToString("yyyy-MM-dd HH:mm:ss");
+            DateTime datetime2 = dtpFecha2.Value.Date + dtpHora2.Value.TimeOfDay;
+            string fechayhora2 = datetime2.ToString("yyyy-MM-dd HH:mm:ss");
             if (txtTitulo.Text == data[0] && txtUbicacion.Text == data[1] && txtDescripcion.Text == data[2] && fechayhora == data[4])
             {
                 lblErrorModificar.Show();
@@ -144,11 +169,11 @@ namespace APIpostYeventos
                 else
                 {
                     lblErrorModificar.Show();
-                    lblErrorModificar.Text = "Se modificó correctamente";
+                    lblErrorModificar.Text = "Se modificó correctamente";                   
                     MemoryStream ms = new MemoryStream();
                     pictureBox1.Image.Save(ms, ImageFormat.Jpeg);
                     byte[] imagen = ms.ToArray();
-                    Modificar(txtID.Text, txtTitulo.Text, txtUbicacion.Text, txtDescripcion.Text, imagen, fechayhora);
+                    await Modificar(txtID.Text, txtTitulo.Text, txtUbicacion.Text, txtDescripcion.Text, imagen, fechayhora, fechayhora2);
                     lblFechayHora.Text = "Fecha y hora previa del evento: " + fechayhora;
                 }
                 CargarTabla();
@@ -161,10 +186,12 @@ namespace APIpostYeventos
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/eventoPorId?id={id}");
+                    var datos = new { id = id };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/eventoPorId", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de ninguna manera, tengo que hallar alguna forma de pasar los datos
+                    dynamic data = JsonConvert.DeserializeObject(responseBody); 
                     return new string[] { data.titulo, data.ubicacion, data.descripcion, data.foto, data.fechayhora };
                 }
                 catch
@@ -173,13 +200,13 @@ namespace APIpostYeventos
                 }
             }
         }
-        static async Task Modificar(string id, string titulo, string ubicacion, string descripcion, byte[] imagen, string fechayhora)
+        static async Task Modificar(string id, string titulo, string ubicacion, string descripcion, byte[] imagen, string fechayhora, string fechayhora2)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var data = new { id = id, titulo = titulo, ubicacion = ubicacion, descripcion = descripcion, imagen = Convert.ToBase64String(imagen), fechayhora = fechayhora };
+                    var data = new { id = id, titulo = titulo, ubicacion = ubicacion, descripcion = descripcion, foto = Convert.ToBase64String(imagen), fechaYhora_Inicio = fechayhora, fechaYhora_Final = fechayhora2 };
                     var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/modificarEvento", content);
                     response.EnsureSuccessStatusCode();
@@ -208,17 +235,18 @@ namespace APIpostYeventos
                 }
             }
         }
-
         static async Task<bool> Existe(int id)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/existeEvento?id={id}");
+                    var datos = new { id = id };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/existeEvento", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject<bool>(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de ninguna manera, tengo que hallar alguna forma de pasar los datos
+                    dynamic data = JsonConvert.DeserializeObject<bool>(responseBody);
                     return data;
                 }
                 catch
@@ -227,138 +255,5 @@ namespace APIpostYeventos
                 }
             }
         }
-
-
-        //testing
-        public string modificarEvento(string idE, string title = "", string image = "", string horario = "", string ubication = "", string description = "")
-        {
-            string id = idE;        
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-            conn.Open();
-            try
-            {
-
-                byte[] imagen = Convert.FromBase64String(image);
-                string titulo = title, fechayhora = horario, ubicacion = ubication, descripcion = description;
-                MySqlCommand cmd = new MySqlCommand("UPDATE eventos SET ubicacion=@Ubicacion, titulo=@Titulo, descripcion=@Descripcion, foto=@Foto, fechayhora=@FechayHora WHERE id=@id", conn);
-                if (!string.IsNullOrEmpty(ubication))
-                {
-                    cmd.Parameters.AddWithValue("@Ubicacion", ubicacion);
-                }
-                else
-                {
-                    cmd.Parameters.AddWithValue("@Ubicacion", null);
-                }
-                if (!string.IsNullOrEmpty(title))
-                {
-                    cmd.Parameters.AddWithValue("@Titulo", titulo);
-                }
-                else
-                {
-                    return "modificacion erronea";
-                }
-                if (!string.IsNullOrEmpty(description))
-                {
-                    cmd.Parameters.AddWithValue("@Descripcion", descripcion);
-                }
-                else
-                {
-                    cmd.Parameters.AddWithValue("@Descripcion", null);
-                }
-                if (!string.IsNullOrEmpty(image))
-                {
-                    cmd.Parameters.AddWithValue("@Foto", imagen);
-                }
-                else
-                {
-                    return "modificacion erronea";
-                }
-                if (!string.IsNullOrEmpty(horario))
-                {
-                    cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
-                }
-                else
-                {
-                    return "modificacion erronea";
-                }
-
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return "modificacion correcta";
-            }
-            catch
-            {
-                return "modificación incorrecta";
-            }
-        }
-
-        public string ultimoEvento()
-        {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT id FROM eventos ORDER BY id DESC LIMIT 1", conn);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    string id = reader["id"].ToString();
-                    return id;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public string conseguirEvento(int id)
-        {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT titulo,ubicacion,descripcion,foto,fechayhora FROM eventos WHERE id=@Id", conn);
-                command.Parameters.AddWithValue("@Id", id);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
-                {
-                    string ubicacion;
-                    if (string.IsNullOrEmpty(reader["ubicacion"].ToString()))
-                    {
-                        ubicacion = "";
-                    }
-                    else
-                    {
-                        ubicacion = reader["ubicacion"].ToString();
-                    }
-                    string descripcion;
-                    if (string.IsNullOrEmpty(reader["descripcion"].ToString()))
-                    {
-                        descripcion = "";
-                    }
-                    else
-                    {
-                        descripcion = reader["descripcion"].ToString();
-                    }
-                    var data = new { titulo = reader["titulo"].ToString(), ubicacion = ubicacion, descripcion = reader["descripcion"].ToString(), foto = Convert.ToBase64String((byte[])reader["foto"]), fechayhora = reader["fechayhora"].ToString() };
-                    return data.titulo;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }     
     }
-
 }

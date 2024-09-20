@@ -90,7 +90,9 @@ namespace APIpostYeventos
         {
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.DeleteAsync($"https://localhost:44340/eliminarEvento?id={id}");
+                var datos = new { id = id };
+                var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/eliminarEvento", content);
                 response.EnsureSuccessStatusCode();
             }
         }
@@ -101,58 +103,18 @@ namespace APIpostYeventos
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/existeEvento?id={id}");
+                    var datos = new { id = id };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/existeEvento", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject<bool>(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de ninguna manera, tengo que hallar alguna forma de pasar los datos
+                    dynamic data = JsonConvert.DeserializeObject<bool>(responseBody); 
                     return data;
                 }
                 catch
                 {
                     return false;
                 }
-            }
-        }
-
-        //testing 
-        public string eliminarEvento(string id)
-        {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("DELETE FROM eventos WHERE id=@Id", conn);
-                command.Parameters.AddWithValue("@Id", int.Parse(id));
-                command.ExecuteNonQuery();
-                conn.Close();
-                return "Evento eliminado";
-            }
-            catch
-            {
-                return "Evento no eliminado";
-            }       
-        }
-        public string ultimoEvento()
-        {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT id FROM eventos ORDER BY id DESC LIMIT 1", conn);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    string id = reader["id"].ToString();
-                    return id;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch
-            {
-                return null;
             }
         }
     }

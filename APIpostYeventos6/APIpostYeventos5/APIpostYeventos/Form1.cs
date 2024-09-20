@@ -84,7 +84,7 @@ namespace APIpostYeventos
 
         private void btnReportar_Click(object sender, EventArgs e)
         {
-            ReportarPost_Comentario f = new ReportarPost_Comentario();
+            ReportarPost_Comentario f = new ReportarPost_Comentario(user);
             f.Visible = true;
         }
     }

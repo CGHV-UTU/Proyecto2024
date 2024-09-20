@@ -22,11 +22,13 @@ namespace APIpostYeventos
             InitializeComponent();
             usuario = user;
         }
-        public class Creador
+        private void btnCancelar_Click(object sender, EventArgs e)
         {
-            public string NombreCreador { get; set; }
+            Form1 f1 = new Form1(usuario);
+            f1.Show();
+            this.Close();
         }
-
+        // Buscar Post
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtID.Text) || !int.TryParse(txtID.Text, out int numero))
@@ -39,26 +41,6 @@ namespace APIpostYeventos
                 var respuesta = await Existe(int.Parse(txtID.Text));
                 if (respuesta)
                 {
-                    var data = await Buscar(int.Parse(txtID.Text));
-                    txtTexto.Text = data[0];
-                    txtUrl.Text = data[1];
-                    if (data[2].Length > 0)
-                    {
-                        byte[] imagen = Convert.FromBase64String(data[2]);
-                        MemoryStream ms = new MemoryStream(imagen);
-                        Bitmap bitmap = new Bitmap(ms);
-                        pictureBox1.Image = bitmap;
-                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                    }
-                    else
-                    {
-                        pictureBox1.Image = null;
-                    }
-                    lblTexto.Show();
-                    lblFoto.Show();
-                    lblVideo.Show();
-                    txtTexto.Show();
-                    txtUrl.Show();
                     lblID.Hide();
                     lblErrorID.Hide();
                     txtID.Hide();
@@ -67,38 +49,12 @@ namespace APIpostYeventos
                     btnCancelar.Show();
                     txtComentario.Show();
                     btnPublicar.Show();
-                    lblNombreDeCuenta.Show();
-                    txtNombreDeCuenta.Show();
+                    lblComentario.Show();
                 }
                 else
                 {
                     lblErrorID.Show();
                     lblErrorID.Text = "No se encontró la ID";
-                }
-            }
-        }
-
-        private void btnCancelar_Click(object sender, EventArgs e)
-        {
-            Form1 f1 = new Form1(usuario);
-            f1.Show();
-            this.Close();
-        }
-        static async Task<string[]> Buscar(int id)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/postPorId?id={id}");
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody); 
-                    return new string[] { data.texto, data.url, data.imagen };
-                }
-                catch
-                {
-                    return null;
                 }
             }
         }
@@ -108,7 +64,9 @@ namespace APIpostYeventos
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/existePost?id={id}");
+                    var datos = new {id = id};
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/existePost", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject<bool>(responseBody); 
@@ -120,14 +78,14 @@ namespace APIpostYeventos
                 }
             }
         }
-
+        //Salir
         private void btnVolver_Click(object sender, EventArgs e)
         {
             Form1 f1 = new Form1(usuario);
             f1.Show();
             this.Close();
         }
-
+        //Publicar Comentario
         private async void btnPublicar_Click(object sender, EventArgs e)
         {
             DateTime now = DateTime.Now;
@@ -147,7 +105,6 @@ namespace APIpostYeventos
             }
             lblError.Show();
         }
-
         static async Task Publicar(string NombreDeCuenta, string IdPost, string nombreCreador, string texto, string fechayhora)
         {
             using (HttpClient client = new HttpClient())
@@ -172,7 +129,9 @@ namespace APIpostYeventos
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/conseguirCreador?id={id}");
+                    var datos = new { id = id };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/conseguirCreador", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     return responseBody.Trim('"'); 
@@ -184,34 +143,5 @@ namespace APIpostYeventos
                 }
             }
         }
-
-
-        //testing
-        public dynamic hacerComentario(string NombreDeCuenta = "", string IdPost = "", string texto = "", string fechayhora = "")
-        {
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-            conn.Open();
-            MySqlCommand cmd;
-            if (!string.IsNullOrEmpty(NombreDeCuenta) &&
-                !string.IsNullOrEmpty(IdPost) && !string.IsNullOrEmpty(texto) &&
-                !string.IsNullOrEmpty(fechayhora))
-            {
-                cmd = new MySqlCommand("INSERT INTO comentarios (NombreDeCuenta,IdPost,texto,fechayhora) VALUES (@NombreDeCuenta,@IdPost,@Texto,@FechayHora)", conn);
-                cmd.Parameters.AddWithValue("@NombreDeCuenta", NombreDeCuenta);
-                cmd.Parameters.AddWithValue("@IdPost", IdPost);
-                cmd.Parameters.AddWithValue("@Texto", texto);
-                cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return "guardado correcto";
-            }
-            else
-            {
-                return "guardado incorrecto";
-            }
-        }
-
-
-
     }
 }

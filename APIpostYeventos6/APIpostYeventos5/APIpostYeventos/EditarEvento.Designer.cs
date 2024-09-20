@@ -31,10 +31,6 @@ namespace APIpostYeventos
         {
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnModificar = new System.Windows.Forms.Button();
-            this.lblHora = new System.Windows.Forms.Label();
-            this.lblFecha = new System.Windows.Forms.Label();
-            this.dtpHora = new System.Windows.Forms.DateTimePicker();
-            this.dtpFecha = new System.Windows.Forms.DateTimePicker();
             this.btnSeleccionar = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblFoto = new System.Windows.Forms.Label();
@@ -47,18 +43,34 @@ namespace APIpostYeventos
             this.btnBuscar = new System.Windows.Forms.Button();
             this.txtID = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.lblFechayHora = new System.Windows.Forms.Label();
             this.lblErrorID = new System.Windows.Forms.Label();
             this.lblErrorModificar = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnVolver = new System.Windows.Forms.Button();
+            this.lblFechayHora = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.btnSeleccionarFecha2 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lblFechaHora2 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.dtpHora2 = new System.Windows.Forms.DateTimePicker();
+            this.dtpFecha2 = new System.Windows.Forms.DateTimePicker();
+            this.btnSeleccionarFecha = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblFechaHora = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dtpHora = new System.Windows.Forms.DateTimePicker();
+            this.dtpFecha = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(335, 325);
+            this.btnCancelar.Location = new System.Drawing.Point(28, 412);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(75, 23);
             this.btnCancelar.TabIndex = 51;
@@ -69,7 +81,7 @@ namespace APIpostYeventos
             // 
             // btnModificar
             // 
-            this.btnModificar.Location = new System.Drawing.Point(335, 296);
+            this.btnModificar.Location = new System.Drawing.Point(28, 383);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(75, 23);
             this.btnModificar.TabIndex = 50;
@@ -77,45 +89,6 @@ namespace APIpostYeventos
             this.btnModificar.UseVisualStyleBackColor = true;
             this.btnModificar.Visible = false;
             this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
-            // 
-            // lblHora
-            // 
-            this.lblHora.AutoSize = true;
-            this.lblHora.Location = new System.Drawing.Point(362, 235);
-            this.lblHora.Name = "lblHora";
-            this.lblHora.Size = new System.Drawing.Size(30, 13);
-            this.lblHora.TabIndex = 49;
-            this.lblHora.Text = "Hora";
-            this.lblHora.Visible = false;
-            // 
-            // lblFecha
-            // 
-            this.lblFecha.AutoSize = true;
-            this.lblFecha.Location = new System.Drawing.Point(362, 166);
-            this.lblFecha.Name = "lblFecha";
-            this.lblFecha.Size = new System.Drawing.Size(37, 13);
-            this.lblFecha.TabIndex = 48;
-            this.lblFecha.Text = "Fecha";
-            this.lblFecha.Visible = false;
-            // 
-            // dtpHora
-            // 
-            this.dtpHora.CustomFormat = "HH:mm";
-            this.dtpHora.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpHora.Location = new System.Drawing.Point(335, 260);
-            this.dtpHora.Name = "dtpHora";
-            this.dtpHora.Size = new System.Drawing.Size(149, 20);
-            this.dtpHora.TabIndex = 47;
-            this.dtpHora.Visible = false;
-            // 
-            // dtpFecha
-            // 
-            this.dtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFecha.Location = new System.Drawing.Point(335, 192);
-            this.dtpFecha.Name = "dtpFecha";
-            this.dtpFecha.Size = new System.Drawing.Size(149, 20);
-            this.dtpFecha.TabIndex = 46;
-            this.dtpFecha.Visible = false;
             // 
             // btnSeleccionar
             // 
@@ -226,16 +199,6 @@ namespace APIpostYeventos
             this.label1.TabIndex = 34;
             this.label1.Text = "ID";
             // 
-            // lblFechayHora
-            // 
-            this.lblFechayHora.AutoSize = true;
-            this.lblFechayHora.Location = new System.Drawing.Point(332, 132);
-            this.lblFechayHora.Name = "lblFechayHora";
-            this.lblFechayHora.Size = new System.Drawing.Size(157, 13);
-            this.lblFechayHora.TabIndex = 52;
-            this.lblFechayHora.Text = "Fecha y hora previa del evento:";
-            this.lblFechayHora.Visible = false;
-            // 
             // lblErrorID
             // 
             this.lblErrorID.AutoSize = true;
@@ -249,7 +212,7 @@ namespace APIpostYeventos
             // lblErrorModificar
             // 
             this.lblErrorModificar.AutoSize = true;
-            this.lblErrorModificar.Location = new System.Drawing.Point(422, 301);
+            this.lblErrorModificar.Location = new System.Drawing.Point(115, 388);
             this.lblErrorModificar.Name = "lblErrorModificar";
             this.lblErrorModificar.Size = new System.Drawing.Size(164, 13);
             this.lblErrorModificar.TabIndex = 54;
@@ -264,7 +227,7 @@ namespace APIpostYeventos
             this.dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(28, 375);
+            this.dataGridView1.Location = new System.Drawing.Point(28, 498);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
@@ -282,11 +245,182 @@ namespace APIpostYeventos
             this.btnVolver.UseVisualStyleBackColor = true;
             this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
+            // lblFechayHora
+            // 
+            this.lblFechayHora.AutoSize = true;
+            this.lblFechayHora.Location = new System.Drawing.Point(400, 33);
+            this.lblFechayHora.Name = "lblFechayHora";
+            this.lblFechayHora.Size = new System.Drawing.Size(157, 13);
+            this.lblFechayHora.TabIndex = 52;
+            this.lblFechayHora.Text = "Fecha y hora previa del evento:";
+            this.lblFechayHora.Visible = false;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(400, 305);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(71, 13);
+            this.label10.TabIndex = 73;
+            this.label10.Text = "fin del evento";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(400, 78);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(85, 13);
+            this.label9.TabIndex = 72;
+            this.label9.Text = "Inicio del evento";
+            // 
+            // btnSeleccionarFecha2
+            // 
+            this.btnSeleccionarFecha2.Location = new System.Drawing.Point(403, 422);
+            this.btnSeleccionarFecha2.Name = "btnSeleccionarFecha2";
+            this.btnSeleccionarFecha2.Size = new System.Drawing.Size(200, 23);
+            this.btnSeleccionarFecha2.TabIndex = 71;
+            this.btnSeleccionarFecha2.Text = "Seleccionar Fecha y Hora";
+            this.btnSeleccionarFecha2.UseVisualStyleBackColor = true;
+            this.btnSeleccionarFecha2.Click += new System.EventHandler(this.btnSeleccionarFecha2_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(395, 458);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(129, 13);
+            this.label5.TabIndex = 70;
+            this.label5.Text = "Fecha y hora del Evento :";
+            // 
+            // lblFechaHora2
+            // 
+            this.lblFechaHora2.AutoSize = true;
+            this.lblFechaHora2.Location = new System.Drawing.Point(535, 458);
+            this.lblFechaHora2.Name = "lblFechaHora2";
+            this.lblFechaHora2.Size = new System.Drawing.Size(0, 13);
+            this.lblFechaHora2.TabIndex = 69;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(400, 380);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(30, 13);
+            this.label7.TabIndex = 68;
+            this.label7.Text = "Hora";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(400, 332);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(37, 13);
+            this.label8.TabIndex = 67;
+            this.label8.Text = "Fecha";
+            // 
+            // dtpHora2
+            // 
+            this.dtpHora2.CustomFormat = "HH:mm";
+            this.dtpHora2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpHora2.Location = new System.Drawing.Point(403, 396);
+            this.dtpHora2.MinDate = new System.DateTime(2024, 6, 4, 0, 0, 0, 0);
+            this.dtpHora2.Name = "dtpHora2";
+            this.dtpHora2.Size = new System.Drawing.Size(200, 20);
+            this.dtpHora2.TabIndex = 66;
+            // 
+            // dtpFecha2
+            // 
+            this.dtpFecha2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpFecha2.Location = new System.Drawing.Point(403, 348);
+            this.dtpFecha2.Name = "dtpFecha2";
+            this.dtpFecha2.Size = new System.Drawing.Size(200, 20);
+            this.dtpFecha2.TabIndex = 65;
+            // 
+            // btnSeleccionarFecha
+            // 
+            this.btnSeleccionarFecha.Location = new System.Drawing.Point(403, 204);
+            this.btnSeleccionarFecha.Name = "btnSeleccionarFecha";
+            this.btnSeleccionarFecha.Size = new System.Drawing.Size(200, 23);
+            this.btnSeleccionarFecha.TabIndex = 64;
+            this.btnSeleccionarFecha.Text = "Seleccionar Fecha y Hora";
+            this.btnSeleccionarFecha.UseVisualStyleBackColor = true;
+            this.btnSeleccionarFecha.Click += new System.EventHandler(this.btnSeleccionarFecha_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(395, 240);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(129, 13);
+            this.label2.TabIndex = 63;
+            this.label2.Text = "Fecha y hora del Evento :";
+            // 
+            // lblFechaHora
+            // 
+            this.lblFechaHora.AutoSize = true;
+            this.lblFechaHora.Location = new System.Drawing.Point(535, 240);
+            this.lblFechaHora.Name = "lblFechaHora";
+            this.lblFechaHora.Size = new System.Drawing.Size(0, 13);
+            this.lblFechaHora.TabIndex = 62;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(400, 162);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(30, 13);
+            this.label3.TabIndex = 61;
+            this.label3.Text = "Hora";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(400, 114);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(37, 13);
+            this.label4.TabIndex = 60;
+            this.label4.Text = "Fecha";
+            // 
+            // dtpHora
+            // 
+            this.dtpHora.CustomFormat = "HH:mm";
+            this.dtpHora.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpHora.Location = new System.Drawing.Point(403, 178);
+            this.dtpHora.MinDate = new System.DateTime(2024, 6, 4, 0, 0, 0, 0);
+            this.dtpHora.Name = "dtpHora";
+            this.dtpHora.Size = new System.Drawing.Size(200, 20);
+            this.dtpHora.TabIndex = 59;
+            // 
+            // dtpFecha
+            // 
+            this.dtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpFecha.Location = new System.Drawing.Point(403, 130);
+            this.dtpFecha.Name = "dtpFecha";
+            this.dtpFecha.Size = new System.Drawing.Size(200, 20);
+            this.dtpFecha.TabIndex = 58;
+            this.dtpFecha.ValueChanged += new System.EventHandler(this.dtpFecha_ValueChanged);
+            // 
             // EditarEvento
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(614, 591);
+            this.ClientSize = new System.Drawing.Size(688, 708);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.btnSeleccionarFecha2);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.lblFechaHora2);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.dtpHora2);
+            this.Controls.Add(this.dtpFecha2);
+            this.Controls.Add(this.btnSeleccionarFecha);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblFechaHora);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.dtpHora);
+            this.Controls.Add(this.dtpFecha);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.lblErrorModificar);
@@ -294,10 +428,6 @@ namespace APIpostYeventos
             this.Controls.Add(this.lblFechayHora);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnModificar);
-            this.Controls.Add(this.lblHora);
-            this.Controls.Add(this.lblFecha);
-            this.Controls.Add(this.dtpHora);
-            this.Controls.Add(this.dtpFecha);
             this.Controls.Add(this.btnSeleccionar);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblFoto);
@@ -323,10 +453,6 @@ namespace APIpostYeventos
 
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Button btnModificar;
-        private System.Windows.Forms.Label lblHora;
-        private System.Windows.Forms.Label lblFecha;
-        private System.Windows.Forms.DateTimePicker dtpHora;
-        private System.Windows.Forms.DateTimePicker dtpFecha;
         private System.Windows.Forms.Button btnSeleccionar;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblFoto;
@@ -339,10 +465,26 @@ namespace APIpostYeventos
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.TextBox txtID;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblFechayHora;
         private System.Windows.Forms.Label lblErrorID;
         private System.Windows.Forms.Label lblErrorModificar;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnVolver;
+        private System.Windows.Forms.Label lblFechayHora;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button btnSeleccionarFecha2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblFechaHora2;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.DateTimePicker dtpHora2;
+        private System.Windows.Forms.DateTimePicker dtpFecha2;
+        private System.Windows.Forms.Button btnSeleccionarFecha;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblFechaHora;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DateTimePicker dtpHora;
+        private System.Windows.Forms.DateTimePicker dtpFecha;
     }
 }

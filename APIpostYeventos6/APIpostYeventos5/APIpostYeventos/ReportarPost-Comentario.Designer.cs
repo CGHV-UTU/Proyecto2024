@@ -34,13 +34,13 @@ namespace APIpostYeventos
             this.lblID = new System.Windows.Forms.Label();
             this.txtID = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.txtTipo = new System.Windows.Forms.TextBox();
             this.txtDesc = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnEnviar = new System.Windows.Forms.Button();
             this.txtUsuario = new System.Windows.Forms.TextBox();
             this.lblUsuario = new System.Windows.Forms.Label();
             this.lblResultado = new System.Windows.Forms.Label();
+            this.cbxTipo = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // cbxReporte
@@ -88,13 +88,6 @@ namespace APIpostYeventos
             this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 4;
             this.label3.Text = "Razón";
-            // 
-            // txtTipo
-            // 
-            this.txtTipo.Location = new System.Drawing.Point(160, 187);
-            this.txtTipo.Name = "txtTipo";
-            this.txtTipo.Size = new System.Drawing.Size(150, 20);
-            this.txtTipo.TabIndex = 5;
             // 
             // txtDesc
             // 
@@ -148,18 +141,38 @@ namespace APIpostYeventos
             this.lblResultado.TabIndex = 11;
             this.lblResultado.Text = "Resultado";
             // 
+            // cbxTipo
+            // 
+            this.cbxTipo.FormattingEnabled = true;
+            this.cbxTipo.Items.AddRange(new object[] {
+            "Sexual",
+            "Violento o repugnante",
+            "Vejatorio",
+            "Hostigamiento o acoso",
+            "Actividades dañinas o peligrosas",
+            "Desinformacion",
+            "Maltrato infantil",
+            "Terrorismo",
+            "Fraude",
+            "Problema legal",
+            "Otros"});
+            this.cbxTipo.Location = new System.Drawing.Point(160, 187);
+            this.cbxTipo.Name = "cbxTipo";
+            this.cbxTipo.Size = new System.Drawing.Size(150, 21);
+            this.cbxTipo.TabIndex = 12;
+            // 
             // ReportarPost_Comentario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(368, 450);
+            this.Controls.Add(this.cbxTipo);
             this.Controls.Add(this.lblResultado);
             this.Controls.Add(this.txtUsuario);
             this.Controls.Add(this.lblUsuario);
             this.Controls.Add(this.btnEnviar);
             this.Controls.Add(this.txtDesc);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtTipo);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtID);
             this.Controls.Add(this.lblID);
@@ -179,12 +192,12 @@ namespace APIpostYeventos
         private System.Windows.Forms.Label lblID;
         private System.Windows.Forms.TextBox txtID;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtTipo;
         private System.Windows.Forms.TextBox txtDesc;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnEnviar;
         private System.Windows.Forms.TextBox txtUsuario;
         private System.Windows.Forms.Label lblUsuario;
         private System.Windows.Forms.Label lblResultado;
+        private System.Windows.Forms.ComboBox cbxTipo;
     }
 }

@@ -34,7 +34,6 @@ namespace APIPostYEventos2019.Controllers
         public class EventData
         {
             public string id { get; set; }
-
             public string titulo { get; set; } = "";
             public string ubicacion { get; set; } = "";
             public string descripcion { get; set; } = "";
@@ -77,8 +76,8 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    string token = "token"; // Token para repositorio privado. Cambiar por el token real
-                    string nombreDeImagen = GenerarIdAleatorio(8) + ".png"; // nombre aleatorio para que el nombre del archivo no se repita // Carpeta de GitHub en donde se guarda la imagen
+                    string token = "11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
+                    string nombreDeImagen = GenerarIdAleatorio(8) + ".png"; // nombre aleatorio para que el nombre del archivo no se repita 
 
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     client.DefaultRequestHeaders.UserAgent.ParseAdd("request");
@@ -114,7 +113,7 @@ namespace APIPostYEventos2019.Controllers
         {
             using (var client = new HttpClient())
             {
-                string token = "token"; // Token para repositorio privado. Cambiar por el token real
+                string token = "11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var response = await client.GetAsync(urlImagen);
@@ -1306,5 +1305,45 @@ namespace APIPostYEventos2019.Controllers
                 return Json("like incorrecto" + like.nombreDeCuenta + like.nombredeCreador + like.idpost);
             }
         }
+
+        [HttpPut]
+        [Route("conseguirCreadorComentario")]
+        public dynamic conseguirCreadorComentario([FromBody] PostData post)
+        {
+            try
+            {
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                conn.Open();
+                MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta FROM Comentarios WHERE id=@Id", conn);
+                command.Parameters.AddWithValue("@Id", post.id);
+                MySqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    string nombreDeCuenta;
+                    if (string.IsNullOrEmpty(reader["nombreDeCuenta"].ToString()))
+                    {
+                        nombreDeCuenta = "";
+                        conn.Close();
+                        return Json(nombreDeCuenta);
+                    }
+                    else
+                    {
+                        nombreDeCuenta = reader["nombreDeCuenta"].ToString();
+                        conn.Close();
+                        return Json(nombreDeCuenta);
+                    }
+                }
+                else
+                {
+                    conn.Close();
+                    return Json($"no se encuentra");
+                }
+            }
+            catch
+            {
+                return Json("no se encuentra");
+            }
+        }
+
     }
 }

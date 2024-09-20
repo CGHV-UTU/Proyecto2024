@@ -59,26 +59,6 @@ namespace APIpostYeventos
                 var respuesta = await Existe(int.Parse(txtID.Text));
                 if (respuesta)
                 {
-                    var data = await Buscar(int.Parse(txtID.Text));
-                    txtTexto.Text = data[0];
-                    txtUrl.Text = data[1];
-                    if (data[2].Length > 0)
-                    {
-                        byte[] imagen = Convert.FromBase64String(data[2]);
-                        MemoryStream ms = new MemoryStream(imagen);
-                        Bitmap bitmap = new Bitmap(ms);
-                        pictureBox1.Image = bitmap;
-                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                    }
-                    else
-                    {
-                        pictureBox1.Image = null;
-                    }
-                    lblTexto.Show();
-                    lblFoto.Show();
-                    lblVideo.Show();
-                    txtTexto.Show();
-                    txtUrl.Show();
                     lblID.Hide();
                     lblErrorID.Hide();
                     txtID.Hide();
@@ -133,7 +113,7 @@ namespace APIpostYeventos
             }
         }
 
-        private void btnConfirmar_Click(object sender, EventArgs e)
+        private async void btnConfirmar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtComentario.Text))
             {
@@ -144,37 +124,21 @@ namespace APIpostYeventos
             {
                 lblError3.Text = "Modificación correcta";
                 lblError3.Show();
-                Modificar(lblidComentario.Text,txtComentario.Text);
+                await Modificar(lblidComentario.Text,txtComentario.Text);
             }
             CargarTabla();
             ModificarTabla();
         }
 
-        static async Task<string[]> Buscar(int id)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/postPorId?id={id}");
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody);
-                    return new string[] { data.texto, data.url, data.imagen };
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-        }
         static async Task<string[]> BuscarComentario(int id)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/conseguirComentario?id={id}");
+                    var datos = new { id = id };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/conseguirComentario", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -192,7 +156,9 @@ namespace APIpostYeventos
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/existePost?id={id}");
+                    var datos = new {id = id };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/existePost", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject<bool>(responseBody);
@@ -210,7 +176,9 @@ namespace APIpostYeventos
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/seleccionarTodosLosComentarios?id={id}");
+                    var datos = new {id = id };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/seleccionarTodosLosComentarios", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     DataTable tabla = JsonConvert.DeserializeObject<DataTable>(responseBody);
@@ -228,7 +196,9 @@ namespace APIpostYeventos
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/existeComentario?id={id}");
+                    var datos = new {id = id };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/existeComentario", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject<bool>(responseBody);
@@ -255,57 +225,6 @@ namespace APIpostYeventos
                 {
 
                 }
-            }
-        }
-
-        //testing
-        public dynamic modificarComentario(string id = "" ,string texto = "")
-        {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd;
-                if (!string.IsNullOrEmpty(texto))
-                {
-                    cmd = new MySqlCommand("UPDATE comentarios SET texto=@Texto WHERE id=@id", conn);
-                    cmd.Parameters.AddWithValue("@Texto", texto);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                    return "Modificacion correcta";
-                }
-                else
-                {
-                    return "Modificacion incorrecta";
-                }
-            }
-            catch (Exception)
-            {
-                return "no se encuentra";
-            }
-        }
-        public dynamic ultimoComentario()
-        {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT id FROM comentarios ORDER BY id DESC LIMIT 1", conn);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
-                {
-                    string id = reader["id"].ToString();
-                    return id;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch
-            {
-                return null;
             }
         }
     }

@@ -14,9 +14,11 @@ namespace APIpostYeventos
 {
     public partial class ReportarPost_Comentario : Form
     {
-        public ReportarPost_Comentario()
+        private static string user;
+        public ReportarPost_Comentario(string Usuario)
         {
             InitializeComponent();
+            user = Usuario;
         }
 
         private void cbxReporte_SelectedIndexChanged(object sender, EventArgs e)
@@ -33,78 +35,28 @@ namespace APIpostYeventos
 
         private async void btnEnviar_Click(object sender, EventArgs e)
         {
-            var respuesta = await Reporta(txtUsuario.Text,txtTipo.Text,txtDesc.Text);
-            if (respuesta.Equals("Reporte correcto"))
+            if (cbxReporte.SelectedItem.Equals("Post"))
             {
-                var ultimo = await UltimoReporte();
-                lblResultado.Text = "" + ultimo;
-                if (int.Parse(ultimo) > 0)
-                {
-                    lblResultado.Text = "" + ultimo;
-                    if (cbxReporte.SelectedItem.Equals("Post"))
-                    {
-                        lblResultado.Text = "LLega";
-                        var resultado = await ReportaPost(int.Parse(ultimo), txtUsuario.Text, int.Parse(txtID.Text));
-                        lblResultado.Text = resultado;
-                    }
-                    else
-                    {
-                        lblResultado.Text = "LLega";
-                        var resultado = await ReportaComentario(int.Parse(ultimo), txtUsuario.Text, int.Parse(txtID.Text));
-                        lblResultado.Text = resultado;
-                    }
-                }        
+                var resultado = await ReportaPost(txtUsuario.Text, int.Parse(txtID.Text), cbxTipo.Text, txtDesc.Text);
+                lblResultado.Text = resultado;
             }
             else
             {
-                lblResultado.Text = "Reporte incorrecto";
+                var resultado = await ReportaComentario(txtUsuario.Text, int.Parse(txtID.Text), cbxTipo.Text, txtDesc.Text);
+                lblResultado.Text = resultado;
             }
         }
-
-        public static async Task<string> Reporta(string usuario, string tipo, string descripcion)
+    
+        //Reportes
+        public static async Task<string> ReportaPost(string usuario, int id, string tipo, string descripcion)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { usuario = usuario, tipo = tipo, descripcion = descripcion };
+                    var datos = new {nombreDeCuenta = user, idPost = id, creadorDelPost = usuario, tipo = tipo, descripcion = descripcion};
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/ReportarUsuario", content);
-                    response.EnsureSuccessStatusCode();
-                    var responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody);
-                    return data;
-                }
-                catch
-                {
-                    return "Reporte fallido";
-                }
-            }
-        }
-
-        public static async Task<string> UltimoReporte()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                
-                    HttpResponseMessage response = await client.GetAsync("https://localhost:44383/user/UltimoReporte");
-                    response.EnsureSuccessStatusCode();
-                    var responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody);
-                    return data;
-                
-            }
-        }
-
-        public static async Task<string> ReportaPost(int numeroReporte,string usuario, int id)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    var datos = new { numeroReporte = numeroReporte, usuario = usuario, id = id };
-                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/ReportarPost", content);
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/Reportar", content); //Conecta con API usuarios
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -116,15 +68,15 @@ namespace APIpostYeventos
                 }   
             }
         }
-        public static async Task<string> ReportaComentario(int numeroReporte, string usuario, int id)
+        public static async Task<string> ReportaComentario(string usuario, int id, string tipo, string descripcion)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { numeroReporte = numeroReporte, usuario = usuario, id = id };
+                    var datos = new { nombreDeCuenta = user, idComentario = id, creadorDelComentario = usuario, tipo = tipo, descripcion = descripcion };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/ReportarComentario", content);
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/Reportar", content); //Conecta con API usuarios
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);

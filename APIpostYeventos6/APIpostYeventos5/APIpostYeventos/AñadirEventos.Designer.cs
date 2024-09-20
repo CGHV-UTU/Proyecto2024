@@ -48,15 +48,22 @@ namespace APIpostYeventos
             this.lblDescripcion = new System.Windows.Forms.Label();
             this.txtDescripcion = new System.Windows.Forms.TextBox();
             this.lblError = new System.Windows.Forms.Label();
+            this.btnSeleccionarFecha2 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lblFechaHora2 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.dtpHora2 = new System.Windows.Forms.DateTimePicker();
+            this.dtpFecha2 = new System.Windows.Forms.DateTimePicker();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtNombreGrupo = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
             this.SuspendLayout();
             // 
             // btnPublicar
             // 
-            this.btnPublicar.Location = new System.Drawing.Point(270, 212);
+            this.btnPublicar.Location = new System.Drawing.Point(18, 386);
             this.btnPublicar.Name = "btnPublicar";
             this.btnPublicar.Size = new System.Drawing.Size(91, 23);
             this.btnPublicar.TabIndex = 31;
@@ -66,7 +73,7 @@ namespace APIpostYeventos
             // 
             // btnSeleccionarFecha
             // 
-            this.btnSeleccionarFecha.Location = new System.Drawing.Point(20, 212);
+            this.btnSeleccionarFecha.Location = new System.Drawing.Point(410, 144);
             this.btnSeleccionarFecha.Name = "btnSeleccionarFecha";
             this.btnSeleccionarFecha.Size = new System.Drawing.Size(200, 23);
             this.btnSeleccionarFecha.TabIndex = 30;
@@ -77,7 +84,7 @@ namespace APIpostYeventos
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 248);
+            this.label2.Location = new System.Drawing.Point(402, 180);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(129, 13);
             this.label2.TabIndex = 29;
@@ -86,7 +93,7 @@ namespace APIpostYeventos
             // lblFechaHora
             // 
             this.lblFechaHora.AutoSize = true;
-            this.lblFechaHora.Location = new System.Drawing.Point(152, 248);
+            this.lblFechaHora.Location = new System.Drawing.Point(542, 180);
             this.lblFechaHora.Name = "lblFechaHora";
             this.lblFechaHora.Size = new System.Drawing.Size(0, 13);
             this.lblFechaHora.TabIndex = 28;
@@ -108,7 +115,7 @@ namespace APIpostYeventos
             // lblHora
             // 
             this.lblHora.AutoSize = true;
-            this.lblHora.Location = new System.Drawing.Point(17, 170);
+            this.lblHora.Location = new System.Drawing.Point(407, 102);
             this.lblHora.Name = "lblHora";
             this.lblHora.Size = new System.Drawing.Size(30, 13);
             this.lblHora.TabIndex = 25;
@@ -117,7 +124,7 @@ namespace APIpostYeventos
             // lblFecha
             // 
             this.lblFecha.AutoSize = true;
-            this.lblFecha.Location = new System.Drawing.Point(17, 122);
+            this.lblFecha.Location = new System.Drawing.Point(407, 54);
             this.lblFecha.Name = "lblFecha";
             this.lblFecha.Size = new System.Drawing.Size(37, 13);
             this.lblFecha.TabIndex = 24;
@@ -127,7 +134,7 @@ namespace APIpostYeventos
             // 
             this.dtpHora.CustomFormat = "HH:mm";
             this.dtpHora.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpHora.Location = new System.Drawing.Point(20, 186);
+            this.dtpHora.Location = new System.Drawing.Point(410, 118);
             this.dtpHora.MinDate = new System.DateTime(2024, 6, 4, 0, 0, 0, 0);
             this.dtpHora.Name = "dtpHora";
             this.dtpHora.Size = new System.Drawing.Size(200, 20);
@@ -136,14 +143,15 @@ namespace APIpostYeventos
             // dtpFecha
             // 
             this.dtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFecha.Location = new System.Drawing.Point(20, 138);
+            this.dtpFecha.Location = new System.Drawing.Point(410, 70);
             this.dtpFecha.Name = "dtpFecha";
             this.dtpFecha.Size = new System.Drawing.Size(200, 20);
             this.dtpFecha.TabIndex = 22;
+            this.dtpFecha.ValueChanged += new System.EventHandler(this.dtpFecha_ValueChanged);
             // 
             // btnVolver
             // 
-            this.btnVolver.Location = new System.Drawing.Point(270, 248);
+            this.btnVolver.Location = new System.Drawing.Point(18, 415);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(91, 23);
             this.btnVolver.TabIndex = 21;
@@ -153,7 +161,7 @@ namespace APIpostYeventos
             // 
             // btnSeleccionar
             // 
-            this.btnSeleccionar.Location = new System.Drawing.Point(333, 170);
+            this.btnSeleccionar.Location = new System.Drawing.Point(92, 287);
             this.btnSeleccionar.Name = "btnSeleccionar";
             this.btnSeleccionar.Size = new System.Drawing.Size(132, 23);
             this.btnSeleccionar.TabIndex = 20;
@@ -163,17 +171,16 @@ namespace APIpostYeventos
             // 
             // pbxImagen
             // 
-            this.pbxImagen.Location = new System.Drawing.Point(321, 29);
+            this.pbxImagen.Location = new System.Drawing.Point(80, 146);
             this.pbxImagen.Name = "pbxImagen";
             this.pbxImagen.Size = new System.Drawing.Size(159, 135);
             this.pbxImagen.TabIndex = 19;
             this.pbxImagen.TabStop = false;
-            this.pbxImagen.Click += new System.EventHandler(this.pbxImagen_Click);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(356, 13);
+            this.label3.Location = new System.Drawing.Point(115, 130);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(82, 13);
             this.label3.TabIndex = 18;
@@ -216,45 +223,118 @@ namespace APIpostYeventos
             // lblError
             // 
             this.lblError.AutoSize = true;
-            this.lblError.Location = new System.Drawing.Point(367, 217);
+            this.lblError.Location = new System.Drawing.Point(115, 391);
             this.lblError.Name = "lblError";
             this.lblError.Size = new System.Drawing.Size(160, 13);
             this.lblError.TabIndex = 34;
             this.lblError.Text = "Debe Rellenar todos los campos";
             this.lblError.Visible = false;
             // 
+            // btnSeleccionarFecha2
+            // 
+            this.btnSeleccionarFecha2.Location = new System.Drawing.Point(410, 362);
+            this.btnSeleccionarFecha2.Name = "btnSeleccionarFecha2";
+            this.btnSeleccionarFecha2.Size = new System.Drawing.Size(200, 23);
+            this.btnSeleccionarFecha2.TabIndex = 44;
+            this.btnSeleccionarFecha2.Text = "Seleccionar Fecha y Hora";
+            this.btnSeleccionarFecha2.UseVisualStyleBackColor = true;
+            this.btnSeleccionarFecha2.Click += new System.EventHandler(this.btnSeleccionarFecha2_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(402, 398);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(129, 13);
+            this.label5.TabIndex = 43;
+            this.label5.Text = "Fecha y hora del Evento :";
+            // 
+            // lblFechaHora2
+            // 
+            this.lblFechaHora2.AutoSize = true;
+            this.lblFechaHora2.Location = new System.Drawing.Point(542, 398);
+            this.lblFechaHora2.Name = "lblFechaHora2";
+            this.lblFechaHora2.Size = new System.Drawing.Size(0, 13);
+            this.lblFechaHora2.TabIndex = 42;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(407, 320);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(30, 13);
+            this.label7.TabIndex = 41;
+            this.label7.Text = "Hora";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(407, 272);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(37, 13);
+            this.label8.TabIndex = 40;
+            this.label8.Text = "Fecha";
+            // 
+            // dtpHora2
+            // 
+            this.dtpHora2.CustomFormat = "HH:mm";
+            this.dtpHora2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpHora2.Location = new System.Drawing.Point(410, 336);
+            this.dtpHora2.MinDate = new System.DateTime(2024, 6, 4, 0, 0, 0, 0);
+            this.dtpHora2.Name = "dtpHora2";
+            this.dtpHora2.Size = new System.Drawing.Size(200, 20);
+            this.dtpHora2.TabIndex = 39;
+            // 
+            // dtpFecha2
+            // 
+            this.dtpFecha2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpFecha2.Location = new System.Drawing.Point(410, 288);
+            this.dtpFecha2.Name = "dtpFecha2";
+            this.dtpFecha2.Size = new System.Drawing.Size(200, 20);
+            this.dtpFecha2.TabIndex = 38;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(407, 18);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(85, 13);
+            this.label9.TabIndex = 45;
+            this.label9.Text = "Inicio del evento";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(407, 245);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(71, 13);
+            this.label10.TabIndex = 46;
+            this.label10.Text = "fin del evento";
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(444, 267);
+            this.label1.Location = new System.Drawing.Point(281, 336);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 35;
             this.label1.Text = "label1";
-            // 
-            // txtNombreGrupo
-            // 
-            this.txtNombreGrupo.Location = new System.Drawing.Point(95, 6);
-            this.txtNombreGrupo.Name = "txtNombreGrupo";
-            this.txtNombreGrupo.Size = new System.Drawing.Size(150, 20);
-            this.txtNombreGrupo.TabIndex = 36;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(21, 9);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(76, 13);
-            this.label4.TabIndex = 37;
-            this.label4.Text = "Nombre Grupo";
+            this.label1.Visible = false;
             // 
             // AñadirEvento
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(589, 292);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtNombreGrupo);
+            this.ClientSize = new System.Drawing.Size(722, 459);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.btnSeleccionarFecha2);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.lblFechaHora2);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.dtpHora2);
+            this.Controls.Add(this.dtpFecha2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.txtDescripcion);
@@ -303,8 +383,15 @@ namespace APIpostYeventos
         private System.Windows.Forms.Label lblDescripcion;
         private System.Windows.Forms.TextBox txtDescripcion;
         private System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.Button btnSeleccionarFecha2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblFechaHora2;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.DateTimePicker dtpHora2;
+        private System.Windows.Forms.DateTimePicker dtpFecha2;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtNombreGrupo;
-        private System.Windows.Forms.Label label4;
     }
 }

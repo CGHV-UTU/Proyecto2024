@@ -82,6 +82,7 @@ namespace APIpostYeventos
                     var data = await Buscar(int.Parse(txtID.Text));
                     txtTexto.Text = data[0];
                     txtUrl.Text = data[1];
+                    
                     if (data[2].Length > 0)
                     {
                         byte[] imagen = Convert.FromBase64String(data[2]);
@@ -136,7 +137,7 @@ namespace APIpostYeventos
                     MemoryStream ms = new MemoryStream();
                     pictureBox1.Image.Save(ms, ImageFormat.Jpeg);
                     byte[] imagen = ms.ToArray();
-                    Modificar(txtID.Text, txtTexto.Text, txtUrl.Text, imagen);
+                    await Modificar(txtID.Text, txtTexto.Text, txtUrl.Text, imagen);
                     lblErrorModificar.Show();
                     MessageBox.Show("El post se modificó correctamente");
                 }
@@ -149,11 +150,13 @@ namespace APIpostYeventos
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/postPorId?id={id}");
+                    var datos = new { id = id };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos),Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/postPorId", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de ninguna manera, tengo que hallar alguna forma de pasar los datos
-                    return new string[] { data.texto, data.url, data.imagen };
+                    dynamic data = JsonConvert.DeserializeObject(responseBody); 
+                    return new string[] { data.text, data.link, data.image };
                 }
                 catch
                 {
@@ -201,10 +204,12 @@ namespace APIpostYeventos
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/existePost?id={id}");
+                    var datos = new { id = id };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/existePost", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject<bool>(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de ninguna manera, tengo que hallar alguna forma de pasar los datos
+                    dynamic data = JsonConvert.DeserializeObject<bool>(responseBody);
                     return data;
                 }
                 catch
@@ -212,159 +217,6 @@ namespace APIpostYeventos
                     return false;
                 }
             }
-        }
-
-
-        //testing de la API
-        public string modificarPost(string id,string link = "", string text = "", string image = "")
-        {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd;
-                if (!string.IsNullOrEmpty(text))
-                {
-                    string texto = text;
-                    if (!string.IsNullOrEmpty(link))
-                    {
-                        string url = link;
-                        cmd = new MySqlCommand("UPDATE posts SET texto=@texto,imagen=@imagen,url=@url WHERE id=@id", conn);
-                        cmd.Parameters.AddWithValue("@Texto", texto);
-                        cmd.Parameters.AddWithValue("@url", url);
-                        cmd.Parameters.AddWithValue("@id", id);
-                        cmd.Parameters.AddWithValue("@Imagen", null);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return "Modificacion correcta";
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(image))
-                        {
-                            byte[] imagen = Convert.FromBase64String(image);
-                            cmd = new MySqlCommand("UPDATE posts SET texto=@texto,imagen=@imagen,url=@url WHERE id=@id", conn);
-                            cmd.Parameters.AddWithValue("@Texto", texto);
-                            cmd.Parameters.AddWithValue("@Imagen", imagen);
-                            cmd.Parameters.AddWithValue("@id", id);
-                            cmd.Parameters.AddWithValue("@url", null);
-                            cmd.ExecuteNonQuery();
-                            conn.Close();
-                            return "Modificacion correcta";
-                        }
-                        else
-                        {
-                            cmd = new MySqlCommand("UPDATE posts SET texto=@texto,imagen=@imagen,url=@url WHERE id=@id", conn);
-                            cmd.Parameters.AddWithValue("@Texto", texto);
-                            cmd.Parameters.AddWithValue("@id", id);
-                            cmd.Parameters.AddWithValue("@url", null);
-                            cmd.Parameters.AddWithValue("@Imagen", null);
-                            cmd.ExecuteNonQuery();
-                            conn.Close();
-                            return "Modificacion correcta";
-                        }
-                    }
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(image))
-                    {
-                        byte[] imagen = Convert.FromBase64String(image);
-                        cmd = new MySqlCommand("UPDATE posts SET texto=@texto,imagen=@imagen,url=@url WHERE id=@id", conn);
-                        cmd.Parameters.AddWithValue("@Imagen", imagen);
-                        cmd.Parameters.AddWithValue("@id", id);
-                        cmd.Parameters.AddWithValue("@Texto", null);
-                        cmd.Parameters.AddWithValue("@url", null);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return "Modificacion correcta";
-                    }
-                    else
-                    {
-                        string url = link;
-                        cmd = new MySqlCommand("UPDATE posts SET texto=@texto,imagen=@imagen,url=@url WHERE id=@id", conn);
-                        cmd.Parameters.AddWithValue("@url", url);
-                        cmd.Parameters.AddWithValue("@id", id);
-                        cmd.Parameters.AddWithValue("@Texto", null);
-                        cmd.Parameters.AddWithValue("@Imagen", null);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return "Modificacion correcta";
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return "Modificación incorrecta";
-            }    
-        }
-        public string ultimoPost()
-        {
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-            conn.Open();
-            MySqlCommand command = new MySqlCommand("SELECT id FROM posts ORDER BY id DESC LIMIT 1", conn);
-            MySqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                string id = reader["id"].ToString();
-                return id;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public string conseguirPost(int id)
-        {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=base; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT texto,imagen,url FROM posts WHERE id=@Id", conn);
-                command.Parameters.AddWithValue("@Id", id);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
-                {
-                    string texto;
-                    if (string.IsNullOrEmpty(reader["texto"].ToString()))
-                    {
-                        texto = "";
-                    }
-                    else
-                    {
-                        texto = reader["texto"].ToString();
-                    }
-                    string imagen;
-                    if (string.IsNullOrEmpty(reader["imagen"].ToString()))
-                    {
-                        imagen = "";
-                    }
-                    else
-                    {
-                        imagen = reader["imagen"].ToString();
-                    }
-                    string url;
-                    if (string.IsNullOrEmpty(reader["url"].ToString()))
-                    {
-                        url = "";
-                    }
-                    else
-                    {
-                        url = reader["url"].ToString();
-                    }
-                    var data = new { imagen = imagen, url = url, texto = texto };
-                    return texto;
-                }
-                else
-                {
-                    return "no se encuentra";
-                }
-            }
-            catch (Exception)
-            {
-                return "no se encuentra";
-            }
-        }      
+        }   
     }
 }
