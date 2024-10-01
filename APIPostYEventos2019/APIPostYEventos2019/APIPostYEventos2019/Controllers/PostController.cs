@@ -1,8 +1,10 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.IdentityModel.Tokens;
+using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -29,6 +31,7 @@ namespace APIPostYEventos2019.Controllers
             public string fechayhora { get; set; }
             public string idEvento { get; set; }
             public string nombreReal { get; set; }
+            public string token { get; set; }
 
         }
         public class EventData
@@ -40,8 +43,8 @@ namespace APIPostYEventos2019.Controllers
             public string foto { get; set; } = "";
             public string fechaYhora_Inicio { get; set; } = "";
             public string fechaYhora_Final { get; set; } = "";
-
             public string user { get; set; }
+            public string token { get; set; }
 
         }
         public class CommentData
@@ -56,6 +59,7 @@ namespace APIPostYEventos2019.Controllers
             public string texto { get; set; }
 
             public string fechayhora { get; set; }
+            public string token { get; set; }
         }
         public class ReportePostOComentario
         {
@@ -63,12 +67,14 @@ namespace APIPostYEventos2019.Controllers
             public int id { get; set; }
             public string tipo { get; set; }
             public string descripcion { get; set; }
+            public string token { get; set; }
         }
         public class like
         {
             public string nombreDeCuenta { get; set; }
             public int idpost { get; set; }
             public string nombredeCreador { get; set; }
+            public string token { get; set; }
         }
         public async Task<string> SubirImagenAGitHub(string imagen, string carpeta)
         {
@@ -129,32 +135,89 @@ namespace APIPostYEventos2019.Controllers
             }
         }
 
+        public bool TestToken(string pedido)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                SecurityToken securityToken;
+                var comprobar = tokenHandler.ValidateToken(pedido, ParametrosDeValidacionDelToken(), out securityToken);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private TokenValidationParameters ParametrosDeValidacionDelToken()
+        {
+            return new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidIssuer = "InfiniSV",
+                ValidAudience = "usuario",
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("af431f66a2b44ddf1c8ee210f366d921"))
+            };
+        }
+
         [HttpPost]
         [Route("postear")]
         public async Task<dynamic> HacerPost([FromBody] PostData postdata)
         {
-            using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+            if (TestToken(postdata.token))
             {
-                await conn.OpenAsync();
-                int idPost;
-                string linkImagen = null;
-
-                if (!string.IsNullOrEmpty(postdata.text))
+                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
                 {
-                    string texto = postdata.text;
+                    await conn.OpenAsync();
+                    int idPost;
+                    string linkImagen = null;
 
-                    if (!string.IsNullOrEmpty(postdata.link))
+                    if (!string.IsNullOrEmpty(postdata.text))
                     {
-                        string url = postdata.link;
-                        using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, texto, video, fechaYhora) VALUES (@NombreDeCuenta, @Texto, @url, @fechaYhora); SELECT LAST_INSERT_id();", conn))
-                        {
-                            cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
-                            cmd.Parameters.AddWithValue("@Texto", texto);
-                            cmd.Parameters.AddWithValue("@url", url);
-                            cmd.Parameters.AddWithValue("fechaYhora", postdata.fechayhora);
-                            idPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
-                        }
+                        string texto = postdata.text;
 
+                        if (!string.IsNullOrEmpty(postdata.link))
+                        {
+                            string url = postdata.link;
+                            using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, texto, video, fechaYhora) VALUES (@NombreDeCuenta, @Texto, @url, @fechaYhora); SELECT LAST_INSERT_id();", conn))
+                            {
+                                cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
+                                cmd.Parameters.AddWithValue("@Texto", texto);
+                                cmd.Parameters.AddWithValue("@url", url);
+                                cmd.Parameters.AddWithValue("fechaYhora", postdata.fechayhora);
+                                idPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                            }
+
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(postdata.image))
+                            {
+                                linkImagen = await SubirImagenAGitHub(postdata.image, "PostImages");
+
+                                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, texto, imagen, fechaYhora) VALUES (@NombreDeCuenta, @Texto, @Imagen, @fechaYhora); SELECT LAST_INSERT_id();", conn))
+                                {
+                                    cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
+                                    cmd.Parameters.AddWithValue("@Texto", texto);
+                                    cmd.Parameters.AddWithValue("@Imagen", linkImagen);
+                                    cmd.Parameters.AddWithValue("fechaYhora", postdata.fechayhora);
+                                    idPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                                }
+                            }
+                            else
+                            {
+                                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, texto, fechaYhora) VALUES (@NombreDeCuenta, @Texto, @fechaYhora); SELECT LAST_INSERT_id();", conn))
+                                {
+                                    cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
+                                    cmd.Parameters.AddWithValue("@Texto", texto);
+                                    cmd.Parameters.AddWithValue("fechaYhora", postdata.fechayhora);
+                                    idPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                                }
+                            }
+                        }
                     }
                     else
                     {
@@ -162,10 +225,9 @@ namespace APIPostYEventos2019.Controllers
                         {
                             linkImagen = await SubirImagenAGitHub(postdata.image, "PostImages");
 
-                            using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, texto, imagen, fechaYhora) VALUES (@NombreDeCuenta, @Texto, @Imagen, @fechaYhora); SELECT LAST_INSERT_id();", conn))
+                            using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, imagen, fechaYhora) VALUES (@NombreDeCuenta, @Imagen, @fechaYhora); SELECT LAST_INSERT_id();", conn))
                             {
                                 cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
-                                cmd.Parameters.AddWithValue("@Texto", texto);
                                 cmd.Parameters.AddWithValue("@Imagen", linkImagen);
                                 cmd.Parameters.AddWithValue("fechaYhora", postdata.fechayhora);
                                 idPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
@@ -173,69 +235,48 @@ namespace APIPostYEventos2019.Controllers
                         }
                         else
                         {
-                            using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, texto, fechaYhora) VALUES (@NombreDeCuenta, @Texto, @fechaYhora); SELECT LAST_INSERT_id();", conn))
+                            string url = postdata.link;
+                            using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, video, fechaYhora) VALUES (@NombreDeCuenta, @url, @fechaYhora); SELECT LAST_INSERT_id();", conn))
                             {
                                 cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
-                                cmd.Parameters.AddWithValue("@Texto", texto);
+                                cmd.Parameters.AddWithValue("@url", url);
                                 cmd.Parameters.AddWithValue("fechaYhora", postdata.fechayhora);
                                 idPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
                             }
                         }
                     }
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(postdata.image))
-                    {
-                        linkImagen = await SubirImagenAGitHub(postdata.image, "PostImages");
 
-                        using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, imagen, fechaYhora) VALUES (@NombreDeCuenta, @Imagen, @fechaYhora); SELECT LAST_INSERT_id();", conn))
+                    using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO PostPublico (nombreDeCuenta, idPost) VALUES (@NombreDeCuenta, @id)", conn))
+                    {
+                        cmd2.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
+                        cmd2.Parameters.AddWithValue("@id", idPost);
+                        await cmd2.ExecuteNonQueryAsync();
+                    }
+                    if (!string.IsNullOrEmpty(postdata.idEvento))
+                    {
+                        using (MySqlCommand cmd = new MySqlCommand("INSERT INTO PostEvento (idPost, nombreDeCuenta, idEvento) VALUES (@idPost,@NombreDeCuenta,@idEvento); SELECT LAST_INSERT_id();", conn))
                         {
                             cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
-                            cmd.Parameters.AddWithValue("@Imagen", linkImagen);
-                            cmd.Parameters.AddWithValue("fechaYhora", postdata.fechayhora);
-                            idPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                            cmd.Parameters.AddWithValue("@idPost", idPost);
+                            cmd.Parameters.AddWithValue("@idEvento", postdata.idEvento);
                         }
                     }
-                    else
+                    if (!string.IsNullOrEmpty(postdata.nombreReal))
                     {
-                        string url = postdata.link;
-                        using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, video, fechaYhora) VALUES (@NombreDeCuenta, @url, @fechaYhora); SELECT LAST_INSERT_id();", conn))
+                        using (MySqlCommand cmd = new MySqlCommand("INSERT INTO PostGrupo (idPost, nombreDeCuenta, nombreReal) VALUES (@idPost,@NombreDeCuenta,@nombreReal); SELECT LAST_INSERT_id();", conn))
                         {
                             cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
-                            cmd.Parameters.AddWithValue("@url", url);
-                            cmd.Parameters.AddWithValue("fechaYhora", postdata.fechayhora);
-                            idPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                            cmd.Parameters.AddWithValue("@idPost", idPost);
+                            cmd.Parameters.AddWithValue("@nombreReal", postdata.nombreReal);
                         }
                     }
+                    conn.Close();
+                    return Json("Guardado correcto");
                 }
-
-                using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO PostPublico (nombreDeCuenta, idPost) VALUES (@NombreDeCuenta, @id)", conn))
-                {
-                    cmd2.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
-                    cmd2.Parameters.AddWithValue("@id", idPost);
-                    await cmd2.ExecuteNonQueryAsync();
-                }
-                if (!string.IsNullOrEmpty(postdata.idEvento))
-                {
-                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO PostEvento (idPost, nombreDeCuenta, idEvento) VALUES (@idPost,@NombreDeCuenta,@idEvento); SELECT LAST_INSERT_id();", conn))
-                    {
-                        cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
-                        cmd.Parameters.AddWithValue("@idPost", idPost);
-                        cmd.Parameters.AddWithValue("@idEvento", postdata.idEvento);
-                    }
-                }
-                if (!string.IsNullOrEmpty(postdata.nombreReal))
-                {
-                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO PostGrupo (idPost, nombreDeCuenta, nombreReal) VALUES (@idPost,@NombreDeCuenta,@nombreReal); SELECT LAST_INSERT_id();", conn))
-                    {
-                        cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
-                        cmd.Parameters.AddWithValue("@idPost", idPost);
-                        cmd.Parameters.AddWithValue("@nombreReal", postdata.nombreReal);
-                    }
-                }
-                conn.Close();
-                return Json("Guardado correcto");
+            }
+            else
+            {
+                return Json("Token expirado");
             }
         }
 
@@ -243,66 +284,73 @@ namespace APIPostYEventos2019.Controllers
         [Route("postPorId")]
         public async Task<dynamic> conseguirPost([FromBody] PostData post)
         {
-            try
+            if (TestToken(post.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT texto,imagen,video,fechaYhora FROM Posts WHERE idPost=@Id", conn);
-                command.Parameters.AddWithValue("@Id", post.id);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
+                try
                 {
-                    string texto;
-                    if (string.IsNullOrEmpty(reader["texto"].ToString()))
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT texto,imagen,video,fechaYhora FROM Posts WHERE idPost=@Id", conn);
+                    command.Parameters.AddWithValue("@Id", post.id);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
                     {
-                        texto = "";
-                    }
-                    else
-                    {
-                        texto = reader["texto"].ToString();
-                    }
-                    string fechaYhora;
-                    if (string.IsNullOrEmpty(reader["fechaYhora"].ToString()))
-                    {
-                        fechaYhora = "";
-                    }
-                    else
-                    {
-                        fechaYhora = reader["fechaYhora"].ToString();
-                    }
-                    string imagen;
-                    if (string.IsNullOrEmpty(reader["imagen"].ToString()))
-                    {
-                        imagen = "";
-                    }
-                    else
-                    {
-                        imagen = await CargarImagenDeGitHub(reader["imagen"].ToString());
-                    }
+                        string texto;
+                        if (string.IsNullOrEmpty(reader["texto"].ToString()))
+                        {
+                            texto = "";
+                        }
+                        else
+                        {
+                            texto = reader["texto"].ToString();
+                        }
+                        string fechaYhora;
+                        if (string.IsNullOrEmpty(reader["fechaYhora"].ToString()))
+                        {
+                            fechaYhora = "";
+                        }
+                        else
+                        {
+                            fechaYhora = reader["fechaYhora"].ToString();
+                        }
+                        string imagen;
+                        if (string.IsNullOrEmpty(reader["imagen"].ToString()))
+                        {
+                            imagen = "";
+                        }
+                        else
+                        {
+                            imagen = await CargarImagenDeGitHub(reader["imagen"].ToString());
+                        }
 
-                    string url;
-                    if (string.IsNullOrEmpty(reader["video"].ToString()))
-                    {
-                        url = "";
+                        string url;
+                        if (string.IsNullOrEmpty(reader["video"].ToString()))
+                        {
+                            url = "";
+                        }
+                        else
+                        {
+                            url = reader["video"].ToString();
+                        }
+                        var data = new PostData { text = texto, image = imagen, link = url, fechayhora = fechaYhora };
+                        conn.Close();
+                        return Json(data);
                     }
                     else
                     {
-                        url = reader["video"].ToString();
+                        conn.Close();
+                        return Json("no se encuentra");
+
                     }
-                    var data = new PostData{ text = texto, image = imagen, link = url, fechayhora = fechaYhora };
-                    conn.Close();
-                    return Json(data);
                 }
-                else
+                catch (Exception)
                 {
-                    conn.Close();
                     return Json("no se encuentra");
-
                 }
             }
-            catch (Exception)
+            else
             {
-                return Json("no se encuentra");
+                return Json("Token expirado");
             }
         }
 
@@ -310,38 +358,45 @@ namespace APIPostYEventos2019.Controllers
         [Route("conseguirCreador")]
         public dynamic conseguirCreador([FromBody] PostData post)
         {
-            try
+            if (TestToken(post.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta FROM Posts WHERE idPost=@Id", conn);
-                command.Parameters.AddWithValue("@Id", post.id);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
+                try
                 {
-                    string nombreDeCuenta;
-                    if (string.IsNullOrEmpty(reader["nombreDeCuenta"].ToString()))
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta FROM Posts WHERE idPost=@Id", conn);
+                    command.Parameters.AddWithValue("@Id", post.id);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
                     {
-                        nombreDeCuenta = "";
-                        conn.Close();
-                        return Json(nombreDeCuenta);
+                        string nombreDeCuenta;
+                        if (string.IsNullOrEmpty(reader["nombreDeCuenta"].ToString()))
+                        {
+                            nombreDeCuenta = "";
+                            conn.Close();
+                            return Json(nombreDeCuenta);
+                        }
+                        else
+                        {
+                            nombreDeCuenta = reader["nombreDeCuenta"].ToString();
+                            conn.Close();
+                            return Json(nombreDeCuenta);
+                        }
                     }
                     else
                     {
-                        nombreDeCuenta = reader["nombreDeCuenta"].ToString();
                         conn.Close();
-                        return Json(nombreDeCuenta);
+                        return Json($"no se encuentra");
                     }
                 }
-                else
+                catch
                 {
-                    conn.Close();
-                    return Json($"no se encuentra");
+                    return Json("no se encuentra");
                 }
             }
-            catch
+            else
             {
-                return Json("no se encuentra");
+                return Json("Token expirado");
             }
         }
 
@@ -349,37 +404,44 @@ namespace APIPostYEventos2019.Controllers
         [Route("eliminarPost")]
         public dynamic eliminarPost([FromBody] PostData post)
         {
-            try
+            if (TestToken(post.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", conn);
-                MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", conn);
-                MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost = @Id", conn);
-                MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost = @Id", conn);
-                MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost = @Id", conn);
-                MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost = @Id", conn);
-                MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=(SELECT id FROM Comentarios WHERE idPost=@id)", conn);
-                command.Parameters.AddWithValue("@Id", post.id);
-                command2.Parameters.AddWithValue("@Id", post.id);
-                command3.Parameters.AddWithValue("@Id", post.id);
-                command4.Parameters.AddWithValue("@Id", post.id);
-                command5.Parameters.AddWithValue("@Id", post.id);
-                command6.Parameters.AddWithValue("@Id", post.id);
-                command7.Parameters.AddWithValue("@Id", post.id);
-                command7.ExecuteNonQuery();
-                command.ExecuteNonQuery();
-                command2.ExecuteNonQuery();
-                command3.ExecuteNonQuery();
-                command4.ExecuteNonQuery();
-                command5.ExecuteNonQuery();
-                command6.ExecuteNonQuery();
-                conn.Close();
-                return Json("Post eliminado");
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", conn);
+                    MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", conn);
+                    MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost = @Id", conn);
+                    MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost = @Id", conn);
+                    MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost = @Id", conn);
+                    MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost = @Id", conn);
+                    MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=(SELECT id FROM Comentarios WHERE idPost=@id)", conn);
+                    command.Parameters.AddWithValue("@Id", post.id);
+                    command2.Parameters.AddWithValue("@Id", post.id);
+                    command3.Parameters.AddWithValue("@Id", post.id);
+                    command4.Parameters.AddWithValue("@Id", post.id);
+                    command5.Parameters.AddWithValue("@Id", post.id);
+                    command6.Parameters.AddWithValue("@Id", post.id);
+                    command7.Parameters.AddWithValue("@Id", post.id);
+                    command7.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
+                    command2.ExecuteNonQuery();
+                    command3.ExecuteNonQuery();
+                    command4.ExecuteNonQuery();
+                    command5.ExecuteNonQuery();
+                    command6.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Post eliminado");
+                }
+                catch
+                {
+                    return Json("Post no eliminado");
+                }
             }
-            catch
+            else
             {
-                return Json("Post no eliminado");
+                return Json("Token expirado");
             }
         }
 
@@ -387,28 +449,57 @@ namespace APIPostYEventos2019.Controllers
         [Route("modificarPost")]
         public async Task<dynamic> modificarPost([FromBody] PostData postdata)
         {
-            string linkImagen;
-            string id = postdata.id;
-            try
+            if (TestToken(postdata.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd;
-
-                if (!string.IsNullOrEmpty(postdata.text))
+                string linkImagen;
+                string id = postdata.id;
+                try
                 {
-                    string texto = postdata.text;
-                    if (!postdata.link.Equals(""))
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd;
+
+                    if (!string.IsNullOrEmpty(postdata.text))
                     {
-                        string url = postdata.link;
-                        cmd = new MySqlCommand("UPDATE Posts SET texto=@texto,imagen=@imagen,video=@url WHERE idPost=@id", conn);
-                        cmd.Parameters.AddWithValue("@Texto", texto);
-                        cmd.Parameters.AddWithValue("@url", url);
-                        cmd.Parameters.AddWithValue("@id", id);
-                        cmd.Parameters.AddWithValue("@Imagen", null);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return Json("Modificacion correcta");
+                        string texto = postdata.text;
+                        if (!postdata.link.Equals(""))
+                        {
+                            string url = postdata.link;
+                            cmd = new MySqlCommand("UPDATE Posts SET texto=@texto,imagen=@imagen,video=@url WHERE idPost=@id", conn);
+                            cmd.Parameters.AddWithValue("@Texto", texto);
+                            cmd.Parameters.AddWithValue("@url", url);
+                            cmd.Parameters.AddWithValue("@id", id);
+                            cmd.Parameters.AddWithValue("@Imagen", null);
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
+                            return Json("Modificacion correcta");
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(postdata.image))
+                            {
+                                linkImagen = await SubirImagenAGitHub(postdata.image, "PostImages");
+                                cmd = new MySqlCommand("UPDATE Posts SET texto=@texto,imagen=@imagen,video=@url WHERE idPost=@id", conn);
+                                cmd.Parameters.AddWithValue("@Texto", texto);
+                                cmd.Parameters.AddWithValue("@Imagen", linkImagen);
+                                cmd.Parameters.AddWithValue("@id", id);
+                                cmd.Parameters.AddWithValue("@url", null);
+                                cmd.ExecuteNonQuery();
+                                conn.Close();
+                                return Json("Modificacion correcta");
+                            }
+                            else
+                            {
+                                cmd = new MySqlCommand("UPDATE Posts SET texto=@texto,imagen=@imagen,video=@url WHERE idPost=@id", conn);
+                                cmd.Parameters.AddWithValue("@texto", texto);
+                                cmd.Parameters.AddWithValue("@id", id);
+                                cmd.Parameters.AddWithValue("@url", null);
+                                cmd.Parameters.AddWithValue("@Imagen", null);
+                                cmd.ExecuteNonQuery();
+                                conn.Close();
+                                return Json("Modificacion correcta");
+                            }
+                        }
                     }
                     else
                     {
@@ -416,9 +507,9 @@ namespace APIPostYEventos2019.Controllers
                         {
                             linkImagen = await SubirImagenAGitHub(postdata.image, "PostImages");
                             cmd = new MySqlCommand("UPDATE Posts SET texto=@texto,imagen=@imagen,video=@url WHERE idPost=@id", conn);
-                            cmd.Parameters.AddWithValue("@Texto", texto);
-                            cmd.Parameters.AddWithValue("@Imagen", linkImagen);
+                            cmd.Parameters.AddWithValue("@imagen", linkImagen);
                             cmd.Parameters.AddWithValue("@id", id);
+                            cmd.Parameters.AddWithValue("@texto", null);
                             cmd.Parameters.AddWithValue("@url", null);
                             cmd.ExecuteNonQuery();
                             conn.Close();
@@ -426,10 +517,11 @@ namespace APIPostYEventos2019.Controllers
                         }
                         else
                         {
+                            string url = postdata.link;
                             cmd = new MySqlCommand("UPDATE Posts SET texto=@texto,imagen=@imagen,video=@url WHERE idPost=@id", conn);
-                            cmd.Parameters.AddWithValue("@texto", texto);
+                            cmd.Parameters.AddWithValue("@url", url);
                             cmd.Parameters.AddWithValue("@id", id);
-                            cmd.Parameters.AddWithValue("@url", null);
+                            cmd.Parameters.AddWithValue("@Texto", null);
                             cmd.Parameters.AddWithValue("@Imagen", null);
                             cmd.ExecuteNonQuery();
                             conn.Close();
@@ -437,37 +529,14 @@ namespace APIPostYEventos2019.Controllers
                         }
                     }
                 }
-                else
+                catch (Exception)
                 {
-                    if (!string.IsNullOrEmpty(postdata.image))
-                    {
-                        linkImagen = await SubirImagenAGitHub(postdata.image, "PostImages");
-                        cmd = new MySqlCommand("UPDATE Posts SET texto=@texto,imagen=@imagen,video=@url WHERE idPost=@id", conn);
-                        cmd.Parameters.AddWithValue("@imagen", linkImagen);
-                        cmd.Parameters.AddWithValue("@id", id);
-                        cmd.Parameters.AddWithValue("@texto", null);
-                        cmd.Parameters.AddWithValue("@url", null);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return Json("Modificacion correcta");
-                    }
-                    else
-                    {
-                        string url = postdata.link;
-                        cmd = new MySqlCommand("UPDATE Posts SET texto=@texto,imagen=@imagen,video=@url WHERE idPost=@id", conn);
-                        cmd.Parameters.AddWithValue("@url", url);
-                        cmd.Parameters.AddWithValue("@id", id);
-                        cmd.Parameters.AddWithValue("@Texto", null);
-                        cmd.Parameters.AddWithValue("@Imagen", null);
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return Json("Modificacion correcta");
-                    }
+                    return Json("Modificacion incorrecta");
                 }
             }
-            catch (Exception)
+            else
             {
-                return Json("Modificacion incorrecta");
+                return Json("Token expirado");
             }
         }
 
@@ -475,252 +544,290 @@ namespace APIPostYEventos2019.Controllers
         [Route("hacerEvento")]
         public async Task<dynamic> hacerEvento([FromBody] EventData eventdata)
         {
-            string titulo = eventdata.titulo;
-            string fechaYhoraInicio = eventdata.fechaYhora_Inicio;
-            string fechaYhoraFinal = eventdata.fechaYhora_Final;
-            string linkImagen;
-            linkImagen = await SubirImagenAGitHub(eventdata.foto, "EventImages");
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-            conn.Open();
-            MySqlCommand cmd2;
-            if (string.IsNullOrEmpty(eventdata.user))
+            if (TestToken(eventdata.token))
             {
-                throw new Exception("ERROR: El campo 'user' no puede ser nulo");
-            }
-            if (!string.IsNullOrEmpty(eventdata.ubicacion))
-            {
-                if (!string.IsNullOrEmpty(eventdata.descripcion))
+                try
                 {
-                    string ubicacion = eventdata.ubicacion;
-                    string descripcion = eventdata.descripcion;
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO Eventos (titulo,ubicacion,descripcion,fechaYhora_Inicio,fechaYhora_Final,foto) VALUES (@Titulo,@Ubicacion,@Descripcion,@FechayHoraInicio,@FechayHoraFinal,@Foto); SELECT LAST_INSERT_id();", conn);
-                    cmd.Parameters.AddWithValue("@Titulo", titulo);
-                    cmd.Parameters.AddWithValue("@Ubicacion", ubicacion);
-                    cmd.Parameters.AddWithValue("@Descripcion", descripcion);
-                    cmd.Parameters.AddWithValue("@FechayHoraInicio", fechaYhoraInicio);
-                    cmd.Parameters.AddWithValue("@FechayHoraFinal", fechaYhoraFinal);
-                    cmd.Parameters.AddWithValue("@Foto", linkImagen);
-                    long idEvento = Convert.ToInt64(cmd.ExecuteScalar());
-                    cmd2 = new MySqlCommand(@"INSERT INTO ParticipaEvento (nombreDeCuenta, idEvento, rol) VALUES (@NombreDeCuenta, @IdEvento, 'creador');", conn);
-                    cmd2.Parameters.AddWithValue("@NombreDeCuenta", eventdata.user);
-                    cmd2.Parameters.AddWithValue("@IdEvento", idEvento);
-                    cmd2.ExecuteNonQuery();
+                    string titulo = eventdata.titulo;
+                    string fechaYhoraInicio = eventdata.fechaYhora_Inicio;
+                    string fechaYhoraFinal = eventdata.fechaYhora_Final;
+                    string linkImagen;
+                    linkImagen = await SubirImagenAGitHub(eventdata.foto, "EventImages");
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd2;
+                    if (string.IsNullOrEmpty(eventdata.user))
+                    {
+                        throw new Exception("ERROR: El campo 'user' no puede ser nulo");
+                    }
+                    if (!string.IsNullOrEmpty(eventdata.ubicacion))
+                    {
+                        if (!string.IsNullOrEmpty(eventdata.descripcion))
+                        {
+                            string ubicacion = eventdata.ubicacion;
+                            string descripcion = eventdata.descripcion;
+                            MySqlCommand cmd = new MySqlCommand("INSERT INTO Eventos (titulo,ubicacion,descripcion,fechaYhora_Inicio,fechaYhora_Final,foto) VALUES (@Titulo,@Ubicacion,@Descripcion,@FechayHoraInicio,@FechayHoraFinal,@Foto); SELECT LAST_INSERT_id();", conn);
+                            cmd.Parameters.AddWithValue("@Titulo", titulo);
+                            cmd.Parameters.AddWithValue("@Ubicacion", ubicacion);
+                            cmd.Parameters.AddWithValue("@Descripcion", descripcion);
+                            cmd.Parameters.AddWithValue("@FechayHoraInicio", fechaYhoraInicio);
+                            cmd.Parameters.AddWithValue("@FechayHoraFinal", fechaYhoraFinal);
+                            cmd.Parameters.AddWithValue("@Foto", linkImagen);
+                            long idEvento = Convert.ToInt64(cmd.ExecuteScalar());
+                            cmd2 = new MySqlCommand(@"INSERT INTO ParticipaEvento (nombreDeCuenta, idEvento, rol) VALUES (@NombreDeCuenta, @IdEvento, 'creador');", conn);
+                            cmd2.Parameters.AddWithValue("@NombreDeCuenta", eventdata.user);
+                            cmd2.Parameters.AddWithValue("@IdEvento", idEvento);
+                            cmd2.ExecuteNonQuery();
+                            conn.Close();
+                            return Json("guardado correcto");
+                        }
+                        else
+                        {
+                            string ubicacion = eventdata.ubicacion;
+                            MySqlCommand cmd = new MySqlCommand("INSERT INTO Eventos (titulo,ubicacion,fechaYhora_Inicio,fechaYhora_Final,foto) VALUES (@Titulo,@Ubicacion,@FechayHoraInicio,@FechayHoraFinal,@Foto); SELECT LAST_INSERT_id();", conn);
+                            cmd.Parameters.AddWithValue("@Titulo", titulo);
+                            cmd.Parameters.AddWithValue("@Ubicacion", ubicacion);
+                            cmd.Parameters.AddWithValue("@FechayHoraInicio", fechaYhoraInicio);
+                            cmd.Parameters.AddWithValue("@FechayHoraFinal", fechaYhoraFinal);
+                            cmd.Parameters.AddWithValue("@Foto", linkImagen);
+                            long idEvento = Convert.ToInt64(cmd.ExecuteScalar());
+                            cmd2 = new MySqlCommand(@"INSERT INTO ParticipaEvento (nombreDeCuenta, idEvento, rol) VALUES (@NombreDeCuenta, @IdEvento, 'creador');", conn);
+                            cmd2.Parameters.AddWithValue("@NombreDeCuenta", eventdata.user);
+                            cmd2.Parameters.AddWithValue("@IdEvento", idEvento);
+                            cmd2.ExecuteNonQuery();
+                            conn.Close();
+                            return Json("guardado correcto");
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(eventdata.descripcion))
+                        {
+                            string descripcion = eventdata.descripcion;
+                            MySqlCommand cmd = new MySqlCommand("INSERT INTO Eventos (titulo,descripcion,fechaYhora_Inicio,fechaYhora_Final,foto) VALUES (@Titulo,@Descripcion,@FechayHoraInicio,@FechayHoraFinal,@Foto); SELECT LAST_INSERT_id();", conn);
+                            cmd.Parameters.AddWithValue("@Titulo", titulo);
+                            cmd.Parameters.AddWithValue("@Descripcion", descripcion);
+                            cmd.Parameters.AddWithValue("@FechayHoraInicio", fechaYhoraInicio);
+                            cmd.Parameters.AddWithValue("@FechayHoraFinal", fechaYhoraFinal);
+                            cmd.Parameters.AddWithValue("@Foto", linkImagen);
+                            long idEvento = Convert.ToInt64(cmd.ExecuteScalar());
+                            cmd2 = new MySqlCommand(@"INSERT INTO ParticipaEvento (nombreDeCuenta, idEvento, rol) VALUES (@NombreDeCuenta, @IdEvento, 'creador');", conn);
+                            cmd2.Parameters.AddWithValue("@NombreDeCuenta", eventdata.user);
+                            cmd2.Parameters.AddWithValue("@IdEvento", idEvento);
+                            cmd2.ExecuteNonQuery();
+                            conn.Close();
+                            return Json("guardado correcto");
+                        }
+                        else
+                        {
+                            string descripcion = eventdata.descripcion;
+                            MySqlCommand cmd = new MySqlCommand("INSERT INTO Eventos (titulo,fechaYhora_Inicio,fechaYhora_Final,foto) VALUES (@Titulo,@FechayHoraInicio,@FechayHoraFinal,@Foto); SELECT LAST_INSERT_id();", conn);
+                            cmd.Parameters.AddWithValue("@Titulo", titulo);
+                            cmd.Parameters.AddWithValue("@FechayHoraInicio", fechaYhoraInicio);
+                            cmd.Parameters.AddWithValue("@FechayHoraFinal", fechaYhoraFinal);
+                            cmd.Parameters.AddWithValue("@Foto", linkImagen);
+                            long idEvento = Convert.ToInt64(cmd.ExecuteScalar());
+                            cmd2 = new MySqlCommand(@"INSERT INTO ParticipaEvento (nombreDeCuenta, idEvento, rol) VALUES (@NombreDeCuenta, @IdEvento, 'creador');", conn);
+                            cmd2.Parameters.AddWithValue("@NombreDeCuenta", eventdata.user);
+                            cmd2.Parameters.AddWithValue("@IdEvento", idEvento);
+                            cmd2.ExecuteNonQuery();
+                            conn.Close();
+                            return Json("guardado correcto");
+                        }
+                    }
                     conn.Close();
-                    return Json("guardado correcto");
                 }
-                else
+                catch
                 {
-                    string ubicacion = eventdata.ubicacion;
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO Eventos (titulo,ubicacion,fechaYhora_Inicio,fechaYhora_Final,foto) VALUES (@Titulo,@Ubicacion,@FechayHoraInicio,@FechayHoraFinal,@Foto); SELECT LAST_INSERT_id();", conn);
-                    cmd.Parameters.AddWithValue("@Titulo", titulo);
-                    cmd.Parameters.AddWithValue("@Ubicacion", ubicacion);
-                    cmd.Parameters.AddWithValue("@FechayHoraInicio", fechaYhoraInicio);
-                    cmd.Parameters.AddWithValue("@FechayHoraFinal", fechaYhoraFinal);
-                    cmd.Parameters.AddWithValue("@Foto", linkImagen);
-                    long idEvento = Convert.ToInt64(cmd.ExecuteScalar());
-                    cmd2 = new MySqlCommand(@"INSERT INTO ParticipaEvento (nombreDeCuenta, idEvento, rol) VALUES (@NombreDeCuenta, @IdEvento, 'creador');", conn);
-                    cmd2.Parameters.AddWithValue("@NombreDeCuenta", eventdata.user);
-                    cmd2.Parameters.AddWithValue("@IdEvento", idEvento);
-                    cmd2.ExecuteNonQuery();
-                    conn.Close();
-                    return Json("guardado correcto");
+                    return Json("guardado incorrecto");
                 }
             }
             else
             {
-                if (!string.IsNullOrEmpty(eventdata.descripcion))
-                {
-                    string descripcion = eventdata.descripcion;
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO Eventos (titulo,descripcion,fechaYhora_Inicio,fechaYhora_Final,foto) VALUES (@Titulo,@Descripcion,@FechayHoraInicio,@FechayHoraFinal,@Foto); SELECT LAST_INSERT_id();", conn);
-                    cmd.Parameters.AddWithValue("@Titulo", titulo);
-                    cmd.Parameters.AddWithValue("@Descripcion", descripcion);
-                    cmd.Parameters.AddWithValue("@FechayHoraInicio", fechaYhoraInicio);
-                    cmd.Parameters.AddWithValue("@FechayHoraFinal", fechaYhoraFinal);
-                    cmd.Parameters.AddWithValue("@Foto", linkImagen);
-                    long idEvento = Convert.ToInt64(cmd.ExecuteScalar());
-                    cmd2 = new MySqlCommand(@"INSERT INTO ParticipaEvento (nombreDeCuenta, idEvento, rol) VALUES (@NombreDeCuenta, @IdEvento, 'creador');", conn);
-                    cmd2.Parameters.AddWithValue("@NombreDeCuenta", eventdata.user);
-                    cmd2.Parameters.AddWithValue("@IdEvento", idEvento);
-                    cmd2.ExecuteNonQuery();
-                    conn.Close();
-                    return Json("guardado correcto");
-                }
-                else
-                {
-                    string descripcion = eventdata.descripcion;
-                    MySqlCommand cmd = new MySqlCommand("INSERT INTO Eventos (titulo,fechaYhora_Inicio,fechaYhora_Final,foto) VALUES (@Titulo,@FechayHoraInicio,@FechayHoraFinal,@Foto); SELECT LAST_INSERT_id();", conn);
-                    cmd.Parameters.AddWithValue("@Titulo", titulo);
-                    cmd.Parameters.AddWithValue("@FechayHoraInicio", fechaYhoraInicio);
-                    cmd.Parameters.AddWithValue("@FechayHoraFinal", fechaYhoraFinal);
-                    cmd.Parameters.AddWithValue("@Foto", linkImagen);
-                    long idEvento = Convert.ToInt64(cmd.ExecuteScalar());
-                    cmd2 = new MySqlCommand(@"INSERT INTO ParticipaEvento (nombreDeCuenta, idEvento, rol) VALUES (@NombreDeCuenta, @IdEvento, 'creador');", conn);
-                    cmd2.Parameters.AddWithValue("@NombreDeCuenta", eventdata.user);
-                    cmd2.Parameters.AddWithValue("@IdEvento", idEvento);
-                    cmd2.ExecuteNonQuery();
-                    conn.Close();
-                    return Json("guardado correcto");
-                }
+                return Json("Token expirado");
             }
-            conn.Close();
+            
         }
 
         [HttpPut]
         [Route("eliminarEvento")]
         public dynamic eliminarEvento([FromBody]EventData eventdata)
         {
-            try
+            if (TestToken(eventdata.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("DELETE FROM PostEvento WHERE idEvento=@Id", conn);
-                MySqlCommand command1 = new MySqlCommand("DELETE FROM Eventos WHERE idEvento=@Id", conn);
-                MySqlCommand command2 = new MySqlCommand("DELETE FROM ParticipaEvento WHERE idEvento=@Id", conn);
-                command2.Parameters.AddWithValue("@Id", int.Parse(eventdata.id));
-                command2.ExecuteNonQuery();
-                command.Parameters.AddWithValue("@Id", int.Parse(eventdata.id));
-                command.ExecuteNonQuery();
-                command1.Parameters.AddWithValue("@Id", int.Parse(eventdata.id));
-                command1.ExecuteNonQuery();
-                conn.Close();
-                return Json("Evento eliminado");
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("DELETE FROM PostEvento WHERE idEvento=@Id", conn);
+                    MySqlCommand command1 = new MySqlCommand("DELETE FROM Eventos WHERE idEvento=@Id", conn);
+                    MySqlCommand command2 = new MySqlCommand("DELETE FROM ParticipaEvento WHERE idEvento=@Id", conn);
+                    command2.Parameters.AddWithValue("@Id", int.Parse(eventdata.id));
+                    command2.ExecuteNonQuery();
+                    command.Parameters.AddWithValue("@Id", int.Parse(eventdata.id));
+                    command.ExecuteNonQuery();
+                    command1.Parameters.AddWithValue("@Id", int.Parse(eventdata.id));
+                    command1.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Evento eliminado");
+                }
+                catch
+                {
+                    return Json("Evento no eliminado");
+                }
             }
-            catch
+            else
             {
-                return Json("Evento no eliminado");
+                return Json("Token expirado");
             }
+            
         }
 
         [HttpPut]
         [Route("eventoPorId")]
         public async Task<dynamic> eventoPorId([FromBody]EventData eventData)
         {
-            try
+            if (TestToken(eventData.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT titulo,ubicacion,descripcion,foto,fechaYhora_Inicio,fechaYhora_Final FROM Eventos WHERE idEvento=@Id", conn);
-                command.Parameters.AddWithValue("@Id", eventData.id);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
+                try
                 {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT titulo,ubicacion,descripcion,foto,fechaYhora_Inicio,fechaYhora_Final FROM Eventos WHERE idEvento=@Id", conn);
+                    command.Parameters.AddWithValue("@Id", eventData.id);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
 
-                    string ubicacion;
-                    if (string.IsNullOrEmpty(reader["ubicacion"].ToString()))
-                    {
-                        ubicacion = "";
+                        string ubicacion;
+                        if (string.IsNullOrEmpty(reader["ubicacion"].ToString()))
+                        {
+                            ubicacion = "";
+                        }
+                        else
+                        {
+                            ubicacion = reader["ubicacion"].ToString();
+                        }
+                        string descripcion;
+                        if (string.IsNullOrEmpty(reader["descripcion"].ToString()))
+                        {
+                            descripcion = "";
+                        }
+                        else
+                        {
+                            descripcion = reader["descripcion"].ToString();
+                        }
+                        string foto;
+                        if (string.IsNullOrEmpty(reader["foto"].ToString()))
+                        {
+                            foto = "";
+                        }
+                        else
+                        {
+                            foto = await CargarImagenDeGitHub(reader["foto"].ToString());
+                        }
+                        var data = new EventData { titulo = reader["titulo"].ToString(), ubicacion = ubicacion, descripcion = reader["descripcion"].ToString(), foto = foto, fechaYhora_Inicio = reader["fechaYhora_Inicio"].ToString(), fechaYhora_Final = reader["fechaYhora_Final"].ToString() };
+                        conn.Close();
+                        return Json(data);
                     }
                     else
                     {
-                        ubicacion = reader["ubicacion"].ToString();
+                        conn.Close();
+                        return Json("Error");
                     }
-                    string descripcion;
-                    if (string.IsNullOrEmpty(reader["descripcion"].ToString()))
-                    {
-                        descripcion = "";
-                    }
-                    else
-                    {
-                        descripcion = reader["descripcion"].ToString();
-                    }
-                    string foto;
-                    if (string.IsNullOrEmpty(reader["foto"].ToString()))
-                    {
-                        foto = "";
-                    }
-                    else
-                    {
-                        foto = await CargarImagenDeGitHub(reader["foto"].ToString());
-                    }
-                    var data = new EventData{ titulo = reader["titulo"].ToString(), ubicacion = ubicacion, descripcion = reader["descripcion"].ToString(), foto = foto, fechaYhora_Inicio = reader["fechaYhora_Inicio"].ToString(), fechaYhora_Final = reader["fechaYhora_Final"].ToString() };
-                    conn.Close();
-                    return Json(data);
                 }
-                else
+                catch (Exception)
                 {
-                    conn.Close();
                     return Json("Error");
                 }
             }
-            catch (Exception)
+            else
             {
-                return Json("Error");
+                return Json("Token expirado");
             }
+            
         }
 
         [HttpPut]
         [Route("modificarEvento")]
         public async Task<dynamic> modificarEvento([FromBody] EventData eventdata)
         {
-
-            string id = eventdata.id;
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-            conn.Open();
-            try
+            if (TestToken(eventdata.token))
             {
+                string id = eventdata.id;
+                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                conn.Open();
+                try
+                {
 
-                string linkImagen;
-                linkImagen = await SubirImagenAGitHub(eventdata.foto, "EventImages");
-                string titulo = eventdata.titulo, fechaYhoraInicio = eventdata.fechaYhora_Inicio, fechaYhoraFinal = eventdata.fechaYhora_Final, ubicacion = eventdata.ubicacion, descripcion = eventdata.descripcion;
-                MySqlCommand cmd = new MySqlCommand("UPDATE Eventos SET ubicacion=@Ubicacion, titulo=@Titulo, descripcion=@Descripcion, foto=@Foto, fechaYhora_Inicio=@FechayHoraInicio,fechaYhora_Final=@FechayHoraFinal WHERE idEvento=@id", conn);
-                if (!string.IsNullOrEmpty(eventdata.ubicacion))
-                {
-                    cmd.Parameters.AddWithValue("@Ubicacion", ubicacion);
-                }
-                else
-                {
-                    cmd.Parameters.AddWithValue("@Ubicacion", null);
-                }
-                if (!string.IsNullOrEmpty(eventdata.titulo))
-                {
-                    cmd.Parameters.AddWithValue("@Titulo", titulo);
-                }
-                else
-                {
-                    return JsonConvert.SerializeObject("modificacion erronea");
-                }
-                if (!string.IsNullOrEmpty(eventdata.descripcion))
-                {
-                    cmd.Parameters.AddWithValue("@Descripcion", descripcion);
-                }
-                else
-                {
-                    cmd.Parameters.AddWithValue("@Descripcion", null);
-                }
-                if (!string.IsNullOrEmpty(eventdata.foto))
-                {
-                    cmd.Parameters.AddWithValue("@Foto", linkImagen);
-                }
-                else
-                {
-                    return Json("modificacion erronea");
-                }
-                if (!string.IsNullOrEmpty(eventdata.fechaYhora_Inicio))
-                {
-                    cmd.Parameters.AddWithValue("@FechayHoraInicio", fechaYhoraInicio);
-                }
-                else
-                {
-                    return Json("modificacion erronea");
-                }
-                if (!string.IsNullOrEmpty(eventdata.fechaYhora_Final))
-                {
-                    cmd.Parameters.AddWithValue("@FechayHoraFinal", fechaYhoraInicio);
-                }
-                else
-                {
-                    return Json("modificacion erronea");
-                }
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("modificacion correcta");
+                    string linkImagen;
+                    linkImagen = await SubirImagenAGitHub(eventdata.foto, "EventImages");
+                    string titulo = eventdata.titulo, fechaYhoraInicio = eventdata.fechaYhora_Inicio, fechaYhoraFinal = eventdata.fechaYhora_Final, ubicacion = eventdata.ubicacion, descripcion = eventdata.descripcion;
+                    MySqlCommand cmd = new MySqlCommand("UPDATE Eventos SET ubicacion=@Ubicacion, titulo=@Titulo, descripcion=@Descripcion, foto=@Foto, fechaYhora_Inicio=@FechayHoraInicio,fechaYhora_Final=@FechayHoraFinal WHERE idEvento=@id", conn);
+                    if (!string.IsNullOrEmpty(eventdata.ubicacion))
+                    {
+                        cmd.Parameters.AddWithValue("@Ubicacion", ubicacion);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Ubicacion", null);
+                    }
+                    if (!string.IsNullOrEmpty(eventdata.titulo))
+                    {
+                        cmd.Parameters.AddWithValue("@Titulo", titulo);
+                    }
+                    else
+                    {
+                        return JsonConvert.SerializeObject("modificacion erronea");
+                    }
+                    if (!string.IsNullOrEmpty(eventdata.descripcion))
+                    {
+                        cmd.Parameters.AddWithValue("@Descripcion", descripcion);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Descripcion", null);
+                    }
+                    if (!string.IsNullOrEmpty(eventdata.foto))
+                    {
+                        cmd.Parameters.AddWithValue("@Foto", linkImagen);
+                    }
+                    else
+                    {
+                        return Json("modificacion erronea");
+                    }
+                    if (!string.IsNullOrEmpty(eventdata.fechaYhora_Inicio))
+                    {
+                        cmd.Parameters.AddWithValue("@FechayHoraInicio", fechaYhoraInicio);
+                    }
+                    else
+                    {
+                        return Json("modificacion erronea");
+                    }
+                    if (!string.IsNullOrEmpty(eventdata.fechaYhora_Final))
+                    {
+                        cmd.Parameters.AddWithValue("@FechayHoraFinal", fechaYhoraInicio);
+                    }
+                    else
+                    {
+                        return Json("modificacion erronea");
+                    }
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("modificacion correcta");
 
+                }
+                catch
+                {
+                    return Json("modificacion erronea");
+                }
             }
-            catch
+            else
             {
-                return Json("modificacion erronea");
+                return Json("Token expirado");
             }
+            
         }
 
         //Comentarios
@@ -729,124 +836,161 @@ namespace APIPostYEventos2019.Controllers
         [Route("hacerComentario")]
         public dynamic hacerComentario([FromBody] CommentData commentdata)
         {
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-            conn.Open();
-            MySqlCommand cmd;
-            if (!string.IsNullOrEmpty(commentdata.NombreDeCuenta) &&
-                !string.IsNullOrEmpty(commentdata.IdPost) && !string.IsNullOrEmpty(commentdata.texto) &&
-                !string.IsNullOrEmpty(commentdata.fechayhora) &&
-                !string.IsNullOrEmpty(commentdata.NombreCreador))
+            if (TestToken(commentdata.token))
             {
-                string NombreDeCuenta = commentdata.NombreDeCuenta;
-                string IdPost = commentdata.IdPost;
-                string texto = commentdata.texto;
-                string fechayhora = commentdata.fechayhora;
-                cmd = new MySqlCommand("INSERT INTO Comentarios (nombreDeCuenta, idPost, nombreCreador, texto, fechaYHora) VALUES (@NombreDeCuenta,@IdPost, @nombreCreador,@Texto,@FechayHora)", conn);
-                cmd.Parameters.AddWithValue("@NombreDeCuenta", NombreDeCuenta);
-                cmd.Parameters.AddWithValue("@nombreCreador", commentdata.NombreCreador);
-                cmd.Parameters.AddWithValue("@IdPost", IdPost);
-                cmd.Parameters.AddWithValue("@Texto", texto);
-                cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("guardado correcto");
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd;
+                    if (!string.IsNullOrEmpty(commentdata.NombreDeCuenta) &&
+                        !string.IsNullOrEmpty(commentdata.IdPost) && !string.IsNullOrEmpty(commentdata.texto) &&
+                        !string.IsNullOrEmpty(commentdata.fechayhora) &&
+                        !string.IsNullOrEmpty(commentdata.NombreCreador))
+                    {
+                        string NombreDeCuenta = commentdata.NombreDeCuenta;
+                        string IdPost = commentdata.IdPost;
+                        string texto = commentdata.texto;
+                        string fechayhora = commentdata.fechayhora;
+                        cmd = new MySqlCommand("INSERT INTO Comentarios (nombreDeCuenta, idPost, nombreCreador, texto, fechaYHora) VALUES (@NombreDeCuenta,@IdPost, @nombreCreador,@Texto,@FechayHora)", conn);
+                        cmd.Parameters.AddWithValue("@NombreDeCuenta", NombreDeCuenta);
+                        cmd.Parameters.AddWithValue("@nombreCreador", commentdata.NombreCreador);
+                        cmd.Parameters.AddWithValue("@IdPost", IdPost);
+                        cmd.Parameters.AddWithValue("@Texto", texto);
+                        cmd.Parameters.AddWithValue("@FechayHora", fechayhora);
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                        return Json("guardado correcto");
+                    }
+                    else
+                    {
+                        return Json("guardado incorrecto");
+                    }
+                }
+                catch
+                {
+                    return Json("guardado incorrecto");
+                }
             }
             else
             {
-                return Json("guardado incorrecto");
+                return Json("Token expirado");
             }
+            
         }
 
         [HttpPut]
         [Route("eliminarComentario")]
         public dynamic eliminarComentario([FromBody] PostData post)
         {
-            try
+            if (TestToken(post.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE id=@Id", conn);
-                MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=@Id", conn);
-                command.Parameters.AddWithValue("@Id", int.Parse(post.id));
-                command2.Parameters.AddWithValue("@Id", int.Parse(post.id));
-                command2.ExecuteNonQuery();
-                command.ExecuteNonQuery();
-                conn.Close();
-                return Json("Comentario eliminado");
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE id=@Id", conn);
+                    MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=@Id", conn);
+                    command.Parameters.AddWithValue("@Id", int.Parse(post.id));
+                    command2.Parameters.AddWithValue("@Id", int.Parse(post.id));
+                    command2.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Comentario eliminado");
+                }
+                catch
+                {
+                    return Json("Comentario no eliminado");
+                }
             }
-            catch
+            else
             {
-                return Json("Comentario no eliminado");
+                return Json("Token expirado");
             }
+            
         }
 
         [HttpPut]
         [Route("modificarComentario")]
         public dynamic modificarComentario([FromBody] CommentData commentdata)
         {
-            string id = commentdata.id;
-            try
+            if (TestToken(commentdata.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd;
-                if (!string.IsNullOrEmpty(commentdata.texto))
+                string id = commentdata.id;
+                try
                 {
-                    string texto = commentdata.texto;
-                    cmd = new MySqlCommand("UPDATE Comentarios SET texto=@Texto WHERE id=@id", conn);
-                    cmd.Parameters.AddWithValue("@Texto", texto);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                    return Json("Modificaciòn correcta");
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd;
+                    if (!string.IsNullOrEmpty(commentdata.texto))
+                    {
+                        string texto = commentdata.texto;
+                        cmd = new MySqlCommand("UPDATE Comentarios SET texto=@Texto WHERE id=@id", conn);
+                        cmd.Parameters.AddWithValue("@Texto", texto);
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                        return Json("Modificaciòn correcta");
+                    }
+                    else
+                    {
+                        return Json("Modificaciòn incorrecta");
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    return Json("Modificaciòn incorrecta");
+                    return Json("no se encuentra");
                 }
             }
-            catch (Exception)
+            else
             {
-                return Json("no se encuentra");
+                return Json("Token expirado");
             }
+            
         }
         [HttpPut]
         [Route("conseguirComentario")]
         public dynamic conseguirComentario([FromBody] PostData post)
         {
-            try
+            if (TestToken(post.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta, texto, fechaYHora FROM Comentarios WHERE id=@Id", conn);
-                command.Parameters.AddWithValue("@Id", post.id);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
+                try
                 {
-                    string NombreDeCuenta;
-                    NombreDeCuenta = reader["NombreDeCuenta"].ToString();
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta, texto, fechaYHora FROM Comentarios WHERE id=@Id", conn);
+                    command.Parameters.AddWithValue("@Id", post.id);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        string NombreDeCuenta;
+                        NombreDeCuenta = reader["NombreDeCuenta"].ToString();
 
-                    string texto;
-                    texto = reader["texto"].ToString();
+                        string texto;
+                        texto = reader["texto"].ToString();
 
-                    string fechayhora;
-                    fechayhora = reader["fechaYHora"].ToString();
+                        string fechayhora;
+                        fechayhora = reader["fechaYHora"].ToString();
 
-                    var data = new CommentData{ NombreDeCuenta = NombreDeCuenta, texto = texto, fechayhora = fechayhora };
-                    conn.Close();
-                    return Json(data);
+                        var data = new CommentData { NombreDeCuenta = NombreDeCuenta, texto = texto, fechayhora = fechayhora };
+                        conn.Close();
+                        return Json(data);
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return Json("no se encuentra");
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    conn.Close();
                     return Json("no se encuentra");
                 }
             }
-            catch (Exception)
+            else
             {
-                return Json("no se encuentra");
+                return Json("Token expirado");
             }
-
         }
 
 
@@ -856,64 +1000,91 @@ namespace APIPostYEventos2019.Controllers
         [Route("existePost")]
         public dynamic existePost([FromBody] PostData post)
         {
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-            conn.Open();
-            MySqlCommand command = new MySqlCommand("SELECT idPost FROM Posts WHERE idPost=@Id", conn);
-            command.Parameters.AddWithValue("@Id", post.id);
-            MySqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
+            if (TestToken(post.token))
             {
-                var data = true;
-                if (reader["idPost"].ToString().Equals(Convert.ToString(post.id)))
+                try
                 {
-                    data = true;
-                    conn.Close();
-                    return Json(data);
-                }
-                else
-                {
-                    data = false;
-                    conn.Close();
-                    return Json(data);
-                }
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT idPost FROM Posts WHERE idPost=@Id", conn);
+                    command.Parameters.AddWithValue("@Id", post.id);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        var data = true;
+                        if (reader["idPost"].ToString().Equals(Convert.ToString(post.id)))
+                        {
+                            data = true;
+                            conn.Close();
+                            return Json(data);
+                        }
+                        else
+                        {
+                            data = false;
+                            conn.Close();
+                            return Json(data);
+                        }
 
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return Json("no se encuentra");
+                    }
+                }
+                catch
+                {
+                    return Json("no se encuentra");
+                }
             }
             else
             {
-                conn.Close();
-                return Json("no se encuentra");
+                return Json("Token expirado");
             }
-
         }
 
         [HttpPut]
         [Route("existeEvento")]
         public dynamic existeEvento([FromBody]EventData eventData)
         {
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-            conn.Open();
-            MySqlCommand command = new MySqlCommand("SELECT idEvento FROM Eventos WHERE idEvento=@Id", conn);
-            command.Parameters.AddWithValue("@Id", eventData.id);
-            MySqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
+            if (TestToken(eventData.token))
             {
-                var data = true;
-                if (reader["idEvento"].ToString().Equals(Convert.ToString(eventData.id)))
+                try
                 {
-                    data = true;
-                    conn.Close();
-                    return Json(data);
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT idEvento FROM Eventos WHERE idEvento=@Id", conn);
+                    command.Parameters.AddWithValue("@Id", eventData.id);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        var data = true;
+                        if (reader["idEvento"].ToString().Equals(Convert.ToString(eventData.id)))
+                        {
+                            data = true;
+                            conn.Close();
+                            return Json(data);
+                        }
+                        else
+                        {
+                            data = false;
+                            conn.Close();
+                            return Json(data);
+                        }
+                    }
+                    else
+                    {
+                        return Json("no se encuentra");
+                    }
                 }
-                else
+                catch
                 {
-                    data = false;
-                    conn.Close();
-                    return Json(data);
+                    return Json("no se encuentra");
                 }
             }
             else
             {
-                return Json("no se encuentra");
+                return Json("Token expirado");
             }
         }
 
@@ -921,34 +1092,47 @@ namespace APIPostYEventos2019.Controllers
         [Route("existeComentario")]
         public dynamic existeComentario([FromBody] PostData post)
         {
-            MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-            conn.Open();
-            MySqlCommand command = new MySqlCommand("SELECT id FROM Comentarios WHERE id=@Id", conn);
-            command.Parameters.AddWithValue("@Id", post.id);
-            MySqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
+            if (TestToken(post.token))
             {
-                var data = true;
-                if (reader["id"].ToString().Equals(Convert.ToString(post.id)))
+                try
                 {
-                    data = true;
-                    conn.Close();
-                    return Json(data);
-                }
-                else
-                {
-                    data = false;
-                    conn.Close();
-                    return Json(data);
-                }
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT id FROM Comentarios WHERE id=@Id", conn);
+                    command.Parameters.AddWithValue("@Id", post.id);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        var data = true;
+                        if (reader["id"].ToString().Equals(Convert.ToString(post.id)))
+                        {
+                            data = true;
+                            conn.Close();
+                            return Json(data);
+                        }
+                        else
+                        {
+                            data = false;
+                            conn.Close();
+                            return Json(data);
+                        }
 
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return Json("no se encuentra");
+                    }
+                }
+                catch
+                {
+                    return Json("no se encuentra");
+                } 
             }
             else
             {
-                conn.Close();
-                return Json("no se encuentra");
+                return Json("Token expirado");
             }
-
         }
 
         //Seleccionar último
@@ -956,6 +1140,7 @@ namespace APIPostYEventos2019.Controllers
         [Route("ultimoPost")]
         public dynamic ultimoPost()
         {
+            //aca falta poner el oauth
             try
             {
                 MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
@@ -1090,100 +1275,132 @@ namespace APIPostYEventos2019.Controllers
         [Route("seleccionarTodosLosComentarios")]
         public dynamic seleccionarTodosLosComentarios([FromBody] PostData post)
         {
-            try
+            if (TestToken(post.token))
             {
-                string connectionString = "server = localhost; database = infini; uid = root; ";
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                try
                 {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT id,texto,nombreCreador,fechaYHora FROM Comentarios WHERE idPost = @Id;", conn);
-                    cmd.Parameters.AddWithValue("@Id", post.id);
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-                    if (dataTable.Rows[0]["id"].ToString() != null)
+                    string connectionString = "server = localhost; database = infini; uid = root; ";
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
-                        conn.Close();
-                        return Json(dataTable);
-                    }
-                    else
-                    {
-                        conn.Close();
-                        return Json("error");
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand("SELECT id,texto,nombreCreador,fechaYHora FROM Comentarios WHERE idPost = @Id;", conn);
+                        cmd.Parameters.AddWithValue("@Id", post.id);
+                        MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+                        if (dataTable.Rows[0]["id"].ToString() != null)
+                        {
+                            conn.Close();
+                            return Json(dataTable);
+                        }
+                        else
+                        {
+                            conn.Close();
+                            return Json("error");
+                        }
                     }
                 }
+                catch (Exception)
+                {
+                    return Json("Error al cargar Datagrid");
+                }
             }
-            catch (Exception)
+            else
             {
-                return Json("Error al cargar Datagrid");
+                return Json("Token expirado");
             }
+            
         }
         [HttpPut]
         [Route("seleccionarTodosLosPostDelUsuario")]
         public dynamic seleccionarTodosLosPostDelUsuario([FromBody] PostData post)
         {
-            try
+            if (TestToken(post.token))
             {
-                string connectionString = "server = localhost; database = infini; uid = root; ";
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                try
                 {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT idPost FROM Posts WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                    cmd.Parameters.AddWithValue("@nombreDeCuenta", post.user);
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-                    conn.Close();
-                    return Json(dataTable);
+                    string connectionString = "server = localhost; database = infini; uid = root; ";
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand("SELECT idPost FROM Posts WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                        cmd.Parameters.AddWithValue("@nombreDeCuenta", post.user);
+                        MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+                        conn.Close();
+                        return Json(dataTable);
+                    }
+                }
+                catch (Exception)
+                {
+                    return Json("Error al cargar Datagrid");
                 }
             }
-            catch (Exception)
+            else
             {
-                return Json("Error al cargar Datagrid");
+                return Json("Token expirado");
             }
+            
         }
 
         [HttpPost]
         [Route("darLike")]
         public dynamic darLike([FromBody] like like)
         {
-            try
+            if (TestToken(like.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO DaLike (nombreDeCuenta, idPost, nombredeCreador) VALUES (@nombreDeCuenta, @idPost, @nombredeCreador)", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
-                cmd.Parameters.AddWithValue("@idPost", like.idpost);
-                cmd.Parameters.AddWithValue("@nombredeCreador", like.nombredeCreador);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("like correcto");
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("INSERT INTO DaLike (nombreDeCuenta, idPost, nombredeCreador) VALUES (@nombreDeCuenta, @idPost, @nombredeCreador)", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@idPost", like.idpost);
+                    cmd.Parameters.AddWithValue("@nombredeCreador", like.nombredeCreador);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("like correcto");
+                }
+                catch
+                {
+                    return Json("like incorrecto");
+                }
             }
-            catch
+            else
             {
-                return Json("like incorrecto");
+                return Json("Token expirado");
             }
+            
         }
 
         [HttpPut]
         [Route("dioLike")]
         public dynamic dioLike([FromBody] like like)
         {
-            try
+            if (TestToken(like.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT idPost FROM DaLike WHERE idPost=@idpost AND nombreDeCuenta=@nombreDeCuenta AND nombredeCreador=@nombredeCreador", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
-                cmd.Parameters.AddWithValue("@idPost", like.idpost);
-                cmd.Parameters.AddWithValue("@nombredeCreador", like.nombredeCreador);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
+                try
                 {
-                    if (reader["idPost"].ToString().Equals(Convert.ToString(like.idpost)))
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT idPost FROM DaLike WHERE idPost=@idpost AND nombreDeCuenta=@nombreDeCuenta AND nombredeCreador=@nombredeCreador", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@idPost", like.idpost);
+                    cmd.Parameters.AddWithValue("@nombredeCreador", like.nombredeCreador);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
                     {
-                        conn.Close();
-                        return Json(true);
+                        if (reader["idPost"].ToString().Equals(Convert.ToString(like.idpost)))
+                        {
+                            conn.Close();
+                            return Json(true);
+                        }
+                        else
+                        {
+                            conn.Close();
+                            return Json(false);
+                        }
                     }
                     else
                     {
@@ -1191,80 +1408,104 @@ namespace APIPostYEventos2019.Controllers
                         return Json(false);
                     }
                 }
-                else
+                catch
                 {
-                    conn.Close();
                     return Json(false);
                 }
             }
-            catch
+            else
             {
-                return Json(false);
+                return Json("Token expirado");
             }
+            
         }
 
         [HttpPut]
         [Route("quitarLike")]
         public dynamic quitarLike([FromBody] like like)
         {
-            try
+            if (TestToken(like.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("DELETE FROM DaLike WHERE idPost=@idpost AND nombreDeCuenta=@nombreDeCuenta AND nombredeCreador=@nombredeCreador", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
-                cmd.Parameters.AddWithValue("@idPost", like.idpost);
-                cmd.Parameters.AddWithValue("@nombredeCreador", like.nombredeCreador);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("like correcto");
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("DELETE FROM DaLike WHERE idPost=@idpost AND nombreDeCuenta=@nombreDeCuenta AND nombredeCreador=@nombredeCreador", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@idPost", like.idpost);
+                    cmd.Parameters.AddWithValue("@nombredeCreador", like.nombredeCreador);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("like correcto");
+                }
+                catch
+                {
+                    return Json("like incorrecto" + like.nombreDeCuenta + like.nombredeCreador + like.idpost);
+                }
             }
-            catch
+            else
             {
-                return Json("like incorrecto" + like.nombreDeCuenta + like.nombredeCreador + like.idpost);
+                return Json("Token expirado");
             }
+            
         }
         [HttpPost]
         [Route("darLikeComentario")]
         public dynamic darLikeComentario([FromBody] like like)
         {
-            try
+            if (TestToken(like.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("INSERT INTO DaLikeComentario (nombreDeCuenta, idComentario, quienDaLike) VALUES (@nombreDeCuenta, @idComentario, @quienDaLike)", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
-                cmd.Parameters.AddWithValue("@idComentario", like.idpost);
-                cmd.Parameters.AddWithValue("@quienDaLike", like.nombredeCreador);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("like correcto");
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("INSERT INTO DaLikeComentario (nombreDeCuenta, idComentario, quienDaLike) VALUES (@nombreDeCuenta, @idComentario, @quienDaLike)", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@idComentario", like.idpost);
+                    cmd.Parameters.AddWithValue("@quienDaLike", like.nombredeCreador);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("like correcto");
+                }
+                catch
+                {
+                    return Json("like incorrecto");
+                }
             }
-            catch
+            else
             {
-                return Json("like incorrecto");
+                return Json("Token expirado");
             }
+            
         }
 
         [HttpPut]
         [Route("dioLikeComentario")]
         public dynamic dioLikeComentario([FromBody] like like)
         {
-            try
+            if (TestToken(like.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT idComentario FROM DaLikeComentario WHERE idComentario=@idComentario AND nombreDeCuenta=@nombreDeCuenta AND quienDaLike=@quienDaLike", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
-                cmd.Parameters.AddWithValue("@idComentario", like.idpost);
-                cmd.Parameters.AddWithValue("@quienDaLike", like.nombredeCreador);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
+                try
                 {
-                    if (reader["idComentario"].ToString().Equals(Convert.ToString(like.idpost)))
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT idComentario FROM DaLikeComentario WHERE idComentario=@idComentario AND nombreDeCuenta=@nombreDeCuenta AND quienDaLike=@quienDaLike", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@idComentario", like.idpost);
+                    cmd.Parameters.AddWithValue("@quienDaLike", like.nombredeCreador);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
                     {
-                        conn.Close();
-                        return Json(true);
+                        if (reader["idComentario"].ToString().Equals(Convert.ToString(like.idpost)))
+                        {
+                            conn.Close();
+                            return Json(true);
+                        }
+                        else
+                        {
+                            conn.Close();
+                            return Json(false);
+                        }
                     }
                     else
                     {
@@ -1272,37 +1513,44 @@ namespace APIPostYEventos2019.Controllers
                         return Json(false);
                     }
                 }
-                else
+                catch
                 {
-                    conn.Close();
                     return Json(false);
                 }
             }
-            catch
+            else
             {
-                return Json(false);
+                return Json("Token expirado");
             }
+            
         }
 
         [HttpPut]
         [Route("quitarLikeComentario")]
         public dynamic quitarLikeComentario([FromBody] like like)
         {
-            try
+            if (TestToken(like.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=@idComentario AND nombreDeCuenta=@nombreDeCuenta AND quienDaLike=@quienDaLike", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
-                cmd.Parameters.AddWithValue("@idComentario", like.idpost);
-                cmd.Parameters.AddWithValue("@quienDaLike", like.nombredeCreador);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("like correcto");
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=@idComentario AND nombreDeCuenta=@nombreDeCuenta AND quienDaLike=@quienDaLike", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@idComentario", like.idpost);
+                    cmd.Parameters.AddWithValue("@quienDaLike", like.nombredeCreador);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("like correcto");
+                }
+                catch
+                {
+                    return Json("like incorrecto" + like.nombreDeCuenta + like.nombredeCreador + like.idpost);
+                }
             }
-            catch
+            else
             {
-                return Json("like incorrecto" + like.nombreDeCuenta + like.nombredeCreador + like.idpost);
+                return Json("Token expirado");
             }
         }
 
@@ -1310,38 +1558,45 @@ namespace APIPostYEventos2019.Controllers
         [Route("conseguirCreadorComentario")]
         public dynamic conseguirCreadorComentario([FromBody] PostData post)
         {
-            try
+            if (TestToken(post.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta FROM Comentarios WHERE id=@Id", conn);
-                command.Parameters.AddWithValue("@Id", post.id);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
+                try
                 {
-                    string nombreDeCuenta;
-                    if (string.IsNullOrEmpty(reader["nombreDeCuenta"].ToString()))
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta FROM Comentarios WHERE id=@Id", conn);
+                    command.Parameters.AddWithValue("@Id", post.id);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
                     {
-                        nombreDeCuenta = "";
-                        conn.Close();
-                        return Json(nombreDeCuenta);
+                        string nombreDeCuenta;
+                        if (string.IsNullOrEmpty(reader["nombreDeCuenta"].ToString()))
+                        {
+                            nombreDeCuenta = "";
+                            conn.Close();
+                            return Json(nombreDeCuenta);
+                        }
+                        else
+                        {
+                            nombreDeCuenta = reader["nombreDeCuenta"].ToString();
+                            conn.Close();
+                            return Json(nombreDeCuenta);
+                        }
                     }
                     else
                     {
-                        nombreDeCuenta = reader["nombreDeCuenta"].ToString();
                         conn.Close();
-                        return Json(nombreDeCuenta);
+                        return Json($"no se encuentra");
                     }
                 }
-                else
+                catch
                 {
-                    conn.Close();
-                    return Json($"no se encuentra");
+                    return Json("no se encuentra");
                 }
             }
-            catch
+            else
             {
-                return Json("no se encuentra");
+                return Json("Token expirado");
             }
         }
 
