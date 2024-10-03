@@ -21,7 +21,10 @@ namespace Testing
             fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
             post = new APIPostYEventos2019.Controllers.PostController.PostData
             {
-                text="hola", user="UsuarioDePrueba", fechayhora=fechaHoraString
+                text = "hola",
+                user = "UsuarioDePrueba",
+                fechayhora = fechaHoraString,
+                token = "TestToken"
             };
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
             var resultado = await controller.HacerPost(post);
@@ -35,12 +38,17 @@ namespace Testing
         {
             string respuestaEsperada = "hola";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimopostLLamar = controller.ultimoPost();
-            var jsonUltimoPost= ultimopostLLamar as System.Web.Http.Results.JsonResult<string>;
+            APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
+            {
+                token = "TestToken"
+            };
+            var ultimopostLLamar = controller.ultimoPost(token);
+            var jsonUltimoPost = ultimopostLLamar as System.Web.Http.Results.JsonResult<string>;
             ultimopost = int.Parse(jsonUltimoPost.Content);
             APIPostYEventos2019.Controllers.PostController.PostData postdata = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
-                id = Convert.ToString(ultimopost)
+                id = Convert.ToString(ultimopost),
+                token = "TestToken"
             };
             var resultado = await controller.conseguirPost(postdata);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<APIPostYEventos2019.Controllers.PostController.PostData>;
@@ -54,12 +62,17 @@ namespace Testing
         {
             string respuestaEsperada = "UsuarioDePrueba";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimopostLLamar = controller.ultimoPost();
+            APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
+            {
+                token = "TestToken"
+            };
+            var ultimopostLLamar = controller.ultimoPost(token);
             var jsonUltimoPost = ultimopostLLamar as System.Web.Http.Results.JsonResult<string>;
             ultimopost = int.Parse(jsonUltimoPost.Content);
             APIPostYEventos2019.Controllers.PostController.PostData postdata = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
-                id = Convert.ToString(ultimopost)
+                id = Convert.ToString(ultimopost),
+                token = "TestToken"
             };
             var resultado = controller.conseguirCreador(postdata);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
@@ -73,12 +86,20 @@ namespace Testing
             string respuestaEsperada = "Modificacion correcta";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
             byte[] imagenfalsa = new byte[0];
-            var ultimopostLLamar = controller.ultimoPost();
+            APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
+            {
+                token = "TestToken"
+            };
+            var ultimopostLLamar = controller.ultimoPost(token);
             var jsonUltimoPost = ultimopostLLamar as System.Web.Http.Results.JsonResult<string>;
             ultimopost = int.Parse(jsonUltimoPost.Content);
             APIPostYEventos2019.Controllers.PostController.PostData postdata = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
-                id = Convert.ToString(ultimopost), text = "chau", image= Convert.ToBase64String(imagenfalsa), link=""
+                id = Convert.ToString(ultimopost),
+                text = "chau",
+                image = Convert.ToBase64String(imagenfalsa),
+                link = "",
+                token = "TestToken"
             };
             var resultado = await controller.modificarPost(postdata);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
@@ -99,7 +120,12 @@ namespace Testing
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
             APIPostYEventos2019.Controllers.PostController.EventData eventData = new APIPostYEventos2019.Controllers.PostController.EventData()
             {
-                titulo="evento", fechaYhora_Inicio= fechaHoraFinalString, fechaYhora_Final= fechaHoraFinalString, foto= base64Image, user="UsuarioDePrueba"
+                titulo = "evento",
+                fechaYhora_Inicio = fechaHoraFinalString,
+                fechaYhora_Final = fechaHoraFinalString,
+                foto = base64Image,
+                user = "UsuarioDePrueba",
+                token = "TestToken"
             };
             var resultado = await controller.hacerEvento(eventData);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
@@ -118,17 +144,22 @@ namespace Testing
             byte[] imageBytes = File.ReadAllBytes(imagePath);
             string base64Image = Convert.ToBase64String(imageBytes);
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimoEventoLLamar = controller.ultimoEvento();
+            APIPostYEventos2019.Controllers.PostController.EventData token = new APIPostYEventos2019.Controllers.PostController.EventData()
+            {
+                token = "TestToken"
+            };
+            var ultimoEventoLLamar = controller.ultimoEvento(token);
             var jsonUltimoEvento = ultimoEventoLLamar as System.Web.Http.Results.JsonResult<string>;
             int ultimoEvento = int.Parse(jsonUltimoEvento.Content);
             APIPostYEventos2019.Controllers.PostController.EventData eventData = new APIPostYEventos2019.Controllers.PostController.EventData()
             {
-                id= Convert.ToString(ultimoEvento),
+                id = Convert.ToString(ultimoEvento),
                 titulo = "eventoModificado",
                 fechaYhora_Inicio = fechaHoraFinalString,
                 fechaYhora_Final = fechaHoraFinalString,
                 foto = base64Image,
-                user = "UsuarioDePrueba"
+                user = "UsuarioDePrueba",
+                token = "TestToken"
             };
             var resultado = await controller.modificarEvento(eventData);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
@@ -141,12 +172,19 @@ namespace Testing
         {
             string respuestaEsperada = "like correcto";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimopostLLamar = controller.ultimoPost();
+            APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
+            {
+                token = "TestToken"
+            };
+            var ultimopostLLamar = controller.ultimoPost(token);
             var jsonUltimoPost = ultimopostLLamar as System.Web.Http.Results.JsonResult<string>;
             ultimopost = int.Parse(jsonUltimoPost.Content);
             APIPostYEventos2019.Controllers.PostController.like like = new APIPostYEventos2019.Controllers.PostController.like()
             {
-                nombreDeCuenta="UsuarioDePrueba", idpost= ultimopost, nombredeCreador="UsuarioDePrueba" //por revisar
+                nombreDeCuenta = "UsuarioDePrueba",
+                idpost = ultimopost,
+                nombredeCreador = "UsuarioDePrueba",
+                token = "TestToken"
             };
             var resultado = controller.darLike(like);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
@@ -158,14 +196,19 @@ namespace Testing
         public void TestMethod08()
         {
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimopostLLamar = controller.ultimoPost();
+            APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
+            {
+                token = "TestToken"
+            };
+            var ultimopostLLamar = controller.ultimoPost(token);
             var jsonUltimoPost = ultimopostLLamar as System.Web.Http.Results.JsonResult<string>;
             ultimopost = int.Parse(jsonUltimoPost.Content);
             APIPostYEventos2019.Controllers.PostController.like like = new APIPostYEventos2019.Controllers.PostController.like()
             {
                 nombreDeCuenta = "UsuarioDePrueba",
                 idpost = ultimopost,
-                nombredeCreador = "UsuarioDePrueba" //por revisar
+                nombredeCreador = "UsuarioDePrueba",
+                token = "TestToken"
             };
             var resultado = controller.dioLike(like);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<bool>;
@@ -178,14 +221,19 @@ namespace Testing
         {
             string respuestaEsperada = "like correcto";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimopostLLamar = controller.ultimoPost();
+            APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
+            {
+                token = "TestToken"
+            };
+            var ultimopostLLamar = controller.ultimoPost(token);
             var jsonUltimoPost = ultimopostLLamar as System.Web.Http.Results.JsonResult<string>;
             ultimopost = int.Parse(jsonUltimoPost.Content);
             APIPostYEventos2019.Controllers.PostController.like like = new APIPostYEventos2019.Controllers.PostController.like()
             {
                 nombreDeCuenta = "UsuarioDePrueba",
                 idpost = ultimopost,
-                nombredeCreador = "UsuarioDePrueba" //por revisar
+                nombredeCreador = "UsuarioDePrueba",
+                token = "TestToken"
             };
             var resultado = controller.quitarLike(like);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
@@ -198,12 +246,17 @@ namespace Testing
         {
             string respuestaEsperada = "eventoModificado";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimoEventoLLamar = controller.ultimoEvento();
+            APIPostYEventos2019.Controllers.PostController.EventData token = new APIPostYEventos2019.Controllers.PostController.EventData()
+            {
+                token = "TestToken"
+            };
+            var ultimoEventoLLamar = controller.ultimoEvento(token);
             var jsonUltimoEvento = ultimoEventoLLamar as System.Web.Http.Results.JsonResult<string>;
             int ultimoEvento = int.Parse(jsonUltimoEvento.Content);
             APIPostYEventos2019.Controllers.PostController.EventData evento = new APIPostYEventos2019.Controllers.PostController.EventData()
             {
-                id = Convert.ToString(ultimoEvento)
+                id = Convert.ToString(ultimoEvento),
+                token = "TestToken"
             };
             var resultado = await controller.eventoPorId(evento);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<APIPostYEventos2019.Controllers.PostController.EventData>;
@@ -219,12 +272,21 @@ namespace Testing
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
             DateTime fechayhoraactual = DateTime.Now;
             string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
-            var ultimopostLLamar = controller.ultimoPost();
+            APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
+            {
+                token = "TestToken"
+            };
+            var ultimopostLLamar = controller.ultimoPost(token);
             var jsonUltimoPost = ultimopostLLamar as System.Web.Http.Results.JsonResult<string>;
             ultimopost = int.Parse(jsonUltimoPost.Content);
             APIPostYEventos2019.Controllers.PostController.CommentData comentario = new APIPostYEventos2019.Controllers.PostController.CommentData()
             {
-                IdPost = Convert.ToString(ultimopost), fechayhora=fechaHoraString, NombreCreador="UsuarioDePrueba", NombreDeCuenta= "UsuarioDePrueba", texto= "buen post"
+                IdPost = Convert.ToString(ultimopost),
+                fechayhora = fechaHoraString,
+                NombreCreador = "UsuarioDePrueba",
+                NombreDeCuenta = "UsuarioDePrueba",
+                texto = "buen post",
+                token = "TestToken"
             };
             var resultado = controller.hacerComentario(comentario);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
@@ -239,13 +301,18 @@ namespace Testing
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
             DateTime fechayhoraactual = DateTime.Now;
             string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
-            var ultimoComentarioLLamar = controller.ultimoComentario();
+            APIPostYEventos2019.Controllers.PostController.CommentData token = new APIPostYEventos2019.Controllers.PostController.CommentData()
+            {
+                token = "TestToken"
+            };
+            var ultimoComentarioLLamar = controller.ultimoComentario(token);
             var jsonUltimoComentario = ultimoComentarioLLamar as System.Web.Http.Results.JsonResult<string>;
             int ultimoComentario = int.Parse(jsonUltimoComentario.Content);
             APIPostYEventos2019.Controllers.PostController.CommentData comentario = new APIPostYEventos2019.Controllers.PostController.CommentData()
             {
                 id = Convert.ToString(ultimoComentario),
-                texto = "mal post"
+                texto = "mal post",
+                token = "TestToken"
             };
             var resultado = controller.modificarComentario(comentario);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
@@ -258,12 +325,17 @@ namespace Testing
         {
             string respuestaEsperada = "mal post";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimoComentarioLLamar = controller.ultimoComentario();
+            APIPostYEventos2019.Controllers.PostController.CommentData token = new APIPostYEventos2019.Controllers.PostController.CommentData()
+            {
+                token = "TestToken"
+            };
+            var ultimoComentarioLLamar = controller.ultimoComentario(token);
             var jsonUltimoComentario = ultimoComentarioLLamar as System.Web.Http.Results.JsonResult<string>;
             int ultimoComentario = int.Parse(jsonUltimoComentario.Content);
             APIPostYEventos2019.Controllers.PostController.PostData comentario = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
-                id = Convert.ToString(ultimoComentario)
+                id = Convert.ToString(ultimoComentario),
+                token = "TestToken"
             };
             var resultado = controller.conseguirComentario(comentario);
 
@@ -278,12 +350,17 @@ namespace Testing
         public void TestMethod14()
         {
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimopostLLamar = controller.ultimoPost();
+            APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
+            {
+                token = "TestToken"
+            };
+            var ultimopostLLamar = controller.ultimoPost(token);
             var jsonUltimoPost = ultimopostLLamar as System.Web.Http.Results.JsonResult<string>;
             ultimopost = int.Parse(jsonUltimoPost.Content);
             APIPostYEventos2019.Controllers.PostController.PostData post = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
-                id=Convert.ToString(ultimopost)
+                id = Convert.ToString(ultimopost),
+                token = "TestToken"
             };
             var resultado = controller.existePost(post);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<bool>;
@@ -295,12 +372,17 @@ namespace Testing
         public void TestMethod15()
         {
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimoEventoLlamar = controller.ultimoEvento();
+            APIPostYEventos2019.Controllers.PostController.EventData token = new APIPostYEventos2019.Controllers.PostController.EventData()
+            {
+                token = "TestToken"
+            };
+            var ultimoEventoLlamar = controller.ultimoEvento(token);
             var jsonUltimoEvento = ultimoEventoLlamar as System.Web.Http.Results.JsonResult<string>;
             int ultimoEvento = int.Parse(jsonUltimoEvento.Content);
             APIPostYEventos2019.Controllers.PostController.EventData eventData = new APIPostYEventos2019.Controllers.PostController.EventData()
             {
-                id = Convert.ToString(ultimoEvento)
+                id = Convert.ToString(ultimoEvento),
+                token = "TestToken"
             };
             var resultado = controller.existeEvento(eventData);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<bool>;
@@ -312,12 +394,17 @@ namespace Testing
         public void TestMethod16()
         {
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimoComentarioLLamar = controller.ultimoComentario();
+            APIPostYEventos2019.Controllers.PostController.CommentData token = new APIPostYEventos2019.Controllers.PostController.CommentData()
+            {
+                token = "TestToken"
+            };
+            var ultimoComentarioLLamar = controller.ultimoComentario(token);
             var jsonUltimoComentario = ultimoComentarioLLamar as System.Web.Http.Results.JsonResult<string>;
             int ultimoComentario = int.Parse(jsonUltimoComentario.Content);
             APIPostYEventos2019.Controllers.PostController.PostData post = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
-                id = Convert.ToString(ultimoComentario)
+                id = Convert.ToString(ultimoComentario),
+                token = "TestToken"
             };
             var resultado = controller.existeComentario(post);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<bool>;
@@ -330,10 +417,14 @@ namespace Testing
         {
             string respuestaEsperada = "chau";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var resultado = controller.seleccionarTodosLosPost();
+            APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
+            {
+                token = "TestToken"
+            };
+            var resultado = controller.seleccionarTodosLosPost(token);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<DataTable>;
             dynamic data = jsonResult.Content;
-            string resultadoString = data.Rows[data.Rows.Count-1]["texto"];
+            string resultadoString = data.Rows[data.Rows.Count - 1]["texto"];
             Assert.AreEqual(respuestaEsperada, resultadoString);
         }
 
@@ -342,7 +433,11 @@ namespace Testing
         {
             string respuestaEsperada = "eventoModificado";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var resultado = controller.seleccionarTodosLosEventos();
+            APIPostYEventos2019.Controllers.PostController.EventData token = new APIPostYEventos2019.Controllers.PostController.EventData()
+            {
+                token = "TestToken"
+            };
+            var resultado = controller.seleccionarTodosLosEventos(token);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<DataTable>;
             dynamic data = jsonResult.Content;
             string resultadoString = data.Rows[data.Rows.Count - 1]["titulo"];
@@ -354,12 +449,17 @@ namespace Testing
         {
             string respuestaEsperada = "mal post";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimopostLLamar = controller.ultimoPost();
+            APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
+            {
+                token = "TestToken"
+            };
+            var ultimopostLLamar = controller.ultimoPost(token);
             var jsonUltimoPost = ultimopostLLamar as System.Web.Http.Results.JsonResult<string>;
             ultimopost = int.Parse(jsonUltimoPost.Content);
             APIPostYEventos2019.Controllers.PostController.PostData postData = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
-                id = Convert.ToString(ultimopost)
+                id = Convert.ToString(ultimopost),
+                token = "TestToken"
             };
             var resultado = controller.seleccionarTodosLosComentarios(postData);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<DataTable>;
@@ -372,13 +472,18 @@ namespace Testing
         public async Task TestMethod20()
         {
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimopostLLamar = controller.ultimoPost();
+            APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
+            {
+                token = "TestToken"
+            };
+            var ultimopostLLamar = controller.ultimoPost(token);
             var jsonUltimoPost = ultimopostLLamar as System.Web.Http.Results.JsonResult<string>;
             string ultimoPost = jsonUltimoPost.Content;
             string respuestaEsperada = ultimoPost;
             APIPostYEventos2019.Controllers.PostController.PostData postData = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
-                user="UsuarioDePrueba"
+                user = "UsuarioDePrueba",
+                token = "TestToken"
             };
             var resultado = controller.seleccionarTodosLosPostDelUsuario(postData);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<DataTable>;
@@ -392,14 +497,19 @@ namespace Testing
         {
             string respuestaEsperada = "like correcto";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimoComentarioLLamar = controller.ultimoComentario();
+            APIPostYEventos2019.Controllers.PostController.CommentData token = new APIPostYEventos2019.Controllers.PostController.CommentData()
+            {
+                token = "TestToken"
+            };
+            var ultimoComentarioLLamar = controller.ultimoComentario(token);
             var jsonUltimoComentario = ultimoComentarioLLamar as System.Web.Http.Results.JsonResult<string>;
             int ultimoComentario = int.Parse(jsonUltimoComentario.Content);
             APIPostYEventos2019.Controllers.PostController.like like = new APIPostYEventos2019.Controllers.PostController.like()
             {
                 nombreDeCuenta = "UsuarioDePrueba",
                 idpost = ultimoComentario,
-                nombredeCreador = "UsuarioDePrueba" //por revisar
+                nombredeCreador = "UsuarioDePrueba",
+                token = "TestToken"
             };
             var resultado = controller.darLikeComentario(like);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
@@ -411,14 +521,19 @@ namespace Testing
         public void TestMethod22()
         {
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimoComentarioLLamar = controller.ultimoComentario();
+            APIPostYEventos2019.Controllers.PostController.CommentData token = new APIPostYEventos2019.Controllers.PostController.CommentData()
+            {
+                token = "TestToken"
+            };
+            var ultimoComentarioLLamar = controller.ultimoComentario(token);
             var jsonUltimoComentario = ultimoComentarioLLamar as System.Web.Http.Results.JsonResult<string>;
             int ultimoComentario = int.Parse(jsonUltimoComentario.Content);
             APIPostYEventos2019.Controllers.PostController.like like = new APIPostYEventos2019.Controllers.PostController.like()
             {
                 nombreDeCuenta = "UsuarioDePrueba",
                 idpost = ultimoComentario,
-                nombredeCreador = "UsuarioDePrueba" //por revisar
+                nombredeCreador = "UsuarioDePrueba",
+                token = "TestToken"
             };
             var resultado = controller.dioLikeComentario(like);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<bool>;
@@ -431,14 +546,19 @@ namespace Testing
         {
             string respuestaEsperada = "like correcto";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimoComentarioLLamar = controller.ultimoComentario();
+            APIPostYEventos2019.Controllers.PostController.CommentData token = new APIPostYEventos2019.Controllers.PostController.CommentData()
+            {
+                token = "TestToken"
+            };
+            var ultimoComentarioLLamar = controller.ultimoComentario(token);
             var jsonUltimoComentario = ultimoComentarioLLamar as System.Web.Http.Results.JsonResult<string>;
             int ultimoComentario = int.Parse(jsonUltimoComentario.Content);
             APIPostYEventos2019.Controllers.PostController.like like = new APIPostYEventos2019.Controllers.PostController.like()
             {
                 nombreDeCuenta = "UsuarioDePrueba",
                 idpost = ultimoComentario,
-                nombredeCreador = "UsuarioDePrueba" //por revisar
+                nombredeCreador = "UsuarioDePrueba",
+                token = "TestToken"
             };
             var resultado = controller.quitarLikeComentario(like);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
@@ -451,12 +571,17 @@ namespace Testing
         {
             string respuestaEsperada = "UsuarioDePrueba";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimocomentarioLLamar = controller.ultimoComentario();
+            APIPostYEventos2019.Controllers.PostController.CommentData token = new APIPostYEventos2019.Controllers.PostController.CommentData()
+            {
+                token = "TestToken"
+            };
+            var ultimocomentarioLLamar = controller.ultimoComentario(token);
             var jsonUltimoComentario = ultimocomentarioLLamar as System.Web.Http.Results.JsonResult<string>;
             int ultimocomentario = int.Parse(jsonUltimoComentario.Content);
             APIPostYEventos2019.Controllers.PostController.PostData postdata = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
-                id = Convert.ToString(ultimocomentario)
+                id = Convert.ToString(ultimocomentario),
+                token = "TestToken"
             };
             var resultado = controller.conseguirCreadorComentario(postdata);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
@@ -470,12 +595,17 @@ namespace Testing
         {
             string respuestaEsperada = "Comentario eliminado";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimoComentarioLLamar = controller.ultimoComentario();
+            APIPostYEventos2019.Controllers.PostController.CommentData token = new APIPostYEventos2019.Controllers.PostController.CommentData()
+            {
+                token = "TestToken"
+            };
+            var ultimoComentarioLLamar = controller.ultimoComentario(token);
             var jsonUltimoComentario = ultimoComentarioLLamar as System.Web.Http.Results.JsonResult<string>;
             int ultimoComentario = int.Parse(jsonUltimoComentario.Content);
             APIPostYEventos2019.Controllers.PostController.PostData comentario = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
-                id = Convert.ToString(ultimoComentario)
+                id = Convert.ToString(ultimoComentario),
+                token = "TestToken"
             };
             var resultado = controller.eliminarComentario(comentario);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
@@ -487,12 +617,17 @@ namespace Testing
         {
             string respuestaEsperada = "Post eliminado";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimopostLLamar = controller.ultimoPost();
+            APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
+            {
+                token = "TestToken"
+            };
+            var ultimopostLLamar = controller.ultimoPost(token);
             var jsonUltimoPost = ultimopostLLamar as System.Web.Http.Results.JsonResult<string>;
             ultimopost = int.Parse(jsonUltimoPost.Content);
             APIPostYEventos2019.Controllers.PostController.PostData postdata = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
-                id = Convert.ToString(ultimopost)
+                id = Convert.ToString(ultimopost),
+                token = "TestToken"
             };
             var resultado = controller.eliminarPost(postdata);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
@@ -506,19 +641,22 @@ namespace Testing
         {
             string respuestaEsperada = "Evento eliminado";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            var ultimoEventoLLamar = controller.ultimoEvento();
+            APIPostYEventos2019.Controllers.PostController.EventData token = new APIPostYEventos2019.Controllers.PostController.EventData()
+            {
+                token = "TestToken"
+            };
+            var ultimoEventoLLamar = controller.ultimoEvento(token);
             var jsonUltimoEvento = ultimoEventoLLamar as System.Web.Http.Results.JsonResult<string>;
             int ultimoEvento = int.Parse(jsonUltimoEvento.Content);
             APIPostYEventos2019.Controllers.PostController.EventData eventData = new APIPostYEventos2019.Controllers.PostController.EventData()
             {
-                id = Convert.ToString(ultimoEvento)
+                id = Convert.ToString(ultimoEvento),
+                token = "TestToken"
             };
             var resultado = controller.eliminarEvento(eventData);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
             string resultadoString = jsonResult.Content;
             Assert.AreEqual(respuestaEsperada, resultadoString);
         }
-
-        
     }
 }

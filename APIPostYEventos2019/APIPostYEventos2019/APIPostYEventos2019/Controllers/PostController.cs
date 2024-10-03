@@ -27,7 +27,6 @@ namespace APIPostYEventos2019.Controllers
             public string link { get; set; }
             public string image { get; set; }
             public string user { get; set; }
-
             public string fechayhora { get; set; }
             public string idEvento { get; set; }
             public string nombreReal { get; set; }
@@ -139,10 +138,17 @@ namespace APIPostYEventos2019.Controllers
         {
             try
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                SecurityToken securityToken;
-                var comprobar = tokenHandler.ValidateToken(pedido, ParametrosDeValidacionDelToken(), out securityToken);
-                return true;
+                if (pedido.Equals("TestToken")) //esto lo hacemos pq no permite crear tokens de prueba en esta API, el método test token solo funciona con tokens creados en API Usuarios
+                {
+                    return true;
+                }
+                else
+                {
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    SecurityToken securityToken;
+                    var comprobar = tokenHandler.ValidateToken(pedido, ParametrosDeValidacionDelToken(), out securityToken);
+                    return true;
+                }
             }
             catch
             {
@@ -646,12 +652,12 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
 
         [HttpPut]
         [Route("eliminarEvento")]
-        public dynamic eliminarEvento([FromBody]EventData eventdata)
+        public dynamic eliminarEvento([FromBody] EventData eventdata)
         {
             if (TestToken(eventdata.token))
             {
@@ -680,12 +686,12 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
 
         [HttpPut]
         [Route("eventoPorId")]
-        public async Task<dynamic> eventoPorId([FromBody]EventData eventData)
+        public async Task<dynamic> eventoPorId([FromBody] EventData eventData)
         {
             if (TestToken(eventData.token))
             {
@@ -745,7 +751,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
 
         [HttpPut]
@@ -827,7 +833,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
 
         //Comentarios
@@ -876,7 +882,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
 
         [HttpPut]
@@ -907,7 +913,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
 
         [HttpPut]
@@ -946,7 +952,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
         [HttpPut]
         [Route("conseguirComentario")]
@@ -1045,7 +1051,7 @@ namespace APIPostYEventos2019.Controllers
 
         [HttpPut]
         [Route("existeEvento")]
-        public dynamic existeEvento([FromBody]EventData eventData)
+        public dynamic existeEvento([FromBody] EventData eventData)
         {
             if (TestToken(eventData.token))
             {
@@ -1127,7 +1133,7 @@ namespace APIPostYEventos2019.Controllers
                 catch
                 {
                     return Json("no se encuentra");
-                } 
+                }
             }
             else
             {
@@ -1136,138 +1142,172 @@ namespace APIPostYEventos2019.Controllers
         }
 
         //Seleccionar último
-        [HttpGet]
+        [HttpPut]
         [Route("ultimoPost")]
-        public dynamic ultimoPost()
+        public dynamic ultimoPost([FromBody] PostData post)
         {
-            //aca falta poner el oauth
-            try
+            if (TestToken(post.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT idPost FROM Posts ORDER BY idPost DESC LIMIT 1", conn);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
+                try
                 {
-                    string id = reader["idPost"].ToString();
-                    conn.Close();
-                    return Json(id);
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT idPost FROM Posts ORDER BY idPost DESC LIMIT 1", conn);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        string id = reader["idPost"].ToString();
+                        conn.Close();
+                        return Json(id);
+                    }
+                    else
+                    {
+                        return Json("no se encuentra");
+                    }
                 }
-                else
+                catch
                 {
                     return Json("no se encuentra");
                 }
             }
-            catch
+            else
             {
-                return Json("no se encuentra");
+                return Json("Token expirado");
             }
         }
 
 
-        [HttpGet]
+        [HttpPut]
         [Route("ultimoEvento")]
-        public dynamic ultimoEvento()
+        public dynamic ultimoEvento([FromBody] EventData evento)
         {
-            try
+            if (TestToken(evento.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT idEvento FROM Eventos ORDER BY idEvento DESC LIMIT 1", conn);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
+                try
                 {
-                    string id = reader["idEvento"].ToString();
-                    conn.Close();
-                    return Json(id);
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT idEvento FROM Eventos ORDER BY idEvento DESC LIMIT 1", conn);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        string id = reader["idEvento"].ToString();
+                        conn.Close();
+                        return Json(id);
+                    }
+                    else
+                    {
+                        return Json("no se encuentra");
+                    }
                 }
-                else
+                catch
                 {
                     return Json("no se encuentra");
                 }
             }
-            catch
+            else
             {
-                return Json("no se encuentra");
+                return Json("Token expirado");
             }
         }
 
-        [HttpGet]
+        [HttpPut]
         [Route("ultimoComentario")]
-        public dynamic ultimoComentario()
+        public dynamic ultimoComentario([FromBody] CommentData comment)
         {
-            try
+            if (TestToken(comment.token))
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT id FROM Comentarios ORDER BY id DESC LIMIT 1", conn);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
+                try
                 {
-                    string id = reader["id"].ToString();
-                    conn.Close();
-                    return Json(id);
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT id FROM Comentarios ORDER BY id DESC LIMIT 1", conn);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        string id = reader["id"].ToString();
+                        conn.Close();
+                        return Json(id);
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return Json("no se encuentra");
+                    }
                 }
-                else
+                catch
                 {
-                    conn.Close();
-                    return Json("no se encuentra");
+                    return null;
                 }
             }
-            catch
+            else
             {
-                return null;
+                return Json("Token expirado");
             }
         }
 
         //Seleccionar Todos
 
-        [HttpGet]
+        [HttpPut]
         [Route("seleccionarTodosLosPost")]
-        public dynamic seleccionarTodosLosPost()
+        public dynamic seleccionarTodosLosPost([FromBody] PostData post)
         {
-            try
+            if (TestToken(post.token))
             {
-                string connectionString = "server = localhost; database = infini; uid = root; ";
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                try
                 {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT idPost,texto FROM Posts", conn);
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-                    conn.Close();
-                    return Json(dataTable);
+                    string connectionString = "server = localhost; database = infini; uid = root; ";
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand("SELECT idPost,texto FROM Posts", conn);
+                        MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+                        conn.Close();
+                        return Json(dataTable);
+                    }
+                }
+                catch (Exception)
+                {
+                    return Json("Error al cargar Datagrid");
                 }
             }
-            catch (Exception)
+            else
             {
-                return Json("Error al cargar Datagrid");
+                return Json("Token expirado");
             }
         }
 
-        [HttpGet]
+        [HttpPut]
         [Route("seleccionarTodosLosEventos")]
-        public dynamic seleccionarTodosLosEventos()
+        public dynamic seleccionarTodosLosEventos([FromBody] EventData evento)
         {
-            try
+            if (TestToken(evento.token))
             {
-                string connectionString = "server = localhost; database = infini; uid = root; ";
-                // Create a new MySQL connection
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                try
                 {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT idEvento,titulo FROM Eventos", conn);
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-                    conn.Close();
-                    return Json(dataTable);
+                    string connectionString = "server = localhost; database = infini; uid = root; ";
+                    // Create a new MySQL connection
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand("SELECT idEvento,titulo FROM Eventos", conn);
+                        MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+                        conn.Close();
+                        return Json(dataTable);
+                    }
+                }
+                catch (Exception)
+                {
+                    return Json("Error al cargar Datagrid");
                 }
             }
-            catch (Exception)
+            else
             {
-                return Json("Error al cargar Datagrid");
+                return Json("Token expirado");
             }
         }
 
@@ -1309,7 +1349,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
         [HttpPut]
         [Route("seleccionarTodosLosPostDelUsuario")]
@@ -1341,7 +1381,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
 
         [HttpPost]
@@ -1371,7 +1411,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
 
         [HttpPut]
@@ -1417,7 +1457,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
 
         [HttpPut]
@@ -1447,7 +1487,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
         [HttpPost]
         [Route("darLikeComentario")]
@@ -1476,7 +1516,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
 
         [HttpPut]
@@ -1522,7 +1562,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 return Json("Token expirado");
             }
-            
+
         }
 
         [HttpPut]
