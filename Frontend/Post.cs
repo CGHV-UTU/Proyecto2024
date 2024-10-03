@@ -17,11 +17,13 @@ namespace Frontend
     public partial class Post : Form
     {
         private static string user;
-        public Post(string usuario)
+        private string token;
+        public Post(string usuario,string token)
         {
             InitializeComponent();
             txtUrl.Visible = false;
             user = usuario;
+            this.token = token;
             this.BackColor = Color.LightGray;
         }
         public event EventHandler Creado;
@@ -40,7 +42,7 @@ namespace Frontend
                 if (pbxImagen.Image == null)
                 {
                     byte[] data = new byte[0];
-                    Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString);
+                    Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token);
                     MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Creado?.Invoke(this, EventArgs.Empty);
                 }
@@ -49,7 +51,7 @@ namespace Frontend
                     MemoryStream ms = new MemoryStream();
                     pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                     byte[] data = ms.ToArray();
-                    Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString);
+                    Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token);
                     MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Creado?.Invoke(this, EventArgs.Empty);
                 }
@@ -104,13 +106,13 @@ namespace Frontend
             }
         }
 
-        public static async Task Publicar(string texto, string url, byte[] imagen, string fechaHora)
+        public static async Task Publicar(string texto, string url, byte[] imagen, string fechaHora, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user , fechayhora =fechaHora};
+                    var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user , fechayhora =fechaHora, token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
                     response.EnsureSuccessStatusCode();

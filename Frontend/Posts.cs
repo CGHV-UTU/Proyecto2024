@@ -20,22 +20,24 @@ namespace Frontend
         private int currentPage = 0;
         private string modo;
         private string user;
-        public Posts(string modo,string user)
+        private string token;
+        public Posts(string modo,string user, string token)
         {
             this.modo = modo;
             this.user = user;
+            this.token = token;
             Iniciar();
             LoadPosts(currentPage);
             panel1.Scroll += PanelPosts_Scroll;
         }
 
-        static async Task<bool> Existe(int id)
+        static async Task<bool> Existe(int id, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var dato = new { id=id };
+                    var dato = new { id=id , token = token };
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/existePost", content);
                     response.EnsureSuccessStatusCode();
@@ -50,13 +52,15 @@ namespace Frontend
             }
         }
 
-        static async Task<string> CuantosPost()
+        static async Task<string> CuantosPost(string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44340/ultimoPost");
+                    var dato = new { token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/ultimoPost", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de ninguna manera, tengo que hallar alguna forma de pasar los datos
@@ -79,16 +83,16 @@ namespace Frontend
 
         private async void LoadPosts(int page)
         {
-            var cantPost = await CuantosPost();
+            var cantPost = await CuantosPost(token);
             if (!cantPost.Equals("no se encuentra"))
             {
                 // carga de posts
                 for (int i = int.Parse(cantPost); i > 0; i--)
                 {
-                    var existe = await Existe(i);
+                    var existe = await Existe(i, token);
                     if (existe)
                     {
-                        var postControl = new PostControl(i, modo, user);
+                        var postControl = new PostControl(i, modo, user, token);
                         postControl.AbrirComentarios += PostControl_AbrirComentarios;
                         postControl.ReportarPost += PostControl_ReportarPost;
                         postControl.RecargarFeed += PostControl_RecargarFeed;

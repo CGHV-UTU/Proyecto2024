@@ -18,13 +18,15 @@ namespace Frontend
         private string nombreDeCreador;
         private string modo;
         private string user;
+        private string token;
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarPost;
-        public PaginaDeUsuario(string nombreCreador, string modo, string user)
+        public PaginaDeUsuario(string nombreCreador, string modo, string user, string token)
         {
             this.nombreDeCreador = nombreCreador;
             this.modo = modo;
             this.user = user;
+            this.token = token;
             InitializeComponent();
             Iniciar();
             LoadPosts();
@@ -50,13 +52,13 @@ namespace Frontend
                 }
             }
         }
-        static async Task<dynamic> ConseguirPosts(string nombreDeCreador)
+        static async Task<dynamic> ConseguirPosts(string nombreDeCreador, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var dato = new { user = nombreDeCreador };
+                    var dato = new { user = nombreDeCreador, token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/seleccionarTodosLosPostDelUsuario",content);
                     response.EnsureSuccessStatusCode();
@@ -73,13 +75,13 @@ namespace Frontend
         
         private async void LoadPosts()
         {
-            DataTable posts = await ConseguirPosts(nombreDeCreador);
+            DataTable posts = await ConseguirPosts(nombreDeCreador, token);
             if (posts != null)
             {
                 for (int i = posts.Rows.Count-1; i >= 0 ; i--)
                 {
                     int idpost = Convert.ToInt32(posts.Rows[i]["idPost"]);
-                    var postControl = new PostControl(idpost, modo, user);
+                    var postControl = new PostControl(idpost, modo, user, token);
                     postControl.AbrirComentarios += PostControl_AbrirComentarios;
                     postControl.ReportarPost += PostControl_ReportarPost;
                     await postControl.aplicarDatos();

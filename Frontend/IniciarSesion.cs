@@ -116,7 +116,7 @@ namespace Frontend
                         var resultado = await ComprobarPeticion(token);
                         if (resultado)
                         {
-                            Inicio inicio = new Inicio(txtUsuario.Text);
+                            Inicio inicio = new Inicio(txtUsuario.Text, token);
                             inicio.FormClosed += (s, args) => this.Close();
                             inicio.Show();
                             this.Hide();

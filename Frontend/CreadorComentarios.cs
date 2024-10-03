@@ -16,19 +16,21 @@ namespace Frontend
     {
         private string idpost;
         private string user;
-        public CreadorComentarios(string nombreCuenta, string idpost)
+        private string token;
+        public CreadorComentarios(string nombreCuenta, string idpost, string token)
         {
             this.idpost = idpost;
+            this.token = token;
             user = nombreCuenta;
             InitializeComponent();
         }
-        static async Task Publicar(string NombreDeCuenta, string IdPost, string nombreCreador, string texto, string fechayhora)
+        static async Task Publicar(string NombreDeCuenta, string IdPost, string nombreCreador, string texto, string fechayhora, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { NombreDeCuenta = NombreDeCuenta, IdPost = IdPost, NombreCreador = nombreCreador, texto = texto, fechayhora = fechayhora };
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, IdPost = IdPost, NombreCreador = nombreCreador, texto = texto, fechayhora = fechayhora, token=token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/hacerComentario", content);
                     response.EnsureSuccessStatusCode();
@@ -41,13 +43,13 @@ namespace Frontend
             }
         }
 
-        public static async Task<string> obtenerCreador(int idpost)
+        public static async Task<string> obtenerCreador(int idpost, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var dato = new { id = idpost };
+                    var dato = new { id = idpost, token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirCreador", content);
                     response.EnsureSuccessStatusCode();
@@ -66,8 +68,8 @@ namespace Frontend
         {
             DateTime now = DateTime.Now;
             string fechayhora = now.ToString("yyyy-MM-dd HH:mm:ss");
-            var creadorPost = await obtenerCreador(int.Parse(idpost));
-            await Publicar(user, idpost, creadorPost, textBox1.Text, fechayhora);
+            var creadorPost = await obtenerCreador(int.Parse(idpost), token);
+            await Publicar(user, idpost, creadorPost, textBox1.Text, fechayhora, token);
         }
     }
 }

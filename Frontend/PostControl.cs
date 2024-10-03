@@ -27,17 +27,19 @@ namespace Frontend
         public string tipo;
         private string user;
         private string creador;
-        public PostControl(int idpost, string modo, string user)
+        private string token;
+        public PostControl(int idpost, string modo, string user, string token)
         {
             this.modo = modo;
             this.idpost = idpost;
             this.user = user;
+            this.token = token;
         }
 
         public async Task aplicarDatos()
         {
-            var data = await Buscar(idpost);
-            string creador = await obtenerCreador(idpost);
+            var data = await Buscar(idpost, token);
+            string creador = await obtenerCreador(idpost, token);
             this.creador = creador;
             if (string.IsNullOrEmpty(data[2]))
             {
@@ -88,7 +90,7 @@ namespace Frontend
                     this.imagen.SizeMode = PictureBoxSizeMode.StretchImage;
                 }
             }
-            bool Like = await dioLike(user,idpost,creador);
+            bool Like = await dioLike(user,idpost,creador, token);
             if (Like)
             {
                 HandleLikeClick();
@@ -125,13 +127,13 @@ namespace Frontend
             }
         } 
 
-        static async Task<string[]> Buscar(int id)
+        static async Task<string[]> Buscar(int id, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var dato = new { id=id };
+                    var dato = new { id=id , token = token };
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/postPorId",content);
                     response.EnsureSuccessStatusCode();
@@ -146,13 +148,13 @@ namespace Frontend
             }
         }
 
-        public static async Task<string> obtenerCreador(int idpost)
+        public static async Task<string> obtenerCreador(int idpost, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var dato = new { id=idpost  };
+                    var dato = new { id=idpost, token= token };
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirCreador",content);
                     response.EnsureSuccessStatusCode();
@@ -167,16 +169,17 @@ namespace Frontend
             }
         }
 
-        public static async Task<dynamic> AgregarNotificaciones(string user, string notificaciones)
+        public static async Task<dynamic> AgregarNotificaciones(string user, string notificaciones, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
-                { 
+                {
                     var payload = new
                     {
                         user = user,
-                        notificaciones = notificaciones
+                        notificaciones = notificaciones,
+                        token = token
                     };
 
                     // Serializar el objeto a JSON
@@ -198,11 +201,11 @@ namespace Frontend
         {
             try
             {
-                dynamic creador = await obtenerCreador(idpost);
+                dynamic creador = await obtenerCreador(idpost, token);
                 if (creador != null)
                 {
                     string notificacion = $"Like:Usuario le ha dado like a tu publicación";
-                    dynamic response = await AgregarNotificaciones(creador, notificacion);
+                    dynamic response = await AgregarNotificaciones(creador, notificacion, token);
                     if (response != null && response.success)
                     {
                         MessageBox.Show("Like enviado con éxito a " + creador);
@@ -223,13 +226,13 @@ namespace Frontend
             }
         }
 
-        static async Task<string> darLike(string NombreDeCuenta, int IdPost, string nombreCreador)
+        static async Task<string> darLike(string NombreDeCuenta, int IdPost, string nombreCreador, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador};
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador, token = token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/darLike", content);
                     response.EnsureSuccessStatusCode();
@@ -244,13 +247,13 @@ namespace Frontend
                 }
             }
         }
-        static async Task<bool> dioLike(string NombreDeCuenta, int IdPost, string nombreCreador)
+        static async Task<bool> dioLike(string NombreDeCuenta, int IdPost, string nombreCreador, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador };
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador , token = token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/dioLike", content);
                     response.EnsureSuccessStatusCode();
@@ -264,13 +267,13 @@ namespace Frontend
                 }
             }
         }
-        static async Task<string> quitarLike(string NombreDeCuenta, int IdPost, string nombreCreador)
+        static async Task<string> quitarLike(string NombreDeCuenta, int IdPost, string nombreCreador, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador };
+                    var datos = new { NombreDeCuenta = NombreDeCuenta, idpost = IdPost, nombredeCreador = nombreCreador, token = token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/quitarLike", content);
                     response.EnsureSuccessStatusCode();
@@ -337,16 +340,16 @@ namespace Frontend
         private bool isImage1 = true;
         private async void PictureBoxLike_Click(object sender, EventArgs e)
         {
-            string creador = await obtenerCreador(idpost);
+            string creador = await obtenerCreador(idpost, token);
             if (!user.Equals(creador))
             {
                 if (!isImage1)
                 {
-                    string respuesta = await quitarLike(user, idpost, creador);
+                    string respuesta = await quitarLike(user, idpost, creador, token);
                 }
                 else
                 {
-                    string respuesta = await darLike(user, idpost, creador);
+                    string respuesta = await darLike(user, idpost, creador, token);
                     MessageBox.Show(respuesta);
                 }
                 HandleLikeClick();
@@ -614,7 +617,7 @@ namespace Frontend
             }
             this.ResumeLayout(false);
             this.PerformLayout();
-            string creador = await obtenerCreador(idpost);
+            string creador = await obtenerCreador(idpost, token);
             if (creador.Equals(user))
             {
                 this.PictureBoxEditar.Visible = true;

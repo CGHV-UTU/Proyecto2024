@@ -16,12 +16,15 @@ namespace Frontend
     public partial class Inicio : Form
     {
         private string user;
+        private string token;
         private string idioma;
         private string modo;
-        public Inicio(string usuario)
+        public Inicio(string usuario, string token)
         {
             InitializeComponent();
             user = usuario;
+            this.token = token;
+            MessageBox.Show(token);
             VerPosts();
             PanelComentarios.Visible = false;
             PictureBoxSalir.Visible = false;
@@ -131,7 +134,7 @@ namespace Frontend
             string[] configure = config.Split(';');    
             idioma = configure[1];
             this.modo = configure[0];
-            Posts post = new Posts(configure[0],user);
+            Posts post = new Posts(configure[0],user, token);
             if (configure[0].Equals("Oscuro"))
             {
                 BackColor = Color.FromArgb(20, 20, 20);
@@ -167,7 +170,7 @@ namespace Frontend
             PanelMostrarUsuario.Visible = true;
             PanelMostrarUsuario.Parent = this;
             PanelMostrarUsuario.Location = PanelPosts.Location;
-            PaginaDeUsuario paginaDeUsuario = new PaginaDeUsuario(e.arg, modo, user);
+            PaginaDeUsuario paginaDeUsuario = new PaginaDeUsuario(e.arg, modo, user, token);
             paginaDeUsuario.TopLevel = false;
             paginaDeUsuario.FormBorderStyle = FormBorderStyle.None;
             paginaDeUsuario.BackColor = Color.LightGray;
@@ -199,7 +202,7 @@ namespace Frontend
         {
             string config = await conseguirConfig(user);
             string[] configure = config.Split(';');
-            Comentarios comentario = new Comentarios(configure[0],idpost,user);
+            Comentarios comentario = new Comentarios(configure[0],idpost,user, token);
             comentario.TopLevel = false;
             comentario.FormBorderStyle = FormBorderStyle.None;
             comentario.BackColor = Color.LightGray;
@@ -231,7 +234,7 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false; 
-            Post post = new Post(user);
+            Post post = new Post(user, token);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
             post.BackColor = Color.LightGray;
@@ -267,7 +270,7 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            Configuracion config = new Configuracion(user);
+            Configuracion config = new Configuracion(user, token);
             config.TopLevel = false;
             config.FormBorderStyle = FormBorderStyle.None;
             config.BackColor = Color.LightGray;

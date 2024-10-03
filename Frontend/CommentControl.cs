@@ -18,25 +18,27 @@ namespace Frontend
         private string idpost;
         private string user;
         private int idcomentario;
+        private string token;
         public event EventHandler<PersonalizedArgs> ReportarComentario;
-        public CommentControl(string modo,string idpost, int idcomentario,string user)
+        public CommentControl(string modo,string idpost, int idcomentario,string user, string token)
         {
             this.idpost = idpost;
             this.idcomentario = idcomentario;
             this.user = user;
+            this.token = token;
             InitializeComponent();
             Iniciar();
             txtBox.ReadOnly = true;
             AjustarTamaño();
             aplicarDatos();
         }
-        static async Task<string[]> BuscarComentario(int id)
+        static async Task<string[]> BuscarComentario(int id, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { id=id };
+                    var datos = new { id=id, token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/conseguirComentario",content);
                     response.EnsureSuccessStatusCode();
@@ -56,7 +58,7 @@ namespace Frontend
             {
                 try
                 {
-                    var dato = new { nombreDeCuenta = creador };
+                    var dato = new { nombreDeCuenta = creador};
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/obtenerImagenUsuario", content);
                     response.EnsureSuccessStatusCode();
@@ -71,13 +73,13 @@ namespace Frontend
                 }
             }
         }
-        static async Task<string> darLike(string NombreDeCuenta, int Id, string nombreCreador)
+        static async Task<string> darLike(string NombreDeCuenta, int Id, string nombreCreador, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { nombreDeCuenta = NombreDeCuenta, idpost = Id, nombredeCreador = nombreCreador };
+                    var datos = new { nombreDeCuenta = NombreDeCuenta, idpost = Id, nombredeCreador = nombreCreador , token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/darLikeComentario", content);
                     response.EnsureSuccessStatusCode();
@@ -92,13 +94,13 @@ namespace Frontend
                 }
             }
         }
-        static async Task<bool> dioLike(string NombreDeCuenta, int Id, string nombreCreador)
+        static async Task<bool> dioLike(string NombreDeCuenta, int Id, string nombreCreador, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { nombreDeCuenta = NombreDeCuenta, idpost = Id, nombredeCreador = nombreCreador };
+                    var datos = new { nombreDeCuenta = NombreDeCuenta, idpost = Id, nombredeCreador = nombreCreador, token=token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/dioLikeComentario", content);
                     response.EnsureSuccessStatusCode();
@@ -112,13 +114,13 @@ namespace Frontend
                 }
             }
         }
-        static async Task<string> quitarLike(string NombreDeCuenta, int Id, string nombreCreador)
+        static async Task<string> quitarLike(string NombreDeCuenta, int Id, string nombreCreador, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { nombreDeCuenta = NombreDeCuenta, idpost = Id, nombredeCreador = nombreCreador };
+                    var datos = new { nombreDeCuenta = NombreDeCuenta, idpost = Id, nombredeCreador = nombreCreador, token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/quitarLikeComentario", content);
                     response.EnsureSuccessStatusCode();
@@ -134,13 +136,13 @@ namespace Frontend
             }
         }
 
-        public static async Task<string> obtenerCreador(int id)
+        public static async Task<string> obtenerCreador(int id, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var dato = new { id = id };
+                    var dato = new { id = id, token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirCreador", content);
                     response.EnsureSuccessStatusCode();
@@ -162,7 +164,7 @@ namespace Frontend
 
         private async void aplicarDatos()
         {
-            var data = await BuscarComentario(idcomentario);
+            var data = await BuscarComentario(idcomentario,token);
             lblNombre.Text = data[0];
             txtBox.Text = data[1];
             if (lblNombre.Text.Equals(user))
@@ -185,7 +187,7 @@ namespace Frontend
             this.PictureBoxUsuario.Image = bitmap;
             string[] fecha = data[2].Split(' ');
             this.lblFechaYhora.Text = fecha[0];
-            var Like = await dioLike(user, idcomentario, lblNombre.Text);
+            var Like = await dioLike(user, idcomentario, lblNombre.Text, token);
             if (Like)
             {
                 HandleLikeClick();
@@ -200,11 +202,11 @@ namespace Frontend
             {
                 if (!isImage1)
                 {
-                    string respuesta = await quitarLike(user, idcomentario, lblNombre.Text);
+                    string respuesta = await quitarLike(user, idcomentario, lblNombre.Text, token);
                 }
                 else
                 {
-                    string respuesta = await darLike(user, idcomentario, lblNombre.Text);
+                    string respuesta = await darLike(user, idcomentario, lblNombre.Text, token);
                     MessageBox.Show(respuesta);
                 }
                 HandleLikeClick();
@@ -370,13 +372,13 @@ namespace Frontend
                 editando = false;
             }
         }
-        static async Task Eliminar(string id)
+        static async Task Eliminar(string id, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { id=id};
+                    var datos = new { id=id, token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/eliminarComentario",content);
                     response.EnsureSuccessStatusCode();
@@ -391,15 +393,15 @@ namespace Frontend
 
         private async void btnEliminar_Click(object sender, EventArgs e)
         {
-            await Eliminar(Convert.ToString(idcomentario));
+            await Eliminar(Convert.ToString(idcomentario), token);
         }
-        static async Task Modificar(string id, string texto)
+        static async Task Modificar(string id, string texto, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var data = new { id = id, texto = texto, };
+                    var data = new { id = id, texto = texto, token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/modificarComentario", content);
                     response.EnsureSuccessStatusCode();
@@ -413,7 +415,7 @@ namespace Frontend
         }
         private async void PictureBoxConfirmarCambios_Click(object sender, EventArgs e)
         {
-            await Modificar(Convert.ToString(idcomentario),this.txtBoxEditar.Text);
+            await Modificar(Convert.ToString(idcomentario),this.txtBoxEditar.Text, token);
         }
     }
 }

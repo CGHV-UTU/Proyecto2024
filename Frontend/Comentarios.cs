@@ -20,26 +20,28 @@ namespace Frontend
         private string modo;
         private string idpost;
         private string user;
+        private string token;
         public event EventHandler<PersonalizedArgs> ReportarComentario;
-        public Comentarios(string modo,string idpost, string user)
+        public Comentarios(string modo,string idpost, string user, string token)
         {
             this.modo = modo;
             this.idpost = idpost;
             this.user = user;
+            this.token = token;
             Iniciar();
-            CreadorComentarios comentario = new CreadorComentarios(user,idpost);
+            CreadorComentarios comentario = new CreadorComentarios(user,idpost, token);
             comentario.Location = new Point(margin, 0);
             PanelComentarios.Controls.Add(comentario);
             LoadComments(currentPage);
         }
 
-        static async Task<dynamic> ConseguirComentarios(string id)
+        static async Task<dynamic> ConseguirComentarios(string id, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var dato = new { id = id };
+                    var dato = new { id = id , token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/seleccionarTodosLosComentarios",content);
                     response.EnsureSuccessStatusCode();
@@ -57,13 +59,13 @@ namespace Frontend
 
         private async void LoadComments(int page)
         {
-            DataTable comentarios=await ConseguirComentarios(idpost);
+            DataTable comentarios=await ConseguirComentarios(idpost, token);
             if (comentarios != null)
             {
                 for (int i = 0; i < comentarios.Rows.Count; i++)
                 {
                     int idcomentario = Convert.ToInt32(comentarios.Rows[i]["id"]);
-                    var commentControl = new CommentControl(modo, idpost, idcomentario,user);
+                    var commentControl = new CommentControl(modo, idpost, idcomentario,user, token);
                     commentControl.Size = new Size(465 + margin * 2, 171 + margin * 2);
                     var lastControl = PanelComentarios.Controls[PanelComentarios.Controls.Count - 1];
                     commentControl.Location = new Point(margin, lastControl.Bottom);

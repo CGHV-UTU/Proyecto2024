@@ -15,10 +15,12 @@ namespace Frontend
     public partial class Configuracion : Form
     {
         public static string usuario;
-        public Configuracion(string user)
+        private string token;
+        public Configuracion(string user, string token)
         {
             InitializeComponent();
             usuario = user;
+            this.token = token;
             this.BackColor = Color.LightGray;
         }
         public event EventHandler<ConfiguraEventArgs> CambiarModo;
