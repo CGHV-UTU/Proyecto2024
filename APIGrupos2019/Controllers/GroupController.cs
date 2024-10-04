@@ -16,6 +16,8 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace API_Grupos.Controllers
 {
@@ -31,6 +33,7 @@ namespace API_Grupos.Controllers
             public string chatGrupal { get; set; }
             public string nombreDeCuenta { get; set; }
             public string rol { get; set; }
+            public string token { get; set; }
         }
 
         public class Reporte
@@ -90,7 +93,6 @@ namespace API_Grupos.Controllers
             return new string(Enumerable.Repeat(chars, longitud)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-
         private async Task<string> CargarImagenDeGitHub(string urlImagen)
         {
             using (var client = new HttpClient())
@@ -111,56 +113,100 @@ namespace API_Grupos.Controllers
             }
         }
 
+        public bool TestToken(string pedido)
+        {
+            try
+            {
+                if (pedido.Equals("TestToken")) //esto lo hacemos pq no permite crear tokens de prueba en esta API, el método test token solo funciona con tokens creados en API Usuarios
+                {
+                    return true;
+                }
+                else
+                {
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    SecurityToken securityToken;
+                    var comprobar = tokenHandler.ValidateToken(pedido, ParametrosDeValidacionDelToken(), out securityToken);
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private TokenValidationParameters ParametrosDeValidacionDelToken()
+        {
+            return new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidIssuer = "InfiniSV",
+                ValidAudience = "usuario",
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("af431f66a2b44ddf1c8ee210f366d921"))
+            };
+        }
+
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("RegistrarGrupo")]
         public async Task<dynamic> RegistrarGrupo([FromBody] Grupo group)
         {
-            string linkImagen = null;
-            try
+            if (TestToken(group.token))
             {
-                group.nombreReal = crearNombreGrupo();
-                if (string.IsNullOrEmpty(group.nombreVisible)
-                    || string.IsNullOrEmpty(group.configuracion)
-                    || string.IsNullOrEmpty(group.imagen)
-                    || string.IsNullOrEmpty(group.nombreDeCuenta))
-                {
-                    return Json("Valores nulos");
-                }
 
-                linkImagen = await SubirImagenAGitHub(group.imagen);
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+
+                string linkImagen = null;
+                try
                 {
-                    conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Grupos (nombreReal, nombreVisible, configuracion, foto) VALUES (@nombreReal, @nombreVisible, @configuracion, @foto)", conn))
+                    group.nombreReal = crearNombreGrupo();
+                    if (string.IsNullOrEmpty(group.nombreVisible)
+                        || string.IsNullOrEmpty(group.configuracion)
+                        || string.IsNullOrEmpty(group.imagen)
+                        || string.IsNullOrEmpty(group.nombreDeCuenta))
                     {
-                        cmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
-                        cmd.Parameters.AddWithValue("@nombreVisible", group.nombreVisible);
-                        cmd.Parameters.AddWithValue("@configuracion", group.configuracion);
-                        cmd.Parameters.AddWithValue("@foto", linkImagen);
-                        cmd.ExecuteNonQuery();
+                        return Json("Valores nulos");
                     }
-                    using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, 'c')", conn))
+
+                    linkImagen = await SubirImagenAGitHub(group.imagen);
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
-                        cmd2.Parameters.AddWithValue("@nombreDeCuenta", group.nombreDeCuenta);
-                        cmd2.Parameters.AddWithValue("@nombreReal", group.nombreReal);
-                        cmd2.ExecuteNonQuery();
-                    }
-                    if (!string.IsNullOrEmpty(group.descripcion))
-                    {
-                        using (MySqlCommand cmd3 = new MySqlCommand("UPDATE Grupos SET descripcion = @descripcion WHERE nombreReal = @nombreReal", conn))
+                        conn.Open();
+                        using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Grupos (nombreReal, nombreVisible, configuracion, foto) VALUES (@nombreReal, @nombreVisible, @configuracion, @foto)", conn))
                         {
-                            cmd3.Parameters.AddWithValue("@descripcion", group.descripcion);
-                            cmd3.Parameters.AddWithValue("@nombreReal", group.nombreReal);
-                            cmd3.ExecuteNonQuery();
+                            cmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                            cmd.Parameters.AddWithValue("@nombreVisible", group.nombreVisible);
+                            cmd.Parameters.AddWithValue("@configuracion", group.configuracion);
+                            cmd.Parameters.AddWithValue("@foto", linkImagen);
+                            cmd.ExecuteNonQuery();
+                        }
+                        using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, 'c')", conn))
+                        {
+                            cmd2.Parameters.AddWithValue("@nombreDeCuenta", group.nombreDeCuenta);
+                            cmd2.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                            cmd2.ExecuteNonQuery();
+                        }
+                        if (!string.IsNullOrEmpty(group.descripcion))
+                        {
+                            using (MySqlCommand cmd3 = new MySqlCommand("UPDATE Grupos SET descripcion = @descripcion WHERE nombreReal = @nombreReal", conn))
+                            {
+                                cmd3.Parameters.AddWithValue("@descripcion", group.descripcion);
+                                cmd3.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                                cmd3.ExecuteNonQuery();
+                            }
                         }
                     }
-                }
 
-                return Json("Registro correcto");
+                    return Json("Registro correcto");
+                }
+                catch (Exception ex)
+                {
+                    return Json($"Registro fallido: {ex.Message}");
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return Json($"Registro fallido: {ex.Message}");
+                return Json("Token expirado");
             }
         }
 
@@ -169,63 +215,70 @@ namespace API_Grupos.Controllers
         [System.Web.Http.Route("ObtenerGruposPorNombreVisibleYUsuario")]
         public async Task<IHttpActionResult> ObtenerGruposPorNombreVisibleYUsuario([FromBody] Grupo groupData)
         {
-            try
+            if (TestToken(groupData.token))
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                try
                 {
-                    conn.Open();
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
+                    {
+                        conn.Open();
 
-                    string query = @"
+                        string query = @"
             SELECT g.nombreReal, g.nombreVisible, g.configuracion, g.descripcion, g.foto
             FROM Grupos g
             JOIN Participa ug ON g.nombreReal = ug.nombreReal
             WHERE g.nombreVisible = @nombreVisible AND ug.nombreDeCuenta = @nombreDeCuenta";
 
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@nombreVisible", groupData.nombreVisible);
-                        cmd.Parameters.AddWithValue("@nombreDeCuenta", groupData.nombreDeCuenta);
-
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
                         {
-                            List<GrupoResponse> grupos = new List<GrupoResponse>();
+                            cmd.Parameters.AddWithValue("@nombreVisible", groupData.nombreVisible);
+                            cmd.Parameters.AddWithValue("@nombreDeCuenta", groupData.nombreDeCuenta);
 
-                            while (reader.Read())
+                            using (MySqlDataReader reader = cmd.ExecuteReader())
                             {
-                                string nombreReal = reader["nombreReal"].ToString();
-                                string configuracion = reader["configuracion"].ToString();
-                                string descripcion = reader["descripcion"].ToString();
-                                string foto = await CargarImagenDeGitHub(reader["foto"].ToString());
+                                List<GrupoResponse> grupos = new List<GrupoResponse>();
 
-                                var grupo = new GrupoResponse
+                                while (reader.Read())
                                 {
-                                    nombreReal = nombreReal,
-                                    nombreVisible = groupData.nombreVisible,
-                                    configuracion = configuracion,
-                                    descripcion = descripcion,
-                                    foto = foto
-                                };
+                                    string nombreReal = reader["nombreReal"].ToString();
+                                    string configuracion = reader["configuracion"].ToString();
+                                    string descripcion = reader["descripcion"].ToString();
+                                    string foto = await CargarImagenDeGitHub(reader["foto"].ToString());
 
-                                grupos.Add(grupo);
-                            }
+                                    var grupo = new GrupoResponse
+                                    {
+                                        nombreReal = nombreReal,
+                                        nombreVisible = groupData.nombreVisible,
+                                        configuracion = configuracion,
+                                        descripcion = descripcion,
+                                        foto = foto
+                                    };
 
-                            conn.Close();
+                                    grupos.Add(grupo);
+                                }
 
-                            if (grupos.Count > 0)
-                            {
-                                return Json(grupos);
-                            }
-                            else
-                            {
-                                return Json("No se encontraron Grupos para el usuario especificado");
+                                conn.Close();
+
+                                if (grupos.Count > 0)
+                                {
+                                    return Json(grupos);
+                                }
+                                else
+                                {
+                                    return Json("No se encontraron Grupos para el usuario especificado");
+                                }
                             }
                         }
                     }
                 }
+                catch (Exception e)
+                {
+                    return Json($"Error al obtener los Grupos: {e.Message}");
+                }
             }
-            catch (Exception e)
+            else
             {
-                return Json($"Error al obtener los Grupos: {e.Message}");
+                return Json("Token expirado");
             }
         }
 
@@ -234,39 +287,46 @@ namespace API_Grupos.Controllers
         [System.Web.Http.Route("ObtenerGrupo")]
         public IHttpActionResult ObtenerGrupo([FromBody] Grupo groupData)
         {
-            try
+            if (TestToken(groupData.token))
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                try
                 {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT nombreReal, nombreVisible, configuracion, descripcion, foto FROM Grupos WHERE nombreReal=@nombreReal", conn);
-                    cmd.Parameters.AddWithValue("@nombreReal", groupData.nombreReal);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-
-                    if (reader.Read())
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
-                        var grupo = new GrupoResponse
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand("SELECT nombreReal, nombreVisible, configuracion, descripcion, foto FROM Grupos WHERE nombreReal=@nombreReal", conn);
+                        cmd.Parameters.AddWithValue("@nombreReal", groupData.nombreReal);
+                        MySqlDataReader reader = cmd.ExecuteReader();
+
+                        if (reader.Read())
                         {
-                            nombreReal = reader["nombreReal"].ToString(),
-                            nombreVisible = reader["nombreVisible"].ToString(),
-                            configuracion = reader["configuracion"].ToString(),
-                            descripcion = reader["descripcion"].ToString(),
-                            foto = reader["foto"].ToString()
-                        };
+                            var grupo = new GrupoResponse
+                            {
+                                nombreReal = reader["nombreReal"].ToString(),
+                                nombreVisible = reader["nombreVisible"].ToString(),
+                                configuracion = reader["configuracion"].ToString(),
+                                descripcion = reader["descripcion"].ToString(),
+                                foto = reader["foto"].ToString()
+                            };
 
-                        conn.Close();
-                        return Json(grupo);
-                    }
-                    else
-                    {
-                        conn.Close();
-                        return Json("No se encuentra el grupo");
+                            conn.Close();
+                            return Json(grupo);
+                        }
+                        else
+                        {
+                            conn.Close();
+                            return Json("No se encuentra el grupo");
+                        }
                     }
                 }
+                catch (Exception)
+                {
+                    return Json("No se encuentra el grupo");
+                }
             }
-            catch (Exception)
+            else
             {
-                return Json("No se encuentra el grupo");
+                return Json("Token expirado");
             }
         }
 
@@ -276,27 +336,34 @@ namespace API_Grupos.Controllers
         [System.Web.Http.Route("ObtenerMensajes")]
         public dynamic ObtenerMensajes([FromBody] Grupo groupData)
         {
-            try
+            if (TestToken(groupData.token))
             {
-                MySqlConnection conn = new MySqlConnection(connectionString);
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("select chatGrupal from Grupos where nombreReal=@nombreReal", conn);
-                cmd.Parameters.AddWithValue("@nombreReal", groupData.nombreReal);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
+                try
                 {
-                    string chatGrupal = reader["chatGrupal"].ToString();
-                    conn.Close();
-                    return Json(chatGrupal);
+                    MySqlConnection conn = new MySqlConnection(connectionString);
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("select chatGrupal from Grupos where nombreReal=@nombreReal", conn);
+                    cmd.Parameters.AddWithValue("@nombreReal", groupData.nombreReal);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        string chatGrupal = reader["chatGrupal"].ToString();
+                        conn.Close();
+                        return Json(chatGrupal);
+                    }
+                    else
+                    {
+                        return Json("No se encuentra el grupo");
+                    }
                 }
-                else
+                catch (Exception)
                 {
                     return Json("No se encuentra el grupo");
                 }
             }
-            catch (Exception)
+            else
             {
-                return Json("No se encuentra el grupo");
+                return Json("Token expirado");
             }
         }
 
@@ -304,22 +371,29 @@ namespace API_Grupos.Controllers
         [System.Web.Http.Route("EliminarGrupo")]
         public dynamic EliminarGrupo([FromBody] Grupo groupData)
         {
-            try
+            if (TestToken(groupData.token))
             {
-                MySqlConnection conn = new MySqlConnection(connectionString);
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("DELETE FROM Reportes WHERE nombreGrupo = @nombreReal;" +
-                    "DELETE FROM Participa WHERE nombreReal = @nombreReal;" +
-                    "DELETE FROM PostGrupo WHERE nombreReal = @nombreReal;" +
-                    "DELETE FROM Grupos WHERE nombreReal = @nombreReal", conn);
-                cmd.Parameters.AddWithValue("@nombreReal", groupData.nombreReal);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("Se pudo eliminar");
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection(connectionString);
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("DELETE FROM Reportes WHERE nombreGrupo = @nombreReal;" +
+                        "DELETE FROM Participa WHERE nombreReal = @nombreReal;" +
+                        "DELETE FROM PostGrupo WHERE nombreReal = @nombreReal;" +
+                        "DELETE FROM Grupos WHERE nombreReal = @nombreReal", conn);
+                    cmd.Parameters.AddWithValue("@nombreReal", groupData.nombreReal);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Se pudo eliminar");
+                }
+                catch
+                {
+                    return Json("No se pudo eliminar");
+                }
             }
-            catch
+            else
             {
-                return Json("No se pudo eliminar");
+                return Json("Token expirado");
             }
         }
 
@@ -327,24 +401,25 @@ namespace API_Grupos.Controllers
         [System.Web.Http.Route("EditarGrupo")]
         public async Task<IHttpActionResult> EditarGrupo([FromBody] Grupo group)
         {
-            string linkImagen = null;
-
-            // Validate input
-            if (string.IsNullOrEmpty(group.nombreReal) ||
-                string.IsNullOrEmpty(group.nombreVisible) ||
-                string.IsNullOrEmpty(group.configuracion) ||
-                string.IsNullOrEmpty(group.imagen) ||
-                group.configuracion.Length > 255)
+            if (TestToken(group.token))
             {
-                return Json("Datos inválidos");
-            }
-
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                string linkImagen = null;
+                // Validate input
+                if (string.IsNullOrEmpty(group.nombreReal) ||
+                    string.IsNullOrEmpty(group.nombreVisible) ||
+                    string.IsNullOrEmpty(group.configuracion) ||
+                    string.IsNullOrEmpty(group.imagen) ||
+                    group.configuracion.Length > 255)
                 {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand(@"
+                    return Json("Datos inválidos");
+                }
+
+                try
+                {
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand(@"
                 UPDATE Grupos 
                 SET nombreVisible = @nombreVisible,
                     configuracion = @configuracion,
@@ -352,20 +427,25 @@ namespace API_Grupos.Controllers
                     foto = @foto 
                 WHERE nombreReal = @nombreReal", conn);
 
-                    cmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
-                    cmd.Parameters.AddWithValue("@nombreVisible", group.nombreVisible);
-                    cmd.Parameters.AddWithValue("@configuracion", group.configuracion);
-                    cmd.Parameters.AddWithValue("@descripcion", group.descripcion);
-                    cmd.Parameters.AddWithValue("@foto", linkImagen = await SubirImagenAGitHub(group.imagen));
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                }
+                        cmd.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                        cmd.Parameters.AddWithValue("@nombreVisible", group.nombreVisible);
+                        cmd.Parameters.AddWithValue("@configuracion", group.configuracion);
+                        cmd.Parameters.AddWithValue("@descripcion", group.descripcion);
+                        cmd.Parameters.AddWithValue("@foto", linkImagen = await SubirImagenAGitHub(group.imagen));
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                    }
 
-                return Json("Se editó el grupo correctamente");
+                    return Json("Se editó el grupo correctamente");
+                }
+                catch
+                {
+                    return Json("No se pudo editar el grupo");
+                }
             }
-            catch
+            else
             {
-                return Json("No se pudo editar el grupo");
+                return Json("Token expirado");
             }
         }
 
@@ -375,26 +455,33 @@ namespace API_Grupos.Controllers
         [System.Web.Http.Route("ActualizarMensajes")]
         public dynamic ActualizarMensajes([FromBody] Grupo groupData)
         {
-            if (string.IsNullOrEmpty(groupData.nombreReal) && string.IsNullOrEmpty(groupData.chatGrupal))
+            if (TestToken(groupData.token))
             {
-                return Json("Datos inválidos");
+                if (string.IsNullOrEmpty(groupData.nombreReal) && string.IsNullOrEmpty(groupData.chatGrupal))
+                {
+                    return Json("Datos inválidos");
+                }
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection(connectionString);
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("update Grupos " +
+                        "set chatGrupal = @chatGrupal " +
+                        "where nombreReal = @nombreReal", conn);
+                    cmd.Parameters.AddWithValue("@nombreReal", groupData.nombreReal);
+                    cmd.Parameters.AddWithValue("@chatGrupal", groupData.chatGrupal);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Se actualizaron los mensajes correctamente");
+                }
+                catch (Exception ex)
+                {
+                    return Json($"No se pudo editar el grupo: {ex.Message}");
+                }
             }
-            try
+            else
             {
-                MySqlConnection conn = new MySqlConnection(connectionString);
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("update Grupos " +
-                    "set chatGrupal = @chatGrupal " +
-                    "where nombreReal = @nombreReal", conn);
-                cmd.Parameters.AddWithValue("@nombreReal", groupData.nombreReal);
-                cmd.Parameters.AddWithValue("@chatGrupal", groupData.chatGrupal);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("Se actualizaron los mensajes correctamente");
-            }
-            catch (Exception ex)
-            {
-                return Json($"No se pudo editar el grupo: {ex.Message}");
+                return Json("Token expirado");
             }
         }
 
@@ -402,44 +489,51 @@ namespace API_Grupos.Controllers
         [System.Web.Http.Route("ObtenerGruposPorUsuario")]
         public async Task<IHttpActionResult> ObtenerGruposPorUsuario([FromBody] Grupo groupData)
         {
-            try
+            if (TestToken(groupData.token))
             {
-                List<GrupoResponse> grupos = new List<GrupoResponse>();
-
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                try
                 {
-                    conn.Open();
+                    List<GrupoResponse> grupos = new List<GrupoResponse>();
 
-                    MySqlCommand cmd = new MySqlCommand(@"
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
+                    {
+                        conn.Open();
+
+                        MySqlCommand cmd = new MySqlCommand(@"
                 SELECT g.nombreReal, g.nombreVisible, g.configuracion, g.descripcion, g.foto
                 FROM Grupos g
                 JOIN Participa ug ON g.nombreReal = ug.nombreReal
                 WHERE ug.nombreDeCuenta = @nombreDeCuenta", conn);
 
-                    cmd.Parameters.AddWithValue("@nombreDeCuenta", groupData.nombreDeCuenta);
-                    MySqlDataReader reader = cmd.ExecuteReader();
+                        cmd.Parameters.AddWithValue("@nombreDeCuenta", groupData.nombreDeCuenta);
+                        MySqlDataReader reader = cmd.ExecuteReader();
 
-                    while (reader.Read())
-                    {
-                        GrupoResponse grupo = new GrupoResponse
+                        while (reader.Read())
                         {
-                            nombreReal = reader["nombreReal"].ToString(),
-                            nombreVisible = reader["nombreVisible"].ToString(),
-                            configuracion = reader["configuracion"].ToString(),
-                            descripcion = reader["descripcion"].ToString(),
-                            foto = await CargarImagenDeGitHub(reader["foto"].ToString())
-                        };
-                        grupos.Add(grupo);
+                            GrupoResponse grupo = new GrupoResponse
+                            {
+                                nombreReal = reader["nombreReal"].ToString(),
+                                nombreVisible = reader["nombreVisible"].ToString(),
+                                configuracion = reader["configuracion"].ToString(),
+                                descripcion = reader["descripcion"].ToString(),
+                                foto = await CargarImagenDeGitHub(reader["foto"].ToString())
+                            };
+                            grupos.Add(grupo);
+                        }
+
+                        conn.Close();
                     }
 
-                    conn.Close();
+                    return Json(grupos);
                 }
-
-                return Json(grupos);
+                catch (Exception)
+                {
+                    return Json("No se pudieron obtener los Grupos");
+                }
             }
-            catch (Exception)
+            else
             {
-                return Json("No se pudieron obtener los Grupos");
+                return Json("Token expirado");
             }
         }
 
@@ -447,33 +541,40 @@ namespace API_Grupos.Controllers
         [System.Web.Http.Route("AgregarUsuarioAGrupo")]
         public async Task<IHttpActionResult> AgregarUsuarioAGrupo([FromBody] Grupo groupData)
         {
-            try
+            if (TestToken(groupData.token))
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                try
                 {
-                    await conn.OpenAsync();
-                    Console.WriteLine("Database connection opened successfully for AgregarUsuarioAGrupo.");
-
-                    string query = "INSERT INTO Participa (nombreDeCuenta, nombreReal, rol) VALUES (@nombreUsuario, @nombreGrupo, @rol)";
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
-                        cmd.Parameters.AddWithValue("@nombreUsuario", groupData.nombreDeCuenta);
-                        cmd.Parameters.AddWithValue("@nombreGrupo", groupData.nombreReal);
-                        cmd.Parameters.AddWithValue("@rol", groupData.rol);
+                        await conn.OpenAsync();
+                        Console.WriteLine("Database connection opened successfully for AgregarUsuarioAGrupo.");
 
-                        Console.WriteLine($"Executing query: INSERT INTO Participa (nombreDeCuenta, nombreReal, rol) VALUES ({groupData.nombreDeCuenta}, {groupData.nombreReal}, {groupData.rol})");
+                        string query = "INSERT INTO Participa (nombreDeCuenta, nombreReal, rol) VALUES (@nombreUsuario, @nombreGrupo, @rol)";
+                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@nombreUsuario", groupData.nombreDeCuenta);
+                            cmd.Parameters.AddWithValue("@nombreGrupo", groupData.nombreReal);
+                            cmd.Parameters.AddWithValue("@rol", groupData.rol);
 
-                        await cmd.ExecuteNonQueryAsync();
+                            Console.WriteLine($"Executing query: INSERT INTO Participa (nombreDeCuenta, nombreReal, rol) VALUES ({groupData.nombreDeCuenta}, {groupData.nombreReal}, {groupData.rol})");
+
+                            await cmd.ExecuteNonQueryAsync();
+                        }
                     }
-                }
 
-                Console.WriteLine("Usuario agregado al grupo successfully.");
-                return Json("Usuario agregado al grupo");
+                    Console.WriteLine("Usuario agregado al grupo successfully.");
+                    return Json("Usuario agregado al grupo");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error in AgregarUsuarioAGrupo: {ex.Message}");
+                    return Json($"No se pudo agregar el usuario al grupo: {ex.Message}");
+                }
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine($"Error in AgregarUsuarioAGrupo: {ex.Message}");
-                return Json($"No se pudo agregar el usuario al grupo: {ex.Message}");
+                return Json("Token expirado");
             }
         }
 
@@ -509,7 +610,6 @@ namespace API_Grupos.Controllers
                             return Json("No tienes permisos de administrador o creador para agregar usuarios a este grupo");
                         }
                     }
-
                     // Agregar el usuario al grupo
                     string query = "INSERT INTO Participa (nombreDeCuenta, nombreReal) VALUES (@nombreUsuario, @nombreGrupo)";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -528,46 +628,45 @@ namespace API_Grupos.Controllers
             }
         }
 
-        [System.Web.Http.HttpDelete]
+        [System.Web.Http.HttpPut]
         [System.Web.Http.Route("EliminarUsuarioDeGrupo")]
-        public dynamic EliminarUsuarioDeGrupo(string nombreRealGrupo, string nombreUsuario)
+        public async Task <dynamic> EliminarUsuarioDeGrupo([FromBody] Grupo groupData)
         {
-            try
-            {
-                MySqlConnection conn = new MySqlConnection(connectionString);
+
+                try
                 {
-                    conn.Open();
-
-                    // Verificar si el grupo existe y si el usuario pertenece al grupo
-                    string verificarQuery = @"
-                SELECT COUNT(*) 
-                FROM Participa 
-                WHERE nombreReal = @nombreRealGrupo AND nombreDeCuenta = @nombreUsuario";
-                    MySqlCommand verificarCmd = new MySqlCommand(verificarQuery, conn);
-                    verificarCmd.Parameters.AddWithValue("@nombreRealGrupo", nombreRealGrupo);
-                    verificarCmd.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
-                    int existe = Convert.ToInt32(verificarCmd.ExecuteScalar());
-
-                    if (existe > 0)
+                    MySqlConnection conn = new MySqlConnection(connectionString);
                     {
-                        // Eliminar al usuario del grupo
-                        string eliminarQuery = "DELETE FROM Participa WHERE nombreReal = @nombreRealGrupo AND nombreDeCuenta = @nombreUsuario";
-                        MySqlCommand eliminarCmd = new MySqlCommand(eliminarQuery, conn);
-                        eliminarCmd.Parameters.AddWithValue("@nombreRealGrupo", nombreRealGrupo);
-                        eliminarCmd.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
-                        eliminarCmd.ExecuteNonQuery();
-                        return Json("Grupo eliminado del usuario correctamente");
-                    }
-                    else
-                    {
-                        return Json("El grupo no existe o el usuario no pertenece al grupo");
+                        conn.Open();
+
+                        // Verificar si el grupo existe y si el usuario pertenece al grupo
+                        string verificarQuery = @"
+                SELECT COUNT(*) FROM Participa WHERE nombreReal = @nombreRealGrupo AND nombreDeCuenta = @nombreUsuario";
+                        MySqlCommand verificarCmd = new MySqlCommand(verificarQuery, conn);
+                        verificarCmd.Parameters.AddWithValue("@nombreRealGrupo", groupData.nombreReal);
+                        verificarCmd.Parameters.AddWithValue("@nombreUsuario", groupData.nombreDeCuenta);
+                        int existe = Convert.ToInt32(verificarCmd.ExecuteScalar());
+
+                        if (existe > 0)
+                        {
+                            // Eliminar al usuario del grupo
+                            string eliminarQuery = "DELETE FROM Participa WHERE nombreReal = @nombreRealGrupo AND nombreDeCuenta = @nombreUsuario";
+                            MySqlCommand eliminarCmd = new MySqlCommand(eliminarQuery, conn);
+                            eliminarCmd.Parameters.AddWithValue("@nombreRealGrupo", groupData.nombreReal);
+                            eliminarCmd.Parameters.AddWithValue("@nombreUsuario", groupData.nombreDeCuenta);
+                            eliminarCmd.ExecuteNonQuery();
+                            return Json("Grupo eliminado del usuario correctamente");
+                        }
+                        else
+                        {
+                            return Json("El grupo no existe o el usuario no pertenece al grupo");
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                return Json($"Error al eliminar el grupo: {ex.Message}");
-            }
+                catch (Exception ex)
+                {
+                    return Json($"Error al eliminar el grupo: {ex.Message}");
+                }
 
         }
 

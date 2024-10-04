@@ -31,7 +31,8 @@ namespace UnitTest1
                 configuracion = "default",
                 imagen = base64Image,
                 nombreDeCuenta = "nombre",
-                descripcion = "Este es un grupo de prueba"
+                descripcion = "Este es un grupo de prueba",
+                token = "TestToken"
             };
 
             var result = await controller.RegistrarGrupo(grupoPrueba);
@@ -64,7 +65,8 @@ namespace UnitTest1
             API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
             {
                 nombreVisible = "Grupo de Prueba",
-                nombreDeCuenta = "nombre"
+                nombreDeCuenta = "nombre",
+                token = "TestToken"
             };
 
             var result = await controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData);
@@ -86,7 +88,8 @@ namespace UnitTest1
             API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
             {
                 nombreVisible = "Grupo de Prueba",
-                nombreDeCuenta = "nombre"
+                nombreDeCuenta = "nombre",
+                token = "TestToken"
             };
 
             var obtenerGruposResult = await controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData);
@@ -101,7 +104,8 @@ namespace UnitTest1
             //Y lo utilizas en obtenerGrupo
             API_Grupos.Controllers.GroupController.Grupo obtenerGrupoData = new API_Grupos.Controllers.GroupController.Grupo
             {
-                nombreReal = nombreReal
+                nombreReal = nombreReal,
+                token = "TestToken"
             };
 
             var obtenerGrupoResult = controller.ObtenerGrupo(obtenerGrupoData);
@@ -120,7 +124,8 @@ namespace UnitTest1
             API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
             {
                 nombreVisible = "Grupo de Prueba",
-                nombreDeCuenta = "nombre"
+                nombreDeCuenta = "nombre",
+                token = "TestToken"
             };
 
             var obtenerGruposResult = await controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData);
@@ -138,7 +143,8 @@ namespace UnitTest1
                 nombreVisible = "Nuevo Nombre Visible",
                 configuracion = "Nueva Configuracion",
                 descripcion = "Nueva Descripcion",
-                imagen = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgMBAQJ+Q4sAAAAASUVORK5CYII=" //Imagen de 1 pixel para probar
+                imagen = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgMBAQJ+Q4sAAAAASUVORK5CYII=", //Imagen de 1 pixel para probar
+                token = "TestToken"
             };
 
             var editarGrupoResult = await controller.EditarGrupo(editarGroupData);
@@ -154,7 +160,8 @@ namespace UnitTest1
             var controller = new API_Grupos.Controllers.GroupController();
             API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
             {
-                nombreDeCuenta = "nombre"
+                nombreDeCuenta = "nombre",
+                token = "TestToken"
             };
             var result = await controller.ObtenerGruposPorUsuario(testGroupData);
             var jsonResultList = result as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
@@ -172,7 +179,8 @@ namespace UnitTest1
             API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
             {
                 nombreVisible = "Nuevo Nombre Visible",
-                nombreDeCuenta = "nombre"
+                nombreDeCuenta = "nombre",
+                token = "TestToken"
             };
 
             var obtenerGruposResult = await controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData);
@@ -188,14 +196,15 @@ namespace UnitTest1
             {
                 nombreReal = nombreReal,
                 nombreDeCuenta = "usuarioReportar",
-                rol = "usuario"
+                rol = "usuario",
+                token = "TestToken"
             };
 
             var result = await controller.AgregarUsuarioAGrupo(groupData);
             var jsonResult = result as System.Web.Http.Results.JsonResult<string>;
             Assert.AreEqual("Usuario agregado al grupo", jsonResult.Content, "El usuario debería ser agregado al grupo correctamente");
         }
-
+  
         [TestMethod]
         public async Task TestMethod07()
         {
@@ -204,36 +213,8 @@ namespace UnitTest1
             API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
             {
                 nombreVisible = "Nuevo Nombre Visible",
-                nombreDeCuenta = "nombre"
-            };
-
-            var obtenerGruposResult = await controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData);
-            var jsonResultList = obtenerGruposResult as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
-            Assert.IsNotNull(jsonResultList, "El resultado de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
-            var gruposList = jsonResultList.Content;
-            Assert.IsNotNull(gruposList, "El contenido de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
-            Assert.IsTrue(gruposList.Count > 0, "El resultado de ObtenerGruposPorNombreVisibleYUsuario debe contener al menos un grupo");
-
-            string nombreReal = gruposList[0].nombreReal;
-
-            var eliminarResult = controller.EliminarUsuarioDeGrupo(nombreReal, "usuarioReportar");
-            var eliminarJsonResult = eliminarResult as System.Web.Http.Results.JsonResult<string>;
-
-            Assert.IsNotNull(eliminarJsonResult, "El resultado de EliminarUsuarioDeGrupo no debe ser nulo");
-            Assert.AreEqual("Grupo eliminado del usuario correctamente", eliminarJsonResult.Content, "El usuario debería ser eliminado del grupo correctamente");
-
-            Console.WriteLine(eliminarJsonResult.Content);
-        }
-
-        [TestMethod]
-        public async Task TestMethod08()
-        {
-            var controller = new API_Grupos.Controllers.GroupController();
-
-            API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
-            {
-                nombreVisible = "Nuevo Nombre Visible",
-                nombreDeCuenta = "nombre"
+                nombreDeCuenta = "usuarioReportar",
+                token = "TestToken"
             };
 
             var obtenerGruposResult = await controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData);
@@ -247,7 +228,43 @@ namespace UnitTest1
 
             API_Grupos.Controllers.GroupController.Grupo groupData = new API_Grupos.Controllers.GroupController.Grupo
             {
-                nombreReal = nombreReal
+                nombreReal = nombreReal,
+                nombreDeCuenta = "usuarioReportar"
+            };
+            var eliminarResult = await controller.EliminarUsuarioDeGrupo(groupData);
+            var eliminarJsonResult = eliminarResult as System.Web.Http.Results.JsonResult<string>;
+
+            Assert.IsNotNull(eliminarJsonResult, "El resultado de EliminarUsuarioDeGrupo no debe ser nulo");
+            Assert.AreEqual("Grupo eliminado del usuario correctamente", eliminarJsonResult.Content, "El usuario debería ser eliminado del grupo correctamente");
+
+            Console.WriteLine(eliminarJsonResult.Content);
+        }
+        
+        [TestMethod]
+        public async Task TestMethod08()
+        {
+            var controller = new API_Grupos.Controllers.GroupController();
+
+            API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreVisible = "Nuevo Nombre Visible",
+                nombreDeCuenta = "nombre",
+                token = "TestToken"
+            };
+
+            var obtenerGruposResult = await controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData);
+            var jsonResultList = obtenerGruposResult as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
+            Assert.IsNotNull(jsonResultList, "El resultado de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
+            var gruposList = jsonResultList.Content;
+            Assert.IsNotNull(gruposList, "El contenido de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
+            Assert.IsTrue(gruposList.Count > 0, "El resultado de ObtenerGruposPorNombreVisibleYUsuario debe contener al menos un grupo");
+
+            string nombreReal = gruposList[0].nombreReal;
+
+            API_Grupos.Controllers.GroupController.Grupo groupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreReal = nombreReal,
+                token = "TestToken"
             };
 
             var eliminarResult = controller.EliminarGrupo(groupData);
@@ -258,17 +275,5 @@ namespace UnitTest1
 
             Console.WriteLine(eliminarJsonResult.Content);
         }
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
