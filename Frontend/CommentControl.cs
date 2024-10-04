@@ -52,13 +52,13 @@ namespace Frontend
                 }
             }
         }
-        static async Task<string> conseguirImagenDelCreador(string creador)
+        static async Task<string> conseguirImagenDelCreador(string creador, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var dato = new { nombreDeCuenta = creador};
+                    var dato = new { nombreDeCuenta = creador, token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/obtenerImagenUsuario", content);
                     response.EnsureSuccessStatusCode();
@@ -180,7 +180,7 @@ namespace Frontend
                 this.PictureBoxMasOpciones.Cursor = Cursors.Hand;
                 this.Controls.Add(this.PictureBoxMasOpciones);
             }
-            string imagenB64 = await conseguirImagenDelCreador(lblNombre.Text);
+            string imagenB64 = await conseguirImagenDelCreador(lblNombre.Text, token);
             byte[] imagen = Convert.FromBase64String(imagenB64);
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);

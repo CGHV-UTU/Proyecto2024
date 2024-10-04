@@ -27,7 +27,7 @@ namespace Frontend
         
         private async void btnCambiar_Click(object sender, EventArgs e)
         {
-            var resultado = await CambiarConfig(Convert.ToString(cbxModo.SelectedItem), Convert.ToString(cbxIdioma.SelectedItem));
+            var resultado = await CambiarConfig(Convert.ToString(cbxModo.SelectedItem), Convert.ToString(cbxIdioma.SelectedItem), token);
             if (resultado.Equals("Configuracion correcta"))
             {
                 MessageBox.Show("Configuración modificada con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -39,14 +39,14 @@ namespace Frontend
             }
         }
 
-        public static async Task<string> CambiarConfig(string modo, string idioma)
+        public static async Task<string> CambiarConfig(string modo, string idioma, string token)
         {
             try
             {
                 string config = $"{modo};{idioma}";
                 using (HttpClient client = new HttpClient())
                 {
-                    var datos = new { nombreDeCuenta = usuario, configuraciones = config };
+                    var datos = new { nombreDeCuenta = usuario, configuraciones = config, token=token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/CambiarConfiguracion", content);
                     response.EnsureSuccessStatusCode();

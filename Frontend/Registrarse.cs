@@ -180,7 +180,9 @@ namespace Frontend
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync($"https://localhost:44383/user/ExisteUsuario?nombreDeCuenta={nombreCuenta}");
+                    var dato = new { nombreDeCuenta=nombreCuenta };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/ExisteUsuario", content);
                     response.EnsureSuccessStatusCode(); // Lanza una excepción si el código de estado no es exitoso
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic result = JsonConvert.DeserializeObject(responseBody);

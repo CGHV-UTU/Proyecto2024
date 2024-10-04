@@ -17,22 +17,24 @@ namespace Frontend
         private string idpost;
         private string idcomentario;
         private string usuario;
-        public ReportarPost(string idpost, string user, string idcomentario="")
+        private string token;
+        public ReportarPost(string idpost, string user, string token, string idcomentario="")
         {
             this.idpost = idpost;
             this.idcomentario = idcomentario;
             this.usuario = user;
+            this.token = token;
             InitializeComponent();
             this.BackColor = Color.LightGray;
         }
 
-        public static async Task<string> obtenerCreador(int id)
+        public static async Task<string> obtenerCreador(int id, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var dato = new { id = id };
+                    var dato = new { id = id , token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirCreador", content);
                     response.EnsureSuccessStatusCode();
@@ -47,13 +49,13 @@ namespace Frontend
             }
         }
 
-        public static async Task<string> obtenerCreadorComentario(int id)
+        public static async Task<string> obtenerCreadorComentario(int id, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var dato = new { id = id };
+                    var dato = new { id = id, token=token };
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirCreadorComentario", content);
                     response.EnsureSuccessStatusCode();
@@ -68,13 +70,13 @@ namespace Frontend
             }
         }
 
-        public static async Task<string> ReportaPost(string usuario, string creadorDelPost, int id, string tipo, string descripcion)
+        public static async Task<string> ReportaPost(string usuario, string creadorDelPost, int id, string tipo, string descripcion, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { nombreDeCuenta = usuario, creadorDelPost = creadorDelPost, idPost = id , tipo=tipo, descripcion=descripcion};
+                    var datos = new { nombreDeCuenta = usuario, creadorDelPost = creadorDelPost, idPost = id , tipo=tipo, descripcion=descripcion, token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/Reportar", content);
                     response.EnsureSuccessStatusCode();
@@ -89,13 +91,13 @@ namespace Frontend
             }
         }
 
-        public static async Task<string> ReportaComentario(string usuario, string creadorDelComentario, string id, string tipo, string descripcion)
+        public static async Task<string> ReportaComentario(string usuario, string creadorDelComentario, string id, string tipo, string descripcion, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { nombreDeCuenta = usuario, creadorDelComentario = creadorDelComentario, idComentario = id, tipo = tipo, descripcion = descripcion };
+                    var datos = new { nombreDeCuenta = usuario, creadorDelComentario = creadorDelComentario, idComentario = id, tipo = tipo, descripcion = descripcion, token=token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/Reportar", content);
                     response.EnsureSuccessStatusCode();
@@ -114,14 +116,14 @@ namespace Frontend
         {
             if (string.IsNullOrEmpty(idcomentario))
             {
-                string creadorPost = await obtenerCreador(int.Parse(idpost));
-                var respuesta = await ReportaPost(usuario,creadorPost, int.Parse(idpost), cbxRazon.SelectedItem.ToString(), txtDescripcion.Text);
+                string creadorPost = await obtenerCreador(int.Parse(idpost), token);
+                var respuesta = await ReportaPost(usuario,creadorPost, int.Parse(idpost), cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
                 MessageBox.Show(respuesta);
             }
             else
             {
-                string creadorComentario = await obtenerCreadorComentario(int.Parse(idcomentario));
-                var respuesta = await ReportaComentario(usuario,creadorComentario, idcomentario, cbxRazon.SelectedItem.ToString(), txtDescripcion.Text);
+                string creadorComentario = await obtenerCreadorComentario(int.Parse(idcomentario), token);
+                var respuesta = await ReportaComentario(usuario,creadorComentario, idcomentario, cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
                 MessageBox.Show(respuesta);
             }
         }

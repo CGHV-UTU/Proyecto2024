@@ -90,7 +90,7 @@ namespace Frontend
         {
             PanelNotificaciones.Controls.Clear(); // Limpio el panel
             int margin = 10;
-            string notificaciones = await conseguirNotificaciones(user);
+            string notificaciones = await conseguirNotificaciones(user, token);
             string[] notificacionesArray = notificaciones.Split(';');
 
             // Me fijo si tiene algo
@@ -130,7 +130,7 @@ namespace Frontend
         // cargar form de posts. -Puse un fondo gris para distinguirlo    
         private async void VerPosts()
         {
-            string config = await conseguirConfig(user);
+            string config = await conseguirConfig(user, token);
             string[] configure = config.Split(';');    
             idioma = configure[1];
             this.modo = configure[0];
@@ -161,7 +161,7 @@ namespace Frontend
         }
         private void PostControl_ReportarPost(object sender, PersonalizedArgs e)
         {
-            ReportarPost(e.arg);
+            ReportarPost(e.arg, token);
         }
         private void PostControl_AbrirPaginaUsuario(object sender, PersonalizedArgs e)
         {
@@ -182,14 +182,14 @@ namespace Frontend
             PanelMostrarUsuario.Controls.Add(paginaDeUsuario);
             paginaDeUsuario.Show();
         }
-        private void ReportarPost(string idpost, string idcomentario="")
+        private void ReportarPost(string idpost, string token, string idcomentario="")
         {
             PanelComentarios.Visible = false;
             PanelPostear.Controls.Clear();
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            ReportarPost post = new ReportarPost(idpost, user, idcomentario);
+            ReportarPost post = new ReportarPost(idpost, user, token, idcomentario);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
             post.BackColor = Color.LightGray;
@@ -200,7 +200,7 @@ namespace Frontend
         }
         private async void VerComentarios(string idpost)
         {
-            string config = await conseguirConfig(user);
+            string config = await conseguirConfig(user, token);
             string[] configure = config.Split(';');
             Comentarios comentario = new Comentarios(configure[0],idpost,user, token);
             comentario.TopLevel = false;
@@ -214,7 +214,7 @@ namespace Frontend
 
         private void CommentControl_ReportarComentario(object sender, PersonalizedArgs e)
         {
-            ReportarPost(e.arg, e.arg2);
+            ReportarPost(e.arg, token, e.arg2);
         }
 
         private void PictureBoxSalir_Click(object sender, EventArgs e)
@@ -323,13 +323,13 @@ namespace Frontend
 
         }
 
-        public static async Task<string> conseguirConfig(string usuario)
+        public static async Task<string> conseguirConfig(string usuario, string token)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    var datos = new { nombreDeCuenta = usuario };
+                    var datos = new { nombreDeCuenta = usuario, token=token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("https://localhost:44383/user/ConseguirConfiguracion", content);
                     var responseBody = await response.Content.ReadAsStringAsync();
@@ -344,13 +344,13 @@ namespace Frontend
             
         }
 
-        public static async Task<string> conseguirNotificaciones(string usuario)
+        public static async Task<string> conseguirNotificaciones(string usuario,string token)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    var datos = new { nombreDeCuenta = usuario };
+                    var datos = new { nombreDeCuenta = usuario, token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("https://localhost:44383/user/ConseguirNotificaciones", content);
                     var responseBody = await response.Content.ReadAsStringAsync();

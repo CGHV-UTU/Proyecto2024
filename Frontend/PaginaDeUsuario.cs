@@ -31,13 +31,13 @@ namespace Frontend
             Iniciar();
             LoadPosts();
         }
-        static async Task<dynamic> obtenerImagenNombreVyDescUsuario(string creador)
+        static async Task<dynamic> obtenerImagenNombreVyDescUsuario(string creador, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { nombreDeCuenta = creador };
+                    var datos = new { nombreDeCuenta = creador, token=token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/obtenerImagenNombreVyDescUsuario", content);
                     response.EnsureSuccessStatusCode();
@@ -115,7 +115,7 @@ namespace Frontend
         private async void Iniciar()
         {
             
-            var datos=await obtenerImagenNombreVyDescUsuario(nombreDeCreador);
+            var datos=await obtenerImagenNombreVyDescUsuario(nombreDeCreador,token);
             if (datos != null)
             {
                 string descripcion = datos[1];

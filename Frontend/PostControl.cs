@@ -98,20 +98,20 @@ namespace Frontend
             this.lblNombre.Text = creador;
             string[] fecha = data[3].Split(' ');
             this.lblFechaYhora.Text = fecha[0];
-            string imagenB64 = await conseguirImagenDelCreador(creador);
+            string imagenB64 = await conseguirImagenDelCreador(creador, token);
             byte[] imagen2 = Convert.FromBase64String(imagenB64);
             MemoryStream ms2 = new MemoryStream(imagen2);
             Bitmap bitmap2 = new Bitmap(ms2);
             this.PictureBoxUsuarioPost.Image = bitmap2;
         }
 
-        static async Task<string> conseguirImagenDelCreador(string creador)
+        static async Task<string> conseguirImagenDelCreador(string creador, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var dato = new { nombreDeCuenta = creador};
+                    var dato = new { nombreDeCuenta = creador, token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/obtenerImagenUsuario", content);
                     response.EnsureSuccessStatusCode();
@@ -829,13 +829,13 @@ namespace Frontend
             }
         }
 
-        static async Task<dynamic> Modificar(string id, string texto, string url, byte[] imagen)
+        static async Task<dynamic> Modificar(string id, string texto, string url, byte[] imagen, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var data = new { id = id, text = texto, link = url, image = Convert.ToBase64String(imagen) };
+                    var data = new { id = id, text = texto, link = url, image = Convert.ToBase64String(imagen) , token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/modificarPost", content);
                     response.EnsureSuccessStatusCode();
@@ -861,7 +861,7 @@ namespace Frontend
                 case "textAndImage":
                     this.imagenEditar.Image.Save(ms, ImageFormat.Jpeg);
                     byte[] imagen = ms.ToArray();
-                    resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, "", imagen);
+                    resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, "", imagen, token);
                     this.imagen.Image = this.imagenEditar.Image;
                     this.txtDescripcion.Text = txtDescripcionEditar.Text;
                     MessageBox.Show(resultado);
@@ -875,7 +875,7 @@ namespace Frontend
                 case "imageOnly": //falta esto
                     this.imagenEditar.Image.Save(ms, ImageFormat.Jpeg);
                     byte[] image = ms.ToArray();
-                    resultado = await Modificar(Convert.ToString(idpost), "", "", image);
+                    resultado = await Modificar(Convert.ToString(idpost), "", "", image, token);
                     this.imagen.Image = this.imagenEditar.Image;
                     MessageBox.Show(resultado);
                     this.Controls.Remove(this.btnConfirmarCambios);
@@ -885,7 +885,7 @@ namespace Frontend
                     this.imagen.Visible = true;
                     break;
                 case "textAndUrl":
-                    resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, txtUrlEditar.Text, imagenfalsa);
+                    resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, txtUrlEditar.Text, imagenfalsa, token);
                     this.txtDescripcion.Text = txtDescripcionEditar.Text;
                     this.txtUrl.Text = txtUrlEditar.Text;
                     MessageBox.Show(resultado);
@@ -896,7 +896,7 @@ namespace Frontend
                     this.txtUrl.Visible = true;
                     break;
                 case "textOnly":
-                    resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, "", imagenfalsa);
+                    resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, "", imagenfalsa, token);
                     this.txtDescripcion.Text = txtDescripcionEditar.Text;
                     MessageBox.Show(resultado);
                     this.Controls.Remove(this.txtDescripcionEditar);
@@ -904,7 +904,7 @@ namespace Frontend
                     this.txtDescripcion.Visible = true;
                     break;
                 case "urlOnly":
-                    resultado=await Modificar(Convert.ToString(idpost), "", txtUrlEditar.Text, imagenfalsa);
+                    resultado=await Modificar(Convert.ToString(idpost), "", txtUrlEditar.Text, imagenfalsa, token);
                     this.txtUrl.Text = txtUrlEditar.Text;
                     MessageBox.Show(resultado);
                     this.Controls.Remove(this.txtUrlEditar);
@@ -914,13 +914,13 @@ namespace Frontend
             }
         }
 
-        static async Task<string> Eliminar(string id)
+        static async Task<string> Eliminar(string id, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { id=id };
+                    var datos = new { id=id, token=token};
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/eliminarPost",content);
                     response.EnsureSuccessStatusCode();
@@ -939,7 +939,7 @@ namespace Frontend
 
         private async void btnEliminar_Click(object sender, EventArgs e)
         {
-            string result=await Eliminar(Convert.ToString(idpost));
+            string result=await Eliminar(Convert.ToString(idpost),token);
             if (result.Equals("Post eliminado"))
             {
                 //aca hacer que se mande un invoke a post que recargue los post existentes
