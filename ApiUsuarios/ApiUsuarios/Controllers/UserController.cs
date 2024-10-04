@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 
@@ -19,7 +21,7 @@ namespace ApiUsuarios.Controllers
         private MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
         public class usuario
         {
-            public string nombreDeCuenta { get; set;}
+            public string nombreDeCuenta { get; set; }
             public string nombreVisible { get; set; }
             public string email { get; set; }
             public string descripcion { get; set; }
@@ -30,6 +32,7 @@ namespace ApiUsuarios.Controllers
             public string estadoDeCuenta { get; set; }
             public string contraseña { get; set; }
             public string notificaciones { get; set; }
+            public string token { get; set; }
         }
         public class Reportes
         {
@@ -43,6 +46,7 @@ namespace ApiUsuarios.Controllers
             public string idEvento { get; set; }
             public string tipo { get; set; }
             public string descripcion { get; set; }
+            public string token { get; set; }
         }
         public class Notificaciones
         {
@@ -52,6 +56,7 @@ namespace ApiUsuarios.Controllers
             public string texto { get; set; }
             public string fechaYhora { get; set; }
             public string imagen { get; set; }
+            public string token { get; set; }
         }
 
         //Conexiones con el repositorio de github
@@ -112,6 +117,32 @@ namespace ApiUsuarios.Controllers
                 {
                     throw new Exception("No se pudo descargar la imagen desde GitHub.");
                 }
+            }
+        }
+        private TokenValidationParameters ParametrosDeValidacionDelToken()
+        {
+            return new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidIssuer = "InfiniSV",
+                ValidAudience = "usuario",
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("af431f66a2b44ddf1c8ee210f366d921"))
+            };
+        }
+        public dynamic TestToken(string pedido)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                SecurityToken securityToken;
+                var comprobar = tokenHandler.ValidateToken(pedido, ParametrosDeValidacionDelToken(), out securityToken);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -223,6 +254,7 @@ namespace ApiUsuarios.Controllers
                     conn.Close();
                     return Json("no se encuentra");
                 }
+
             }
             catch (Exception ex)
             {
@@ -230,33 +262,40 @@ namespace ApiUsuarios.Controllers
             }
         }
 
-        [System.Web.Mvc.HttpPut]
-        [System.Web.Mvc.Route("obtenerImagenUsuario")]
-        public async Task<dynamic> obtenerImagenUsuario([FromBody] usuario user)
-        {
-            try
+            [System.Web.Mvc.HttpPut]
+            [System.Web.Mvc.Route("obtenerImagenUsuario")]
+            public async Task<dynamic> obtenerImagenUsuario([FromBody] usuario user)
             {
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT foto FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                command.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
+                try
                 {
-                    string foto = await CargarImagenDeGitHub(reader["foto"].ToString());
-                    conn.Close();
-                    return Json(foto, JsonRequestBehavior.AllowGet);
+                    if (TestToken(user.token))
+                    {
+                        conn.Open();
+                        MySqlCommand command = new MySqlCommand("SELECT foto FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                        command.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                        MySqlDataReader reader = command.ExecuteReader();
+                        if (reader.Read())
+                        {
+                            string foto = await CargarImagenDeGitHub(reader["foto"].ToString());
+                            conn.Close();
+                            return Json(foto, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            conn.Close();
+                            return Json("no se encuentra " + user.nombreDeCuenta, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                    else
+                    {
+                        return Json("Token expirado");
+                    }
                 }
-                else
+                catch
                 {
-                    conn.Close();
-                    return Json("no se encuentra "+user.nombreDeCuenta, JsonRequestBehavior.AllowGet);
+                    return Json("no se encuentra " + user.nombreDeCuenta, JsonRequestBehavior.AllowGet);
                 }
             }
-            catch
-            {
-                return Json("no se encuentra " + user.nombreDeCuenta, JsonRequestBehavior.AllowGet);
-            }
-        }
 
         [System.Web.Mvc.HttpPut]
         [System.Web.Mvc.Route("obtenerImagenNombreVyDescUsuario")]
@@ -264,25 +303,32 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                conn.Open();
-                MySqlCommand command = new MySqlCommand("SELECT nombreVisible,descripcion,foto FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                command.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
-                MySqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
+                if (TestToken(user.token))
                 {
-                    var data = new
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT nombreVisible,descripcion,foto FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                    command.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
                     {
-                        nombreVisible = reader["nombreVisible"].ToString(),
-                        descripcion = reader["descripcion"].ToString() ?? "",
-                        foto = await CargarImagenDeGitHub(reader["foto"].ToString()),
-                    };
-                    conn.Close();
-                    return Json(data, JsonRequestBehavior.AllowGet);
+                        var data = new
+                        {
+                            nombreVisible = reader["nombreVisible"].ToString(),
+                            descripcion = reader["descripcion"].ToString() ?? "",
+                            foto = await CargarImagenDeGitHub(reader["foto"].ToString()),
+                        };
+                        conn.Close();
+                        return Json(data, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return Json("no se encuentra", JsonRequestBehavior.AllowGet);
+                    }
                 }
                 else
                 {
-                    conn.Close();
-                    return Json("no se encuentra", JsonRequestBehavior.AllowGet);
+                    return Json("Token expirado");
                 }
             }
             catch (Exception ex)
@@ -292,13 +338,14 @@ namespace ApiUsuarios.Controllers
         }
 
         [System.Web.Mvc.HttpPut]
-        [System.Web.Mvc.Route ("ExisteUsuario")]
-        public dynamic ExisteUsuario([FromBody] usuario user)
+        [System.Web.Mvc.Route("ExisteUsuario")]
+        public async Task<dynamic> ExisteUsuario([FromBody] usuario user)
         {
             try
             {
                 using (conn)
                 {
+
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT 1 FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
                     cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
@@ -329,38 +376,40 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                using (conn)
+                if (TestToken(user.token))
                 {
-                    string linkImagen = null;
-
-                    conn.Open();
-                    if (string.IsNullOrEmpty(user.nombreDeCuenta))
-                        return Json(new { mensaje = "Guardado incorrecto: falta nombreDeCuenta" });
-                    if (string.IsNullOrEmpty(user.nombreVisible))
-                        return Json(new { mensaje = "Guardado incorrecto: falta nombreVisible" });
-                    if (string.IsNullOrEmpty(user.email))
-                        return Json(new { mensaje = "Guardado incorrecto: falta email" });
-                    if (string.IsNullOrEmpty(user.foto))
-                        return Json(new { mensaje = "Guardado incorrecto: falta foto" });
-                    if (string.IsNullOrEmpty(user.configuraciones))
-                        return Json(new { mensaje = "Guardado incorrecto: falta configuraciones" });
-                    if (string.IsNullOrEmpty(user.genero))
-                        return Json(new { mensaje = "Guardado incorrecto: falta genero" });
-                    if (string.IsNullOrEmpty(user.fechaDeNacimiento))
-                        return Json(new { mensaje = "Guardado incorrecto: falta fechaDeNacimiento" });
-                    if (string.IsNullOrEmpty(user.estadoDeCuenta))
-                        return Json(new { mensaje = "Guardado incorrecto: falta estadoDeCuenta" });
-                    Console.WriteLine(user.foto);
-                    linkImagen = await SubirImagenAGitHub(user.foto);
-                    // Convertir fechaDeNacimiento de string a DateTime
-                    DateTime fechaNacimiento;
-                    if (!DateTime.TryParse(user.fechaDeNacimiento, out fechaNacimiento))
+                    using (conn)
                     {
-                        conn.Close();
-                        return Json("guardado incorrecto: formato de fecha inválido");
-                    }
+                        string linkImagen = null;
 
-                    string query = @"UPDATE Usuarios 
+                        conn.Open();
+                        if (string.IsNullOrEmpty(user.nombreDeCuenta))
+                            return Json(new { mensaje = "Guardado incorrecto: falta nombreDeCuenta" });
+                        if (string.IsNullOrEmpty(user.nombreVisible))
+                            return Json(new { mensaje = "Guardado incorrecto: falta nombreVisible" });
+                        if (string.IsNullOrEmpty(user.email))
+                            return Json(new { mensaje = "Guardado incorrecto: falta email" });
+                        if (string.IsNullOrEmpty(user.foto))
+                            return Json(new { mensaje = "Guardado incorrecto: falta foto" });
+                        if (string.IsNullOrEmpty(user.configuraciones))
+                            return Json(new { mensaje = "Guardado incorrecto: falta configuraciones" });
+                        if (string.IsNullOrEmpty(user.genero))
+                            return Json(new { mensaje = "Guardado incorrecto: falta genero" });
+                        if (string.IsNullOrEmpty(user.fechaDeNacimiento))
+                            return Json(new { mensaje = "Guardado incorrecto: falta fechaDeNacimiento" });
+                        if (string.IsNullOrEmpty(user.estadoDeCuenta))
+                            return Json(new { mensaje = "Guardado incorrecto: falta estadoDeCuenta" });
+                        Console.WriteLine(user.foto);
+                        linkImagen = await SubirImagenAGitHub(user.foto);
+                        // Convertir fechaDeNacimiento de string a DateTime
+                        DateTime fechaNacimiento;
+                        if (!DateTime.TryParse(user.fechaDeNacimiento, out fechaNacimiento))
+                        {
+                            conn.Close();
+                            return Json("guardado incorrecto: formato de fecha inválido");
+                        }
+
+                        string query = @"UPDATE Usuarios 
                                  SET nombreVisible=@nombreVisible, 
                                      email=@Email, 
                                      descripcion=@Descripcion, 
@@ -371,21 +420,26 @@ namespace ApiUsuarios.Controllers
                                      estadoDeCuenta=@EstadoDeCuenta 
                                  WHERE nombreDeCuenta=@NombreDeCuenta";
 
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@NombreDeCuenta", user.nombreDeCuenta);
-                        cmd.Parameters.AddWithValue("@NombreVisible", user.nombreVisible);
-                        cmd.Parameters.AddWithValue("@Email", user.email);
-                        cmd.Parameters.AddWithValue("@Descripcion", user.descripcion ?? string.Empty);
-                        cmd.Parameters.AddWithValue("@Foto", linkImagen);
-                        cmd.Parameters.AddWithValue("@Configuraciones", user.configuraciones);
-                        cmd.Parameters.AddWithValue("@Genero", user.genero);
-                        cmd.Parameters.AddWithValue("@FechaDeNacimiento", fechaNacimiento);
-                        cmd.Parameters.AddWithValue("@EstadoDeCuenta", user.estadoDeCuenta);
-                        cmd.ExecuteNonQuery();
+                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@NombreDeCuenta", user.nombreDeCuenta);
+                            cmd.Parameters.AddWithValue("@NombreVisible", user.nombreVisible);
+                            cmd.Parameters.AddWithValue("@Email", user.email);
+                            cmd.Parameters.AddWithValue("@Descripcion", user.descripcion ?? string.Empty);
+                            cmd.Parameters.AddWithValue("@Foto", linkImagen);
+                            cmd.Parameters.AddWithValue("@Configuraciones", user.configuraciones);
+                            cmd.Parameters.AddWithValue("@Genero", user.genero);
+                            cmd.Parameters.AddWithValue("@FechaDeNacimiento", fechaNacimiento);
+                            cmd.Parameters.AddWithValue("@EstadoDeCuenta", user.estadoDeCuenta);
+                            cmd.ExecuteNonQuery();
+                        }
+                        conn.Close();
+                        return Json(new { mensaje = "Guardado correcto" });
                     }
-                    conn.Close();
-                    return Json(new { mensaje = "Guardado correcto" });
+                }
+                else
+                {
+                    return Json("Token expirado");
                 }
             }
             catch (Exception ex)
@@ -397,7 +451,7 @@ namespace ApiUsuarios.Controllers
 
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("CambiarConfiguracion")]
-        public dynamic CambiarConfiguracion([FromBody] usuario user)
+        public async Task<dynamic> CambiarConfiguracion([FromBody] usuario user)
         {
             if (user == null)
             {
@@ -405,19 +459,26 @@ namespace ApiUsuarios.Controllers
             }
             else
             {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET configuraciones=@configuraciones WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
-                cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("Configuracion correcta");
+                if (TestToken(user.token))
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET configuraciones=@configuraciones WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@configuraciones", user.configuraciones);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Configuracion correcta");
+                }
+                else
+                {
+                    return Json("Token expirado");
+                }
             }
         }
 
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("ConseguirConfiguracion")]
-        public dynamic ConseguirConfiguracion([FromBody] usuario user)
+        public async Task<dynamic> ConseguirConfiguracion([FromBody] usuario user)
         {
             if (user == null)
             {
@@ -425,20 +486,27 @@ namespace ApiUsuarios.Controllers
             }
             else
             {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT configuraciones FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
+                if (TestToken(user.token))
                 {
-                    string configuraciones = reader["configuraciones"].ToString();
-                    conn.Close();
-                    return Json(configuraciones);
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT configuraciones FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        string configuraciones = reader["configuraciones"].ToString();
+                        conn.Close();
+                        return Json(configuraciones);
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return Json("Hubo un error" + user.nombreDeCuenta);
+                    }
                 }
                 else
                 {
-                    conn.Close();
-                    return Json("Hubo un error"+user.nombreDeCuenta);
+                    return Json("Token expirado");
                 }
             }
         }
@@ -447,35 +515,42 @@ namespace ApiUsuarios.Controllers
         [System.Web.Mvc.Route("agregarNotificaciones")]
         public async Task<dynamic> AgregarNotificaciones([FromBody] Notificaciones notificaciones)
         {
+            if (TestToken(notificaciones.token))
+            {
 
-            if (notificaciones == null ||
-                string.IsNullOrEmpty(notificaciones.nombreDeCuenta) ||
-                string.IsNullOrEmpty(notificaciones.texto) ||
-                string.IsNullOrEmpty(notificaciones.tipo) ||
-                string.IsNullOrEmpty(notificaciones.imagen))
-            {
-                return Json("Faltan datos obligatorios.");
+                if (notificaciones == null ||
+            string.IsNullOrEmpty(notificaciones.nombreDeCuenta) ||
+            string.IsNullOrEmpty(notificaciones.texto) ||
+            string.IsNullOrEmpty(notificaciones.tipo) ||
+            string.IsNullOrEmpty(notificaciones.imagen))
+                {
+                    return Json("Faltan datos obligatorios.");
+                }
+                string linkImagen = null;
+                linkImagen = await SubirImagenAGitHub(notificaciones.imagen);
+                try
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(
+                        "INSERT INTO Notificaciones (tipo, texto, fechaYHora, imagen, nombreDeCuenta) VALUES (@tipo, @texto, @fechaYHora, @imagen, @nombreDeCuenta)", conn);
+                    cmd.Parameters.AddWithValue("@tipo", notificaciones.tipo);
+                    cmd.Parameters.AddWithValue("@texto", notificaciones.texto);
+                    cmd.Parameters.AddWithValue("@fechaYHora", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@imagen", linkImagen);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", notificaciones.nombreDeCuenta);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Correcto");
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    return Json("Error: " + ex.Message);
+                }
             }
-            string linkImagen = null;
-            linkImagen = await SubirImagenAGitHub(notificaciones.imagen);
-            try
+            else
             {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand(
-                    "INSERT INTO Notificaciones (tipo, texto, fechaYHora, imagen, nombreDeCuenta) VALUES (@tipo, @texto, @fechaYHora, @imagen, @nombreDeCuenta)", conn);
-                cmd.Parameters.AddWithValue("@tipo", notificaciones.tipo);
-                cmd.Parameters.AddWithValue("@texto", notificaciones.texto);
-                cmd.Parameters.AddWithValue("@fechaYHora", DateTime.Now);
-                cmd.Parameters.AddWithValue("@imagen", linkImagen);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", notificaciones.nombreDeCuenta);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("Correcto");
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
-                return Json("Error: " + ex.Message);
+                return Json("Token expirado");
             }
         }
 
@@ -485,34 +560,41 @@ namespace ApiUsuarios.Controllers
         [System.Web.Mvc.Route("ActualizarNotificaciones")]
         public async Task<dynamic> ActualizarNotificaciones([FromBody] Notificaciones notificaciones)
         {
-            string linkImagen = null;
-            if (notificaciones == null ||
-                string.IsNullOrEmpty(notificaciones.nombreDeCuenta) ||
-                string.IsNullOrEmpty(notificaciones.texto) ||
-                string.IsNullOrEmpty(notificaciones.tipo) ||
-                string.IsNullOrEmpty(notificaciones.imagen))
+            if (TestToken(notificaciones.token))
             {
-                return Json("Valor nulo: Faltan datos obligatorios.");
+                string linkImagen = null;
+                if (notificaciones == null ||
+                    string.IsNullOrEmpty(notificaciones.nombreDeCuenta) ||
+                    string.IsNullOrEmpty(notificaciones.texto) ||
+                    string.IsNullOrEmpty(notificaciones.tipo) ||
+                    string.IsNullOrEmpty(notificaciones.imagen))
+                {
+                    return Json("Valor nulo: Faltan datos obligatorios.");
+                }
+                linkImagen = await SubirImagenAGitHub(notificaciones.imagen);
+                try
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(
+                        "UPDATE Notificaciones SET texto = @texto, tipo = @tipo, fechaYHora = @fechaYHora, imagen = @imagen WHERE nombreDeCuenta = @nombreDeCuenta", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", notificaciones.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@texto", notificaciones.texto);
+                    cmd.Parameters.AddWithValue("@tipo", notificaciones.tipo);
+                    cmd.Parameters.AddWithValue("@fechaYHora", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@imagen", linkImagen);
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Correcto");
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    return Json("Error: " + ex.Message);
+                }
             }
-            linkImagen = await SubirImagenAGitHub(notificaciones.imagen);
-            try
+            else
             {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand(
-                    "UPDATE Notificaciones SET texto = @texto, tipo = @tipo, fechaYHora = @fechaYHora, imagen = @imagen WHERE nombreDeCuenta = @nombreDeCuenta", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", notificaciones.nombreDeCuenta);
-                cmd.Parameters.AddWithValue("@texto", notificaciones.texto);
-                cmd.Parameters.AddWithValue("@tipo", notificaciones.tipo);
-                cmd.Parameters.AddWithValue("@fechaYHora", DateTime.Now);
-                cmd.Parameters.AddWithValue("@imagen", linkImagen);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-                return Json("Correcto");
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
-                return Json("Error: " + ex.Message);
+                return Json("Token expirado");
             }
         }
 
@@ -528,33 +610,40 @@ namespace ApiUsuarios.Controllers
 
             try
             {
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT texto, tipo, fechaYHora, imagen FROM Notificaciones WHERE nombreDeCuenta = @nombreDeCuenta", conn);
-                cmd.Parameters.AddWithValue("@nombreDeCuenta", notificaciones.nombreDeCuenta);
-                MySqlDataReader reader = cmd.ExecuteReader();
-
-                List<dynamic> notificacionesList = new List<dynamic>();
-
-                while (reader.Read())
+                if (TestToken(notificaciones.token))
                 {
-                    notificacionesList.Add(new
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT texto, tipo, fechaYHora, imagen FROM Notificaciones WHERE nombreDeCuenta = @nombreDeCuenta", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", notificaciones.nombreDeCuenta);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    List<dynamic> notificacionesList = new List<dynamic>();
+
+                    while (reader.Read())
                     {
-                        texto = reader["texto"].ToString(),
-                        tipo = reader["tipo"].ToString(),
-                        fechaYHora = reader["fechaYHora"].ToString(),
-                        imagen = await CargarImagenDeGitHub(reader["imagen"].ToString())
-                    });
-                }
+                        notificacionesList.Add(new
+                        {
+                            texto = reader["texto"].ToString(),
+                            tipo = reader["tipo"].ToString(),
+                            fechaYHora = reader["fechaYHora"].ToString(),
+                            imagen = await CargarImagenDeGitHub(reader["imagen"].ToString())
+                        });
+                    }
 
-                conn.Close();
+                    conn.Close();
 
-                if (notificacionesList.Count > 0)
-                {
-                    return Json(notificacionesList);
+                    if (notificacionesList.Count > 0)
+                    {
+                        return Json(notificacionesList);
+                    }
+                    else
+                    {
+                        return Json("No se encontraron notificaciones para el usuario: " + notificaciones.nombreDeCuenta);
+                    }
                 }
                 else
                 {
-                    return Json("No se encontraron notificaciones para el usuario: " + notificaciones.nombreDeCuenta);
+                    return Json("Token expirado");
                 }
             }
             catch (Exception ex)
@@ -577,73 +666,80 @@ namespace ApiUsuarios.Controllers
 
             try
             {
-                using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;")) // Creo pq me obliga el testing
+                if (TestToken(reporte.token))
                 {
-                    await conn.OpenAsync(); 
-
-                    if (!string.IsNullOrEmpty(reporte.cuentaReporteUsuario))
+                    using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;")) // Creo pq me obliga el testing
                     {
-                        MySqlCommand cmd = new MySqlCommand(
-                            "INSERT INTO Reportes (nombreDeCuenta, cuentaReporteUsuario, tipo, descripcion) VALUES (@nombreDeCuenta, @cuentaReporteUsuario, @tipo, @descripcion)", conn);
-                        cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
-                        cmd.Parameters.AddWithValue("@cuentaReporteUsuario", reporte.cuentaReporteUsuario);
-                        cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
-                        cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                        await cmd.ExecuteNonQueryAsync();
-                        return Json("Se ha reportado correctamente al usuario: " + reporte.cuentaReporteUsuario);
-                    }
+                        await conn.OpenAsync();
 
-                    if (!string.IsNullOrEmpty(reporte.idPost) && !string.IsNullOrEmpty(reporte.creadorDelPost))
-                    {
-                        MySqlCommand cmd = new MySqlCommand(
-                            "INSERT INTO Reportes (nombreDeCuenta, idPost, creadorDelPost, tipo, descripcion) VALUES (@nombreDeCuenta, @idPost, @creadorDelPost, @tipo, @descripcion)", conn);
-                        cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
-                        cmd.Parameters.AddWithValue("@idPost", int.Parse(reporte.idPost));
-                        cmd.Parameters.AddWithValue("@creadorDelPost", reporte.creadorDelPost);
-                        cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
-                        cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                        await cmd.ExecuteNonQueryAsync();
-                        return Json("Se ha reportado correctamente al Post: " + reporte.idPost);
-                    }
+                        if (!string.IsNullOrEmpty(reporte.cuentaReporteUsuario))
+                        {
+                            MySqlCommand cmd = new MySqlCommand(
+                                "INSERT INTO Reportes (nombreDeCuenta, cuentaReporteUsuario, tipo, descripcion) VALUES (@nombreDeCuenta, @cuentaReporteUsuario, @tipo, @descripcion)", conn);
+                            cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                            cmd.Parameters.AddWithValue("@cuentaReporteUsuario", reporte.cuentaReporteUsuario);
+                            cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                            cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                            await cmd.ExecuteNonQueryAsync();
+                            return Json("Se ha reportado correctamente al usuario: " + reporte.cuentaReporteUsuario);
+                        }
 
-                    if (!string.IsNullOrEmpty(reporte.idComentario) && !string.IsNullOrEmpty(reporte.creadorDelComentario))
-                    {
-                        MySqlCommand cmd = new MySqlCommand(
-                            "INSERT INTO Reportes (nombreDeCuenta, idComentario, creadorDelComentario, tipo, descripcion) VALUES (@nombreDeCuenta, @idComentario, @creadorDelComentario, @tipo, @descripcion)", conn);
-                        cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
-                        cmd.Parameters.AddWithValue("@idComentario", int.Parse(reporte.idComentario));
-                        cmd.Parameters.AddWithValue("@creadorDelComentario", reporte.creadorDelComentario);
-                        cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
-                        cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                        await cmd.ExecuteNonQueryAsync();
-                        return Json("Se ha reportado correctamente al Comentario: " + reporte.idComentario);
-                    }
+                        if (!string.IsNullOrEmpty(reporte.idPost) && !string.IsNullOrEmpty(reporte.creadorDelPost))
+                        {
+                            MySqlCommand cmd = new MySqlCommand(
+                                "INSERT INTO Reportes (nombreDeCuenta, idPost, creadorDelPost, tipo, descripcion) VALUES (@nombreDeCuenta, @idPost, @creadorDelPost, @tipo, @descripcion)", conn);
+                            cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                            cmd.Parameters.AddWithValue("@idPost", int.Parse(reporte.idPost));
+                            cmd.Parameters.AddWithValue("@creadorDelPost", reporte.creadorDelPost);
+                            cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                            cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                            await cmd.ExecuteNonQueryAsync();
+                            return Json("Se ha reportado correctamente al Post: " + reporte.idPost);
+                        }
 
-                    if (!string.IsNullOrEmpty(reporte.nombreGrupo))
-                    {
-                        MySqlCommand cmd = new MySqlCommand(
-                            "INSERT INTO Reportes (nombreDeCuenta, nombreGrupo, tipo, descripcion) VALUES (@nombreDeCuenta, @nombreGrupo, @tipo, @descripcion)", conn);
-                        cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
-                        cmd.Parameters.AddWithValue("@nombreGrupo", reporte.nombreGrupo);
-                        cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
-                        cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                        await cmd.ExecuteNonQueryAsync();
-                        return Json("Se ha reportado correctamente al Grupo: " + reporte.nombreGrupo);
-                    }
+                        if (!string.IsNullOrEmpty(reporte.idComentario) && !string.IsNullOrEmpty(reporte.creadorDelComentario))
+                        {
+                            MySqlCommand cmd = new MySqlCommand(
+                                "INSERT INTO Reportes (nombreDeCuenta, idComentario, creadorDelComentario, tipo, descripcion) VALUES (@nombreDeCuenta, @idComentario, @creadorDelComentario, @tipo, @descripcion)", conn);
+                            cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                            cmd.Parameters.AddWithValue("@idComentario", int.Parse(reporte.idComentario));
+                            cmd.Parameters.AddWithValue("@creadorDelComentario", reporte.creadorDelComentario);
+                            cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                            cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                            await cmd.ExecuteNonQueryAsync();
+                            return Json("Se ha reportado correctamente al Comentario: " + reporte.idComentario);
+                        }
 
-                    if (!string.IsNullOrEmpty(reporte.idEvento))
-                    {
-                        MySqlCommand cmd = new MySqlCommand(
-                            "INSERT INTO Reportes (nombreDeCuenta, idEvento, tipo, descripcion) VALUES (@nombreDeCuenta, @idEvento, @tipo, @descripcion)", conn);
-                        cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
-                        cmd.Parameters.AddWithValue("@idEvento", int.Parse(reporte.idEvento));
-                        cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
-                        cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
-                        await cmd.ExecuteNonQueryAsync();
-                        return Json("Se ha reportado correctamente al Evento: " + reporte.idEvento);
-                    }
+                        if (!string.IsNullOrEmpty(reporte.nombreGrupo))
+                        {
+                            MySqlCommand cmd = new MySqlCommand(
+                                "INSERT INTO Reportes (nombreDeCuenta, nombreGrupo, tipo, descripcion) VALUES (@nombreDeCuenta, @nombreGrupo, @tipo, @descripcion)", conn);
+                            cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                            cmd.Parameters.AddWithValue("@nombreGrupo", reporte.nombreGrupo);
+                            cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                            cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                            await cmd.ExecuteNonQueryAsync();
+                            return Json("Se ha reportado correctamente al Grupo: " + reporte.nombreGrupo);
+                        }
 
-                    return Json("Debe existir algo a lo que reportar");
+                        if (!string.IsNullOrEmpty(reporte.idEvento))
+                        {
+                            MySqlCommand cmd = new MySqlCommand(
+                                "INSERT INTO Reportes (nombreDeCuenta, idEvento, tipo, descripcion) VALUES (@nombreDeCuenta, @idEvento, @tipo, @descripcion)", conn);
+                            cmd.Parameters.AddWithValue("@nombreDeCuenta", reporte.nombreDeCuenta);
+                            cmd.Parameters.AddWithValue("@idEvento", int.Parse(reporte.idEvento));
+                            cmd.Parameters.AddWithValue("@tipo", reporte.tipo);
+                            cmd.Parameters.AddWithValue("@descripcion", reporte.descripcion);
+                            await cmd.ExecuteNonQueryAsync();
+                            return Json("Se ha reportado correctamente al Evento: " + reporte.idEvento);
+                        }
+
+                        return Json("Debe existir algo a lo que reportar");
+                    }
+                }
+                else
+                {
+                    return Json("Token expirado");
                 }
             }
             catch (Exception ex)
@@ -656,4 +752,3 @@ namespace ApiUsuarios.Controllers
 
 
 }
-

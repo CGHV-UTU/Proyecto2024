@@ -11,6 +11,11 @@ namespace Testing
     [TestClass]
     public class UnitTest1
     {
+        public class formaLogin
+        {
+            public string User { get; set; }
+            public string Pass { get; set; }
+        }
 
         public static string token;
 
@@ -81,52 +86,65 @@ namespace Testing
             }
         }
 
-
         [TestMethod]
         public async Task TestMethod03()
         {
-            ApiUsuarios.Controllers.UserController controller = new ApiUsuarios.Controllers.UserController();
-            ApiUsuarios.Controllers.UserController.usuario testUser = new ApiUsuarios.Controllers.UserController.usuario
+            var authController = new ApiUsuarios.Controllers.AuthController();
+            var login = new ApiUsuarios.Controllers.AuthController.formaLogin
             {
-                nombreDeCuenta = "nombre"
+                User = "nombre",
+                Pass = "contraseña"
             };
 
-            var result = await controller.obtenerImagenUsuario(testUser);
+            // Saco el token
+            var tokenResult = authController.Token(login) as JsonResult;
+            Assert.IsNotNull(tokenResult, "El resultado del token no debería ser nulo.");
+            var tokenString = tokenResult.Data?.ToString();
+            Assert.IsNotNull(tokenString, "El token no debería ser nulo.");
 
-            var jsonResult = result as JsonResult;
-            Assert.IsNotNull(jsonResult, "Se esperaba un JsonResult.");
+            // Se valida
+            var isTokenValidResult = authController.TestToken(new ApiUsuarios.Controllers.AuthController.TipoToken { token = tokenString }) as JsonResult;
+            Assert.IsNotNull(isTokenValidResult, "Resultado de validación del token no debería ser nulo.");
+            Assert.IsTrue(isTokenValidResult.Data is bool isTokenValid && isTokenValid, "El token debería ser válido.");
 
-            string resultData = jsonResult.Data as string;
+            // Uso el methodo de la api para obtener la imagen
+            var userController = new ApiUsuarios.Controllers.UserController();
+            var testUser = new ApiUsuarios.Controllers.UserController.usuario
+            {
+                nombreDeCuenta = "nombre",
+                token = tokenString
+            };
+
+            var imageResult = await userController.obtenerImagenUsuario(testUser) as JsonResult;
+            Assert.IsNotNull(imageResult, "Se esperaba un JsonResult.");
+
+            string resultData = imageResult.Data as string;
             Assert.IsNotNull(resultData, "El Data en JsonResult no es del tipo esperado.");
 
-            Console.WriteLine($"Result Data: {resultData}");
-
+            // Se valida si es correcto el resultado
             if (resultData.Contains("no se encuentra"))
             {
                 Assert.Fail($"Usuario no encontrado: {testUser.nombreDeCuenta}");
             }
             else
             {
-                try
-                {
-                    byte[] imageBytes = Convert.FromBase64String(resultData);
-                    Assert.IsTrue(imageBytes.Length > 0, "El contenido de la imagen no es válido.");
-                }
-                catch (FormatException)
-                {
-                    Assert.Fail("El contenido devuelto no es una cadena base64 válida.");
-                }
+                byte[] imageBytes = Convert.FromBase64String(resultData);
+                Assert.IsTrue(imageBytes.Length > 0, "El contenido de la imagen no es válido.");
             }
         }
 
 
+
+
+
         [TestMethod]
-        public async Task TestMethod04()
+        public async Task TestMethod05()
         {
             ApiUsuarios.Controllers.UserController controller = new ApiUsuarios.Controllers.UserController();
             ApiUsuarios.Controllers.UserController.usuario testUser = new ApiUsuarios.Controllers.UserController.usuario
             {
-                nombreDeCuenta = "nombre"
+                nombreDeCuenta = "nombre",
+                token = token
             };
 
             var result = await controller.ObtenerUsuario(testUser);
@@ -165,17 +183,18 @@ namespace Testing
         }
 
         [TestMethod]
-        public async Task TestMethod05()
+        public async Task TestMethod06()
         {
             ApiUsuarios.Controllers.UserController controller = new ApiUsuarios.Controllers.UserController();
             ApiUsuarios.Controllers.UserController.usuario testUser = new ApiUsuarios.Controllers.UserController.usuario
             {
-                nombreDeCuenta = "nombre"
+                nombreDeCuenta = "nombre",
+                token = token
             };
 
             var result = controller.ExisteUsuario(testUser);
 
-            var jsonResult = result as JsonResult;
+            var jsonResult = await result as JsonResult;
             Assert.IsNotNull(jsonResult, "Se esperaba un JsonResult.");
 
             string jsonString = JsonConvert.SerializeObject(jsonResult.Data, Formatting.Indented);
@@ -202,12 +221,27 @@ namespace Testing
         }
 
         [TestMethod]
-        public async Task TestMethod06()
+        public async Task TestMethod07()
         {
-            ApiUsuarios.Controllers.UserController controller = new ApiUsuarios.Controllers.UserController();
+            var authController = new ApiUsuarios.Controllers.AuthController();
+            var login = new ApiUsuarios.Controllers.AuthController.formaLogin
+            {
+                User = "nombre",
+                Pass = "contraseña"
+            };
+
+            var tokenResult = authController.Token(login) as JsonResult;
+            Assert.IsNotNull(tokenResult, "El resultado del token no debería ser nulo.");
+            var tokenString = tokenResult.Data?.ToString();
+            Assert.IsNotNull(tokenString, "El token no debería ser nulo.");
+
+            var isTokenValidResult = authController.TestToken(new ApiUsuarios.Controllers.AuthController.TipoToken { token = tokenString }) as JsonResult;
+            Assert.IsNotNull(isTokenValidResult, "Resultado de validación del token no debería ser nulo.");
+            Assert.IsTrue(isTokenValidResult.Data is bool isTokenValid && isTokenValid, "El token debería ser válido.");
+
+            var userController = new ApiUsuarios.Controllers.UserController();
             string projectDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName;
             string imagePath = Path.Combine(projectDirectory, "Testing", "Imagen.jpg");
-
 
             byte[] imageBytes = File.ReadAllBytes(imagePath);
             string base64Image = Convert.ToBase64String(imageBytes);
@@ -223,10 +257,11 @@ namespace Testing
                 configuraciones = "Configuraciones modificadas",
                 genero = "Prefiero no decirlo",
                 fechaDeNacimiento = "01/01/2000",
-                estadoDeCuenta = "inactivo"
+                estadoDeCuenta = "inactivo",
+                token = tokenString 
             };
 
-            var result = await controller.ModificarUsuario(testUser);
+            var result = await userController.ModificarUsuario(testUser);
             var jsonResult = result as JsonResult;
             Assert.IsNotNull(jsonResult, "Se esperaba un JsonResult.");
 
@@ -237,8 +272,6 @@ namespace Testing
             try
             {
                 dynamic data = JsonConvert.DeserializeObject<dynamic>(jsonString);
-
-
                 Assert.AreEqual("Guardado correcto", (string)data.mensaje, "La modificación no se completó correctamente.");
             }
             catch (JsonReaderException)
@@ -247,38 +280,80 @@ namespace Testing
             }
         }
 
+
         [TestMethod]
-        public void TestMethod07()
+        public async Task TestMethod08()
         {
-            ApiUsuarios.Controllers.UserController controller = new ApiUsuarios.Controllers.UserController();
+            var authController = new ApiUsuarios.Controllers.AuthController();
+            var login = new ApiUsuarios.Controllers.AuthController.formaLogin
+            {
+                User = "nombre",
+                Pass = "contraseña"
+            };
+
+            var tokenResult = authController.Token(login) as JsonResult;
+            Assert.IsNotNull(tokenResult, "El resultado del token no debería ser nulo.");
+            var tokenString = tokenResult.Data?.ToString();
+            Assert.IsNotNull(tokenString, "El token no debería ser nulo.");
+
+            var isTokenValidResult = authController.TestToken(new ApiUsuarios.Controllers.AuthController.TipoToken { token = tokenString }) as JsonResult;
+            Assert.IsNotNull(isTokenValidResult, "Resultado de validación del token no debería ser nulo.");
+            Assert.IsTrue(isTokenValidResult.Data is bool isTokenValid && isTokenValid, "El token debería ser válido.");
+
+            var userController = new ApiUsuarios.Controllers.UserController();
             ApiUsuarios.Controllers.UserController.usuario testUser = new ApiUsuarios.Controllers.UserController.usuario
             {
                 nombreDeCuenta = "nombre",
-                configuraciones = "Nueva configuración"
+                configuraciones = "Nueva configuración",
+                token = tokenString
             };
-            var result = controller.CambiarConfiguracion(testUser);
-            var jsonResult = result as JsonResult;
+
+            var result = userController.CambiarConfiguracion(testUser);
+            var jsonResult = await result as JsonResult;
             Assert.IsNotNull(jsonResult, "Se esperaba un JsonResult.");
+
             string resultData = jsonResult.Data as string;
             Assert.IsNotNull(resultData, "El Data en JsonResult no es del tipo esperado.");
             Console.WriteLine($"Response: {resultData}");
+
             Assert.AreEqual("Configuracion correcta", resultData, "La configuración no se cambió correctamente.");
         }
 
+
         [TestMethod]
-        public void TestMethod08()
+        public async Task TestMethod09()
         {
-            ApiUsuarios.Controllers.UserController controller = new ApiUsuarios.Controllers.UserController();
+            var authController = new ApiUsuarios.Controllers.AuthController();
+            var login = new ApiUsuarios.Controllers.AuthController.formaLogin
+            {
+                User = "nombre",
+                Pass = "contraseña"
+            };
+
+            var tokenResult = authController.Token(login) as JsonResult;
+            Assert.IsNotNull(tokenResult, "El resultado del token no debería ser nulo.");
+            var tokenString = tokenResult.Data?.ToString();
+            Assert.IsNotNull(tokenString, "El token no debería ser nulo.");
+
+            var isTokenValidResult = authController.TestToken(new ApiUsuarios.Controllers.AuthController.TipoToken { token = tokenString }) as JsonResult;
+            Assert.IsNotNull(isTokenValidResult, "Resultado de validación del token no debería ser nulo.");
+            Assert.IsTrue(isTokenValidResult.Data is bool isTokenValid && isTokenValid, "El token debería ser válido.");
+
+            var userController = new ApiUsuarios.Controllers.UserController();
             ApiUsuarios.Controllers.UserController.usuario testUser = new ApiUsuarios.Controllers.UserController.usuario
             {
-                nombreDeCuenta = "nombre"
+                nombreDeCuenta = "nombre",
+                token = tokenString
             };
-            var result = controller.ConseguirConfiguracion(testUser);
-            var jsonResult = result as JsonResult;
+
+            var result = userController.ConseguirConfiguracion(testUser);
+            var jsonResult = await result as JsonResult;
             Assert.IsNotNull(jsonResult, "Se esperaba un JsonResult.");
+
             string resultData = jsonResult.Data as string;
             Assert.IsNotNull(resultData, "El Data en JsonResult no es del tipo esperado.");
             Console.WriteLine($"Response: {resultData}");
+
             if (resultData.Contains("Hubo un error"))
             {
                 Assert.Fail($"No se pudo obtener la configuración para el usuario: {testUser.nombreDeCuenta}");
@@ -290,13 +365,30 @@ namespace Testing
             }
         }
 
+
         [TestMethod]
-        public async Task TestMethod09()
+        public async Task TestMethod10()
         {
+            var authController = new ApiUsuarios.Controllers.AuthController();
+            var login = new ApiUsuarios.Controllers.AuthController.formaLogin
+            {
+                User = "nombre",
+                Pass = "contraseña"
+            };
+
+            var tokenResult = authController.Token(login) as JsonResult;
+            Assert.IsNotNull(tokenResult, "El resultado del token no debería ser nulo.");
+            var tokenString = tokenResult.Data?.ToString();
+            Assert.IsNotNull(tokenString, "El token no debería ser nulo.");
+
+            var isTokenValidResult = authController.TestToken(new ApiUsuarios.Controllers.AuthController.TipoToken { token = tokenString }) as JsonResult;
+            Assert.IsNotNull(isTokenValidResult, "Resultado de validación del token no debería ser nulo.");
+            Assert.IsTrue(isTokenValidResult.Data is bool isTokenValid && isTokenValid, "El token debería ser válido.");
+
             ApiUsuarios.Controllers.UserController controller = new ApiUsuarios.Controllers.UserController();
 
             string projectDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName;
-            string imagePath = Path.Combine(projectDirectory, "Testing", "Imagen.jpg"); 
+            string imagePath = Path.Combine(projectDirectory, "Testing", "Imagen.jpg");
             byte[] imageBytes = File.ReadAllBytes(imagePath);
             string base64Image = Convert.ToBase64String(imageBytes);
 
@@ -305,7 +397,8 @@ namespace Testing
                 nombreDeCuenta = "nombre",
                 texto = "Nueva notificación",
                 tipo = "nuevoMensaje",
-                imagen = base64Image
+                imagen = base64Image,
+                token = tokenString
             };
 
             var result = await controller.AgregarNotificaciones(testNotificacion);
@@ -319,9 +412,26 @@ namespace Testing
             Assert.AreEqual("Correcto", resultData, "La notificación no se agregó correctamente.");
         }
 
+
         [TestMethod]
-        public async Task TestMethod10()
+        public async Task TestMethod11()
         {
+            var authController = new ApiUsuarios.Controllers.AuthController();
+            var login = new ApiUsuarios.Controllers.AuthController.formaLogin
+            {
+                User = "nombre",
+                Pass = "contraseña"
+            };
+
+            var tokenResult = authController.Token(login) as JsonResult;
+            Assert.IsNotNull(tokenResult, "El resultado del token no debería ser nulo.");
+            var tokenString = tokenResult.Data?.ToString();
+            Assert.IsNotNull(tokenString, "El token no debería ser nulo.");
+
+            var isTokenValidResult = authController.TestToken(new ApiUsuarios.Controllers.AuthController.TipoToken { token = tokenString }) as JsonResult;
+            Assert.IsNotNull(isTokenValidResult, "Resultado de validación del token no debería ser nulo.");
+            Assert.IsTrue(isTokenValidResult.Data is bool isTokenValid && isTokenValid, "El token debería ser válido.");
+
             ApiUsuarios.Controllers.UserController controller = new ApiUsuarios.Controllers.UserController();
 
             string projectDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName;
@@ -334,7 +444,8 @@ namespace Testing
                 nombreDeCuenta = "nombre",
                 texto = "Actualización de notificación",
                 tipo = "actualización",
-                imagen = base64Image
+                imagen = base64Image,
+                token = tokenString 
             };
 
             var result = await controller.ActualizarNotificaciones(testNotificacion);
@@ -348,14 +459,31 @@ namespace Testing
             Assert.AreEqual("Correcto", resultData, "La notificación no se actualizó correctamente.");
         }
 
-        [TestMethod]
-        public async Task TestMethod11()
-        {
-            ApiUsuarios.Controllers.UserController controller = new ApiUsuarios.Controllers.UserController();
 
+        [TestMethod]
+        public async Task TestMethod12()
+        {
+            var authController = new ApiUsuarios.Controllers.AuthController();
+            var login = new ApiUsuarios.Controllers.AuthController.formaLogin
+            {
+                User = "nombre",
+                Pass = "contraseña"
+            };
+
+            var tokenResult = authController.Token(login) as JsonResult;
+            Assert.IsNotNull(tokenResult, "El resultado del token no debería ser nulo.");
+            var tokenString = tokenResult.Data?.ToString();
+            Assert.IsNotNull(tokenString, "El token no debería ser nulo.");
+
+            var isTokenValidResult = authController.TestToken(new ApiUsuarios.Controllers.AuthController.TipoToken { token = tokenString }) as JsonResult;
+            Assert.IsNotNull(isTokenValidResult, "Resultado de validación del token no debería ser nulo.");
+            Assert.IsTrue(isTokenValidResult.Data is bool isTokenValid && isTokenValid, "El token debería ser válido.");
+
+            ApiUsuarios.Controllers.UserController controller = new ApiUsuarios.Controllers.UserController();
             ApiUsuarios.Controllers.UserController.Notificaciones testNotificacion = new ApiUsuarios.Controllers.UserController.Notificaciones
             {
-                nombreDeCuenta = "nombre"
+                nombreDeCuenta = "nombre",
+                token = tokenString 
             };
 
             var result = await controller.ConseguirNotificaciones(testNotificacion);
@@ -396,16 +524,33 @@ namespace Testing
             }
         }
 
+
         [TestMethod]
-        public async Task TestMethod12()
+        public async Task TestMethod13()
         {
+            var authController = new ApiUsuarios.Controllers.AuthController();
+            var login = new ApiUsuarios.Controllers.AuthController.formaLogin
+            {
+                User = "nombre",
+                Pass = "contraseña"
+            };
+
+            var tokenResult = authController.Token(login) as JsonResult;
+            Assert.IsNotNull(tokenResult, "El resultado del token no debería ser nulo.");
+            var tokenString = tokenResult.Data?.ToString();
+            Assert.IsNotNull(tokenString, "El token no debería ser nulo.");
+
+            var isTokenValidResult = authController.TestToken(new ApiUsuarios.Controllers.AuthController.TipoToken { token = tokenString }) as JsonResult;
+            Assert.IsNotNull(isTokenValidResult, "Resultado de validación del token no debería ser nulo.");
+            Assert.IsTrue(isTokenValidResult.Data is bool isTokenValid && isTokenValid, "El token debería ser válido.");
+
             ApiUsuarios.Controllers.UserController controller = new ApiUsuarios.Controllers.UserController();
             string projectDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName;
             string imagePath = Path.Combine(projectDirectory, "Testing", "Imagen.jpg");
             byte[] imageBytes = File.ReadAllBytes(imagePath);
             string base64Image = Convert.ToBase64String(imageBytes);
 
-            // Creo Usuario para Reportar
+            // Creo un usuario
             ApiUsuarios.Controllers.UserController.usuario newUser = new ApiUsuarios.Controllers.UserController.usuario
             {
                 nombreDeCuenta = "usuarioReportar",
@@ -416,8 +561,11 @@ namespace Testing
                 configuraciones = "default",
                 genero = "No especificado",
                 fechaDeNacimiento = "01/01/1990",
-                estadoDeCuenta = "activo"
+                estadoDeCuenta = "activo",
+                token = tokenString 
             };
+
+            // Registro
             var createUserResult = await controller.RegistrarUsuario(newUser);
             var createUserJsonResult = createUserResult as JsonResult;
             Assert.IsNotNull(createUserJsonResult, "Se esperaba un JsonResult al crear el usuario para reportar.");
@@ -425,13 +573,14 @@ namespace Testing
             Assert.IsNotNull(createUserResultData, "El Data en JsonResult al crear el usuario no es del tipo esperado.");
             Assert.AreEqual("guardado correcto", createUserResultData, "No se pudo crear el usuario que se va a reportar.");
 
-            // Reporto el usuario
+            // Reporto
             ApiUsuarios.Controllers.UserController.Reportes testReporteUsuario = new ApiUsuarios.Controllers.UserController.Reportes
             {
                 nombreDeCuenta = "nombre",
                 cuentaReporteUsuario = "usuarioReportar",
                 tipo = "Sexual",
-                descripcion = "Subio contenido inapropiado"
+                descripcion = "Subio contenido inapropiado",
+                token = tokenString // Use the obtained token here
             };
 
             var result = await controller.Reportar(testReporteUsuario);
@@ -444,6 +593,7 @@ namespace Testing
 
             Assert.IsTrue(resultData.Contains("Se ha reportado correctamente al usuario"), "La respuesta no coincide con el reporte del usuario.");
         }
+
 
 
 
