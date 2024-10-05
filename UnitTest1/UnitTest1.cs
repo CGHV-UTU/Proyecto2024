@@ -83,7 +83,7 @@ namespace UnitTest1
         [TestMethod]
         public async Task TestMethod03()
         {
-            //Primero obtienes el nombre Real
+            // Primero obtienes el nombre Real
             var controller = new API_Grupos.Controllers.GroupController();
             API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
             {
@@ -92,30 +92,37 @@ namespace UnitTest1
                 token = "TestToken"
             };
 
+            // Obtiene lista de grupos
             var obtenerGruposResult = await controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData);
             var jsonResultList = obtenerGruposResult as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
 
+            // Validaciones de la lista
             Assert.IsNotNull(jsonResultList, "El resultado no debe ser nulo");
             var gruposList = jsonResultList.Content;
             Assert.IsNotNull(gruposList, "El contenido no debe ser nulo");
             Assert.IsTrue(gruposList.Count > 0, "El resultado debe contener al menos un grupo");
 
+            // Obtiene el nombre real del primer grupo
             string nombreReal = gruposList[0].nombreReal;
-            //Y lo utilizas en obtenerGrupo
+
+            // Utilizas el nombre real para obtener el grupo específico
             API_Grupos.Controllers.GroupController.Grupo obtenerGrupoData = new API_Grupos.Controllers.GroupController.Grupo
             {
                 nombreReal = nombreReal,
                 token = "TestToken"
             };
 
-            var obtenerGrupoResult = controller.ObtenerGrupo(obtenerGrupoData);
+            // Llamada para obtener los detalles del grupo
+            var obtenerGrupoResult = await controller.ObtenerGrupo(obtenerGrupoData);
             var jsonResult = obtenerGrupoResult as System.Web.Http.Results.JsonResult<API_Grupos.Controllers.GroupController.GrupoResponse>;
 
+            // Validaciones del grupo específico
             Assert.IsNotNull(jsonResult, "El resultado no debe ser nulo");
             var grupo = jsonResult.Content;
             Assert.IsNotNull(grupo, "El contenido no debe ser nulo");
-            Assert.AreEqual(nombreReal, grupo.nombreReal, "Nombre de cuenta erroneo");
+            Assert.AreEqual(nombreReal, grupo.nombreReal, "Nombre de cuenta erróneo");
         }
+
 
         [TestMethod]
         public async Task TestMethod04()
@@ -229,7 +236,8 @@ namespace UnitTest1
             API_Grupos.Controllers.GroupController.Grupo groupData = new API_Grupos.Controllers.GroupController.Grupo
             {
                 nombreReal = nombreReal,
-                nombreDeCuenta = "usuarioReportar"
+                nombreDeCuenta = "usuarioReportar",
+                token = "TestToken"
             };
             var eliminarResult = await controller.EliminarUsuarioDeGrupo(groupData);
             var eliminarJsonResult = eliminarResult as System.Web.Http.Results.JsonResult<string>;
@@ -267,8 +275,8 @@ namespace UnitTest1
                 token = "TestToken"
             };
 
-            var eliminarResult = controller.EliminarGrupo(groupData);
-            var eliminarJsonResult = eliminarResult as System.Web.Http.Results.JsonResult<string>;
+            var eliminarResult = await controller.EliminarGrupo(groupData);
+            var eliminarJsonResult =  eliminarResult as JsonResult<string>;
 
             Assert.IsNotNull(eliminarJsonResult, "El resultado de EliminarGrupo no debe ser nulo");
             Assert.AreEqual("Se pudo eliminar", eliminarJsonResult.Content, "El grupo debería ser eliminado correctamente");
