@@ -363,5 +363,30 @@ namespace Frontend
                 return "fallido: " + ex.Message;
             }
         }
+
+        private void PictureBoxBuscar_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void PictureBoxComunidad_Click(object sender, EventArgs e)
+        {
+            PanelComentarios.Visible = false;
+            PanelPosts.Visible = false;
+            PanelMostrarUsuario.Visible = true;
+            PanelMostrarUsuario.Parent = this;
+            PanelMostrarUsuario.Location = PanelPosts.Location;
+            Comunidad comunidad = new Comunidad(modo, user, token);
+            comunidad.TopLevel = false;
+            comunidad.FormBorderStyle = FormBorderStyle.None;
+            comunidad.BackColor = Color.LightGray;
+            comunidad.Dock = DockStyle.Fill;
+            PanelMostrarUsuario.BackColor = Color.LightGray;
+            comunidad.BackColor = Color.FromArgb(34, 67, 220);
+            //comunidad.ReportarPost += PostControl_ReportarPost;
+            //comunidad.AbrirComentarios += PostControl_AbrirComentarios;
+            PanelMostrarUsuario.Controls.Add(comunidad);
+            comunidad.Show();
+        }
     }
 }

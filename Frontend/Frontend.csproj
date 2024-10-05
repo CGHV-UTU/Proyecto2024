@@ -70,6 +70,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Busqueda.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Busqueda.Designer.cs">
+      <DependentUpon>Busqueda.cs</DependentUpon>
+    </Compile>
     <Compile Include="Comentarios.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +87,12 @@
     </Compile>
     <Compile Include="CommentControl.Designer.cs">
       <DependentUpon>CommentControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Comunidad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comunidad.Designer.cs">
+      <DependentUpon>Comunidad.cs</DependentUpon>
     </Compile>
     <Compile Include="Configuracion.cs">
       <SubType>Form</SubType>
@@ -169,11 +181,17 @@
     <Compile Include="ReportarPost.Designer.cs">
       <DependentUpon>ReportarPost.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Busqueda.resx">
+      <DependentUpon>Busqueda.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Comentarios.resx">
       <DependentUpon>Comentarios.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CommentControl.resx">
       <DependentUpon>CommentControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comunidad.resx">
+      <DependentUpon>Comunidad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Configuracion.resx">
       <DependentUpon>Configuracion.cs</DependentUpon>
@@ -292,6 +310,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\subrayado-removebg-preview.png" />
     <None Include="Resources\reportarbtn-removebg-preview.png" />
     <None Include="Resources\Page_1-removebg-preview.png" />
     <None Include="Resources\notificacionLike.jpeg" />
@@ -330,6 +349,16 @@
     <None Include="Resources\comentario claro.jpeg" />
     <None Include="Resources\editar-removebg-preview.png" />
     <None Include="Resources\aceptar.png" />
+    <None Include="Resources\amigos.jpeg" />
+    <None Include="Resources\amigos-removebg-preview.png" />
+    <None Include="Resources\grupos-removebg-preview.png" />
+    <None Include="Resources\eventos-removebg-preview.png" />
+    <None Include="Resources\eventos_seleccionado-removebg-preview.png" />
+    <None Include="Resources\amigos_seleccionar-removebg-preview.png" />
+    <None Include="Resources\grupos_seleccionar-removebg-preview.png" />
+    <None Include="Resources\grupos_seleccionar-removebg-preview1.png" />
+    <None Include="Resources\grupos_seleccionar-removebg-preview %281%29.png" />
+    <None Include="Resources\eventos_seleccionado-removebg-preview1.png" />
     <Content Include="Resources\IconoInfini.ico" />
     <None Include="Resources\Logo_Infini_Completo.jpeg" />
     <None Include="Resources\salir.png" />
