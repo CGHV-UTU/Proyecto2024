@@ -755,6 +755,36 @@ namespace APIPostYEventos2019.Controllers
         }
 
         [HttpPut]
+        [Route("eventoParticipa")]
+        public dynamic eventoParticipa([FromBody] EventData eventData)
+        {
+            if (TestToken(eventData.token))
+            {
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT e.idEvento FROM ParticipaEvento p JOIN Eventos e ON p.idEvento=e.idEvento WHERE p.nombreDeCuenta=@nombreUsuario", conn);
+                    command.Parameters.AddWithValue("@nombreUsuario", eventData.user);
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+                    conn.Close();
+                    return Json(dataTable);
+                }
+                catch (Exception)
+                {
+                    return Json("Error");
+                }
+            }
+            else
+            {
+                return Json("Token expirado");
+            }
+
+        }
+
+        [HttpPut]
         [Route("modificarEvento")]
         public async Task<dynamic> modificarEvento([FromBody] EventData eventdata)
         {
