@@ -34,8 +34,6 @@ namespace API_Grupos.Controllers
             public string nombreDeCuenta { get; set; }
             public string rol { get; set; }
             public string token { get; set; }
-
-            public string admin { get; set; }
         }
 
         public class Reporte
@@ -80,7 +78,7 @@ namespace API_Grupos.Controllers
             {
                 try
                 {
-                    string token = "11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
+                    string token = "11BKZVKOQ0So4CaeLdQqb2_s0qMD7Vd1EfzNiaVOyOKUE1KcekMlAPu94OKE3lQB9B7RTYHU6D0rP81rSy"; // Token para repositorio privado. Cambiar por el token real
                     string nombreDeImagen = GenerarIdAleatorio(8) + ".png"; // nombre aleatorio para que el nombre del archivo no se repita
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     client.DefaultRequestHeaders.UserAgent.ParseAdd("request");
@@ -115,7 +113,7 @@ namespace API_Grupos.Controllers
         {
             using (var client = new HttpClient())
             {
-                string token = "11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
+                string token = "11BKZVKOQ0So4CaeLdQqb2_s0qMD7Vd1EfzNiaVOyOKUE1KcekMlAPu94OKE3lQB9B7RTYHU6D0rP81rSy"; // Token para repositorio privado. Cambiar por el token real
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var response = await client.GetAsync(urlImagen);
@@ -350,7 +348,7 @@ namespace API_Grupos.Controllers
 
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("ObtenerMensajes")]
-        public async Task<dynamic> ObtenerMensajes([FromBody] Mensajes groupData)
+        public async Task<IHttpActionResult> ObtenerMensajes([FromBody] Mensajes groupData)
         {
             if (TestToken(groupData.token))
             {
@@ -361,32 +359,46 @@ namespace API_Grupos.Controllers
                         conn.Open();
                         MySqlCommand cmd = new MySqlCommand(@"SELECT idMensaje,nombreDeCuenta,nombreReal,texto,fechaYHora,video,imagen FROM Mensajes WHERE nombreReal = @nombreReal ORDER BY idMensaje ASC", conn);
                         cmd.Parameters.AddWithValue("@nombreReal", groupData.nombreReal);
-                        MySqlDataReader reader = cmd.ExecuteReader();
-                        var mensajesList = new List<dynamic>();
-                        while (reader.Read())
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            mensajesList.Add(new
+                            List<Mensajes> mensajesList = new List<Mensajes>();
+
+                            while (reader.Read())
                             {
-                                idMensaje = reader["idMensaje"],
-                                nombreDeCuenta = reader["nombreDeCuenta"],
-                                nombreReal = reader["nombreReal"],
-                                texto = reader["texto"],
-                                fechaYHora = reader["fechaYHora"],
-                                video = reader["video"] ,
-                                imagen = await CargarImagenDeGitHub(reader["imagen"].ToString())
-                            });
-                        }
+                                string idMensaje = reader["idMensaje"].ToString();
+                                string nombreDeCuenta = reader["nombreDeCuenta"].ToString();
+                                string nombreReal = reader["nombreReal"].ToString();
+                                string texto = reader["texto"].ToString();
+                                string fechaYHora = reader["fechaYHora"].ToString();
+                                string video = reader["texto"].ToString();
+                                string imagen = await CargarImagenDeGitHub(reader["imagen"].ToString());
 
+                                var mensaje = new Mensajes
+                                {
+                                    idMensaje = idMensaje,
+                                    nombreDeCuenta = nombreDeCuenta,
+                                    nombreReal = nombreReal,
+                                    texto = texto,
+                                    fechaYHora = fechaYHora,
+                                    video = video,
+                                    imagen = imagen
+                                };
+
+                                mensajesList.Add(mensaje);
+                            }
+
+                            conn.Close();
+
+                            if (mensajesList.Count > 0)
+                            {
+                                return Json(mensajesList);
+                            }
+                            else
+                            {
+                                return Json("No se encontraron Mensajes para el grupo especificado");
+                            }
+                        }
                         conn.Close();
-
-                        if (mensajesList.Count > 0)
-                        {
-                            return Json(mensajesList);
-                        }
-                        else
-                        {
-                            return Json("No se encontraron mensajes para este grupo.");
-                        }
                     }
                 }
                 catch (Exception ex)
@@ -414,32 +426,46 @@ namespace API_Grupos.Controllers
                         MySqlCommand cmd = new MySqlCommand(@"SELECT idMensaje,nombreDeCuenta,nombreReal,texto,fechaYHora,video,imagen FROM Mensajes WHERE nombreReal = @nombreReal AND idMensaje > @idMensaje ORDER BY idMensaje ASC", conn);
                         cmd.Parameters.AddWithValue("@nombreReal", groupData.nombreReal);
                         cmd.Parameters.AddWithValue("@idMensaje", groupData.idMensaje);
-                        MySqlDataReader reader = cmd.ExecuteReader();
-                        var mensajesList = new List<dynamic>();
-                        while (reader.Read())
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            mensajesList.Add(new
+                            List<Mensajes> mensajesList = new List<Mensajes>();
+
+                            while (reader.Read())
                             {
-                                idMensaje = reader["idMensaje"],
-                                nombreDeCuenta = reader["nombreDeCuenta"],
-                                nombreReal = reader["nombreReal"],
-                                texto = reader["texto"],
-                                fechaYHora = reader["fechaYHora"],
-                                video = reader["video"],
-                                imagen = await CargarImagenDeGitHub(reader["imagen"].ToString())
-                            });
-                        }
+                                string idMensaje = reader["idMensaje"].ToString();
+                                string nombreDeCuenta = reader["nombreDeCuenta"].ToString();
+                                string nombreReal = reader["nombreReal"].ToString();
+                                string texto = reader["texto"].ToString();
+                                string fechaYHora = reader["fechaYHora"].ToString();
+                                string video = reader["texto"].ToString();
+                                string imagen = await CargarImagenDeGitHub(reader["imagen"].ToString());
 
+                                var mensaje = new Mensajes
+                                {
+                                    idMensaje = idMensaje,
+                                    nombreDeCuenta = nombreDeCuenta,
+                                    nombreReal = nombreReal,
+                                    texto = texto,
+                                    fechaYHora = fechaYHora,
+                                    video = video,
+                                    imagen = imagen
+                                };
+
+                                mensajesList.Add(mensaje);
+                            }
+
+                            conn.Close();
+
+                            if (mensajesList.Count > 0)
+                            {
+                                return Json(mensajesList);
+                            }
+                            else
+                            {
+                                return Json("No se encontraron Mensajes para el grupo especificado");
+                            }
+                        }
                         conn.Close();
-
-                        if (mensajesList.Count > 0)
-                        {
-                            return Json(mensajesList);
-                        }
-                        else
-                        {
-                            return Json("No se encontraron mensajes para este grupo.");
-                        }
                     }
                 }
                 catch (Exception ex)
@@ -466,7 +492,7 @@ namespace API_Grupos.Controllers
                     MySqlCommand cmd = new MySqlCommand(
                         "DELETE FROM Reportes WHERE nombreGrupo = @nombreReal;" +
                         "DELETE FROM Participa WHERE nombreReal = @nombreReal;" +
-                        "DELETE FROM Mensajes WHERE nombreGrupo = @nombreReal; " +
+                        "DELETE FROM Mensajes WHERE nombreReal = @nombreReal; " +
                         "DELETE FROM PostGrupo WHERE nombreReal = @nombreReal;" +
                         "DELETE FROM Grupos WHERE nombreReal = @nombreReal", conn);
                     cmd.Parameters.AddWithValue("@nombreReal", groupData.nombreReal);
@@ -544,23 +570,42 @@ namespace API_Grupos.Controllers
             if (TestToken(mensajeData.token))
             {
                 string linkImagen = null;
-                if (string.IsNullOrEmpty(mensajeData.nombreReal) || string.IsNullOrEmpty(mensajeData.nombreDeCuenta) || string.IsNullOrEmpty(mensajeData.fechaYHora) || string.IsNullOrEmpty(mensajeData.texto))
+
+                // Verificar datos recibidos
+                Console.WriteLine($"nombreReal: {mensajeData.nombreReal}");
+                Console.WriteLine($"nombreDeCuenta: {mensajeData.nombreDeCuenta}");
+                Console.WriteLine($"fechaYHora: {mensajeData.fechaYHora}");
+                Console.WriteLine($"texto: {mensajeData.texto}");
+                Console.WriteLine($"imagen: {mensajeData.imagen}");
+
+                if (string.IsNullOrEmpty(mensajeData.nombreReal) ||
+                    string.IsNullOrEmpty(mensajeData.nombreDeCuenta) ||
+                    string.IsNullOrEmpty(mensajeData.fechaYHora) ||
+                    string.IsNullOrEmpty(mensajeData.texto))
                 {
                     return Json("Datos insuficientes");
                 }
+
+
                 try
                 {
                     using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
                         conn.Open();
-
                         MySqlCommand cmd = new MySqlCommand("INSERT INTO Mensajes (nombreDeCuenta,nombreReal,texto,fechaYHora,video,imagen) VALUES (@nombreDeCuenta,@nombreReal,@texto,@fechaYHora,@video,@imagen)", conn);
                         cmd.Parameters.AddWithValue("@nombreDeCuenta", mensajeData.nombreDeCuenta);
                         cmd.Parameters.AddWithValue("@nombreReal", mensajeData.nombreReal);
                         cmd.Parameters.AddWithValue("@texto", mensajeData.texto);
                         cmd.Parameters.AddWithValue("@fechaYHora", mensajeData.fechaYHora);
                         cmd.Parameters.AddWithValue("@video", mensajeData.video);
-                        cmd.Parameters.AddWithValue("@imagen", linkImagen = await SubirImagenAGitHub(mensajeData.imagen, "ChatImages"));
+
+                        linkImagen = await SubirImagenAGitHub(mensajeData.imagen, "ChatImages");
+                        if (string.IsNullOrEmpty(linkImagen))
+                        {
+                            return Json("No se pudo subir la imagen");
+                        }
+
+                        cmd.Parameters.AddWithValue("@imagen", linkImagen);
                         cmd.ExecuteNonQuery();
                         conn.Close();
                         return Json("Se añadio el mensaje correctamente");
@@ -568,7 +613,7 @@ namespace API_Grupos.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return Json($"No se pudo añadir el mensaje: {ex.Message}");
+                    return Json($"No se pudo añadir el mensaje: {ex.Message}, {ex.InnerException?.Message}");
                 }
             }
             else
@@ -577,6 +622,7 @@ namespace API_Grupos.Controllers
             }
         }
 
+
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("ActualizarMensaje")]
         public async Task<dynamic> ActualizarMensaje([FromBody] Mensajes mensajeData)
@@ -584,29 +630,78 @@ namespace API_Grupos.Controllers
             if (TestToken(mensajeData.token))
             {
                 string linkImagen = null;
-                if (string.IsNullOrEmpty(mensajeData.nombreReal) || string.IsNullOrEmpty(mensajeData.idMensaje) || string.IsNullOrEmpty(mensajeData.texto))
+                Console.WriteLine($"nombreReal: {mensajeData.nombreReal}");
+                Console.WriteLine($"nombreDeCuenta: {mensajeData.nombreDeCuenta}");
+                Console.WriteLine($"fechaYHora: {mensajeData.fechaYHora}");
+                Console.WriteLine($"texto: {mensajeData.texto}");
+                Console.WriteLine($"imagen: {mensajeData.imagen}");
+
+                if (string.IsNullOrEmpty(mensajeData.idMensaje))
                 {
-                    return Json("Datos inválidos");
+                    return Json("Datos insuficientes");
                 }
                 try
                 {
-                    using (MySqlConnection conn = new MySqlConnection(connectionString))
-                    {
-                        conn.Open();
-
-                        MySqlCommand cmd = new MySqlCommand("UPDATE Mensajes SET texto = @texto, video = @video, imagen = @imagen, fechaYHora = @fechaYHora WHERE idMensaje = @idMensaje AND nombreReal = @nombreReal", conn);
-
-                        cmd.Parameters.AddWithValue("@texto", mensajeData.texto);
-                        cmd.Parameters.AddWithValue("@video", mensajeData.video);
-                        cmd.Parameters.AddWithValue("@imagen", linkImagen = await SubirImagenAGitHub(mensajeData.imagen, "ChatImages"));
-                        cmd.Parameters.AddWithValue("@fechaYHora", mensajeData.fechaYHora);
-                        cmd.Parameters.AddWithValue("@idMensaje", mensajeData.idMensaje);
-                        cmd.Parameters.AddWithValue("@nombreReal", mensajeData.nombreReal);
-
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                        return Json("Se actualizó el mensaje correctamente");
-                    }
+                    if (!string.IsNullOrEmpty(mensajeData.texto) && !string.IsNullOrEmpty(mensajeData.imagen))
+                        using (MySqlConnection conn = new MySqlConnection(connectionString))
+                        {
+                            conn.Open();
+                            MySqlCommand cmd = new MySqlCommand(@"UPDATE Mensajes SET texto = @texto, imagen = @imagen WHERE idMensaje = @idMensaje", conn);
+                            cmd.Parameters.AddWithValue("@texto", mensajeData.texto);
+                            cmd.Parameters.AddWithValue("@imagen", linkImagen = await SubirImagenAGitHub(mensajeData.imagen, "ChatImages"));
+                            cmd.Parameters.AddWithValue("@idMensaje", mensajeData.idMensaje);
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
+                            return Json("Se actualizó el mensaje correctamente");
+                        }else
+                    if (!string.IsNullOrEmpty(mensajeData.texto) && !string.IsNullOrEmpty(mensajeData.video))
+                        using (MySqlConnection conn = new MySqlConnection(connectionString))
+                        {
+                            conn.Open();
+                            MySqlCommand cmd = new MySqlCommand(@"UPDATE Mensajes SET texto = @texto, video = @video WHERE idMensaje = @idMensaje", conn);
+                            cmd.Parameters.AddWithValue("@texto", mensajeData.texto);
+                            cmd.Parameters.AddWithValue("@video", mensajeData.video);
+                            cmd.Parameters.AddWithValue("@imagen", linkImagen = await SubirImagenAGitHub(mensajeData.imagen, "ChatImages"));
+                            cmd.Parameters.AddWithValue("@idMensaje", mensajeData.idMensaje);
+                            cmd.Parameters.AddWithValue("@nombreReal", mensajeData.nombreReal);
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
+                            return Json("Se actualizó el mensaje correctamente");
+                        }else
+                    if (!string.IsNullOrEmpty(mensajeData.texto))
+                        using (MySqlConnection conn = new MySqlConnection(connectionString))
+                        {
+                            conn.Open();
+                            MySqlCommand cmd = new MySqlCommand(@"UPDATE Mensajes SET texto = @texto WHERE idMensaje = @idMensaje", conn);
+                            cmd.Parameters.AddWithValue("@texto", mensajeData.texto);
+                            cmd.Parameters.AddWithValue("@idMensaje", mensajeData.idMensaje);
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
+                            return Json("Se actualizó el mensaje correctamente");
+                        }else
+                    if (!string.IsNullOrEmpty(mensajeData.imagen))
+                        using (MySqlConnection conn = new MySqlConnection(connectionString))
+                        {
+                            conn.Open();
+                            MySqlCommand cmd = new MySqlCommand(@"UPDATE Mensajes SET imagen = @imagen WHERE idMensaje = @idMensaje", conn);
+                            cmd.Parameters.AddWithValue("@imagen", linkImagen = await SubirImagenAGitHub(mensajeData.imagen, "ChatImages"));
+                            cmd.Parameters.AddWithValue("@idMensaje", mensajeData.idMensaje);
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
+                            return Json("Se actualizó el mensaje correctamente");
+                        }else
+                    if (!string.IsNullOrEmpty(mensajeData.video))
+                        using (MySqlConnection conn = new MySqlConnection(connectionString))
+                        {
+                            conn.Open();
+                            MySqlCommand cmd = new MySqlCommand(@"UPDATE Mensajes SET video = @video WHERE idMensaje = @idMensaje", conn);
+                            cmd.Parameters.AddWithValue("@video", mensajeData.video);
+                            cmd.Parameters.AddWithValue("@idMensaje", mensajeData.idMensaje);
+                            cmd.ExecuteNonQuery();
+                            conn.Close();
+                            return Json("Se actualizó el mensaje correctamente");
+                        }
+                    else { return Json($"No se pudo actualizar el mensaje"); }
                 }
                 catch (Exception ex)
                 {
