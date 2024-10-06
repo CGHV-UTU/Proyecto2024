@@ -118,6 +118,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Font.resx</DependentUpon>
     </Compile>
+    <Compile Include="Grupo-EventoParaListar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Grupo-EventoParaListar.Designer.cs">
+      <DependentUpon>Grupo-EventoParaListar.cs</DependentUpon>
+    </Compile>
     <Compile Include="PaginaDeUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -205,6 +211,9 @@
     <EmbeddedResource Include="Font.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Font.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Grupo-EventoParaListar.resx">
+      <DependentUpon>Grupo-EventoParaListar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="IniciarSesion.resx">
       <DependentUpon>IniciarSesion.cs</DependentUpon>

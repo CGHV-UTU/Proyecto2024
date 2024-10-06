@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,7 +28,6 @@ namespace Frontend
 
         private async void Iniciar()
         {
-            
             this.SuspendLayout();
             // panelPosts
             this.PanelMostrar.AutoScroll = true;
@@ -44,6 +45,86 @@ namespace Frontend
             this.Name = "Form1";
             this.Text = "Infinite Scroll Posts";
             this.ResumeLayout(false);
+        }
+
+        static async Task<DataTable> Eventos(string usuario, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { user=usuario, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/eventoParticipa", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject<DataTable>(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        private async void CargarEventos()
+        {
+            DataTable eventos = await Eventos(user, token);
+            if (eventos != null)
+            {
+                for (int i = 0; i < eventos.Rows.Count; i++)
+                {
+                    int idevento = Convert.ToInt32(eventos.Rows[i]["idEvento"]);
+                    var eventControl = new Grupo_EventoParaListar(user, token, "",idevento);
+                    if (PanelMostrar.Controls.Count > 0)
+                    {
+                        var lastControl = PanelMostrar.Controls[PanelMostrar.Controls.Count - 1];
+                        eventControl.Location = new Point(0, lastControl.Bottom);
+                    }
+                    else
+                    {
+                        eventControl.Location = new Point(0, 0);
+                    }
+                    PanelMostrar.Controls.Add(eventControl);
+                }
+            }
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PictureBoxAmigos_Click(object sender, EventArgs e)
+        {
+            PictureBoxAmigos.Image = Frontend.Properties.Resources.amigos_seleccionar_removebg_preview;
+            PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_removebg_preview;
+            PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_removebg_preview;
+            pictureBox4.Visible = true;
+            pictureBox5.Visible = false;
+            pictureBox6.Visible = false;
+        }
+
+        private void PictureBoxGrupos_Click(object sender, EventArgs e)
+        {
+            PictureBoxAmigos.Image = Frontend.Properties.Resources.amigos_removebg_preview;
+            PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_removebg_preview;
+            PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_seleccionar_removebg_preview__1_;
+            pictureBox4.Visible = false;
+            pictureBox5.Visible = true;
+            pictureBox6.Visible = false;
+        }
+
+        private void PictureBoxEventos_Click(object sender, EventArgs e)
+        {
+            PictureBoxAmigos.Image = Frontend.Properties.Resources.amigos_removebg_preview;
+            PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_seleccionado_removebg_preview1;
+            PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_removebg_preview;
+            pictureBox4.Visible = false;
+            pictureBox5.Visible = false;
+            pictureBox6.Visible = true;
+            CargarEventos();
         }
     }
 }
