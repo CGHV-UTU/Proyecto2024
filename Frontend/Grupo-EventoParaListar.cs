@@ -30,7 +30,7 @@ namespace Frontend
             AplicarDatos();
         }
 
-        static async Task<string[]> BuscarEvento(int id, string token)
+        static async Task<dynamic> BuscarEvento(int id, string token)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -42,7 +42,7 @@ namespace Frontend
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
-                    return new string[] { data.titulo, data.foto };
+                    return data;
                 }
                 catch
                 {
@@ -53,19 +53,14 @@ namespace Frontend
 
         private async void AplicarDatos()
         {
-            if (idevento>0)
-            {
-                var data = await BuscarEvento(idevento, token);
-                this.lblNombre.Text = data[0];
-                byte[] imagen = Convert.FromBase64String(data[1]);
-                MemoryStream ms = new MemoryStream(imagen);
-                Bitmap bitmap = new Bitmap(ms);
-                this.PictureBoxImagen.Image = bitmap;
-            }
-            else
-            {
-                
-            }
+            //algo falla aca
+            var data = await BuscarEvento(idevento, token);
+            MessageBox.Show("title" + data);
+            this.lblNombre.Text = data.titulo;
+            byte[] imagen = Convert.FromBase64String(data.foto);
+            MemoryStream ms = new MemoryStream(imagen);
+            Bitmap bitmap = new Bitmap(ms);
+            this.PictureBoxImagen.Image = bitmap;
         }
 
         private void Iniciar()

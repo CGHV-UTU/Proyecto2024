@@ -35,20 +35,28 @@ namespace Frontend
             this.btnCrear = new System.Windows.Forms.PictureBox();
             this.btnVideo = new System.Windows.Forms.PictureBox();
             this.btnImagen = new System.Windows.Forms.PictureBox();
-            this.X = new System.Windows.Forms.Label();
+            this.lblPost = new System.Windows.Forms.Label();
+            this.lblEvento = new System.Windows.Forms.Label();
+            this.lblGrupo = new System.Windows.Forms.Label();
+            this.btnUbicacion = new System.Windows.Forms.PictureBox();
+            this.txtNombre = new System.Windows.Forms.TextBox();
+            this.txtDescripcion = new System.Windows.Forms.TextBox();
+            this.dtpFechaInicio = new System.Windows.Forms.DateTimePicker();
+            this.dtpFechaFinal = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnCrear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnVideo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnImagen)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnUbicacion)).BeginInit();
             this.SuspendLayout();
             // 
             // txtTexto
             // 
             this.txtTexto.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.txtTexto.Location = new System.Drawing.Point(12, 37);
+            this.txtTexto.Location = new System.Drawing.Point(12, 44);
             this.txtTexto.Multiline = true;
             this.txtTexto.Name = "txtTexto";
-            this.txtTexto.Size = new System.Drawing.Size(381, 142);
+            this.txtTexto.Size = new System.Drawing.Size(381, 135);
             this.txtTexto.TabIndex = 0;
             // 
             // txtUrl
@@ -110,19 +118,86 @@ namespace Frontend
             this.btnImagen.TabStop = false;
             this.btnImagen.Click += new System.EventHandler(this.btnImagen_Click);
             // 
-            // X
+            // lblPost
             // 
-            this.X.AutoSize = true;
-            this.X.BackColor = System.Drawing.Color.Transparent;
-            this.X.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.X.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.X.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.X.Location = new System.Drawing.Point(368, 4);
-            this.X.Name = "X";
-            this.X.Size = new System.Drawing.Size(25, 30);
-            this.X.TabIndex = 30;
-            this.X.Text = "X";
-            this.X.Click += new System.EventHandler(this.X_Click);
+            this.lblPost.AutoSize = true;
+            this.lblPost.Location = new System.Drawing.Point(12, 9);
+            this.lblPost.Name = "lblPost";
+            this.lblPost.Size = new System.Drawing.Size(28, 13);
+            this.lblPost.TabIndex = 30;
+            this.lblPost.Text = "Post";
+            this.lblPost.Click += new System.EventHandler(this.lblPost_Click);
+            // 
+            // lblEvento
+            // 
+            this.lblEvento.AutoSize = true;
+            this.lblEvento.Location = new System.Drawing.Point(190, 9);
+            this.lblEvento.Name = "lblEvento";
+            this.lblEvento.Size = new System.Drawing.Size(41, 13);
+            this.lblEvento.TabIndex = 31;
+            this.lblEvento.Text = "Evento";
+            this.lblEvento.Click += new System.EventHandler(this.lblEvento_Click);
+            // 
+            // lblGrupo
+            // 
+            this.lblGrupo.AutoSize = true;
+            this.lblGrupo.Location = new System.Drawing.Point(358, 9);
+            this.lblGrupo.Name = "lblGrupo";
+            this.lblGrupo.Size = new System.Drawing.Size(36, 13);
+            this.lblGrupo.TabIndex = 32;
+            this.lblGrupo.Text = "Grupo";
+            this.lblGrupo.Click += new System.EventHandler(this.lblGrupo_Click);
+            // 
+            // btnUbicacion
+            // 
+            this.btnUbicacion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUbicacion.BackColor = System.Drawing.Color.Transparent;
+            this.btnUbicacion.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnUbicacion.Image = global::Frontend.Properties.Resources.buscar;
+            this.btnUbicacion.Location = new System.Drawing.Point(226, 185);
+            this.btnUbicacion.Name = "btnUbicacion";
+            this.btnUbicacion.Size = new System.Drawing.Size(50, 50);
+            this.btnUbicacion.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btnUbicacion.TabIndex = 33;
+            this.btnUbicacion.TabStop = false;
+            this.btnUbicacion.Click += new System.EventHandler(this.btnUbicacion_Click);
+            // 
+            // txtNombre
+            // 
+            this.txtNombre.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.txtNombre.Location = new System.Drawing.Point(12, 44);
+            this.txtNombre.Name = "txtNombre";
+            this.txtNombre.Size = new System.Drawing.Size(381, 20);
+            this.txtNombre.TabIndex = 34;
+            // 
+            // txtDescripcion
+            // 
+            this.txtDescripcion.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.txtDescripcion.Location = new System.Drawing.Point(12, 70);
+            this.txtDescripcion.Multiline = true;
+            this.txtDescripcion.Name = "txtDescripcion";
+            this.txtDescripcion.Size = new System.Drawing.Size(381, 86);
+            this.txtDescripcion.TabIndex = 35;
+            // 
+            // dtpFechaInicio
+            // 
+            this.dtpFechaInicio.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            this.dtpFechaInicio.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpFechaInicio.Location = new System.Drawing.Point(15, 186);
+            this.dtpFechaInicio.Name = "dtpFechaInicio";
+            this.dtpFechaInicio.ShowUpDown = true;
+            this.dtpFechaInicio.Size = new System.Drawing.Size(200, 20);
+            this.dtpFechaInicio.TabIndex = 36;
+            // 
+            // dtpFechaFinal
+            // 
+            this.dtpFechaFinal.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            this.dtpFechaFinal.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpFechaFinal.Location = new System.Drawing.Point(15, 212);
+            this.dtpFechaFinal.Name = "dtpFechaFinal";
+            this.dtpFechaFinal.ShowUpDown = true;
+            this.dtpFechaFinal.Size = new System.Drawing.Size(200, 20);
+            this.dtpFechaFinal.TabIndex = 37;
             // 
             // Post
             // 
@@ -130,7 +205,14 @@ namespace Frontend
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(400, 450);
-            this.Controls.Add(this.X);
+            this.Controls.Add(this.dtpFechaFinal);
+            this.Controls.Add(this.dtpFechaInicio);
+            this.Controls.Add(this.txtDescripcion);
+            this.Controls.Add(this.txtNombre);
+            this.Controls.Add(this.btnUbicacion);
+            this.Controls.Add(this.lblGrupo);
+            this.Controls.Add(this.lblEvento);
+            this.Controls.Add(this.lblPost);
             this.Controls.Add(this.txtUrl);
             this.Controls.Add(this.pbxImagen);
             this.Controls.Add(this.btnCrear);
@@ -143,6 +225,7 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.btnCrear)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnVideo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnImagen)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnUbicacion)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -156,6 +239,13 @@ namespace Frontend
         private System.Windows.Forms.PictureBox btnCrear;
         private System.Windows.Forms.PictureBox pbxImagen;
         private System.Windows.Forms.TextBox txtUrl;
-        private System.Windows.Forms.Label X;
+        private System.Windows.Forms.Label lblPost;
+        private System.Windows.Forms.Label lblEvento;
+        private System.Windows.Forms.Label lblGrupo;
+        private System.Windows.Forms.PictureBox btnUbicacion;
+        private System.Windows.Forms.TextBox txtNombre;
+        private System.Windows.Forms.TextBox txtDescripcion;
+        private System.Windows.Forms.DateTimePicker dtpFechaInicio;
+        private System.Windows.Forms.DateTimePicker dtpFechaFinal;
     }
 }

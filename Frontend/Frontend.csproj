@@ -76,6 +76,12 @@
     <Compile Include="Busqueda.Designer.cs">
       <DependentUpon>Busqueda.cs</DependentUpon>
     </Compile>
+    <Compile Include="Chat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Chat.Designer.cs">
+      <DependentUpon>Chat.cs</DependentUpon>
+    </Compile>
     <Compile Include="Comentarios.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +195,9 @@
     </Compile>
     <EmbeddedResource Include="Busqueda.resx">
       <DependentUpon>Busqueda.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Chat.resx">
+      <DependentUpon>Chat.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Comentarios.resx">
       <DependentUpon>Comentarios.cs</DependentUpon>

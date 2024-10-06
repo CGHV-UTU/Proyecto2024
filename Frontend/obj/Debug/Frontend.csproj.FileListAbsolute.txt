@@ -400,3 +400,5 @@ C:\Users\FedeG\Downloads\3009front\Proyecto2024\Frontend\obj\Debug\Frontend.exe
 C:\Users\FedeG\Downloads\3009front\Proyecto2024\Frontend\obj\Debug\Frontend.pdb
 C:\Users\FedeG\Downloads\3009front\Proyecto2024\Frontend\obj\Debug\Frontend.Busqueda.resources
 C:\Users\FedeG\Downloads\3009front\Proyecto2024\Frontend\obj\Debug\Frontend.Comunidad.resources
+C:\Users\FedeG\Downloads\3009front\Proyecto2024\Frontend\obj\Debug\Frontend.Chat.resources
+C:\Users\FedeG\Downloads\3009front\Proyecto2024\Frontend\obj\Debug\Frontend.Grupo_EventoParaListar.resources
