@@ -55,12 +55,22 @@ namespace Frontend
         {
             //algo falla aca
             var data = await BuscarEvento(idevento, token);
-            MessageBox.Show("title" + data);
+         //   MessageBox.Show("title" + data);
             this.lblNombre.Text = data.titulo;
-            byte[] imagen = Convert.FromBase64String(data.foto);
-            MemoryStream ms = new MemoryStream(imagen);
-            Bitmap bitmap = new Bitmap(ms);
-            this.PictureBoxImagen.Image = bitmap;
+            try
+            {
+                byte[] imagen = Convert.FromBase64String(Convert.ToString(data.foto));
+                MemoryStream ms = new MemoryStream(imagen);
+                Bitmap bitmap = new Bitmap(ms);
+                this.PictureBoxImagen.Image = bitmap;
+                if (this.PictureBoxImagen.Image == null)
+                {
+                    MessageBox.Show("Imagen nula");
+                }
+            } catch (Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error " + ex);
+            }
         }
 
         private void Iniciar()
