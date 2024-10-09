@@ -106,7 +106,7 @@ namespace Frontend
                     }
                     else
                     {
-                        eventControl.Location = new Point(0, pictureBox4.Bottom+20);
+                        eventControl.Location = new Point(0, 52);
                     }
                     // aca
                 }
@@ -129,7 +129,7 @@ namespace Frontend
                     }
                     else
                     {
-                        eventControl.Location = new Point(0, pictureBox4.Bottom + 20);
+                        eventControl.Location = new Point(0, 52);
                     }
                     // aca
                 }
@@ -141,22 +141,12 @@ namespace Frontend
 
         }
 
-        private void PictureBoxAmigos_Click(object sender, EventArgs e)
-        {
-            PictureBoxAmigos.Image = Frontend.Properties.Resources.amigos_seleccionar_removebg_preview;
-            PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_removebg_preview;
-            PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_removebg_preview;
-            pictureBox4.Visible = true;
-            pictureBox5.Visible = false;
-            pictureBox6.Visible = false;
-        }
+        
 
         private void PictureBoxGrupos_Click(object sender, EventArgs e)
         {
-            PictureBoxAmigos.Image = Frontend.Properties.Resources.amigos_removebg_preview;
             PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_removebg_preview;
             PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_seleccionar_removebg_preview__1_;
-            pictureBox4.Visible = false;
             pictureBox5.Visible = true;
             pictureBox6.Visible = false;
             CargarGrupos();
@@ -164,10 +154,8 @@ namespace Frontend
 
         private void PictureBoxEventos_Click(object sender, EventArgs e)
         {
-            PictureBoxAmigos.Image = Frontend.Properties.Resources.amigos_removebg_preview;
             PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_seleccionado_removebg_preview1;
             PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_removebg_preview;
-            pictureBox4.Visible = false;
             pictureBox5.Visible = false;
             pictureBox6.Visible = true;
             CargarEventos();

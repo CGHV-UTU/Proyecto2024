@@ -34,26 +34,26 @@ namespace Frontend
             this.PanelMostrarUsuario = new System.Windows.Forms.Panel();
             this.PanelPostear = new System.Windows.Forms.Panel();
             this.PanelComentarios = new System.Windows.Forms.Panel();
+            this.PanelNotificaciones = new System.Windows.Forms.Panel();
             this.PictureBoxSalir = new System.Windows.Forms.PictureBox();
             this.PanelSuperior = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.PictureBoxUsuario = new System.Windows.Forms.PictureBox();
             this.PictureboxLogo = new System.Windows.Forms.PictureBox();
             this.PictureBoxConfiguraciones = new System.Windows.Forms.PictureBox();
             this.PictureBoxNotificaciones = new System.Windows.Forms.PictureBox();
             this.PictureBoxCrear = new System.Windows.Forms.PictureBox();
             this.PictureBoxComunidad = new System.Windows.Forms.PictureBox();
-            this.PanelNotificaciones = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.PanelPosts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxSalir)).BeginInit();
             this.PanelSuperior.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureboxLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxConfiguraciones)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxNotificaciones)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCrear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxComunidad)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // PanelPosts
@@ -89,6 +89,18 @@ namespace Frontend
             this.PanelComentarios.Size = new System.Drawing.Size(532, 613);
             this.PanelComentarios.TabIndex = 13;
             // 
+            // PanelNotificaciones
+            // 
+            this.PanelNotificaciones.AutoScroll = true;
+            this.PanelNotificaciones.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.PanelNotificaciones.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PanelNotificaciones.Location = new System.Drawing.Point(596, 56);
+            this.PanelNotificaciones.MaximumSize = new System.Drawing.Size(600, 419);
+            this.PanelNotificaciones.Name = "PanelNotificaciones";
+            this.PanelNotificaciones.Size = new System.Drawing.Size(600, 419);
+            this.PanelNotificaciones.TabIndex = 0;
+            this.PanelNotificaciones.Visible = false;
+            // 
             // PictureBoxSalir
             // 
             this.PictureBoxSalir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -118,6 +130,19 @@ namespace Frontend
             this.PanelSuperior.Name = "PanelSuperior";
             this.PanelSuperior.Size = new System.Drawing.Size(1264, 50);
             this.PanelSuperior.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox1.Image = global::Frontend.Properties.Resources.buscar_claro;
+            this.pictureBox1.Location = new System.Drawing.Point(1090, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(50, 50);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
             // 
             // PictureBoxUsuario
             // 
@@ -191,7 +216,7 @@ namespace Frontend
             this.PictureBoxComunidad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PictureBoxComunidad.BackColor = System.Drawing.Color.Transparent;
             this.PictureBoxComunidad.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PictureBoxComunidad.Image = global::Frontend.Properties.Resources.buscar_claro;
+            this.PictureBoxComunidad.Image = global::Frontend.Properties.Resources.Comunidad_Claro1;
             this.PictureBoxComunidad.Location = new System.Drawing.Point(133, 0);
             this.PictureBoxComunidad.Name = "PictureBoxComunidad";
             this.PictureBoxComunidad.Size = new System.Drawing.Size(50, 50);
@@ -199,31 +224,6 @@ namespace Frontend
             this.PictureBoxComunidad.TabIndex = 2;
             this.PictureBoxComunidad.TabStop = false;
             this.PictureBoxComunidad.Click += new System.EventHandler(this.PictureBoxComunidad_Click);
-            // 
-            // PanelNotificaciones
-            // 
-            this.PanelNotificaciones.AutoScroll = true;
-            this.PanelNotificaciones.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.PanelNotificaciones.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PanelNotificaciones.Location = new System.Drawing.Point(596, 56);
-            this.PanelNotificaciones.MaximumSize = new System.Drawing.Size(600, 419);
-            this.PanelNotificaciones.Name = "PanelNotificaciones";
-            this.PanelNotificaciones.Size = new System.Drawing.Size(600, 419);
-            this.PanelNotificaciones.TabIndex = 0;
-            this.PanelNotificaciones.Visible = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Image = global::Frontend.Properties.Resources.buscar_claro;
-            this.pictureBox1.Location = new System.Drawing.Point(1090, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 6;
-            this.pictureBox1.TabStop = false;
             // 
             // Inicio
             // 
@@ -243,13 +243,13 @@ namespace Frontend
             this.PanelPosts.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxSalir)).EndInit();
             this.PanelSuperior.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureboxLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxConfiguraciones)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxNotificaciones)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCrear)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxComunidad)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }

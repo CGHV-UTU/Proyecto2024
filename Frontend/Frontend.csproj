@@ -377,6 +377,8 @@
     <None Include="Resources\grupos_seleccionar-removebg-preview1.png" />
     <None Include="Resources\grupos_seleccionar-removebg-preview %281%29.png" />
     <None Include="Resources\eventos_seleccionado-removebg-preview1.png" />
+    <None Include="Resources\Comunidad.png" />
+    <None Include="Resources\Comunidad Claro.png" />
     <Content Include="Resources\IconoInfini.ico" />
     <None Include="Resources\Logo_Infini_Completo.jpeg" />
     <None Include="Resources\salir.png" />
