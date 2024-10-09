@@ -68,6 +68,27 @@ namespace Frontend
             }
         }
 
+        static async Task<dynamic> grupos(string usuario, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = usuario, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/ObtenerGruposPorUsuario", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
         private async void CargarEventos()
         {
             DataTable eventos = await Eventos(user, token);
@@ -77,6 +98,7 @@ namespace Frontend
                 {
                     int idevento = Convert.ToInt32(eventos.Rows[i]["idEvento"]);
                     var eventControl = new Grupo_EventoParaListar(user, token, "",idevento);
+                    PanelMostrar.Controls.Add(eventControl);// probando, antes iba debajo del else
                     if (PanelMostrar.Controls.Count > 0)
                     {
                         var lastControl = PanelMostrar.Controls[PanelMostrar.Controls.Count - 1];
@@ -84,9 +106,32 @@ namespace Frontend
                     }
                     else
                     {
-                        eventControl.Location = new Point(0, 0);
+                        eventControl.Location = new Point(0, pictureBox4.Bottom+20);
                     }
-                    PanelMostrar.Controls.Add(eventControl);
+                    // aca
+                }
+            }
+        }
+
+        private async void CargarGrupos()
+        {
+            var lista = await grupos(user, token);
+            if (lista != null)
+            {
+                foreach(var elemento in lista)
+                {
+                    var eventControl = new Grupo_EventoParaListar(user, token, Convert.ToString(elemento.nombreReal), 0);
+                    PanelMostrar.Controls.Add(eventControl);// probando, antes iba debajo del else
+                    if (PanelMostrar.Controls.Count > 0)
+                    {
+                        var lastControl = PanelMostrar.Controls[PanelMostrar.Controls.Count - 1];
+                        eventControl.Location = new Point(0, lastControl.Bottom);
+                    }
+                    else
+                    {
+                        eventControl.Location = new Point(0, pictureBox4.Bottom + 20);
+                    }
+                    // aca
                 }
             }
         }
@@ -114,6 +159,7 @@ namespace Frontend
             pictureBox4.Visible = false;
             pictureBox5.Visible = true;
             pictureBox6.Visible = false;
+            CargarGrupos();
         }
 
         private void PictureBoxEventos_Click(object sender, EventArgs e)

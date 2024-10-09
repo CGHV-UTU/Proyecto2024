@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -51,25 +52,70 @@ namespace Frontend
             }
         }
 
+        static async Task<dynamic> BuscarGrupo(string nombreReal, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreReal = nombreReal, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/ObtenerGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
         private async void AplicarDatos()
         {
-            //algo falla aca
-            var data = await BuscarEvento(idevento, token);
-         //   MessageBox.Show("title" + data);
-            this.lblNombre.Text = data.titulo;
-            try
+            if (idevento>0)
             {
-                byte[] imagen = Convert.FromBase64String(Convert.ToString(data.foto));
-                MemoryStream ms = new MemoryStream(imagen);
-                Bitmap bitmap = new Bitmap(ms);
-                this.PictureBoxImagen.Image = bitmap;
-                if (this.PictureBoxImagen.Image == null)
+                var data = await BuscarEvento(idevento, token);
+                this.lblNombre.Text = data.titulo;
+                try
                 {
-                    MessageBox.Show("Imagen nula");
+                    byte[] imagen = Convert.FromBase64String(Convert.ToString(data.foto));
+                    MemoryStream ms = new MemoryStream(imagen);
+                    Bitmap bitmap = new Bitmap(ms);
+                    this.PictureBoxImagen.Image = bitmap;
+                    if (this.PictureBoxImagen.Image == null)
+                    {
+                        MessageBox.Show("Imagen nula");
+                    }
                 }
-            } catch (Exception ex)
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ha ocurrido un error " + ex);
+                }
+            }
+            else
             {
-                MessageBox.Show("Ha ocurrido un error " + ex);
+                MessageBox.Show("a");
+                var data = await BuscarGrupo(nombreReal, token);
+                this.lblNombre.Text = data.nombreVisible;
+                MessageBox.Show("a"+data.nombreVisible);
+                try
+                {
+                    byte[] imagen = Convert.FromBase64String(Convert.ToString(data.foto));
+                    MemoryStream ms = new MemoryStream(imagen);
+                    Bitmap bitmap = new Bitmap(ms);
+                    this.PictureBoxImagen.Image = bitmap;
+                    if (this.PictureBoxImagen.Image == null)
+                    {
+                        MessageBox.Show("Imagen nula");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ha ocurrido un error " + ex);
+                }
             }
         }
 
@@ -88,7 +134,7 @@ namespace Frontend
             this.lblNombre.TabIndex = 0;
 
             // PictureBoxImagen
-            this.PictureBoxImagen.Location = new System.Drawing.Point(13, 7);
+            this.PictureBoxImagen.Location = new System.Drawing.Point(77, 7);
             this.PictureBoxImagen.Name = "PictureBoxImagen";
             this.PictureBoxImagen.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxImagen.SizeMode = PictureBoxSizeMode.StretchImage;

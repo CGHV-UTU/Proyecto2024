@@ -81,6 +81,17 @@ namespace Frontend
                     }
                     break;
                 case "grupo":
+                    if (string.IsNullOrEmpty(txtNombre.Text))
+                    {
+                        MessageBox.Show("No puede realizar un grupo sin nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MemoryStream ms = new MemoryStream();
+                        pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
+                        byte[] data = ms.ToArray();
+                        PublicarGrupo(txtNombre.Text, "default", data, txtDescripcion.Text, token);
+                    }
                     break;
             }
         }
@@ -159,6 +170,24 @@ namespace Frontend
                     var datos = new { titulo = titulo, ubicacion= ubicacion, foto = Convert.ToBase64String(imagen), user = user, fechaYhora_Inicio = fechainicio, fechaYhora_Final=fechafin, token = token, descripcion=descripcion };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/hacerEvento", content);
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                    Console.ReadLine();
+                }
+            }
+        }
+        public static async Task PublicarGrupo(string nombreVisible, string configuracion, byte[] imagen, string descripcion, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreVisible = nombreVisible, configuracion = configuracion, imagen = Convert.ToBase64String(imagen), nombreDeCuenta = user, token = token, descripcion = descripcion };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44304/RegistrarGrupo", content);
                     response.EnsureSuccessStatusCode();
                 }
                 catch (Exception ex)
