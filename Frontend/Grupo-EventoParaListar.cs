@@ -20,6 +20,9 @@ namespace Frontend
         private int idevento;
         private string token;
         private string user;
+        private dynamic datos;
+        public event EventHandler<PersonalizedArgs> AbrirEvento;
+        public event EventHandler<PersonalizedArgs> AbrirGrupo;
         public Grupo_EventoParaListar(string usuario, string token, string nombreRealGrupo="", int idEvento=0)
         {
             this.nombreReal = nombreRealGrupo;
@@ -94,6 +97,7 @@ namespace Frontend
                 {
                     MessageBox.Show("Ha ocurrido un error " + ex);
                 }
+                datos = data;
             }
             else
             {
@@ -116,6 +120,7 @@ namespace Frontend
                 {
                     MessageBox.Show("Ha ocurrido un error " + ex);
                 }
+                datos = data;
             }
         }
 
@@ -156,9 +161,14 @@ namespace Frontend
 
         private void Grupo_EventoParaListar_Click(object sender, EventArgs e)
         {
-            //Pensé que acá podíamos poner un evento para abrir la ventana de grupo
-            //o evento, pero hay que diferenciarlos de alguna manera.
-            // Evento evento = new Evento(EventData igual que en la API)
+            if (!nombreReal.Equals(""))
+            {
+                AbrirEvento?.Invoke(this, new PersonalizedArgs(datos));
+            }
+            else
+            {
+                AbrirGrupo?.Invoke(this, new PersonalizedArgs(datos));
+            }
         }
     }
 }

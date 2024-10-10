@@ -8,10 +8,10 @@ namespace Frontend
 {
     public class PersonalizedArgs : EventArgs
     {
-        public string arg { get; set; }
+        public dynamic arg { get; set; }
         public string arg2 { get; set; }
 
-        public PersonalizedArgs(string arg, string arg2="")
+        public PersonalizedArgs(dynamic arg, string arg2="")
         {
             this.arg = arg;
             this.arg2 = arg2;

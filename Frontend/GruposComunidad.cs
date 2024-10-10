@@ -21,17 +21,8 @@ namespace Frontend
         private TextBox txtDescripcion;
         private TextBox txtNombre;
         private PictureBox pbxImagen;
-        public class GroupData
-        {
-            public string nombreReal { get; set; }
-            public string nombreVisible { get; set; }
-            public string configuracion { get; set; }
-            public string descripcion { get; set; }
-            public string foto { get; set; }
 
-        }
-
-        public GruposComunidad(GroupData groupData)
+        public GruposComunidad(dynamic groupData)
         {
             InitializeComponent();
             AplicarDatos(groupData);
@@ -72,7 +63,7 @@ namespace Frontend
             // 
             // GruposComunidad
             // 
-            this.ClientSize = new System.Drawing.Size(400, 450);
+            this.ClientSize = new System.Drawing.Size(996, 574);
             this.Controls.Add(this.txtDescripcion);
             this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.pbxImagen);
@@ -83,7 +74,7 @@ namespace Frontend
 
         }
 
-        private void AplicarDatos(GroupData groupData)
+        private void AplicarDatos(dynamic groupData)
         {
             txtNombre.Text = groupData.nombreVisible;
             txtDescripcion.Text = groupData.descripcion;

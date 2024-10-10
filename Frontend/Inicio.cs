@@ -384,7 +384,27 @@ namespace Frontend
             PanelMostrarUsuario.BackColor = Color.LightGray;
             comunidad.BackColor = Color.FromArgb(34, 67, 220);
             //comunidad.ReportarPost += PostControl_ReportarPost;
-            //comunidad.AbrirComentarios += PostControl_AbrirComentarios;
+            comunidad.AbrirEvento += PostControl_AbrirComentarios;
+            PanelMostrarUsuario.Controls.Add(comunidad);
+            comunidad.Show();
+        }
+        private void Grupo_EventoParaListar_AbrirEvento(object sender, PersonalizedArgs e)
+        {
+            PanelMostrarUsuario.Controls.Clear();
+            PanelComentarios.Visible = false;
+            PanelPosts.Visible = false;
+            PanelMostrarUsuario.Visible = true;
+            PanelMostrarUsuario.Parent = this;
+            PanelMostrarUsuario.Location = PanelPosts.Location;
+            EventoComunidad comunidad = new EventoComunidad(e.arg);
+            comunidad.TopLevel = false;
+            comunidad.FormBorderStyle = FormBorderStyle.None;
+            comunidad.BackColor = Color.LightGray;
+            comunidad.Dock = DockStyle.Fill;
+            PanelMostrarUsuario.BackColor = Color.LightGray;
+            comunidad.BackColor = Color.FromArgb(34, 67, 220);
+            //comunidad.ReportarPost += PostControl_ReportarPost;
+            //comunidad.AbrirEvento += PostControl_AbrirComentarios;
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
         }
