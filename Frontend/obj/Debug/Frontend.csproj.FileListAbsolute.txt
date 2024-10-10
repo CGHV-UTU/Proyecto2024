@@ -498,3 +498,4 @@ C:\Users\56367462\Downloads\Infini\Frontend\Proyecto2024\Frontend\obj\Debug\Fron
 C:\Users\56367462\Downloads\Infini\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CopyComplete
 C:\Users\56367462\Downloads\Infini\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.exe
 C:\Users\56367462\Downloads\Infini\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.pdb
+C:\Users\56367462\Downloads\Infini\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Evento.resources

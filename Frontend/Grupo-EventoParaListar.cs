@@ -153,5 +153,12 @@ namespace Frontend
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private void Grupo_EventoParaListar_Click(object sender, EventArgs e)
+        {
+            //Pensé que acá podíamos poner un evento para abrir la ventana de grupo
+            //o evento, pero hay que diferenciarlos de alguna manera.
+            // Evento evento = new Evento(EventData igual que en la API)
+        }
     }
 }

@@ -60,6 +60,7 @@ namespace Frontend
             this.Name = "Grupo_EventoParaListar";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.Size = new System.Drawing.Size(300, 67);
+            this.Click += new System.EventHandler(this.Grupo_EventoParaListar_Click);
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxImagen)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

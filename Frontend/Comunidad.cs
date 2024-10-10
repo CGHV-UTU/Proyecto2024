@@ -17,6 +17,7 @@ namespace Frontend
         private string modo;
         private string user;
         private string token;
+        private DataTable eventos;
         public Comunidad(string modo, string user, string token)
         {
             this.modo = modo;
@@ -91,7 +92,7 @@ namespace Frontend
 
         private async void CargarEventos()
         {
-            DataTable eventos = await Eventos(user, token);
+            eventos = await Eventos(user, token);
             if (eventos != null)
             {
                 for (int i = 0; i < eventos.Rows.Count; i++)

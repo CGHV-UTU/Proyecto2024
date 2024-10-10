@@ -119,6 +119,9 @@
     <Compile Include="CrearComentario.Designer.cs">
       <DependentUpon>CrearComentario.cs</DependentUpon>
     </Compile>
+    <Compile Include="EventoComunidad.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Font.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -129,6 +132,9 @@
     </Compile>
     <Compile Include="Grupo-EventoParaListar.Designer.cs">
       <DependentUpon>Grupo-EventoParaListar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GruposComunidad.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="PaginaDeUsuario.cs">
       <SubType>Form</SubType>
@@ -217,12 +223,18 @@
     <EmbeddedResource Include="CrearComentario.resx">
       <DependentUpon>CrearComentario.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="EventoComunidad.resx">
+      <DependentUpon>EventoComunidad.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Font.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Font.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Grupo-EventoParaListar.resx">
       <DependentUpon>Grupo-EventoParaListar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GruposComunidad.resx">
+      <DependentUpon>GruposComunidad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="IniciarSesion.resx">
       <DependentUpon>IniciarSesion.cs</DependentUpon>
