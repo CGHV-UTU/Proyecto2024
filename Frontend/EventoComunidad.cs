@@ -47,9 +47,11 @@ namespace Frontend
         //Recibo los datos de evento desde Grupo-EventoParaListar.
         //No tiene sentido buscarlos de nuevo acá si ya en la
         //ventana anterior los tenemos guardados en un datatable.
-        public EventoComunidad(dynamic EventData)
+        private string token;
+        public EventoComunidad(dynamic EventData, string token)
         {
             InitializeComponent();
+            this.token = token;
             AplicarDatos(EventData);
         }
         
@@ -75,9 +77,9 @@ namespace Frontend
             this.pbxImagen.Location = new System.Drawing.Point(12, 12);
             this.pbxImagen.Name = "pbxImagen";
             this.pbxImagen.Size = new System.Drawing.Size(90, 90);
+            this.pbxImagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxImagen.TabIndex = 38;
             this.pbxImagen.TabStop = false;
-            this.pbxImagen.Visible = false;
             // 
             // dtpFechaInicio
             // 
@@ -193,7 +195,8 @@ namespace Frontend
             lblDescripcion.Text = EventData.descripcion;
             dtpFechaInicio.Text = EventData.fechaYhora_Inicio;
             dtpFechaFinal.Text = EventData.fechaYhora_Final;
-
+            lblUbicacion.Text = EventData.ubicacion;
+            
             //Creo que está bien?? 
             byte[] imagen = Convert.FromBase64String(Convert.ToString(EventData.foto));
             MemoryStream ms = new MemoryStream(imagen);

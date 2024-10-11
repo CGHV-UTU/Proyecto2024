@@ -119,7 +119,7 @@ namespace Frontend
         {
             if (pbxImagen.Visible == false)
             {
-                if (txtUrl.Visible == true)
+                if (txtUrl.Visible == true && menuActual.Equals("post"))
                 {
                     MessageBox.Show("No puede crear un post con Imagen y video", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -244,14 +244,7 @@ namespace Frontend
         {
             if (txtUrl.Visible == false)
             {
-                if (pbxImagen.Visible == true)
-                {
-                    MessageBox.Show("No puede crear un post con Imagen y video", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    txtUrl.Visible = true;
-                }
+                txtUrl.Visible = true;
             }
             else
             {

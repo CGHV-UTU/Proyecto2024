@@ -132,7 +132,7 @@ namespace Frontend
 
             // lblNombre
             this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(137, 19);
+            this.lblNombre.Location = new System.Drawing.Point(200, 19);
             this.lblNombre.Name = "lblNombre";
             this.lblNombre.Size = new System.Drawing.Size(60, 24);
             this.lblNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
@@ -161,7 +161,7 @@ namespace Frontend
 
         private void Grupo_EventoParaListar_Click(object sender, EventArgs e)
         {
-            if (!nombreReal.Equals(""))
+            if (idevento>0)
             {
                 AbrirEvento?.Invoke(this, new PersonalizedArgs(datos));
             }

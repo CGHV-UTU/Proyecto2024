@@ -28,7 +28,7 @@ namespace Frontend
             Iniciar();
         }
 
-        private async void Iniciar()
+        private void Iniciar()
         {
             this.SuspendLayout();
             // panelPosts
@@ -96,21 +96,25 @@ namespace Frontend
             eventos = await Eventos(user, token);
             if (eventos != null)
             {
+                PanelMostrar.Controls.Clear();
                 for (int i = 0; i < eventos.Rows.Count; i++)
                 {
                     int idevento = Convert.ToInt32(eventos.Rows[i]["idEvento"]);
                     var eventControl = new Grupo_EventoParaListar(user, token, "",idevento);
                     eventControl.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
-                    PanelMostrar.Controls.Add(eventControl);// probando, antes iba debajo del else
+                    // probando, antes iba debajo del else
                     if (PanelMostrar.Controls.Count > 0)
                     {
                         var lastControl = PanelMostrar.Controls[PanelMostrar.Controls.Count - 1];
                         eventControl.Location = new Point(0, lastControl.Bottom);
+                        MessageBox.Show(""+eventControl.Location);
                     }
                     else
                     {
                         eventControl.Location = new Point(0, 52);
+                        MessageBox.Show(""+eventControl.Location);
                     }
+                    PanelMostrar.Controls.Add(eventControl);
                     // aca
                 }
             }
@@ -129,7 +133,7 @@ namespace Frontend
                 {
                     var eventControl = new Grupo_EventoParaListar(user, token, Convert.ToString(elemento.nombreReal), 0);
 
-                    PanelMostrar.Controls.Add(eventControl);// probando, antes iba debajo del else
+                    // probando, antes iba debajo del else
                     if (PanelMostrar.Controls.Count > 0)
                     {
                         var lastControl = PanelMostrar.Controls[PanelMostrar.Controls.Count - 1];
@@ -139,6 +143,7 @@ namespace Frontend
                     {
                         eventControl.Location = new Point(0, 52);
                     }
+                    PanelMostrar.Controls.Add(eventControl);
                     // aca
                 }
             }

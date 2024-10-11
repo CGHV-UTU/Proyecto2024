@@ -384,7 +384,7 @@ namespace Frontend
             PanelMostrarUsuario.BackColor = Color.LightGray;
             comunidad.BackColor = Color.FromArgb(34, 67, 220);
             //comunidad.ReportarPost += PostControl_ReportarPost;
-            comunidad.AbrirEvento += PostControl_AbrirComentarios;
+            comunidad.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
         }
@@ -396,7 +396,7 @@ namespace Frontend
             PanelMostrarUsuario.Visible = true;
             PanelMostrarUsuario.Parent = this;
             PanelMostrarUsuario.Location = PanelPosts.Location;
-            EventoComunidad comunidad = new EventoComunidad(e.arg);
+            EventoComunidad comunidad = new EventoComunidad(e.arg, token);
             comunidad.TopLevel = false;
             comunidad.FormBorderStyle = FormBorderStyle.None;
             comunidad.BackColor = Color.LightGray;
