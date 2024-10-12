@@ -41,10 +41,11 @@ namespace Frontend
             lblGrupo.ForeColor = Color.Gray;
             pnlOpcionPost.Visible = true;
         }
+
         public event EventHandler Creado;
         public event EventHandler Salir;
         public event EventHandler CambiaTamaño;
-        private void btnCrear_Click(object sender, EventArgs e)
+        private async void btnCrear_Click(object sender, EventArgs e)
         {
             switch (menuActual)
             {
@@ -60,7 +61,7 @@ namespace Frontend
                         if (pbxImagen.Image == null)
                         {
                             byte[] data = new byte[0];
-                            Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token);
+                            await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token);
                             MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             Creado?.Invoke(this, EventArgs.Empty);
                         }
@@ -69,23 +70,32 @@ namespace Frontend
                             MemoryStream ms = new MemoryStream();
                             pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                             byte[] data = ms.ToArray();
-                            Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token);
+                            await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token);
                             MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             Creado?.Invoke(this, EventArgs.Empty);
                         }
                     }
                     break;
                 case "evento":
-                    if (string.IsNullOrEmpty(txtNombre.Text) && dtpFechaFinal.Value == DateTime.Now)
+                    if (string.IsNullOrEmpty(txtNombre.Text) || dtpFechaFinal.Value < DateTime.Now)
                     {
                         MessageBox.Show("No puede realizar un evento sin título o fecha", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    if (pbxImagen.Image == null)
+                    {
+                        byte[] data = new byte[0];
+                        await PublicarEvento(txtNombre.Text, txtUrl.Text, data, txtDescripcion.Text, dtpFechaInicio.Text, dtpFechaFinal.Text, token);
+                        MessageBox.Show("El evento se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Creado?.Invoke(this, EventArgs.Empty);
                     }
                     else
                     {
                         MemoryStream ms = new MemoryStream();
                         pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                         byte[] data = ms.ToArray();
-                        PublicarEvento(txtNombre.Text, txtUrl.Text, data, txtDescripcion.Text, dtpFechaInicio.Text, dtpFechaFinal.Text, token);
+                        await PublicarEvento (txtNombre.Text, txtUrl.Text, data, txtDescripcion.Text, dtpFechaInicio.Text, dtpFechaFinal.Text, token);
+                        MessageBox.Show("El evento se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Creado?.Invoke(this, EventArgs.Empty);
                     }
                     break;
                 case "grupo":
@@ -93,12 +103,22 @@ namespace Frontend
                     {
                         MessageBox.Show("No puede realizar un grupo sin nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                    if (pbxImagen.Image == null)
+                    {
+                        byte[] data = new byte[0];
+                        await PublicarGrupo(txtNombre.Text, "default", data, txtDescripcion.Text, token);
+                        MessageBox.Show("El grupo se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Creado?.Invoke(this, EventArgs.Empty);
+                    }
                     else
                     {
                         MemoryStream ms = new MemoryStream();
                         pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                         byte[] data = ms.ToArray();
-                        PublicarGrupo(txtNombre.Text, "default", data, txtDescripcion.Text, token);
+                        await PublicarGrupo (txtNombre.Text, "default", data, txtDescripcion.Text, token);
+                        MessageBox.Show("El grupo se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Creado?.Invoke(this, EventArgs.Empty);
+
                     }
                     break;
             }
@@ -115,6 +135,7 @@ namespace Frontend
                 else
                 {
                     txtUrl.Visible = true;
+                    txtUrl.Text = "Url de video";
                     pnlURL.Visible = true;
                 }
             }
@@ -122,6 +143,7 @@ namespace Frontend
             {
                 pnlURL.Visible = false;
                 txtUrl.Visible = false;
+                txtUrl.Text = "";
             }
         }
 
@@ -159,10 +181,20 @@ namespace Frontend
             {
                 try
                 {
-                    var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user , fechayhora =fechaHora, token=token};
-                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
-                    response.EnsureSuccessStatusCode();
+                    if (imagen.Length == 0)
+                    {
+                        var datos = new { text = texto, link = url, user = user, fechayhora = fechaHora, token = token };
+                        var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                        HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
+                        response.EnsureSuccessStatusCode();
+                    }
+                    else
+                    {
+                        var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user, fechayhora = fechaHora, token = token };
+                        var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                        HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
+                        response.EnsureSuccessStatusCode();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -177,10 +209,20 @@ namespace Frontend
             {
                 try
                 {
-                    var datos = new { titulo = titulo, ubicacion= ubicacion, foto = Convert.ToBase64String(imagen), user = user, fechaYhora_Inicio = fechainicio, fechaYhora_Final=fechafin, token = token, descripcion=descripcion };
-                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/hacerEvento", content);
-                    response.EnsureSuccessStatusCode();
+                    if (imagen.Length == 0)
+                    {
+                        var datos = new { titulo = titulo, ubicacion = ubicacion, user = user, fechaYhora_Inicio = fechainicio, fechaYhora_Final = fechafin, token = token, descripcion = descripcion };
+                        var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                        HttpResponseMessage response = await client.PostAsync("https://localhost:44340/hacerEvento", content);
+                        response.EnsureSuccessStatusCode();
+                    }
+                    else
+                    {
+                        var datos = new { titulo = titulo, ubicacion = ubicacion, foto = Convert.ToBase64String(imagen), user = user, fechaYhora_Inicio = fechainicio, fechaYhora_Final = fechafin, token = token, descripcion = descripcion };
+                        var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                        HttpResponseMessage response = await client.PostAsync("https://localhost:44340/hacerEvento", content);
+                        response.EnsureSuccessStatusCode();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -195,10 +237,20 @@ namespace Frontend
             {
                 try
                 {
-                    var datos = new { nombreVisible = nombreVisible, configuracion = configuracion, imagen = Convert.ToBase64String(imagen), nombreDeCuenta = user, token = token, descripcion = descripcion };
-                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44304/RegistrarGrupo", content);
-                    response.EnsureSuccessStatusCode();
+                    if (imagen.Length == 0)
+                    {
+                        var datos = new { nombreVisible = nombreVisible, configuracion = configuracion, nombreDeCuenta = user, token = token, descripcion = descripcion };
+                        var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                        HttpResponseMessage response = await client.PostAsync("https://localhost:44304/RegistrarGrupo", content);
+                        response.EnsureSuccessStatusCode();
+                    }
+                    else
+                    {
+                        var datos = new { nombreVisible = nombreVisible, configuracion = configuracion, imagen = Convert.ToBase64String(imagen), nombreDeCuenta = user, token = token, descripcion = descripcion };
+                        var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                        HttpResponseMessage response = await client.PostAsync("https://localhost:44304/RegistrarGrupo", content);
+                        response.EnsureSuccessStatusCode();
+                    }
                 }
                 catch (Exception ex)
                 {

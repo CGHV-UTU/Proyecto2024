@@ -85,7 +85,6 @@ namespace Frontend
             this.txtUrl.Name = "txtUrl";
             this.txtUrl.Size = new System.Drawing.Size(381, 26);
             this.txtUrl.TabIndex = 29;
-            this.txtUrl.Text = "URL de video";
             this.txtUrl.Enter += new System.EventHandler(this.txtUrl_Enter);
             this.txtUrl.Leave += new System.EventHandler(this.txtUrl_Leave);
             // 
