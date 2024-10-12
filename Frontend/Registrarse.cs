@@ -60,7 +60,7 @@ namespace Frontend
                 txtEmail.Text, txtDescripcion.Text, cbxGenero.SelectedItem.ToString(), dtpFecha.Text, imagen);
                 if (resultado != "guardado correcto")
                 {
-                    MessageBox.Show("Ha ocurrido un error.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Ha ocurrido un error. No se pudo contactar con el servidor", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 MessageBox.Show("Su usuario ha sido creado con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);

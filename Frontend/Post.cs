@@ -27,11 +27,19 @@ namespace Frontend
             this.BackColor = Color.LightGray;
             this.btnUbicacion.Visible = false;
             this.txtNombre.Visible = false;
+            this.pnlNombre.Visible = false;
             this.txtDescripcion.Visible = false;
+            this.pnlDescripcion.Visible = false;
             this.dtpFechaInicio.MinDate = DateTime.Now;
             this.dtpFechaFinal.MinDate = DateTime.Now;
             this.dtpFechaFinal.Visible = false;
             this.dtpFechaInicio.Visible = false;
+            this.pnlOpcionEvento.Visible = false;
+            this.pnlOpcionGrupo.Visible = false;
+            this.pnlURL.Visible = false;
+            lblEvento.ForeColor = Color.Gray;
+            lblGrupo.ForeColor = Color.Gray;
+            pnlOpcionPost.Visible = true;
         }
         public event EventHandler Creado;
         public event EventHandler Salir;
@@ -107,10 +115,12 @@ namespace Frontend
                 else
                 {
                     txtUrl.Visible = true;
+                    pnlURL.Visible = true;
                 }
             }
             else
             {
+                pnlURL.Visible = false;
                 txtUrl.Visible = false;
             }
         }
@@ -205,11 +215,20 @@ namespace Frontend
         private string menuActual="post";
         private void lblPost_Click(object sender, EventArgs e)
         {
+            lblPost.ForeColor = Color.Black;
+            lblEvento.ForeColor = Color.Gray;
+            lblGrupo.ForeColor = Color.Gray;
+            this.pnlOpcionPost.Visible = true;
+            this.pnlOpcionEvento.Visible = false;
+            this.pnlOpcionGrupo.Visible = false;
             this.btnUbicacion.Visible = false;
             this.btnVideo.Visible = true;
             this.txtNombre.Visible = false;
+            this.pnlNombre.Visible = false;
             this.txtDescripcion.Visible = false;
+            this.pnlDescripcion.Visible = false;
             this.txtTexto.Visible = true;
+            this.pnlTexto.Visible = true;
             this.dtpFechaFinal.Visible = false;
             this.dtpFechaInicio.Visible = false;
             menuActual = "post";
@@ -217,12 +236,21 @@ namespace Frontend
 
         private void lblEvento_Click(object sender, EventArgs e)
         {
+            lblEvento.ForeColor = Color.Black;
+            lblPost.ForeColor = Color.Gray;
+            lblGrupo.ForeColor = Color.Gray;
+            this.pnlOpcionPost.Visible = false;
+            this.pnlOpcionEvento.Visible = true;
+            this.pnlOpcionGrupo.Visible = false;
             this.btnUbicacion.Visible = true;
             this.btnVideo.Visible = false;
             this.btnUbicacion.Location = new Point(282, 185);
             this.txtNombre.Visible = true;
+            this.pnlNombre.Visible = true;
             this.txtDescripcion.Visible = true;
+            this.pnlDescripcion.Visible = true;
             this.txtTexto.Visible = false;
+            this.pnlTexto.Visible = false;
             this.dtpFechaFinal.Visible = true;
             this.dtpFechaInicio.Visible = true;
             menuActual = "evento";
@@ -230,13 +258,24 @@ namespace Frontend
 
         private void lblGrupo_Click(object sender, EventArgs e)
         {
+            lblGrupo.ForeColor = Color.Black;
+            lblPost.ForeColor = Color.Gray;
+            lblEvento.ForeColor = Color.Gray;
+            this.pnlOpcionPost.Visible = false;
+            this.pnlOpcionEvento.Visible = false;
+            this.pnlOpcionGrupo.Visible = true;
             this.btnUbicacion.Visible = false;
             this.btnVideo.Visible = false;
             this.txtNombre.Visible = true;
+            this.pnlNombre.Visible = true;
             this.txtDescripcion.Visible = true;
+            this.pnlDescripcion.Visible = true;
             this.txtTexto.Visible = false;
+            this.pnlTexto.Visible = false;
             this.dtpFechaFinal.Visible = false;
             this.dtpFechaInicio.Visible = false;
+            this.txtUrl.Visible = false;
+            this.pnlURL.Visible = false;
             menuActual = "grupo";
         }
 
@@ -245,11 +284,109 @@ namespace Frontend
             if (txtUrl.Visible == false)
             {
                 txtUrl.Visible = true;
+                pnlURL.Visible = true;
             }
             else
             {
                 txtUrl.Visible = false;
+                pnlURL.Visible = false;
             }
+
+            
+        }
+
+        private void pbxImagen_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dtpFechaInicio_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dtpFechaFinal_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtNombre_Enter(object sender, EventArgs e)
+        {
+            if (txtNombre.Text == "Nombre")
+            {
+                txtNombre.Text = "";
+            }   
+        }
+
+        private void txtNombre_Leave(object sender, EventArgs e)
+        {
+            if (txtNombre.Text == "")
+            {
+                txtNombre.Text = "Nombre";
+            }
+        }
+
+        private void txtDescripcion_Enter(object sender, EventArgs e)
+        {
+            if(txtDescripcion.Text == "Descripción")
+            {
+                txtDescripcion.Text = "";
+            }
+        }
+
+        private void txtDescripcion_Leave(object sender, EventArgs e)
+        {
+            if (txtDescripcion.Text == "")
+            {
+                txtDescripcion.Text = "Descripción";
+            }
+        }
+
+        private void txtTexto_Enter(object sender, EventArgs e)
+        {
+            if (txtTexto.Text == "Texto")
+            {
+                txtTexto.Text = "";
+            }
+        }
+
+        private void txtTexto_Leave(object sender, EventArgs e)
+        {
+            if (txtTexto.Text == "")
+            {
+                txtTexto.Text = "Texto";
+            }
+        }
+
+        private void txtUrl_Enter(object sender, EventArgs e)
+        {
+            if (txtUrl.Text == "URL del video")
+            {
+                txtUrl.Text = "";
+            }
+        }
+
+        private void txtUrl_Leave(object sender, EventArgs e)
+        {
+            if (txtUrl.Text == "")
+            {
+                txtUrl.Text = "URL del video";
+            }
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pnlNombre_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pnlDescripcion_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }   

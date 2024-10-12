@@ -117,7 +117,7 @@ namespace Frontend
             // PanelSuperior
             // 
             this.PanelSuperior.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.PanelSuperior.BackgroundImage = global::Frontend.Properties.Resources.panelSuperior;
+            this.PanelSuperior.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PanelSuperior.BackgroundImage")));
             this.PanelSuperior.Controls.Add(this.pictureBox1);
             this.PanelSuperior.Controls.Add(this.PictureBoxUsuario);
             this.PanelSuperior.Controls.Add(this.PictureboxLogo);

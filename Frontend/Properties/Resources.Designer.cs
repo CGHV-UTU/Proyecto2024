@@ -543,6 +543,26 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap panelSuperior1 {
+            get {
+                object obj = ResourceManager.GetObject("panelSuperior1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap panelSuperior2 {
+            get {
+                object obj = ResourceManager.GetObject("panelSuperior2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Perfil {
             get {
                 object obj = ResourceManager.GetObject("Perfil", resourceCulture);

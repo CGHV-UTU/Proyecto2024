@@ -237,12 +237,12 @@ namespace Frontend
             Post post = new Post(user, token);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
-            post.BackColor = Color.LightGray;
+            post.BackColor = Color.White;
             post.Dock = DockStyle.Fill;
             post.Creado += Post_Creado;
             post.Salir += Post_Salir;
             post.CambiaTamaño += Post_CambiaTamaño;
-            post.BackColor = Color.FromArgb(34, 67, 220);
+            // post.BackColor = Color.FromArgb(34, 67, 220);
             PanelPostear.BackColor = Color.LightGray;
             PanelPostear.Controls.Add(post);
             post.Show();
