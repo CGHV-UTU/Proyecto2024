@@ -32,44 +32,47 @@ namespace Frontend
             txtEmail.Leave += txtEmail_Leave;
             txtDescripcion.Enter += txtDescripcion_Enter;
             txtDescripcion.Leave += txtDescripcion_Leave;
-
             redondearPictureBox(Properties.Resources.Perfil);
+            cbxGenero.Text = "Hombre";
         }
 
         private async void btnRegistrar_Click(object sender, EventArgs e)
         {
-            if (verificarDatos())
+            try
             {
+                if (!verificarDatos())
+                {
+                    MessageBox.Show("Ha ocurrido un error. Verifique los datos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 string nombreCuenta = txtUsuario.Text;
                 bool userExists = await ExisteUser(nombreCuenta);
                 Console.WriteLine(userExists);
-                if (userExists == false)
-                {
-                    if (pictureBox6.Image == null)
-                    {
-                        MessageBox.Show("Ha ocurrido un error. Foto nula", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    MemoryStream ms = new MemoryStream();
-                    pictureBox6.Image.Save(ms, ImageFormat.Jpeg);
-                    byte[] imagen = ms.ToArray();
-                    if (imagen == null || imagen.Length == 0)
-                    {
-                        MessageBox.Show("Ha ocurrido un error. Foto nula", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    } else
-                    {
-                       var resultado = await Registro(txtUsuario.Text, txtContraseña.Text, txtNombreVisible.Text,
-                       txtEmail.Text, txtDescripcion.Text, cbxGenero.SelectedItem.ToString(), dtpFecha.Text,
-                       imagen);
-                       MessageBox.Show(resultado, "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    }
-                }
-                else
+                if (userExists)
                 {
                     MessageBox.Show("Ha ocurrido un error. Ya existe alguien con ese nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                    return;
                 }
+                MemoryStream ms = new MemoryStream();
+                pictureBox6.Image.Save(ms, ImageFormat.Jpeg);
+                byte[] imagen = ms.ToArray();
+                var resultado = await Registro(txtUsuario.Text, txtContraseña.Text, txtNombreVisible.Text,
+                txtEmail.Text, txtDescripcion.Text, cbxGenero.SelectedItem.ToString(), dtpFecha.Text, imagen);
+                if (resultado != "guardado correcto")
+                {
+                    MessageBox.Show("Ha ocurrido un error.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                MessageBox.Show("Su usuario ha sido creado con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                IniciarSesion iniciarSesion = new IniciarSesion();
+                iniciarSesion.FormClosed += (s, args) => this.Close();
+                iniciarSesion.Show();
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error. No debería llegar acá", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
 
@@ -81,11 +84,14 @@ namespace Frontend
             this.Hide();
         }
 
-        private void pictureBox6_Click(object sender, EventArgs e)
+        private void pictureBox6_Click(object sender, EventArgs e) //POR HACER: 
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Archivos de imagen|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.tiff";
+
             if (ofd.ShowDialog() == DialogResult.OK)
             {
+
                 Image selectedImage = Image.FromFile(ofd.FileName);
                 //pictureBox1.ImageLocation = ofd.FileName;
                 pictureBox6.SizeMode = PictureBoxSizeMode.CenterImage;
@@ -115,8 +121,9 @@ namespace Frontend
                 string.IsNullOrEmpty(txtContraseña.Text) ||
                 string.IsNullOrEmpty(txtNombreVisible.Text) ||
                 string.IsNullOrEmpty(txtContraseña2.Text) ||
-                string.IsNullOrEmpty(txtEmail.Text)               //  ||
-                                                                  // string.IsNullOrEmpty(cbxGenero.SelectedText)
+                string.IsNullOrEmpty(txtEmail.Text) ||
+                string.IsNullOrEmpty(cbxGenero.Text) //Tiene que ser cbxGenero.Text y no cbxGenero.SelectedText porque sino no anda
+                
                 )
             {
                 MessageBox.Show("Ha ocurrido un error. Complete todos los campos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -129,7 +136,7 @@ namespace Frontend
                 return false;
             }
 
-            if (txtUsuario.Equals(txtContraseña))
+            if (txtUsuario.Text.Equals(txtContraseña.Text))
             {
                 MessageBox.Show("Ha ocurrido un error. El nombre no puede ser igual a la contraseña", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -141,13 +148,19 @@ namespace Frontend
                 return false;
             }
 
-            if (!txtContraseña.Equals(txtContraseña))
+            if (!txtContraseña.Text.Equals(txtContraseña2.Text))
             {
                 MessageBox.Show("Ha ocurrido un error. Las contraseñas no coinciden", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
-            return true;
+            if (pictureBox6.Image == null) //Lo moví acá porque no tenía sentido verificar datos después de la verificación de datos principal
+            {
+                MessageBox.Show("Ha ocurrido un error. Foto nula", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+                return true;
         }
 
         private void pcbxVerContraseña_Click(object sender, EventArgs e)
@@ -245,7 +258,7 @@ namespace Frontend
 
                 case "txtNombreVisible":
                     txtNombreVisible.ForeColor = Color.Gray;
-                    txtNombreVisible.Text = "Nombre Visible";
+                    txtNombreVisible.Text = "Nombre visible";
                     break;
 
                 case "txtContraseña":
