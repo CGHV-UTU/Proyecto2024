@@ -31,7 +31,22 @@ namespace BackofficeDeAdministracion
             Form formInstance = (Form)Activator.CreateInstance(form);
             formInstance.TopLevel = false;
             formInstance.FormBorderStyle = FormBorderStyle.None;
-            formInstance.BackColor = Color.LightGray;
+            if (modo)
+            {
+                formInstance.BackColor = Color.DimGray;
+                foreach (Control control in formInstance.Controls.OfType<Label>())
+                {
+                    control.ForeColor = Color.White;
+                }
+            }
+            else
+            {
+                formInstance.BackColor = Color.LightGray;
+                foreach (Control control in formInstance.Controls.OfType<Label>())
+                {
+                    control.ForeColor = Color.Black;
+                }
+            }
             formInstance.Dock = DockStyle.Fill;
             PanelVista.Controls.Add(formInstance);
             formInstance.Show();
@@ -103,25 +118,30 @@ namespace BackofficeDeAdministracion
         private void ContenidoUsuarios_Click(object sender, EventArgs e)
         {           
             VerificarYCargarForm("BackofficeDeAdministracion.GestionarUsuarios");
+            lblContenidoUsuarios.Font = new Font(lblContenidoUsuarios.Font, FontStyle.Underline);
         }
         private void ContenidoPosts_Click(object sender, EventArgs e)
         {
             VerificarYCargarForm("BackofficeDeAdministracion.GestionarPosts");
+            lblContenidoPosts.Font = new Font(lblContenidoPosts.Font, FontStyle.Underline);
         }
 
         private void ContenidoEventos_Click(object sender, EventArgs e)
         {
             VerificarYCargarForm("BackofficeDeAdministracion.GestionarEventos");
+            lblContenidoEventos.Font = new Font(lblContenidoEventos.Font, FontStyle.Underline);
         }
 
         private void ContenidoComentarios_Click(object sender, EventArgs e)
         {
             VerificarYCargarForm("BackofficeDeAdministracion.GestionarComentarios");
+            lblContenidoComentarios.Font = new Font(lblContenidoComentarios.Font, FontStyle.Underline);
         }
 
         private void ContenidoGrupos_Click(object sender, EventArgs e)
         {
             VerificarYCargarForm("BackofficeDeAdministracion.GestionarGrupos");
+            lblContenidoGrupos.Font = new Font(lblContenidoGrupos.Font, FontStyle.Underline);
         }
 
         private void ReportesUsuario_Click(object sender, EventArgs e)
@@ -170,10 +190,12 @@ namespace BackofficeDeAdministracion
                     if (control.Name.Equals("PanelIzquierdo") && color.Equals(Color.White))
                     {
                         control.BackColor = Color.FromArgb(64, 64, 64);
+                        PanelVista.BackColor = Color.DimGray;
                     }
                     else if(control.Name.Equals("PanelIzquierdo") && color.Equals(Color.Black))
                     {
                         control.BackColor = Color.Silver;
+                        PanelVista.BackColor = Color.LightGray;
                     }
                     CambiarModo(color, control);
                 }

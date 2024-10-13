@@ -33,7 +33,6 @@ namespace BackofficeDeAdministracion
             this.lblNomVisible = new System.Windows.Forms.Label();
             this.lblFoto = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lblDescripcionDeGrupo = new System.Windows.Forms.Label();
             this.lblNombreDeGrupo = new System.Windows.Forms.Label();
             this.lblDesc = new System.Windows.Forms.Label();
             this.lblNombre = new System.Windows.Forms.Label();
@@ -43,6 +42,7 @@ namespace BackofficeDeAdministracion
             this.txtID = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.btnGuardar = new System.Windows.Forms.Button();
+            this.txtDescripcionDeGrupo = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -50,7 +50,7 @@ namespace BackofficeDeAdministracion
             // lblNombreVisible
             // 
             this.lblNombreVisible.AutoSize = true;
-            this.lblNombreVisible.Location = new System.Drawing.Point(122, 272);
+            this.lblNombreVisible.Location = new System.Drawing.Point(119, 255);
             this.lblNombreVisible.Name = "lblNombreVisible";
             this.lblNombreVisible.Size = new System.Drawing.Size(44, 13);
             this.lblNombreVisible.TabIndex = 110;
@@ -60,7 +60,7 @@ namespace BackofficeDeAdministracion
             // lblNomVisible
             // 
             this.lblNomVisible.AutoSize = true;
-            this.lblNomVisible.Location = new System.Drawing.Point(18, 272);
+            this.lblNomVisible.Location = new System.Drawing.Point(15, 255);
             this.lblNomVisible.Name = "lblNomVisible";
             this.lblNomVisible.Size = new System.Drawing.Size(79, 13);
             this.lblNomVisible.TabIndex = 109;
@@ -70,7 +70,7 @@ namespace BackofficeDeAdministracion
             // lblFoto
             // 
             this.lblFoto.AutoSize = true;
-            this.lblFoto.Location = new System.Drawing.Point(276, 226);
+            this.lblFoto.Location = new System.Drawing.Point(215, 218);
             this.lblFoto.Name = "lblFoto";
             this.lblFoto.Size = new System.Drawing.Size(68, 13);
             this.lblFoto.TabIndex = 108;
@@ -79,26 +79,16 @@ namespace BackofficeDeAdministracion
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(364, 217);
+            this.pictureBox1.Location = new System.Drawing.Point(303, 209);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(160, 117);
+            this.pictureBox1.Size = new System.Drawing.Size(196, 145);
             this.pictureBox1.TabIndex = 107;
             this.pictureBox1.TabStop = false;
-            // 
-            // lblDescripcionDeGrupo
-            // 
-            this.lblDescripcionDeGrupo.AutoSize = true;
-            this.lblDescripcionDeGrupo.Location = new System.Drawing.Point(618, 223);
-            this.lblDescripcionDeGrupo.Name = "lblDescripcionDeGrupo";
-            this.lblDescripcionDeGrupo.Size = new System.Drawing.Size(63, 13);
-            this.lblDescripcionDeGrupo.TabIndex = 106;
-            this.lblDescripcionDeGrupo.Text = "Descripcion";
-            this.lblDescripcionDeGrupo.Visible = false;
             // 
             // lblNombreDeGrupo
             // 
             this.lblNombreDeGrupo.AutoSize = true;
-            this.lblNombreDeGrupo.Location = new System.Drawing.Point(122, 226);
+            this.lblNombreDeGrupo.Location = new System.Drawing.Point(119, 209);
             this.lblNombreDeGrupo.Name = "lblNombreDeGrupo";
             this.lblNombreDeGrupo.Size = new System.Drawing.Size(0, 13);
             this.lblNombreDeGrupo.TabIndex = 105;
@@ -106,7 +96,7 @@ namespace BackofficeDeAdministracion
             // lblDesc
             // 
             this.lblDesc.AutoSize = true;
-            this.lblDesc.Location = new System.Drawing.Point(546, 223);
+            this.lblDesc.Location = new System.Drawing.Point(520, 215);
             this.lblDesc.Name = "lblDesc";
             this.lblDesc.Size = new System.Drawing.Size(66, 13);
             this.lblDesc.TabIndex = 104;
@@ -116,7 +106,7 @@ namespace BackofficeDeAdministracion
             // lblNombre
             // 
             this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(18, 226);
+            this.lblNombre.Location = new System.Drawing.Point(15, 209);
             this.lblNombre.Name = "lblNombre";
             this.lblNombre.Size = new System.Drawing.Size(94, 13);
             this.lblNombre.TabIndex = 103;
@@ -138,12 +128,15 @@ namespace BackofficeDeAdministracion
             // 
             // btnBuscar
             // 
+            this.btnBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.btnBuscar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBuscar.ForeColor = System.Drawing.Color.White;
             this.btnBuscar.Location = new System.Drawing.Point(11, 95);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(216, 23);
             this.btnBuscar.TabIndex = 100;
             this.btnBuscar.Text = "🔎 Buscar ";
-            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.UseVisualStyleBackColor = false;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // lblNom
@@ -164,38 +157,53 @@ namespace BackofficeDeAdministracion
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 378);
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(11, 137);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(812, 23);
+            this.button1.Size = new System.Drawing.Size(216, 23);
             this.button1.TabIndex = 111;
-            this.button1.Text = "Eliminar Grupo";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Text = "❌Eliminar Grupo";
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btnEliminar);
             // 
             // btnGuardar
             // 
-            this.btnGuardar.ForeColor = System.Drawing.Color.Black;
+            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.btnGuardar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnGuardar.ForeColor = System.Drawing.Color.White;
             this.btnGuardar.Location = new System.Drawing.Point(11, 407);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(813, 22);
             this.btnGuardar.TabIndex = 112;
             this.btnGuardar.Text = "💾 Guardar";
             this.btnGuardar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.UseVisualStyleBackColor = false;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
+            // 
+            // txtDescripcionDeGrupo
+            // 
+            this.txtDescripcionDeGrupo.Cursor = System.Windows.Forms.Cursors.No;
+            this.txtDescripcionDeGrupo.Location = new System.Drawing.Point(592, 209);
+            this.txtDescripcionDeGrupo.Multiline = true;
+            this.txtDescripcionDeGrupo.Name = "txtDescripcionDeGrupo";
+            this.txtDescripcionDeGrupo.Size = new System.Drawing.Size(232, 145);
+            this.txtDescripcionDeGrupo.TabIndex = 113;
             // 
             // GestionarGrupos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(836, 441);
+            this.Controls.Add(this.txtDescripcionDeGrupo);
             this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lblNombreVisible);
             this.Controls.Add(this.lblNomVisible);
             this.Controls.Add(this.lblFoto);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.lblDescripcionDeGrupo);
             this.Controls.Add(this.lblNombreDeGrupo);
             this.Controls.Add(this.lblDesc);
             this.Controls.Add(this.lblNombre);
@@ -218,7 +226,6 @@ namespace BackofficeDeAdministracion
         private System.Windows.Forms.Label lblNomVisible;
         private System.Windows.Forms.Label lblFoto;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label lblDescripcionDeGrupo;
         private System.Windows.Forms.Label lblNombreDeGrupo;
         private System.Windows.Forms.Label lblDesc;
         private System.Windows.Forms.Label lblNombre;
@@ -228,5 +235,6 @@ namespace BackofficeDeAdministracion
         private System.Windows.Forms.TextBox txtID;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnGuardar;
+        private System.Windows.Forms.TextBox txtDescripcionDeGrupo;
     }
 }

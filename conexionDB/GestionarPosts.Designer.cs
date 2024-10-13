@@ -62,6 +62,7 @@
             // 
             // txtURL
             // 
+            this.txtURL.Cursor = System.Windows.Forms.Cursors.No;
             this.txtURL.Location = new System.Drawing.Point(95, 307);
             this.txtURL.MaxLength = 3227;
             this.txtURL.Multiline = true;
@@ -72,6 +73,7 @@
             // 
             // txtTexto
             // 
+            this.txtTexto.Cursor = System.Windows.Forms.Cursors.No;
             this.txtTexto.Location = new System.Drawing.Point(95, 191);
             this.txtTexto.MaxLength = 100;
             this.txtTexto.Multiline = true;
@@ -83,6 +85,7 @@
             // lblUrl
             // 
             this.lblUrl.AutoSize = true;
+            this.lblUrl.ForeColor = System.Drawing.Color.White;
             this.lblUrl.Location = new System.Drawing.Point(15, 307);
             this.lblUrl.Name = "lblUrl";
             this.lblUrl.Size = new System.Drawing.Size(73, 13);
@@ -92,6 +95,7 @@
             // lblImagen
             // 
             this.lblImagen.AutoSize = true;
+            this.lblImagen.ForeColor = System.Drawing.Color.White;
             this.lblImagen.Location = new System.Drawing.Point(389, 194);
             this.lblImagen.Name = "lblImagen";
             this.lblImagen.Size = new System.Drawing.Size(42, 13);
@@ -101,6 +105,7 @@
             // lblTexto
             // 
             this.lblTexto.AutoSize = true;
+            this.lblTexto.ForeColor = System.Drawing.Color.White;
             this.lblTexto.Location = new System.Drawing.Point(20, 194);
             this.lblTexto.Name = "lblTexto";
             this.lblTexto.Size = new System.Drawing.Size(34, 13);
@@ -125,6 +130,7 @@
             // lblEstadoDeComentarios
             // 
             this.lblEstadoDeComentarios.AutoSize = true;
+            this.lblEstadoDeComentarios.ForeColor = System.Drawing.Color.White;
             this.lblEstadoDeComentarios.Location = new System.Drawing.Point(20, 354);
             this.lblEstadoDeComentarios.Name = "lblEstadoDeComentarios";
             this.lblEstadoDeComentarios.Size = new System.Drawing.Size(131, 13);
@@ -133,18 +139,22 @@
             // 
             // btnComentarios
             // 
+            this.btnComentarios.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.btnComentarios.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnComentarios.ForeColor = System.Drawing.Color.White;
             this.btnComentarios.Location = new System.Drawing.Point(160, 349);
             this.btnComentarios.Name = "btnComentarios";
             this.btnComentarios.Size = new System.Drawing.Size(201, 23);
             this.btnComentarios.TabIndex = 42;
             this.btnComentarios.Text = "Desactivar";
-            this.btnComentarios.UseVisualStyleBackColor = true;
+            this.btnComentarios.UseVisualStyleBackColor = false;
             this.btnComentarios.Click += new System.EventHandler(this.btnComentarios_Click);
             // 
             // lblLikes
             // 
             this.lblLikes.AutoSize = true;
-            this.lblLikes.Location = new System.Drawing.Point(389, 354);
+            this.lblLikes.ForeColor = System.Drawing.Color.White;
+            this.lblLikes.Location = new System.Drawing.Point(389, 353);
             this.lblLikes.Name = "lblLikes";
             this.lblLikes.Size = new System.Drawing.Size(32, 13);
             this.lblLikes.TabIndex = 52;
@@ -152,27 +162,34 @@
             // 
             // btnBuscar
             // 
+            this.btnBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.btnBuscar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBuscar.ForeColor = System.Drawing.Color.White;
             this.btnBuscar.Location = new System.Drawing.Point(12, 79);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(216, 23);
             this.btnBuscar.TabIndex = 61;
             this.btnBuscar.Text = "🔎 Buscar ";
-            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.UseVisualStyleBackColor = false;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // btnEliminar
             // 
+            this.btnEliminar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.btnEliminar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEliminar.ForeColor = System.Drawing.Color.White;
             this.btnEliminar.Location = new System.Drawing.Point(12, 124);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(216, 23);
             this.btnEliminar.TabIndex = 60;
             this.btnEliminar.Text = "❌Eliminar ";
-            this.btnEliminar.UseVisualStyleBackColor = true;
+            this.btnEliminar.UseVisualStyleBackColor = false;
             this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             // 
             // lblIdPost
             // 
             this.lblIdPost.AutoSize = true;
+            this.lblIdPost.ForeColor = System.Drawing.Color.White;
             this.lblIdPost.Location = new System.Drawing.Point(12, 40);
             this.lblIdPost.Name = "lblIdPost";
             this.lblIdPost.Size = new System.Drawing.Size(61, 13);
@@ -189,6 +206,7 @@
             // 
             // txtCategorias
             // 
+            this.txtCategorias.Cursor = System.Windows.Forms.Cursors.No;
             this.txtCategorias.Location = new System.Drawing.Point(95, 262);
             this.txtCategorias.MaxLength = 100;
             this.txtCategorias.Multiline = true;
@@ -200,6 +218,7 @@
             // lblCategorias
             // 
             this.lblCategorias.AutoSize = true;
+            this.lblCategorias.ForeColor = System.Drawing.Color.White;
             this.lblCategorias.Location = new System.Drawing.Point(20, 265);
             this.lblCategorias.Name = "lblCategorias";
             this.lblCategorias.Size = new System.Drawing.Size(59, 13);
@@ -208,29 +227,35 @@
             // 
             // btnModificar
             // 
+            this.btnModificar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.btnModificar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnModificar.ForeColor = System.Drawing.Color.White;
             this.btnModificar.Location = new System.Drawing.Point(13, 378);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(811, 23);
             this.btnModificar.TabIndex = 65;
             this.btnModificar.Text = "♻️ Modificar";
-            this.btnModificar.UseVisualStyleBackColor = true;
+            this.btnModificar.UseVisualStyleBackColor = false;
             this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
             // 
             // btnGuardar
             // 
-            this.btnGuardar.ForeColor = System.Drawing.Color.Black;
+            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.btnGuardar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnGuardar.ForeColor = System.Drawing.Color.White;
             this.btnGuardar.Location = new System.Drawing.Point(13, 406);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(811, 23);
             this.btnGuardar.TabIndex = 66;
             this.btnGuardar.Text = "💾 Guardar";
             this.btnGuardar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.UseVisualStyleBackColor = false;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // lblLikesDePost
             // 
             this.lblLikesDePost.AutoSize = true;
+            this.lblLikesDePost.ForeColor = System.Drawing.Color.White;
             this.lblLikesDePost.Location = new System.Drawing.Point(544, 353);
             this.lblLikesDePost.Name = "lblLikesDePost";
             this.lblLikesDePost.Size = new System.Drawing.Size(13, 13);
@@ -241,6 +266,7 @@
             // 
             this.lblNumeroDeLikes.AutoSize = true;
             this.lblNumeroDeLikes.CausesValidation = false;
+            this.lblNumeroDeLikes.ForeColor = System.Drawing.Color.White;
             this.lblNumeroDeLikes.Location = new System.Drawing.Point(452, 353);
             this.lblNumeroDeLikes.Name = "lblNumeroDeLikes";
             this.lblNumeroDeLikes.Size = new System.Drawing.Size(86, 13);
@@ -251,6 +277,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(836, 441);
             this.Controls.Add(this.lblNumeroDeLikes);
             this.Controls.Add(this.lblLikesDePost);

@@ -32,6 +32,7 @@ namespace BackofficeDeAdministracion
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Principal));
             this.lblUsuarioBackoffice = new System.Windows.Forms.Label();
             this.PanelSuperior = new System.Windows.Forms.Panel();
+            this.lblModo = new System.Windows.Forms.Label();
             this.lblSalir = new System.Windows.Forms.Label();
             this.PictureBoxUsuario = new System.Windows.Forms.PictureBox();
             this.PanelIzquierdo = new System.Windows.Forms.Panel();
@@ -55,7 +56,6 @@ namespace BackofficeDeAdministracion
             this.lblReportesUsuario = new System.Windows.Forms.Label();
             this.lblAbrirReportes = new System.Windows.Forms.Label();
             this.PanelVista = new System.Windows.Forms.Panel();
-            this.lblModo = new System.Windows.Forms.Label();
             this.PanelSuperior.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).BeginInit();
             this.PanelIzquierdo.SuspendLayout();
@@ -73,8 +73,9 @@ namespace BackofficeDeAdministracion
             this.lblUsuarioBackoffice.AutoSize = true;
             this.lblUsuarioBackoffice.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUsuarioBackoffice.ForeColor = System.Drawing.Color.White;
-            this.lblUsuarioBackoffice.Location = new System.Drawing.Point(857, 9);
+            this.lblUsuarioBackoffice.Location = new System.Drawing.Point(934, 9);
             this.lblUsuarioBackoffice.Name = "lblUsuarioBackoffice";
+            this.lblUsuarioBackoffice.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.lblUsuarioBackoffice.Size = new System.Drawing.Size(80, 22);
             this.lblUsuarioBackoffice.TabIndex = 16;
             this.lblUsuarioBackoffice.Text = "Usuario";
@@ -92,6 +93,20 @@ namespace BackofficeDeAdministracion
             this.PanelSuperior.Name = "PanelSuperior";
             this.PanelSuperior.Size = new System.Drawing.Size(1026, 75);
             this.PanelSuperior.TabIndex = 21;
+            // 
+            // lblModo
+            // 
+            this.lblModo.AutoSize = true;
+            this.lblModo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblModo.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblModo.ForeColor = System.Drawing.Color.White;
+            this.lblModo.Location = new System.Drawing.Point(257, 47);
+            this.lblModo.Name = "lblModo";
+            this.lblModo.Size = new System.Drawing.Size(153, 22);
+            this.lblModo.TabIndex = 18;
+            this.lblModo.Text = "✹ Cambiar Modo";
+            this.lblModo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblModo.Click += new System.EventHandler(this.lblModo_Click);
             // 
             // lblSalir
             // 
@@ -138,7 +153,6 @@ namespace BackofficeDeAdministracion
             this.PanelBackoffice.Name = "PanelBackoffice";
             this.PanelBackoffice.Size = new System.Drawing.Size(182, 150);
             this.PanelBackoffice.TabIndex = 24;
-            this.PanelBackoffice.Visible = false;
             // 
             // PanelOpcionesBackoffice
             // 
@@ -283,7 +297,6 @@ namespace BackofficeDeAdministracion
             this.PanelReportes.Name = "PanelReportes";
             this.PanelReportes.Size = new System.Drawing.Size(182, 170);
             this.PanelReportes.TabIndex = 3;
-            this.PanelReportes.Visible = false;
             // 
             // PanelOpcionesReportes
             // 
@@ -367,25 +380,11 @@ namespace BackofficeDeAdministracion
             this.PanelVista.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.PanelVista.BackColor = System.Drawing.Color.DimGray;
+            this.PanelVista.BackColor = System.Drawing.Color.Gray;
             this.PanelVista.Location = new System.Drawing.Point(189, 75);
             this.PanelVista.Name = "PanelVista";
             this.PanelVista.Size = new System.Drawing.Size(837, 438);
             this.PanelVista.TabIndex = 23;
-            // 
-            // lblModo
-            // 
-            this.lblModo.AutoSize = true;
-            this.lblModo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblModo.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblModo.ForeColor = System.Drawing.Color.White;
-            this.lblModo.Location = new System.Drawing.Point(257, 47);
-            this.lblModo.Name = "lblModo";
-            this.lblModo.Size = new System.Drawing.Size(153, 22);
-            this.lblModo.TabIndex = 18;
-            this.lblModo.Text = "✹ Cambiar Modo";
-            this.lblModo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblModo.Click += new System.EventHandler(this.lblModo_Click);
             // 
             // Principal
             // 

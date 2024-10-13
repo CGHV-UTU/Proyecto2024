@@ -51,21 +51,21 @@ namespace BackofficeDeAdministracion
         private void InicializarTablaPosts()
         {
             DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle();
-            columnHeaderStyle.BackColor = Color.Beige;
             columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
             dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;        
             dataGridView1.BorderStyle = BorderStyle.None;
             dataGridView1.EnableHeadersVisualStyles = false;         
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
-            dataGridView1.Columns["cantidadLikes"].Width = 75;
-            dataGridView1.Columns["idPost"].HeaderText = "likes";
+            dataGridView1.Columns["cantidadLikes"].Width = 70;
+            dataGridView1.Columns["cantidadLikes"].HeaderText = "likes";
             dataGridView1.Columns["idPost"].Width = 51;
-            dataGridView1.Columns["idPost"].HeaderText = "id";         
-            dataGridView1.Columns["texto"].Width = 147;
+            dataGridView1.Columns["idPost"].HeaderText = "id";
+            dataGridView1.Columns["texto"].Width = 151;
+            dataGridView1.Columns["categoria"].Width = 93;
+            dataGridView1.Columns["video"].Width = 85;
             dataGridView1.Columns["comentarios"].Width = 75;
             dataGridView1.Columns["comentarios"].HeaderText = "Coment";
         }
-
 
         private async Task<string> CargarImagenDeGitHub(string urlImagen)
         {

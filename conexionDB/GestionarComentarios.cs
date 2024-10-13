@@ -84,6 +84,7 @@ namespace BackofficeDeAdministracion
                                 {                                                                    
                                         control.Visible = true;
                                 }
+                                
                              }
                             conn.Close();
                             dataGridView1.ClearSelection();

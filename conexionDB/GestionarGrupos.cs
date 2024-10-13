@@ -98,7 +98,7 @@ namespace BackofficeDeAdministracion
                             {
                                 lblNombreDeGrupo.Text = reader["nombreReal"].ToString();
                                 lblNombreVisible.Text = reader["nombreVisible"].ToString();
-                                lblDescripcionDeGrupo.Text = reader["descripcion"].ToString();
+                                txtDescripcionDeGrupo.Text = reader["descripcion"].ToString();
 
                                 try
                                 {
@@ -118,7 +118,7 @@ namespace BackofficeDeAdministracion
                                 lblNombre.Show();
                                 lblNombreVisible.Show();
                                 lblNomVisible.Show();
-                                lblDescripcionDeGrupo.Show();
+                                txtDescripcionDeGrupo.Show();
                                 lblDesc.Show();
                                 lblFoto.Show();
                             }

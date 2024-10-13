@@ -254,5 +254,8 @@
   <ItemGroup>
     <None Include="Resources\Logo_Infini3.jpeg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconoInfini.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
