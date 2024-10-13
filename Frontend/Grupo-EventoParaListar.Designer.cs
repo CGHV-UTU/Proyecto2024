@@ -36,9 +36,9 @@ namespace Frontend
             // 
             // PictureBoxImagen
             // 
-            this.PictureBoxImagen.Location = new System.Drawing.Point(247, 3);
+            this.PictureBoxImagen.Location = new System.Drawing.Point(3, 3);
             this.PictureBoxImagen.Name = "PictureBoxImagen";
-            this.PictureBoxImagen.Size = new System.Drawing.Size(50, 50);
+            this.PictureBoxImagen.Size = new System.Drawing.Size(10, 10);
             this.PictureBoxImagen.TabIndex = 0;
             this.PictureBoxImagen.TabStop = false;
             // 

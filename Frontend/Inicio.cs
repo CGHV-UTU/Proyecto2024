@@ -176,7 +176,7 @@ namespace Frontend
             paginaDeUsuario.BackColor = Color.LightGray;
             paginaDeUsuario.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
-            paginaDeUsuario.BackColor = Color.FromArgb(34, 67, 220);
+          //  paginaDeUsuario.BackColor = Color.FromArgb(34, 67, 220);
             paginaDeUsuario.ReportarPost += PostControl_ReportarPost;
             paginaDeUsuario.AbrirComentarios += PostControl_AbrirComentarios;
             PanelMostrarUsuario.Controls.Add(paginaDeUsuario);
@@ -194,7 +194,7 @@ namespace Frontend
             post.FormBorderStyle = FormBorderStyle.None;
             post.BackColor = Color.LightGray;
             post.Dock = DockStyle.Fill;
-            post.BackColor = Color.FromArgb(34, 67, 220);
+           // post.BackColor = Color.FromArgb(34, 67, 220);
             PanelPostear.Controls.Add(post);
             post.Show();
         }
@@ -234,7 +234,7 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false; 
-            Post post = new Post(user, token,idevento);
+            Post post = new Post(user, token, idevento);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
             post.BackColor = Color.White;
@@ -382,10 +382,11 @@ namespace Frontend
             comunidad.BackColor = Color.LightGray;
             comunidad.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
-            comunidad.BackColor = Color.FromArgb(34, 67, 220);
+            //comunidad.BackColor = Color.FromArgb(34, 67, 220);
             //comunidad.ReportarPost += PostControl_ReportarPost;
             comunidad.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
             comunidad.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
+            
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
         }
@@ -403,7 +404,7 @@ namespace Frontend
             comunidad.BackColor = Color.LightGray;
             comunidad.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
-            comunidad.BackColor = Color.FromArgb(34, 67, 220);
+            //comunidad.BackColor = Color.FromArgb(34, 67, 220);
             comunidad.PostearEnEvento+= EventoComunidad_PostearEnEvento;
             //comunidad.AbrirEvento += PostControl_AbrirComentarios;
             PanelMostrarUsuario.Controls.Add(comunidad);
@@ -424,7 +425,7 @@ namespace Frontend
             comunidad.BackColor = Color.LightGray;
             comunidad.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
-            comunidad.BackColor = Color.FromArgb(34, 67, 220);
+            //comunidad.BackColor = Color.FromArgb(34, 67, 220);
             //comunidad.ReportarPost += PostControl_ReportarPost;
             //comunidad.AbrirEvento += PostControl_AbrirComentarios;
             PanelMostrarUsuario.Controls.Add(comunidad);

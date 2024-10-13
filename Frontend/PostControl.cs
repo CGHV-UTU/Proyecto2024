@@ -38,71 +38,84 @@ namespace Frontend
 
         public async Task aplicarDatos()
         {
-            var data = await Buscar(idpost, token);
-            string creador = await obtenerCreador(idpost, token);
-            this.creador = creador;
-            if (string.IsNullOrEmpty(data[2]))
+            try
             {
-                if (string.IsNullOrEmpty(data[1]))
+                var data = await Buscar(idpost, token);
+                string creador = await obtenerCreador(idpost, token);
+                this.creador = creador;
+                if(data == null)
                 {
-                    this.tipo = "textOnly";
-                    iniciar("textOnly");
-                    txtDescripcion.Text = data[0];
+                    MessageBox.Show("Error. No se encontraron posts");
+                    return;
+                }
+                if (string.IsNullOrEmpty(data[2]))
+                {
+                    if (string.IsNullOrEmpty(data[1]))
+                    {
+                        this.tipo = "textOnly";
+                        iniciar("textOnly");
+                        txtDescripcion.Text = data[0];
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(data[0]))
+                        {
+                            this.tipo = "urlOnly";
+                            iniciar("urlOnly");
+                            txtUrl.Text = data[1];
+                        }
+                        else
+                        {
+                            this.tipo = "textAndUrl";
+                            iniciar("textAndUrl");
+                            txtDescripcion.Text = data[0];
+                            txtUrl.Text = data[1];
+                        }
+                    }
                 }
                 else
                 {
                     if (string.IsNullOrEmpty(data[0]))
                     {
-                        this.tipo = "urlOnly";
-                        iniciar("urlOnly");
-                        txtUrl.Text = data[1];
+                        this.tipo = "imageOnly";
+                        iniciar("imageOnly");
+                        byte[] imagen = Convert.FromBase64String(data[2]);
+                        MemoryStream ms = new MemoryStream(imagen);
+                        Bitmap bitmap = new Bitmap(ms);
+                        this.imagen.Image = bitmap;
+                        this.imagen.SizeMode = PictureBoxSizeMode.StretchImage;
                     }
                     else
                     {
-                        this.tipo = "textAndUrl";
-                        iniciar("textAndUrl");
+                        this.tipo = "textAndImage";
+                        iniciar("textAndImage");
                         txtDescripcion.Text = data[0];
-                        txtUrl.Text = data[1];
+                        byte[] imagen = Convert.FromBase64String(data[2]);
+                        MemoryStream ms = new MemoryStream(imagen);
+                        Bitmap bitmap = new Bitmap(ms);
+                        this.imagen.Image = bitmap;
+                        this.imagen.SizeMode = PictureBoxSizeMode.StretchImage;
                     }
                 }
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(data[0]))
+                bool Like = await dioLike(user, idpost, creador, token);
+                if (Like)
                 {
-                    this.tipo = "imageOnly";
-                    iniciar("imageOnly");
-                    byte[] imagen = Convert.FromBase64String(data[2]);
-                    MemoryStream ms = new MemoryStream(imagen);
-                    Bitmap bitmap = new Bitmap(ms);
-                    this.imagen.Image = bitmap;
-                    this.imagen.SizeMode = PictureBoxSizeMode.StretchImage;
+                    HandleLikeClick();
                 }
-                else
-                {
-                    this.tipo = "textAndImage";
-                    iniciar("textAndImage");
-                    txtDescripcion.Text = data[0];
-                    byte[] imagen = Convert.FromBase64String(data[2]);
-                    MemoryStream ms = new MemoryStream(imagen);
-                    Bitmap bitmap = new Bitmap(ms);
-                    this.imagen.Image = bitmap;
-                    this.imagen.SizeMode = PictureBoxSizeMode.StretchImage;
-                }
+                this.lblNombre.Text = creador;
+                string[] fecha = data[3].Split(' ');
+                this.lblFechaYhora.Text = fecha[0];
+                string imagenB64 = await conseguirImagenDelCreador(creador, token);
+                byte[] imagen2 = Convert.FromBase64String(imagenB64);
+                MemoryStream ms2 = new MemoryStream(imagen2);
+                Bitmap bitmap2 = new Bitmap(ms2);
+                this.PictureBoxUsuarioPost.Image = bitmap2;
             }
-            bool Like = await dioLike(user,idpost,creador, token);
-            if (Like)
+            catch (Exception)
             {
-                HandleLikeClick();
+                MessageBox.Show("No se han encontrado posts");
             }
-            this.lblNombre.Text = creador;
-            string[] fecha = data[3].Split(' ');
-            this.lblFechaYhora.Text = fecha[0];
-            string imagenB64 = await conseguirImagenDelCreador(creador, token);
-            byte[] imagen2 = Convert.FromBase64String(imagenB64);
-            MemoryStream ms2 = new MemoryStream(imagen2);
-            Bitmap bitmap2 = new Bitmap(ms2);
-            this.PictureBoxUsuarioPost.Image = bitmap2;
+            
         }
 
         static async Task<string> conseguirImagenDelCreador(string creador, string token)

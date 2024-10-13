@@ -132,9 +132,9 @@ namespace Frontend
 
             // lblNombre
             this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(200, 19);
+            this.lblNombre.Location = new System.Drawing.Point(150, 19);
             this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(60, 24);
+            this.lblNombre.Size = new System.Drawing.Size(100, 24);
             this.lblNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
             this.lblNombre.TabIndex = 0;
 
@@ -154,7 +154,7 @@ namespace Frontend
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.Name = "GroupEventControl";
-            this.Size = new System.Drawing.Size(300, 67);
+            this.Size = new System.Drawing.Size(350, 67);
             this.ResumeLayout(false);
             this.PerformLayout();
         }

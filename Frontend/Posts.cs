@@ -52,6 +52,27 @@ namespace Frontend
             }
         }
 
+        static async Task<dynamic> ConseguirPostsPublicos(string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var dato = new {token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/seleccionarTodosLosPostPublicos", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject<DataTable>(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
         static async Task<string> CuantosPost(string token)
         {
             using (HttpClient client = new HttpClient())
@@ -64,6 +85,9 @@ namespace Frontend
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de ninguna manera, tengo que hallar alguna forma de pasar los datos
+                    Console.WriteLine("Respuesta http: " + response);
+                    Console.WriteLine("Respuesta body: " + responseBody);
+                    Console.WriteLine("data: " + data);
                     return data;
                 }
                 catch
@@ -83,38 +107,37 @@ namespace Frontend
 
         private async void LoadPosts(int page)
         {
-            var cantPost = await CuantosPost(token);
-            if (!cantPost.Equals("no se encuentra"))
+            DataTable postPublicos = await ConseguirPostsPublicos(token);
+            
+            if (postPublicos == null)
             {
-                // carga de posts
-                for (int i = int.Parse(cantPost); i > 0; i--)
-                {
-                    var existe = await Existe(i, token);
-                    if (existe)
-                    {
-                        var postControl = new PostControl(i, modo, user, token);
-                        postControl.AbrirComentarios += PostControl_AbrirComentarios;
-                        postControl.ReportarPost += PostControl_ReportarPost;
-                        postControl.RecargarFeed += PostControl_RecargarFeed;
-                        postControl.AbrirPaginaUsuario += PostControl_AbrirPaginaUsuario;
-                        await postControl.aplicarDatos();
-                        // Calcula la ubicación Y acumulada
-                        int currentYPosition = 0;
-                        if (panel1.Controls.Count > 0)
-                        {
-                            var lastControl = panel1.Controls[panel1.Controls.Count - 1];
-                            if (postControl.tipo.Equals("imageOnly") || postControl.tipo.Equals("textAndImage"))
-                            {
-                                await Task.Delay(300);
-                            }
-                            currentYPosition = lastControl.Bottom;  // La posición inferior del último control agregado
-                        }
-                        postControl.Location = new Point(0, currentYPosition);
+                MessageBox.Show("No se encontraron posts");
+                return;
+            }
 
-                        panel1.Controls.Add(postControl);
+            // carga de posts
+            for (int i = postPublicos.Rows.Count; i > 0; i--)
+            {
+                    var postControl = new PostControl(Convert.ToInt32(postPublicos.Rows[i-1]["idPost"]), modo, user, token);
+                    postControl.AbrirComentarios += PostControl_AbrirComentarios;
+                    postControl.ReportarPost += PostControl_ReportarPost;
+                    postControl.RecargarFeed += PostControl_RecargarFeed;
+                    postControl.AbrirPaginaUsuario += PostControl_AbrirPaginaUsuario;
+                    await postControl.aplicarDatos();
+                    // Calcula la ubicación Y acumulada
+                    int currentYPosition = 0;
+                    if (panel1.Controls.Count > 0)
+                    {
+                        var lastControl = panel1.Controls[panel1.Controls.Count - 1];
+                        if (postControl.tipo.Equals("imageOnly") || postControl.tipo.Equals("textAndImage"))
+                        {
+                            await Task.Delay(300);
+                        }
+                        currentYPosition = lastControl.Bottom;  // La posición inferior del último control agregado
                     }
-                }
-            }  
+                    postControl.Location = new Point(0, currentYPosition);
+                    panel1.Controls.Add(postControl);
+            }
         }
         private void PostControl_RecargarFeed(object sender, EventArgs e)
         {

@@ -19,7 +19,7 @@ namespace Frontend
         private static string user;
         private string token;
         private string idevento;
-        public Post(string usuario,string token, string idevento="")
+        public Post(string usuario,string token, string idevento="")//Deberíamos sacar el "" en idevento
         {
             InitializeComponent();
             txtUrl.Visible = false;
@@ -95,6 +95,7 @@ namespace Frontend
                         if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text))
                         {
                             MessageBox.Show("No puede realizar un post sin contenido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
                         }
                         else
                         {
@@ -122,9 +123,11 @@ namespace Frontend
                         if (string.IsNullOrEmpty(txtNombre.Text) || dtpFechaFinal.Value < DateTime.Now)
                         {
                             MessageBox.Show("No puede realizar un evento sin título o fecha", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
                         }
                         if (pbxImagen.Image == null)
                         {
+
                             byte[] data = new byte[0];
                             await PublicarEvento(txtNombre.Text, txtUrl.Text, data, txtDescripcion.Text, dtpFechaInicio.Text, dtpFechaFinal.Text, token);
                             MessageBox.Show("El evento se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -144,6 +147,7 @@ namespace Frontend
                         if (string.IsNullOrEmpty(txtNombre.Text))
                         {
                             MessageBox.Show("No puede realizar un grupo sin nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
                         }
                         if (pbxImagen.Image == null)
                         {
@@ -204,6 +208,7 @@ namespace Frontend
                     this.Height = 692;
                     btnCrear.Location = new Point(16, 445);
                     OpenFileDialog ofd = new OpenFileDialog();
+                    ofd.Filter = "Archivos de imagen|*.png;*.jpg;*.jpeg"; //Para que sólo aparezcan fotos
                     if (ofd.ShowDialog() == DialogResult.OK)
                     {
                         pbxImagen.ImageLocation = ofd.FileName;
