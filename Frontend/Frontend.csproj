@@ -340,6 +340,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\seguir-removebg-preview.png" />
+    <None Include="Resources\seguir.jpeg" />
     <None Include="Resources\panelSuperior2.jpg" />
     <None Include="Resources\panelSuperior1.jpg" />
     <None Include="Resources\subrayado-removebg-preview.png" />

@@ -19,6 +19,7 @@ namespace Frontend
         private string token;
         private DataTable eventos;
         public event EventHandler<PersonalizedArgs> AbrirEvento;
+        public event EventHandler<PersonalizedArgs> AbrirGrupo;
         public Comunidad(string modo, string user, string token)
         {
             this.modo = modo;
@@ -123,6 +124,10 @@ namespace Frontend
         {
             AbrirEvento?.Invoke(this, new PersonalizedArgs(e.arg));
         }
+        private void Grupo_EventoParaListar_AbrirGrupo(object sender, PersonalizedArgs e)
+        {
+            AbrirGrupo?.Invoke(this, new PersonalizedArgs(e.arg));
+        }
 
         private async void CargarGrupos()
         {
@@ -132,7 +137,7 @@ namespace Frontend
                 foreach(var elemento in lista)
                 {
                     var eventControl = new Grupo_EventoParaListar(user, token, Convert.ToString(elemento.nombreReal), 0);
-
+                    eventControl.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
                     // probando, antes iba debajo del else
                     if (PanelMostrar.Controls.Count > 0)
                     {

@@ -18,54 +18,57 @@ namespace Frontend
     //de la ventana anterior y los muestro.
     class GruposComunidad : Form
     {
-        private TextBox txtDescripcion;
-        private TextBox txtNombre;
         private PictureBox pbxImagen;
-
-        public GruposComunidad(dynamic groupData)
+        private string user;
+        private Label lblNombre;
+        private Panel panel1;
+        private string token;
+        public GruposComunidad(dynamic groupData, string user, string token)
         {
             InitializeComponent();
+            this.user = user;
+            this.token = token;
             AplicarDatos(groupData);
         }
         private void InitializeComponent()
         {
-            this.txtDescripcion = new System.Windows.Forms.TextBox();
-            this.txtNombre = new System.Windows.Forms.TextBox();
             this.pbxImagen = new System.Windows.Forms.PictureBox();
+            this.lblNombre = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
             this.SuspendLayout();
             // 
-            // txtDescripcion
-            // 
-            this.txtDescripcion.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.txtDescripcion.Location = new System.Drawing.Point(10, 47);
-            this.txtDescripcion.Multiline = true;
-            this.txtDescripcion.Name = "txtDescripcion";
-            this.txtDescripcion.Size = new System.Drawing.Size(381, 86);
-            this.txtDescripcion.TabIndex = 38;
-            // 
-            // txtNombre
-            // 
-            this.txtNombre.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.txtNombre.Location = new System.Drawing.Point(10, 21);
-            this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(381, 20);
-            this.txtNombre.TabIndex = 37;
-            // 
             // pbxImagen
             // 
-            this.pbxImagen.Location = new System.Drawing.Point(10, 218);
+            this.pbxImagen.Location = new System.Drawing.Point(12, 12);
             this.pbxImagen.Name = "pbxImagen";
-            this.pbxImagen.Size = new System.Drawing.Size(381, 212);
+            this.pbxImagen.Size = new System.Drawing.Size(90, 90);
+            this.pbxImagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxImagen.TabIndex = 36;
             this.pbxImagen.TabStop = false;
-            this.pbxImagen.Visible = false;
+            // 
+            // lblNombre
+            // 
+            this.lblNombre.AutoSize = true;
+            this.lblNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNombre.Location = new System.Drawing.Point(148, 12);
+            this.lblNombre.Name = "lblNombre";
+            this.lblNombre.Size = new System.Drawing.Size(70, 25);
+            this.lblNombre.TabIndex = 46;
+            this.lblNombre.Text = "label1";
+            // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(13, 108);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(971, 454);
+            this.panel1.TabIndex = 47;
             // 
             // GruposComunidad
             // 
             this.ClientSize = new System.Drawing.Size(996, 574);
-            this.Controls.Add(this.txtDescripcion);
-            this.Controls.Add(this.txtNombre);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.lblNombre);
             this.Controls.Add(this.pbxImagen);
             this.Name = "GruposComunidad";
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).EndInit();
@@ -76,8 +79,7 @@ namespace Frontend
 
         private void AplicarDatos(dynamic groupData)
         {
-            txtNombre.Text = groupData.nombreVisible;
-            txtDescripcion.Text = groupData.descripcion;
+            lblNombre.Text = groupData.nombreVisible;
             byte[] imagen = Convert.FromBase64String(Convert.ToString(groupData.foto));
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);

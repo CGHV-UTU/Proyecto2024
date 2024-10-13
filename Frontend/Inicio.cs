@@ -228,13 +228,13 @@ namespace Frontend
         {
             VerPost();
         }
-        private void VerPost()
+        private void VerPost(string idevento="")
         {
             PanelPostear.Controls.Clear();
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false; 
-            Post post = new Post(user, token);
+            Post post = new Post(user, token,idevento);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
             post.BackColor = Color.White;
@@ -385,6 +385,7 @@ namespace Frontend
             comunidad.BackColor = Color.FromArgb(34, 67, 220);
             //comunidad.ReportarPost += PostControl_ReportarPost;
             comunidad.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
+            comunidad.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
         }
@@ -396,7 +397,28 @@ namespace Frontend
             PanelMostrarUsuario.Visible = true;
             PanelMostrarUsuario.Parent = this;
             PanelMostrarUsuario.Location = PanelPosts.Location;
-            EventoComunidad comunidad = new EventoComunidad(e.arg, token);
+            EventoComunidad comunidad = new EventoComunidad(e.arg, user, token, modo);
+            comunidad.TopLevel = false;
+            comunidad.FormBorderStyle = FormBorderStyle.None;
+            comunidad.BackColor = Color.LightGray;
+            comunidad.Dock = DockStyle.Fill;
+            PanelMostrarUsuario.BackColor = Color.LightGray;
+            comunidad.BackColor = Color.FromArgb(34, 67, 220);
+            comunidad.PostearEnEvento+= EventoComunidad_PostearEnEvento;
+            //comunidad.AbrirEvento += PostControl_AbrirComentarios;
+            PanelMostrarUsuario.Controls.Add(comunidad);
+            comunidad.Show();
+        }
+
+        private void Grupo_EventoParaListar_AbrirGrupo(object sender, PersonalizedArgs e)
+        {
+            PanelMostrarUsuario.Controls.Clear();
+            PanelComentarios.Visible = false;
+            PanelPosts.Visible = false;
+            PanelMostrarUsuario.Visible = true;
+            PanelMostrarUsuario.Parent = this;
+            PanelMostrarUsuario.Location = PanelPosts.Location;
+            GruposComunidad comunidad = new GruposComunidad(e.arg, user, token);
             comunidad.TopLevel = false;
             comunidad.FormBorderStyle = FormBorderStyle.None;
             comunidad.BackColor = Color.LightGray;
@@ -407,6 +429,11 @@ namespace Frontend
             //comunidad.AbrirEvento += PostControl_AbrirComentarios;
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
+        }
+
+        private void EventoComunidad_PostearEnEvento(object sender, PersonalizedArgs e)
+        {
+            VerPost(e.arg);
         }
     }
 }
