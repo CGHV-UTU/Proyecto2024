@@ -43,6 +43,7 @@ namespace APIPostYEventos2019.Controllers
             public string fechaYhora_Inicio { get; set; } = "";
             public string fechaYhora_Final { get; set; } = "";
             public string user { get; set; }
+            public string rol { get; set; } = "";
             public string token { get; set; }
 
         }
@@ -81,7 +82,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    string token = "11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
+                    string token = "11BKZVKOQ0So4CaeLdQqb2_s0qMD7Vd1EfzNiaVOyOKUE1KcekMlAPu94OKE3lQB9B7RTYHU6D0rP81rSy"; // Token para repositorio privado. Cambiar por el token real
                     string nombreDeImagen = GenerarIdAleatorio(8) + ".png"; // nombre aleatorio para que el nombre del archivo no se repita 
 
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -118,7 +119,7 @@ namespace APIPostYEventos2019.Controllers
         {
             using (var client = new HttpClient())
             {
-                string token = "11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
+                string token = "11BKZVKOQ0So4CaeLdQqb2_s0qMD7Vd1EfzNiaVOyOKUE1KcekMlAPu94OKE3lQB9B7RTYHU6D0rP81rSy"; // Token para repositorio privado. Cambiar por el token real
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var response = await client.GetAsync(urlImagen);
@@ -265,6 +266,7 @@ namespace APIPostYEventos2019.Controllers
                             cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
                             cmd.Parameters.AddWithValue("@idPost", idPost);
                             cmd.Parameters.AddWithValue("@idEvento", postdata.idEvento);
+                            cmd.ExecuteNonQuery();
                         }
                     }
                     if (!string.IsNullOrEmpty(postdata.nombreReal))
@@ -274,6 +276,7 @@ namespace APIPostYEventos2019.Controllers
                             cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
                             cmd.Parameters.AddWithValue("@idPost", idPost);
                             cmd.Parameters.AddWithValue("@nombreReal", postdata.nombreReal);
+                            cmd.ExecuteNonQuery();
                         }
                     }
                     conn.Close();
@@ -699,7 +702,7 @@ namespace APIPostYEventos2019.Controllers
                 {
                     MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                     conn.Open();
-                    MySqlCommand command = new MySqlCommand("SELECT titulo,ubicacion,descripcion,foto,fechaYhora_Inicio,fechaYhora_Final FROM Eventos WHERE idEvento=@Id", conn);
+                    MySqlCommand command = new MySqlCommand("SELECT idEvento,titulo,ubicacion,descripcion,foto,fechaYhora_Inicio,fechaYhora_Final FROM Eventos WHERE idEvento=@Id", conn);
                     command.Parameters.AddWithValue("@Id", eventData.id);
                     MySqlDataReader reader = command.ExecuteReader();
                     if (reader.Read())
@@ -732,15 +735,45 @@ namespace APIPostYEventos2019.Controllers
                         {
                             foto = await CargarImagenDeGitHub(reader["foto"].ToString());
                         }
-                        var data = new EventData { titulo = reader["titulo"].ToString(), ubicacion = ubicacion, descripcion = reader["descripcion"].ToString(), foto = foto, fechaYhora_Inicio = reader["fechaYhora_Inicio"].ToString(), fechaYhora_Final = reader["fechaYhora_Final"].ToString() };
+                        var data = new EventData { id= reader["idEvento"].ToString(), titulo = reader["titulo"].ToString(), ubicacion = ubicacion, descripcion = reader["descripcion"].ToString(), foto = foto, fechaYhora_Inicio = reader["fechaYhora_Inicio"].ToString(), fechaYhora_Final = reader["fechaYhora_Final"].ToString() };
                         conn.Close();
                         return Json(data);
                     }
                     else
                     {
                         conn.Close();
-                        return Json("Error");
+                        return Json("Error1");
                     }
+                }
+                catch (Exception ex)
+                {
+                    return Json("Error2"+ ex.Message);
+                }
+            }
+            else
+            {
+                return Json("Token expirado");
+            }
+
+        }
+
+        [HttpPost]
+        [Route("participarDelEvento")]
+        public dynamic participarDelEvento([FromBody] EventData eventData)
+        {
+            if (TestToken(eventData.token))
+            {
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("INSERT INTO ParticipaEvento (nombreDeCuenta,idEvento,rol) VALUES (@nombreUsuario, @idEvento, @rol )", conn);
+                    command.Parameters.AddWithValue("@nombreUsuario", eventData.user);
+                    command.Parameters.AddWithValue("@idEvento", eventData.id);
+                    command.Parameters.AddWithValue("@rol", eventData.rol);
+                    command.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Participa del evento");
                 }
                 catch (Exception)
                 {
@@ -1395,6 +1428,38 @@ namespace APIPostYEventos2019.Controllers
                         conn.Open();
                         MySqlCommand cmd = new MySqlCommand("SELECT idPost FROM Posts WHERE nombreDeCuenta=@nombreDeCuenta", conn);
                         cmd.Parameters.AddWithValue("@nombreDeCuenta", post.user);
+                        MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+                        conn.Close();
+                        return Json(dataTable);
+                    }
+                }
+                catch (Exception)
+                {
+                    return Json("Error al cargar Datagrid");
+                }
+            }
+            else
+            {
+                return Json("Token expirado");
+            }
+
+        }
+        [HttpPut]
+        [Route("seleccionarTodosLosPostDelEvento")]
+        public dynamic seleccionarTodosLosPostDelEvento([FromBody] PostData post)
+        {
+            if (TestToken(post.token))
+            {
+                try
+                {
+                    string connectionString = "server = localhost; database = infini; uid = root; ";
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand("SELECT idPost FROM infini.PostEvento WHERE idEvento=@idevento", conn);
+                        cmd.Parameters.AddWithValue("@idevento", post.idEvento);
                         MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                         DataTable dataTable = new DataTable();
                         adapter.Fill(dataTable);
