@@ -253,12 +253,7 @@ namespace APIPostYEventos2019.Controllers
                         }
                     }
 
-                    using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO PostPublico (nombreDeCuenta, idPost) VALUES (@NombreDeCuenta, @id)", conn))
-                    {
-                        cmd2.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
-                        cmd2.Parameters.AddWithValue("@id", idPost);
-                        await cmd2.ExecuteNonQueryAsync();
-                    }
+
                     if (!string.IsNullOrEmpty(postdata.idEvento))
                     {
                         using (MySqlCommand cmd = new MySqlCommand("INSERT INTO PostEvento (idPost, nombreDeCuenta, idEvento) VALUES (@idPost,@NombreDeCuenta,@idEvento); SELECT LAST_INSERT_id();", conn))
@@ -277,6 +272,16 @@ namespace APIPostYEventos2019.Controllers
                             cmd.Parameters.AddWithValue("@idPost", idPost);
                             cmd.Parameters.AddWithValue("@nombreReal", postdata.nombreReal);
                             cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(postdata.idEvento) && string.IsNullOrEmpty(postdata.nombreReal))
+                    {
+                        using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO PostPublico (nombreDeCuenta, idPost) VALUES (@NombreDeCuenta, @id)", conn))
+                        {
+                            cmd2.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
+                            cmd2.Parameters.AddWithValue("@id", idPost);
+                            await cmd2.ExecuteNonQueryAsync();
                         }
                     }
                     conn.Close();
@@ -1324,6 +1329,37 @@ namespace APIPostYEventos2019.Controllers
                     {
                         conn.Open();
                         MySqlCommand cmd = new MySqlCommand("SELECT idPost,texto FROM Posts", conn);
+                        MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+                        conn.Close();
+                        return Json(dataTable);
+                    }
+                }
+                catch (Exception)
+                {
+                    return Json("Error al cargar Datagrid");
+                }
+            }
+            else
+            {
+                return Json("Token expirado");
+            }
+        }
+
+        [HttpPut]
+        [Route("seleccionarTodosLosPostPublicos")]
+        public dynamic seleccionarTodosLosPostPublicos([FromBody] PostData post)
+        {
+            if (TestToken(post.token))
+            {
+                try
+                {
+                    string connectionString = "server = localhost; database = infini; uid = root; ";
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand("SELECT idPost FROM PostPublico", conn);
                         MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                         DataTable dataTable = new DataTable();
                         adapter.Fill(dataTable);
