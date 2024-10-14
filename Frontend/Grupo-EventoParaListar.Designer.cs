@@ -31,6 +31,8 @@ namespace Frontend
         {
             this.PictureBoxImagen = new System.Windows.Forms.PictureBox();
             this.lblNombre = new System.Windows.Forms.Label();
+            this.pnlTop = new System.Windows.Forms.Panel();
+            this.pnlBot = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxImagen)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,10 +53,28 @@ namespace Frontend
             this.lblNombre.Size = new System.Drawing.Size(0, 24);
             this.lblNombre.TabIndex = 1;
             // 
+            // pnlTop
+            // 
+            this.pnlTop.BackColor = System.Drawing.Color.SlateBlue;
+            this.pnlTop.Location = new System.Drawing.Point(47, 3);
+            this.pnlTop.Name = "pnlTop";
+            this.pnlTop.Size = new System.Drawing.Size(200, 3);
+            this.pnlTop.TabIndex = 73;
+            // 
+            // pnlBot
+            // 
+            this.pnlBot.BackColor = System.Drawing.Color.SlateBlue;
+            this.pnlBot.Location = new System.Drawing.Point(47, 61);
+            this.pnlBot.Name = "pnlBot";
+            this.pnlBot.Size = new System.Drawing.Size(200, 3);
+            this.pnlBot.TabIndex = 74;
+            // 
             // Grupo_EventoParaListar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.pnlBot);
+            this.Controls.Add(this.pnlTop);
             this.Controls.Add(this.lblNombre);
             this.Controls.Add(this.PictureBoxImagen);
             this.Name = "Grupo_EventoParaListar";
@@ -71,5 +91,7 @@ namespace Frontend
 
         private System.Windows.Forms.PictureBox PictureBoxImagen;
         private System.Windows.Forms.Label lblNombre;
+        private System.Windows.Forms.Panel pnlTop;
+        private System.Windows.Forms.Panel pnlBot;
     }
 }

@@ -203,7 +203,7 @@ namespace Frontend
             this.PictureBoxCrear.BackColor = System.Drawing.Color.Transparent;
             this.PictureBoxCrear.Cursor = System.Windows.Forms.Cursors.Hand;
             this.PictureBoxCrear.Image = global::Frontend.Properties.Resources.crear_claro;
-            this.PictureBoxCrear.Location = new System.Drawing.Point(623, 0);
+            this.PictureBoxCrear.Location = new System.Drawing.Point(612, 0);
             this.PictureBoxCrear.Name = "PictureBoxCrear";
             this.PictureBoxCrear.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxCrear.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;

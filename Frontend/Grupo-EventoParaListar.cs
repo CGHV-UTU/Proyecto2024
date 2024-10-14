@@ -146,9 +146,21 @@ namespace Frontend
             this.PictureBoxImagen.Image = Properties.Resources.reportar;
             this.Cursor = Cursors.Hand;
 
+            //pnlTop
+            this.pnlTop.Location = new System.Drawing.Point(30, 3);
+            this.pnlTop.Name = "pnlTop";
+            this.pnlTop.Size = new System.Drawing.Size(300, 3);
+
+
+            //pnlBot
+            this.pnlBot.Location = new System.Drawing.Point(30, 61);
+            this.pnlBot.Name = "pnlBot";
+            this.pnlBot.Size = new System.Drawing.Size(300, 3);
+
             // Añadir controles
             this.Controls.Add(this.lblNombre);
             this.Controls.Add(this.PictureBoxImagen);
+            this.Controls.Add(this.pnlTop);
 
             // Configuración final del control
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

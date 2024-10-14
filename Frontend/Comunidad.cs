@@ -197,10 +197,5 @@ namespace Frontend
             }
             
         }
-
-        private void Comunidad_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

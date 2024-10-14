@@ -415,7 +415,7 @@ namespace Frontend
             if (txtNombre.Text == "Nombre")
             {
                 txtNombre.Text = "";
-            }   
+            }
         }
 
         private void txtNombre_Leave(object sender, EventArgs e)

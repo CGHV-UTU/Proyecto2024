@@ -44,7 +44,7 @@ namespace Frontend
             // PanelGrupos
             // 
             this.PanelGrupos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PanelGrupos.Location = new System.Drawing.Point(348, 69);
+            this.PanelGrupos.Location = new System.Drawing.Point(337, 69);
             this.PanelGrupos.Name = "PanelGrupos";
             this.PanelGrupos.Size = new System.Drawing.Size(357, 493);
             this.PanelGrupos.TabIndex = 3;
@@ -52,7 +52,7 @@ namespace Frontend
             // panelEventos
             // 
             this.panelEventos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelEventos.Location = new System.Drawing.Point(348, 69);
+            this.panelEventos.Location = new System.Drawing.Point(337, 69);
             this.panelEventos.Name = "panelEventos";
             this.panelEventos.Size = new System.Drawing.Size(357, 493);
             this.panelEventos.TabIndex = 4;
@@ -61,7 +61,7 @@ namespace Frontend
             // 
             this.pictureBox6.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox6.Image = global::Frontend.Properties.Resources.subrayado_removebg_preview;
-            this.pictureBox6.Location = new System.Drawing.Point(588, 33);
+            this.pictureBox6.Location = new System.Drawing.Point(577, 44);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(128, 21);
             this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -72,7 +72,7 @@ namespace Frontend
             // 
             this.pictureBox5.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox5.Image = global::Frontend.Properties.Resources.subrayado_removebg_preview;
-            this.pictureBox5.Location = new System.Drawing.Point(336, 33);
+            this.pictureBox5.Location = new System.Drawing.Point(325, 44);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(128, 21);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -82,7 +82,7 @@ namespace Frontend
             // PictureBoxEventos
             // 
             this.PictureBoxEventos.Image = global::Frontend.Properties.Resources.eventos_removebg_preview;
-            this.PictureBoxEventos.Location = new System.Drawing.Point(603, -10);
+            this.PictureBoxEventos.Location = new System.Drawing.Point(592, 1);
             this.PictureBoxEventos.Name = "PictureBoxEventos";
             this.PictureBoxEventos.Size = new System.Drawing.Size(100, 73);
             this.PictureBoxEventos.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -93,12 +93,13 @@ namespace Frontend
             // PictureBoxGrupos
             // 
             this.PictureBoxGrupos.Image = global::Frontend.Properties.Resources.grupos_removebg_preview;
-            this.PictureBoxGrupos.Location = new System.Drawing.Point(349, -10);
+            this.PictureBoxGrupos.Location = new System.Drawing.Point(338, 1);
             this.PictureBoxGrupos.Name = "PictureBoxGrupos";
             this.PictureBoxGrupos.Size = new System.Drawing.Size(100, 73);
             this.PictureBoxGrupos.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PictureBoxGrupos.TabIndex = 5;
             this.PictureBoxGrupos.TabStop = false;
+            this.PictureBoxGrupos.Click += new System.EventHandler(this.PictureBoxGrupos_Click);
             // 
             // Comunidad
             // 
