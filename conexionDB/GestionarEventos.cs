@@ -24,6 +24,32 @@ namespace BackofficeDeAdministracion
             CargarTabla();
             InicializarTablaEventos();
             this.ActiveControl = txtID;
+            dataGridView1.CellMouseDown += dataGridView1_CellMouseDown;
+            dataGridView1.MouseClick += dataGridView1_MouseClick;
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
+            dataGridView1.ClearSelection();
+        }
+        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Evita la selección con el mouse
+        }
+
+        // Evitar la selección cuando se hace clic en cualquier lugar del DataGridView
+        private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Limpia la selección
+        }
+
+        // Evitar que cualquier selección se mantenga
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Siempre limpia la selección si algo intenta seleccionarse
+        }
+
+        private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Cancela cualquier selección cuando se hace clic en el DataGridView
+            dataGridView1.ClearSelection();
         }
 
         //Cargar tabla
@@ -104,12 +130,20 @@ namespace BackofficeDeAdministracion
                                 lblInicio.Text = reader["fechaYhora_Inicio"].ToString();
                                 lblFin.Text = reader["fechaYhora_Final"].ToString();
                                 string imagen = await CargarImagenDeGitHub(reader["foto"].ToString());
-                                byte[] imagenBytes = Convert.FromBase64String(imagen);
-                                using (MemoryStream ms = new MemoryStream(imagenBytes))
+                                if (!string.IsNullOrEmpty(imagen))
                                 {
-                                    Bitmap bitmap = new Bitmap(ms);
-                                    pictureBox1.Image = bitmap;
-                                    pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                                    pictureBox1.Show();
+                                    byte[] imagenBytes = Convert.FromBase64String(imagen);
+                                    using (MemoryStream ms = new MemoryStream(imagenBytes))
+                                    {
+                                        Bitmap bitmap = new Bitmap(ms);
+                                        pictureBox1.Image = bitmap;
+                                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                                    }
+                                }
+                                else
+                                {
+                                    pictureBox1.Hide();
                                 }
 
                             }
@@ -142,53 +176,33 @@ namespace BackofficeDeAdministracion
         {
             try
             {
+                var filaSeleccionada = dataGridView1.CurrentRow;
                 string id = txtID.Text;
-                GuardarId(id);
+                EliminarEvento(id);
+                CargarTabla();
+                InicializarTablaEventos();
             }
             catch (Exception)
             {
                 MessageBox.Show("No seleccionó una fila", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-        //Guardo la id de los eventos borrados del datagrid para luego eliminarlos definitivamente
-        List<string> eliminarDatos = new List<string>();
-        private void GuardarId(string id)
-        {          
-            eliminarDatos.Add(id);
-        }
 
-        private void btnGuardar_Click(object sender, EventArgs e)
-        {
-            try
-            {               
-                conn.Open();
-                //Para remover de la base de datos los eventos eliminados
-                foreach (string id in eliminarDatos)
-                {
-                    string query1 = "DELETE FROM ParticipaEvento WHERE idEvento = @id";
-                    MySqlCommand cmd1 = new MySqlCommand(query1, conn);
-                    cmd1.Parameters.AddWithValue("@id", id);
-                    cmd1.ExecuteNonQuery();
-                    string query = "DELETE FROM Eventos WHERE idEvento = @id";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.ExecuteNonQuery();
-                }
-                eliminarDatos.Clear();
-                conn.Close();
-                MessageBox.Show("Información guardada con éxito");
-                this.Close();
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show("Ocurrió un error: " + ex.Message, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ocurrió un error: " + ex.Message, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
-        
+        private void EliminarEvento(string id)
+        {
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("DELETE FROM PostEvento WHERE idEvento=@Id", conn);
+            MySqlCommand command1 = new MySqlCommand("DELETE FROM Eventos WHERE idEvento=@Id", conn);
+            MySqlCommand command2 = new MySqlCommand("DELETE FROM ParticipaEvento WHERE idEvento=@Id", conn);
+            command2.Parameters.AddWithValue("@Id", int.Parse(id));
+            command2.ExecuteNonQuery();
+            command.Parameters.AddWithValue("@Id", int.Parse(id));
+            command.ExecuteNonQuery();
+            command1.Parameters.AddWithValue("@Id", int.Parse(id));
+            command1.ExecuteNonQuery();
+            conn.Close();
+            MessageBox.Show("Información eliminada con éxito");
+        }
 
         //Para limitar la escritura de los txt a solo numeros
         private void txtID_KeyPress(object sender, KeyPressEventArgs e)

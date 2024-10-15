@@ -37,7 +37,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtUbicacion = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnGuardar = new System.Windows.Forms.Button();
             this.lblFechayHora = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lblFin = new System.Windows.Forms.Label();
@@ -59,9 +58,11 @@
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(566, 170);
             this.dataGridView1.TabIndex = 66;
+            this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
             // 
             // txtTitulo
             // 
@@ -143,20 +144,6 @@
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 73;
             this.label1.Text = "Ubicación";
-            // 
-            // btnGuardar
-            // 
-            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
-            this.btnGuardar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnGuardar.ForeColor = System.Drawing.Color.White;
-            this.btnGuardar.Location = new System.Drawing.Point(12, 407);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(812, 22);
-            this.btnGuardar.TabIndex = 76;
-            this.btnGuardar.Text = "💾 Guardar";
-            this.btnGuardar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnGuardar.UseVisualStyleBackColor = false;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // lblFechayHora
             // 
@@ -255,7 +242,6 @@
             this.Controls.Add(this.lblInicio);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.lblFechayHora);
-            this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.txtUbicacion);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtDescripcion);
@@ -284,7 +270,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtUbicacion;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Label lblFechayHora;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lblFin;

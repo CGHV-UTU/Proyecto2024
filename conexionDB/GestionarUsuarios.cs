@@ -26,6 +26,10 @@ namespace BackofficeDeAdministracion
             int año = DateTime.Now.Year;
             dtpFecha.MaxDate = new DateTime(año, 12, 31);
             this.ActiveControl = txtID;
+            dataGridView1.CellMouseDown += dataGridView1_CellMouseDown;
+            dataGridView1.MouseClick += dataGridView1_MouseClick;
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
+            dataGridView1.ClearSelection();
         }    
         private void cargarTabla()
         {
@@ -77,6 +81,29 @@ namespace BackofficeDeAdministracion
                 }
             }
         }
+        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Evita la selección con el mouse
+        }
+
+        // Evitar la selección cuando se hace clic en cualquier lugar del DataGridView
+        private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Limpia la selección
+        }
+
+        // Evitar que cualquier selección se mantenga
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Siempre limpia la selección si algo intenta seleccionarse
+        }
+
+        private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Cancela cualquier selección cuando se hace clic en el DataGridView
+            dataGridView1.ClearSelection();
+        }
+
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(txtID.Text))
@@ -101,13 +128,22 @@ namespace BackofficeDeAdministracion
                                 lblDescripcion.Text = reader["descripcion"].ToString();
                                 try
                                 {
+                                    
                                     string imagen = await CargarImagenDeGitHub(reader["foto"].ToString());
-                                    byte[] imagenBytes = Convert.FromBase64String(imagen);
-                                    using (MemoryStream ms = new MemoryStream(imagenBytes))
+                                    if (!string.IsNullOrEmpty(imagen))
                                     {
-                                        Bitmap bitmap = new Bitmap(ms);
-                                        pictureBox1.Image = bitmap;
-                                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                                        pictureBox1.Show();
+                                        byte[] imagenBytes = Convert.FromBase64String(imagen);
+                                        using (MemoryStream ms = new MemoryStream(imagenBytes))
+                                        {
+                                            Bitmap bitmap = new Bitmap(ms);
+                                            pictureBox1.Image = bitmap;
+                                            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        pictureBox1.Hide();
                                     }
                                 }
                                 catch

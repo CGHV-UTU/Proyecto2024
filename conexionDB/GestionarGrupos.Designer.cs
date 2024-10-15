@@ -41,7 +41,6 @@ namespace BackofficeDeAdministracion
             this.lblNom = new System.Windows.Forms.Label();
             this.txtID = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.btnGuardar = new System.Windows.Forms.Button();
             this.txtDescripcionDeGrupo = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -122,9 +121,11 @@ namespace BackofficeDeAdministracion
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(569, 170);
             this.dataGridView1.TabIndex = 101;
+            this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
             // 
             // btnBuscar
             // 
@@ -168,20 +169,6 @@ namespace BackofficeDeAdministracion
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btnEliminar);
             // 
-            // btnGuardar
-            // 
-            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
-            this.btnGuardar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnGuardar.ForeColor = System.Drawing.Color.White;
-            this.btnGuardar.Location = new System.Drawing.Point(11, 407);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(813, 22);
-            this.btnGuardar.TabIndex = 112;
-            this.btnGuardar.Text = "💾 Guardar";
-            this.btnGuardar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnGuardar.UseVisualStyleBackColor = false;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
-            // 
             // txtDescripcionDeGrupo
             // 
             this.txtDescripcionDeGrupo.Cursor = System.Windows.Forms.Cursors.No;
@@ -198,7 +185,6 @@ namespace BackofficeDeAdministracion
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(836, 441);
             this.Controls.Add(this.txtDescripcionDeGrupo);
-            this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lblNombreVisible);
             this.Controls.Add(this.lblNomVisible);
@@ -234,7 +220,6 @@ namespace BackofficeDeAdministracion
         private System.Windows.Forms.Label lblNom;
         private System.Windows.Forms.TextBox txtID;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.TextBox txtDescripcionDeGrupo;
     }
 }

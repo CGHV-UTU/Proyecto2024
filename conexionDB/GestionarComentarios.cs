@@ -55,6 +55,13 @@ namespace BackofficeDeAdministracion
             dataGridView1.Columns["texto"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
         }
+        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                dataGridView1.ClearSelection(); // Anula la selección
+            }
+        }
 
         //Buscar comentario
         private void btnBuscar_Click(object sender, EventArgs e)
@@ -114,8 +121,11 @@ namespace BackofficeDeAdministracion
         {
             try
             {
+                var filaSeleccionada = dataGridView1.CurrentRow;
                 string id = txtID.Text;
-                GuardarId(id);
+                EliminarComentario(id);
+                CargarTabla();
+                InicializarTablaComentarios();
             }
             catch (Exception)
             {
@@ -123,50 +133,20 @@ namespace BackofficeDeAdministracion
 
             }
         }
-        //Guardo la id de los comentarios borrados del datagrid para luego eliminarlos definitivamente
-        List<string> eliminarDatos = new List<string>();
-        private void GuardarId(string id)
+        private void EliminarComentario(string id)
         {
-            eliminarDatos.Add(id);
-        }
-
-        private void btnGuardar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                conn.Open();
-                //Para remover de la base de datos los comentarios eliminados
-                foreach (string id in eliminarDatos)
-                {
-                    string query = "DELETE FROM Comentarios WHERE id = @id";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    try
-                    {
-                        string query2 = "DELETE FROM DaLikeComentario WHERE idComentario=@id";
-                        MySqlCommand cmd2 = new MySqlCommand(query2, conn);
-                        cmd2.Parameters.AddWithValue("@id", id);
-                        cmd2.ExecuteNonQuery();
-                    }
-                    catch
-                    {
-
-                    }
-                    cmd.ExecuteNonQuery();
-                }
-                eliminarDatos.Clear();
-                conn.Close();
-                MessageBox.Show("Información guardada con éxito");
-                this.Close();
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show("Ocurrió un error: " + ex.Message, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ocurrió un error: " + ex.Message, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE id = @id", conn);
+            MySqlCommand command1 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=@id", conn);
+            MySqlCommand command2 = new MySqlCommand("DELETE FROM ParticipaEvento WHERE idEvento=@Id", conn);
+            command2.Parameters.AddWithValue("@id", int.Parse(id));
+            command2.ExecuteNonQuery();
+            command.Parameters.AddWithValue("@id", int.Parse(id));
+            command.ExecuteNonQuery();
+            command1.Parameters.AddWithValue("@Id", int.Parse(id));
+            command1.ExecuteNonQuery();
+            conn.Close();
+            MessageBox.Show("Información eliminada con éxito");
         }
 
         //Para limitar la escritura de los txt a solo numeros

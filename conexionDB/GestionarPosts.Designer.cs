@@ -45,7 +45,6 @@
             this.txtCategorias = new System.Windows.Forms.TextBox();
             this.lblCategorias = new System.Windows.Forms.Label();
             this.btnModificar = new System.Windows.Forms.Button();
-            this.btnGuardar = new System.Windows.Forms.Button();
             this.lblLikesDePost = new System.Windows.Forms.Label();
             this.lblNumeroDeLikes = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -122,10 +121,12 @@
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(566, 170);
             this.dataGridView1.StandardTab = true;
             this.dataGridView1.TabIndex = 31;
+            this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
             // 
             // lblEstadoDeComentarios
             // 
@@ -238,20 +239,6 @@
             this.btnModificar.UseVisualStyleBackColor = false;
             this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
             // 
-            // btnGuardar
-            // 
-            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
-            this.btnGuardar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnGuardar.ForeColor = System.Drawing.Color.White;
-            this.btnGuardar.Location = new System.Drawing.Point(13, 406);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(811, 23);
-            this.btnGuardar.TabIndex = 66;
-            this.btnGuardar.Text = "💾 Guardar";
-            this.btnGuardar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnGuardar.UseVisualStyleBackColor = false;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
-            // 
             // lblLikesDePost
             // 
             this.lblLikesDePost.AutoSize = true;
@@ -281,7 +268,6 @@
             this.ClientSize = new System.Drawing.Size(836, 441);
             this.Controls.Add(this.lblNumeroDeLikes);
             this.Controls.Add(this.lblLikesDePost);
-            this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.btnModificar);
             this.Controls.Add(this.txtCategorias);
             this.Controls.Add(this.lblCategorias);
@@ -327,7 +313,6 @@
         private System.Windows.Forms.TextBox txtCategorias;
         private System.Windows.Forms.Label lblCategorias;
         private System.Windows.Forms.Button btnModificar;
-        private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Label lblLikesDePost;
         private System.Windows.Forms.Label lblNumeroDeLikes;
     }

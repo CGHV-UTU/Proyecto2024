@@ -22,6 +22,33 @@ namespace BackofficeDeAdministracion
             InitializeComponent();
             CargarTabla();
             InicializarTablaGrupos();
+            dataGridView1.CellMouseDown += dataGridView1_CellMouseDown;
+            dataGridView1.MouseClick += dataGridView1_MouseClick;
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
+            dataGridView1.ClearSelection();
+
+        }
+        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Evita la selección con el mouse
+        }
+
+        // Evitar la selección cuando se hace clic en cualquier lugar del DataGridView
+        private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Limpia la selección
+        }
+
+        // Evitar que cualquier selección se mantenga
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Siempre limpia la selección si algo intenta seleccionarse
+        }
+
+        private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Cancela cualquier selección cuando se hace clic en el DataGridView
+            dataGridView1.ClearSelection();
         }
 
         //Cargar tabla      
@@ -103,12 +130,20 @@ namespace BackofficeDeAdministracion
                                 try
                                 {
                                     string imagen = await CargarImagenDeGitHub(reader["foto"].ToString());
-                                    byte[] imagenBytes = Convert.FromBase64String(imagen);
-                                    using (MemoryStream ms = new MemoryStream(imagenBytes))
+                                    if (!string.IsNullOrEmpty(imagen))
                                     {
-                                        Bitmap bitmap = new Bitmap(ms);
-                                        pictureBox1.Image = bitmap;
-                                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                                        pictureBox1.Show();
+                                        byte[] imagenBytes = Convert.FromBase64String(imagen);
+                                        using (MemoryStream ms = new MemoryStream(imagenBytes))
+                                        {
+                                            Bitmap bitmap = new Bitmap(ms);
+                                            pictureBox1.Image = bitmap;
+                                            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        pictureBox1.Hide();
                                     }
                                 }
                                 catch
@@ -145,57 +180,35 @@ namespace BackofficeDeAdministracion
             }
         }
 
-
         private void btnEliminar(object sender, EventArgs e)
         {
-
-            if (lblNombreDeGrupo.Text == "")
+            try
             {
-                MessageBox.Show("Debe seleccionar un grupo");
-            }
-            else
-            {
-                MessageBox.Show("Grupo eliminado correctamente.");
+                var filaSeleccionada = dataGridView1.CurrentRow;
                 string Nombre = lblNombreDeGrupo.Text;
-                GuardarNombre(Nombre);
-                lblNombreDeGrupo.Text = "";
-                pictureBox1.Image = null;
-                //Codigo Para Ocultar Todos los Label
-                // Recorre todos los controles del formulario
-                foreach (Control control in this.Controls)
-                {
-                    // Verifica si el control es de tipo Label y no es "lblNom"(El Principal Para Buscar grupos)
-                    if (control is Label && control.Name != "lblNom")
-                    {
-                        control.Visible = false;
-                    }
-                }
+                EliminarGrupo(Nombre);
+                CargarTabla();
+                InicializarTablaGrupos();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No seleccionó una fila", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
             }
         }
-
-        //Guardo la id de los eventos borrados del datagrid para luego eliminarlos definitivamente
-        List<string> eliminarDatos = new List<string>();
-        private void GuardarNombre(string Nombre)
-        {
-            eliminarDatos.Add(Nombre);
-        }
-        private void btnGuardar_Click(object sender, EventArgs e)
+        private void EliminarGrupo(string Nombre)
         {
             conn.Open();
-            foreach (string Nombre in eliminarDatos)
-            {
-                MySqlCommand cmd = new MySqlCommand("DELETE FROM Reportes WHERE nombreGrupo = @nombreReal;" +
-                    "DELETE FROM Participa WHERE nombreReal = @nombreReal;" +
-                    "DELETE FROM PostGrupo WHERE nombreReal = @nombreReal;" +
-                    "DELETE FROM Grupos WHERE nombreReal = @nombreReal", conn);
-                cmd.Parameters.AddWithValue("@nombreReal", Nombre);
-                cmd.ExecuteNonQuery();
-            }
-            eliminarDatos.Clear();
+            MySqlCommand cmd = new MySqlCommand("DELETE FROM Reportes WHERE nombreGrupo = @nombreReal;" +
+                "DELETE FROM Participa WHERE nombreReal = @nombreReal;" +
+                "DELETE FROM PostGrupo WHERE nombreReal = @nombreReal;" +
+                "DELETE FROM Grupos WHERE nombreReal = @nombreReal", conn);
+            cmd.Parameters.AddWithValue("@nombreReal", Nombre);
+            cmd.ExecuteNonQuery();
             conn.Close();
-            MessageBox.Show("Información guardada con éxito");
-            this.Close();
+            MessageBox.Show("Información eliminada con éxito.");
+
         }
+
     }
 }

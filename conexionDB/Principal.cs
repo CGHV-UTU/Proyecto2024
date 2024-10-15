@@ -115,32 +115,45 @@ namespace BackofficeDeAdministracion
                 }
             }
         }
+        private void Limpiar()
+        {
+            lblContenidoUsuarios.Font = new Font(lblContenidoUsuarios.Font, FontStyle.Regular);
+            lblContenidoPosts.Font = new Font(lblContenidoPosts.Font, FontStyle.Regular);
+            lblContenidoEventos.Font = new Font(lblContenidoPosts.Font, FontStyle.Regular);
+            lblContenidoComentarios.Font = new Font(lblContenidoPosts.Font, FontStyle.Regular);
+            lblContenidoGrupos.Font = new Font(lblContenidoPosts.Font, FontStyle.Regular);
+        }
         private void ContenidoUsuarios_Click(object sender, EventArgs e)
         {           
             VerificarYCargarForm("BackofficeDeAdministracion.GestionarUsuarios");
+            Limpiar();
             lblContenidoUsuarios.Font = new Font(lblContenidoUsuarios.Font, FontStyle.Underline);
         }
         private void ContenidoPosts_Click(object sender, EventArgs e)
         {
             VerificarYCargarForm("BackofficeDeAdministracion.GestionarPosts");
+            Limpiar();
             lblContenidoPosts.Font = new Font(lblContenidoPosts.Font, FontStyle.Underline);
         }
 
         private void ContenidoEventos_Click(object sender, EventArgs e)
         {
             VerificarYCargarForm("BackofficeDeAdministracion.GestionarEventos");
+            Limpiar();
             lblContenidoEventos.Font = new Font(lblContenidoEventos.Font, FontStyle.Underline);
         }
 
         private void ContenidoComentarios_Click(object sender, EventArgs e)
         {
             VerificarYCargarForm("BackofficeDeAdministracion.GestionarComentarios");
+            Limpiar();
             lblContenidoComentarios.Font = new Font(lblContenidoComentarios.Font, FontStyle.Underline);
         }
 
         private void ContenidoGrupos_Click(object sender, EventArgs e)
         {
             VerificarYCargarForm("BackofficeDeAdministracion.GestionarGrupos");
+            Limpiar();
             lblContenidoGrupos.Font = new Font(lblContenidoGrupos.Font, FontStyle.Underline);
         }
 

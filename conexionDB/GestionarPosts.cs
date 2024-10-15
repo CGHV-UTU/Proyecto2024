@@ -23,6 +23,10 @@ namespace BackofficeDeAdministracion
             CargarTabla();
             InicializarTablaPosts();
             this.ActiveControl = txtID;
+            dataGridView1.CellMouseDown += dataGridView1_CellMouseDown;
+            dataGridView1.MouseClick += dataGridView1_MouseClick;
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
+            dataGridView1.ClearSelection();
         }
 
         private void CargarTabla()
@@ -46,7 +50,28 @@ namespace BackofficeDeAdministracion
                 }
             }
         }
+        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Evita la selección con el mouse
+        }
 
+        // Evitar la selección cuando se hace clic en cualquier lugar del DataGridView
+        private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Limpia la selección
+        }
+
+        // Evitar que cualquier selección se mantenga
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Siempre limpia la selección si algo intenta seleccionarse
+        }
+
+        private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Cancela cualquier selección cuando se hace clic en el DataGridView
+            dataGridView1.ClearSelection();
+        }
         //Cargar tabla
         private void InicializarTablaPosts()
         {
@@ -109,13 +134,22 @@ namespace BackofficeDeAdministracion
                                 txtTexto.Text = reader["texto"].ToString();
                                 try
                                 {
+
                                     string imagen = await CargarImagenDeGitHub(reader["imagen"].ToString());
-                                    byte[] imagenBytes = Convert.FromBase64String(imagen);
-                                    using (MemoryStream ms = new MemoryStream(imagenBytes))
+                                    if (!string.IsNullOrEmpty(imagen))
                                     {
-                                        Bitmap bitmap = new Bitmap(ms);
-                                        pictureBox1.Image = bitmap;
-                                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                                        pictureBox1.Show();
+                                        byte[] imagenBytes = Convert.FromBase64String(imagen);
+                                        using (MemoryStream ms = new MemoryStream(imagenBytes))
+                                        {
+                                            Bitmap bitmap = new Bitmap(ms);
+                                            pictureBox1.Image = bitmap;
+                                            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        pictureBox1.Hide();
                                     }
                                 }
                                 catch
@@ -179,16 +213,73 @@ namespace BackofficeDeAdministracion
         //Modifico la fila seleccionada en el Datagrid
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            try
+            if (!string.IsNullOrEmpty(txtID.Text))
             {
-                DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
-                selectedRow.Cells[4].Value = EstadoComentarios();
+                int idBuscado;
+                if (!int.TryParse(txtID.Text, out idBuscado))
+                {
+                    MessageBox.Show("El ID ingresado no es válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                bool encontrado = false;
+
+                try
+                {
+                    conn.Open();
+
+                    // Verificamos si el ID existe en la base de datos
+                    string checkQuery = "SELECT COUNT(*) FROM Posts WHERE idPost = @idPost;";
+                    MySqlCommand checkCmd = new MySqlCommand(checkQuery, conn);
+                    checkCmd.Parameters.AddWithValue("@idPost", idBuscado);
+                    int count = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                    if (count > 0)
+                    {
+                        encontrado = true;
+
+                        // Actualizamos el estado en el DataGridView
+                        foreach (DataGridViewRow dataRow in dataGridView1.Rows)
+                        {
+                            if (dataRow.Cells[0].Value != null && Convert.ToInt32(dataRow.Cells[0].Value) == idBuscado)
+                            {
+                                dataRow.Cells[4].Value = EstadoComentarios();
+                                break; // Solo actualiza la primera coincidencia
+                            }
+                        }
+
+                        // Actualizamos la base de datos
+                        string updateQuery = "UPDATE Posts SET comentarios = @comentarios WHERE idPost = @idPost;";
+                        MySqlCommand updateCmd = new MySqlCommand(updateQuery, conn);
+                        bool comentarios = Convert.ToBoolean(dataGridView1.CurrentRow.Cells["comentarios"].Value); // Suponiendo que tienes la fila seleccionada
+                        updateCmd.Parameters.AddWithValue("@comentarios", comentarios);
+                        updateCmd.Parameters.AddWithValue("@idPost", idBuscado);
+                        updateCmd.ExecuteNonQuery();
+
+                        MessageBox.Show("Información guardada con éxito.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se encontró el post especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show("Ocurrió un error: " + ex.Message);
+                }
+                finally
+                {
+                    conn.Close();
+                }
             }
-            catch (Exception)
+            else
             {
-                MessageBox.Show("No seleccionó una fila a modificar");
+                MessageBox.Show("Por favor, ingrese un ID.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+
+
 
         //Borro la fila del datagrid y registro su id
         private void btnEliminar_Click(object sender, EventArgs e)
@@ -197,8 +288,9 @@ namespace BackofficeDeAdministracion
             {
                 var filaSeleccionada = dataGridView1.CurrentRow;
                 string id = txtID.Text;
-                dataGridView1.Rows.Remove(filaSeleccionada);
-                GuardarId(id);
+                EliminarPost(id);
+                CargarTabla();
+                InicializarTablaPosts();
             }
             catch (Exception)
             {
@@ -206,74 +298,36 @@ namespace BackofficeDeAdministracion
 
             }
         }
-        //Guardo la id de los post borrados del datagrid para luego eliminarlos definitivamente
-        List<string> eliminarDatos = new List<string>();
-        private void GuardarId(string id)
+        private void EliminarPost(string id)
         {
-            eliminarDatos.Add(id);
-        }
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("DELETE FROM Reportes WHERE idPost=@Id;", conn);
+            MySqlCommand command8 = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", conn);
+            MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", conn);
+            MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost = @Id", conn);
+            MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost = @Id", conn);
+            MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost = @Id", conn);
+            MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost = @Id", conn);
+            MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=(SELECT id FROM Comentarios WHERE idPost=@id)", conn);
+            command.Parameters.AddWithValue("@Id", id);
+            command8.Parameters.AddWithValue("@Id", id);
+            command2.Parameters.AddWithValue("@Id", id);
+            command3.Parameters.AddWithValue("@Id", id);
+            command4.Parameters.AddWithValue("@Id", id);
+            command5.Parameters.AddWithValue("@Id", id);
+            command6.Parameters.AddWithValue("@Id", id);
+            command7.Parameters.AddWithValue("@Id", id);
+            command7.ExecuteNonQuery();
+            command.ExecuteNonQuery();
+            command2.ExecuteNonQuery();
+            command3.ExecuteNonQuery();
+            command4.ExecuteNonQuery();
+            command5.ExecuteNonQuery();
+            command6.ExecuteNonQuery();
+            conn.Close();
+            MessageBox.Show("Información eliminada con éxito.");
 
-        private void btnGuardar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                conn.Open();
-                //Me fijo en todas las filas del DataGridView por información para después modificarla en la base de datos
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    if (row.IsNewRow || !row.Cells[0].Value.ToString().All(char.IsDigit))
-                    {
-                        continue;
-                    }
-                    int id = Convert.ToInt32(row.Cells["idPost"].Value);
-                    bool comentarios = Convert.ToBoolean(row.Cells["comentarios"].Value);
-                    string query = "INSERT INTO Posts (idPost, comentarios) " + "VALUES (@id, @comentarios) " + "ON DUPLICATE KEY UPDATE " + "comentarios=@comentarios";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.Parameters.AddWithValue("@comentarios", comentarios);
-                    cmd.ExecuteNonQuery();
-                }
-                //Para remover de la base de datos los posts eliminados
-                foreach (string id in eliminarDatos)
-                {                   
-                    MySqlCommand command = new MySqlCommand("DELETE FROM Reportes WHERE idPost=@Id;", conn);
-                    MySqlCommand command8 = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", conn);
-                    MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", conn);
-                    MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost = @Id", conn);
-                    MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost = @Id", conn);
-                    MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost = @Id", conn);
-                    MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost = @Id", conn);
-                    MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=(SELECT id FROM Comentarios WHERE idPost=@id)", conn);
-                    command.Parameters.AddWithValue("@Id", id);
-                    command8.Parameters.AddWithValue("@Id", id);
-                    command2.Parameters.AddWithValue("@Id", id);
-                    command3.Parameters.AddWithValue("@Id", id);
-                    command4.Parameters.AddWithValue("@Id", id);
-                    command5.Parameters.AddWithValue("@Id", id);
-                    command6.Parameters.AddWithValue("@Id", id);
-                    command7.Parameters.AddWithValue("@Id", id);
-                    command7.ExecuteNonQuery();
-                    command.ExecuteNonQuery();
-                    command2.ExecuteNonQuery();
-                    command3.ExecuteNonQuery();
-                    command4.ExecuteNonQuery();
-                    command5.ExecuteNonQuery();
-                    command6.ExecuteNonQuery();
-                }
-                eliminarDatos.Clear();
-                conn.Close();
-                MessageBox.Show("Información guardada con éxito");
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show("Ocurrió un error: " + ex.Message, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ocurrió un error: " + ex.Message, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
         }
-
         //Para limitar la escritura de los txt a solo numeros
         private void txtID_KeyPress(object sender, KeyPressEventArgs e)
         {

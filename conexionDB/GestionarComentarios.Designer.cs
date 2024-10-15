@@ -35,7 +35,6 @@
             this.btnEliminar = new System.Windows.Forms.Button();
             this.lblID = new System.Windows.Forms.Label();
             this.txtID = new System.Windows.Forms.TextBox();
-            this.btnGuardar = new System.Windows.Forms.Button();
             this.lblNom = new System.Windows.Forms.Label();
             this.lblPost = new System.Windows.Forms.Label();
             this.lblFecha = new System.Windows.Forms.Label();
@@ -89,6 +88,7 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(566, 170);
             this.dataGridView1.TabIndex = 52;
+            this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
             // 
             // btnBuscar
             // 
@@ -131,19 +131,6 @@
             this.txtID.Size = new System.Drawing.Size(121, 20);
             this.txtID.TabIndex = 62;
             this.txtID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtID_KeyPress);
-            // 
-            // btnGuardar
-            // 
-            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
-            this.btnGuardar.ForeColor = System.Drawing.Color.White;
-            this.btnGuardar.Location = new System.Drawing.Point(12, 406);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(812, 23);
-            this.btnGuardar.TabIndex = 86;
-            this.btnGuardar.Text = "💾 Guardar";
-            this.btnGuardar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnGuardar.UseVisualStyleBackColor = false;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // lblNom
             // 
@@ -312,7 +299,6 @@
             this.Controls.Add(this.lblFecha);
             this.Controls.Add(this.lblPost);
             this.Controls.Add(this.lblNom);
-            this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.lblID);
@@ -337,7 +323,6 @@
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Label lblID;
         private System.Windows.Forms.TextBox txtID;
-        private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Label lblNom;
         private System.Windows.Forms.Label lblPost;
         private System.Windows.Forms.Label lblFecha;
