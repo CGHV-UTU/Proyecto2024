@@ -364,10 +364,7 @@ namespace Frontend
             }
         }
 
-        private void PictureBoxBuscar_Click(object sender, EventArgs e)
-        {
-            
-        }
+       
 
         private void PictureBoxComunidad_Click(object sender, EventArgs e)
         {
@@ -435,6 +432,11 @@ namespace Frontend
         private void EventoComunidad_PostearEnEvento(object sender, PersonalizedArgs e)
         {
             VerPost(e.arg);
+        }
+
+        private void pbxBuscar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

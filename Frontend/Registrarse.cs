@@ -19,7 +19,6 @@ namespace Frontend
         public Registrarse()
         {
             InitializeComponent();
-            
             txtUsuario.Enter += txtUsuario_Enter;
             txtUsuario.Leave += txtUsuario_Leave;
             txtNombreVisible.Enter += txtNombreVisible_Enter;
@@ -60,7 +59,7 @@ namespace Frontend
                 txtEmail.Text, txtDescripcion.Text, cbxGenero.SelectedItem.ToString(), dtpFecha.Text, imagen);
                 if (resultado != "guardado correcto")
                 {
-                    MessageBox.Show("Ha ocurrido un error. No se pudo contactar con el servidor", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Ha ocurrido un error. No se pudo contactar con el servidor " + resultado, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 MessageBox.Show("Su usuario ha sido creado con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -87,7 +86,7 @@ namespace Frontend
         private void pictureBox6_Click(object sender, EventArgs e) //POR HACER: 
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Archivos de imagen|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.tiff";
+            ofd.Filter = "Archivos de imagen|*.png;*.jpg;*.jpeg";
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
