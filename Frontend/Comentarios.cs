@@ -87,8 +87,6 @@ namespace Frontend
 
             // PanelComentarios
             this.PanelComentarios.HorizontalScroll.Enabled = false;
-            this.PanelComentarios.HorizontalScroll.Visible = false;
-            this.PanelComentarios.AutoScroll = true;
             this.PanelComentarios.AutoScroll = true;
             this.PanelComentarios.Dock = DockStyle.Fill;
             this.PanelComentarios.Location = new System.Drawing.Point(0, 0);

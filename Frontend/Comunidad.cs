@@ -111,12 +111,10 @@ namespace Frontend
                     {
                         var lastControl = panelEventos.Controls[panelEventos.Controls.Count - 1];
                         eventControl.Location = new Point(0, lastControl.Bottom);
-                        MessageBox.Show(""+eventControl.Location);
                     }
                     else
                     {
                         eventControl.Location = new Point(0, 52);
-                        MessageBox.Show(""+eventControl.Location);
                     }
                     panelEventos.Controls.Add(eventControl);
                     // aca

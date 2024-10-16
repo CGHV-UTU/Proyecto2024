@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -38,18 +39,54 @@ namespace Frontend
         private Panel pnlPost; 
 
 
-        public MessageControl(string nombreDeCuenta, string nombreVisible, string mensaje, int idpost, string token)
+        public MessageControl(dynamic MessageData, string token)
         {
-            
-            this.nombreDeCuenta = nombreDeCuenta;
-            this.nombreVisible = nombreVisible;
-            this.mensaje = mensaje;
-            this.idPost = idpost;
-            this.token = token;
             InitializeComponent();
             txtMensaje.ReadOnly = true;
-            //aplicarDatos();
-           
+            aplicarDatos(MessageData);
+            
+        }
+        public async Task aplicarDatos(dynamic MessageData)
+        {
+            //anda mas o menos aun, no carga las imagenes ni del usuario ni la del mensaje
+            MessageBox.Show("" + MessageData);
+            this.lblNombreDeCuenta.Text = MessageData.nombreDeCuenta;
+            this.txtMensaje.Text = MessageData.texto;
+            this.lblFechaYHora.Text = MessageData.fechaYHora;
+            MessageBox.Show("" + MessageData.imagen);
+            if (!string.IsNullOrEmpty(MessageData.imagen))
+            {
+                byte[] imagen = Convert.FromBase64String(Convert.ToString(MessageData.imagen));
+                MemoryStream ms = new MemoryStream(imagen);
+                Bitmap bitmap = new Bitmap(ms);
+                this.pbxImagenCompartida.Image = bitmap;
+            }
+            string imagenB64 = await conseguirImagenDelCreador(MessageData.nombreDeCuenta, token);
+            byte[] imagen2 = Convert.FromBase64String(imagenB64);
+            MemoryStream ms2 = new MemoryStream(imagen2);
+            Bitmap bitmap2 = new Bitmap(ms2);
+            this.pbxFotoUsuario.Image = bitmap2;
+        }
+        static async Task<string> conseguirImagenDelCreador(string creador, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var dato = new { nombreDeCuenta = creador, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/obtenerImagenUsuario", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic imagen = JsonConvert.DeserializeObject(responseBody);
+                    return imagen;
+                }
+                catch
+                {
+                    MessageBox.Show("Error de conexión");
+                    return "error";
+                }
+            }
         }
 
         static async Task<string[]> BuscarPost(int id, string token)
@@ -118,7 +155,6 @@ namespace Frontend
             this.lblNombreDeCuenta.Name = "lblNombreDeCuenta";
             this.lblNombreDeCuenta.Size = new System.Drawing.Size(140, 20);
             this.lblNombreDeCuenta.TabIndex = 0;
-            this.lblNombreDeCuenta.Text = "Nombre de cuenta";
             // 
             // txtMensaje
             // 

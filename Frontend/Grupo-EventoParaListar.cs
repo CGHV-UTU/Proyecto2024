@@ -101,10 +101,8 @@ namespace Frontend
             }
             else
             {
-                MessageBox.Show("a");
                 var data = await BuscarGrupo(nombreReal, token);
                 this.lblNombre.Text = data.nombreVisible;
-                MessageBox.Show("a"+data.nombreVisible);
                 try
                 {
                     byte[] imagen = Convert.FromBase64String(Convert.ToString(data.foto));
