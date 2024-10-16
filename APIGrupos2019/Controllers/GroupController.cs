@@ -362,7 +362,6 @@ namespace API_Grupos.Controllers
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             List<Mensajes> mensajesList = new List<Mensajes>();
-
                             while (reader.Read())
                             {
                                 string idMensaje = reader["idMensaje"].ToString();
@@ -370,9 +369,16 @@ namespace API_Grupos.Controllers
                                 string nombreReal = reader["nombreReal"].ToString();
                                 string texto = reader["texto"].ToString();
                                 string fechaYHora = reader["fechaYHora"].ToString();
-                                string video = reader["texto"].ToString();
-                                string imagen = await CargarImagenDeGitHub(reader["imagen"].ToString());
-
+                                string video = reader["video"].ToString();
+                                string imagen;
+                                if (!string.IsNullOrEmpty(reader["imagen"].ToString()))
+                                {
+                                    imagen = await CargarImagenDeGitHub(reader["imagen"].ToString());
+                                }
+                                else
+                                {
+                                    imagen = "";
+                                }
                                 var mensaje = new Mensajes
                                 {
                                     idMensaje = idMensaje,
@@ -383,7 +389,6 @@ namespace API_Grupos.Controllers
                                     video = video,
                                     imagen = imagen
                                 };
-
                                 mensajesList.Add(mensaje);
                             }
 
@@ -403,7 +408,7 @@ namespace API_Grupos.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return Json("Ocurrió un error al intentar obtener los mensajes del grupo.");
+                    return Json("Ocurrió un error al intentar obtener los mensajes del grupo." + ex.Message);
                 }
             }
             else
@@ -570,23 +575,13 @@ namespace API_Grupos.Controllers
             if (TestToken(mensajeData.token))
             {
                 string linkImagen = null;
-
-                // Verificar datos recibidos
-                Console.WriteLine($"nombreReal: {mensajeData.nombreReal}");
-                Console.WriteLine($"nombreDeCuenta: {mensajeData.nombreDeCuenta}");
-                Console.WriteLine($"fechaYHora: {mensajeData.fechaYHora}");
-                Console.WriteLine($"texto: {mensajeData.texto}");
-                Console.WriteLine($"imagen: {mensajeData.imagen}");
-
                 if (string.IsNullOrEmpty(mensajeData.nombreReal) ||
                     string.IsNullOrEmpty(mensajeData.nombreDeCuenta) ||
                     string.IsNullOrEmpty(mensajeData.fechaYHora) ||
-                    string.IsNullOrEmpty(mensajeData.texto))
+                    (string.IsNullOrEmpty(mensajeData.texto) && string.IsNullOrEmpty(mensajeData.imagen) && string.IsNullOrEmpty(mensajeData.video)) || (!string.IsNullOrEmpty(mensajeData.imagen) && !string.IsNullOrEmpty(mensajeData.video)))
                 {
-                    return Json("Datos insuficientes");
+                    return Json("Datos incorrectos");
                 }
-
-
                 try
                 {
                     using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -598,17 +593,14 @@ namespace API_Grupos.Controllers
                         cmd.Parameters.AddWithValue("@texto", mensajeData.texto);
                         cmd.Parameters.AddWithValue("@fechaYHora", mensajeData.fechaYHora);
                         cmd.Parameters.AddWithValue("@video", mensajeData.video);
-
-                        linkImagen = await SubirImagenAGitHub(mensajeData.imagen, "ChatImages");
-                        if (string.IsNullOrEmpty(linkImagen))
+                        if (!string.IsNullOrEmpty(mensajeData.imagen))
                         {
-                            return Json("No se pudo subir la imagen");
+                            linkImagen = await SubirImagenAGitHub(mensajeData.imagen, "ChatImages");
+                            cmd.Parameters.AddWithValue("@imagen", linkImagen);
                         }
-
-                        cmd.Parameters.AddWithValue("@imagen", linkImagen);
                         cmd.ExecuteNonQuery();
                         conn.Close();
-                        return Json("Se añadio el mensaje correctamente");
+                        return Json("Se añadió el mensaje correctamente");
                     }
                 }
                 catch (Exception ex)
