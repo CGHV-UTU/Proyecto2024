@@ -38,30 +38,32 @@ namespace Frontend
         // un DATETIME
         private Panel pnlPost; 
 
-
+        
         public MessageControl(dynamic MessageData, string token)
         {
             InitializeComponent();
             txtMensaje.ReadOnly = true;
-            aplicarDatos(MessageData);
-            
+            this.token = token;
         }
         public async Task aplicarDatos(dynamic MessageData)
         {
             //anda mas o menos aun, no carga las imagenes ni del usuario ni la del mensaje
-            MessageBox.Show("" + MessageData);
             this.lblNombreDeCuenta.Text = MessageData.nombreDeCuenta;
             this.txtMensaje.Text = MessageData.texto;
             this.lblFechaYHora.Text = MessageData.fechaYHora;
-            MessageBox.Show("" + MessageData.imagen);
-            if (!string.IsNullOrEmpty(MessageData.imagen))
+            if (!string.IsNullOrEmpty(Convert.ToString(MessageData.imagen)))
             {
                 byte[] imagen = Convert.FromBase64String(Convert.ToString(MessageData.imagen));
                 MemoryStream ms = new MemoryStream(imagen);
                 Bitmap bitmap = new Bitmap(ms);
                 this.pbxImagenCompartida.Image = bitmap;
             }
-            string imagenB64 = await conseguirImagenDelCreador(MessageData.nombreDeCuenta, token);
+            else
+            {
+                this.Controls.Remove(this.pbxImagenCompartida);
+                this.Size = new Size(312, 92);
+            }
+            string imagenB64 = await conseguirImagenDelCreador(Convert.ToString(MessageData.nombreDeCuenta), token);
             byte[] imagen2 = Convert.FromBase64String(imagenB64);
             MemoryStream ms2 = new MemoryStream(imagen2);
             Bitmap bitmap2 = new Bitmap(ms2);
@@ -153,7 +155,7 @@ namespace Frontend
             this.lblNombreDeCuenta.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNombreDeCuenta.Location = new System.Drawing.Point(89, 7);
             this.lblNombreDeCuenta.Name = "lblNombreDeCuenta";
-            this.lblNombreDeCuenta.Size = new System.Drawing.Size(140, 20);
+            this.lblNombreDeCuenta.Size = new System.Drawing.Size(0, 20);
             this.lblNombreDeCuenta.TabIndex = 0;
             // 
             // txtMensaje
@@ -191,6 +193,7 @@ namespace Frontend
             this.pbxImagenCompartida.Location = new System.Drawing.Point(3, 94);
             this.pbxImagenCompartida.Name = "pbxImagenCompartida";
             this.pbxImagenCompartida.Size = new System.Drawing.Size(290, 218);
+            this.pbxImagenCompartida.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxImagenCompartida.TabIndex = 6;
             this.pbxImagenCompartida.TabStop = false;
             // 

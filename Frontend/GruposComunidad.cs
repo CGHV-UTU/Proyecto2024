@@ -38,6 +38,7 @@ namespace Frontend
         private Panel panel3;
         private PictureBox pbxImage;
         private string token;
+        private PictureBox pictureBox3;
         private string nombreGrupo;
         public GruposComunidad(dynamic groupData, string user, string token)
         {
@@ -62,14 +63,15 @@ namespace Frontend
             this.lblMiembros = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.pnlAsociarContenido = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.lblAsociarImagen = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.lblAsociarPost = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pnlChat = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pbxImage = new System.Windows.Forms.PictureBox();
+            this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEnviar)).BeginInit();
@@ -79,6 +81,7 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlChat.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -184,10 +187,18 @@ namespace Frontend
             this.pnlAsociarContenido.Controls.Add(this.pictureBox2);
             this.pnlAsociarContenido.Controls.Add(this.lblAsociarPost);
             this.pnlAsociarContenido.Controls.Add(this.pictureBox1);
-            this.pnlAsociarContenido.Location = new System.Drawing.Point(4, 266);
+            this.pnlAsociarContenido.Location = new System.Drawing.Point(12, 378);
             this.pnlAsociarContenido.Name = "pnlAsociarContenido";
             this.pnlAsociarContenido.Size = new System.Drawing.Size(168, 117);
             this.pnlAsociarContenido.TabIndex = 5;
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.SlateBlue;
+            this.panel3.Location = new System.Drawing.Point(0, 122);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(971, 3);
+            this.panel3.TabIndex = 76;
             // 
             // lblAsociarImagen
             // 
@@ -232,14 +243,36 @@ namespace Frontend
             // 
             // pnlChat
             // 
+            this.pnlChat.AutoScroll = true;
+            this.pnlChat.Controls.Add(this.pictureBox3);
             this.pnlChat.Controls.Add(this.pbxImage);
             this.pnlChat.Controls.Add(this.pnlAsociarContenido);
-            this.pnlChat.AutoScroll = true;
-            this.pnlChat.Dock = DockStyle.Fill;
-            this.pnlChat.Location = new System.Drawing.Point(13, 112);
+            this.pnlChat.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlChat.Location = new System.Drawing.Point(0, 0);
             this.pnlChat.Name = "pnlChat";
-            this.pnlChat.Size = new System.Drawing.Size(971, 382);
+            this.pnlChat.Size = new System.Drawing.Size(996, 574);
             this.pnlChat.TabIndex = 47;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::Frontend.Properties.Resources.Usuario;
+            this.pictureBox3.Location = new System.Drawing.Point(17, 12);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(90, 90);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox3.TabIndex = 78;
+            this.pictureBox3.Visible = true;
+            // 
+            // pbxImage
+            // 
+            this.pbxImage.Image = global::Frontend.Properties.Resources.foto_blanca;
+            this.pbxImage.Location = new System.Drawing.Point(186, 443);
+            this.pbxImage.Name = "pbxImage";
+            this.pbxImage.Size = new System.Drawing.Size(55, 58);
+            this.pbxImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxImage.TabIndex = 77;
+            this.pbxImage.TabStop = false;
+            this.pbxImage.Visible = false;
             // 
             // panel2
             // 
@@ -248,25 +281,6 @@ namespace Frontend
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(971, 3);
             this.panel2.TabIndex = 76;
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.SlateBlue;
-            this.panel3.Location = new System.Drawing.Point(0, 122);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(971, 3);
-            this.panel3.TabIndex = 76;
-            // 
-            // pbxImage
-            // 
-            this.pbxImage.Image = global::Frontend.Properties.Resources.foto_blanca;
-            this.pbxImage.Location = new System.Drawing.Point(178, 321);
-            this.pbxImage.Name = "pbxImage";
-            this.pbxImage.Size = new System.Drawing.Size(55, 58);
-            this.pbxImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbxImage.TabIndex = 77;
-            this.pbxImage.TabStop = false;
-            this.pbxImage.Visible = false;
             // 
             // GruposComunidad
             // 
@@ -291,6 +305,7 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlChat.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -303,7 +318,7 @@ namespace Frontend
             byte[] imagen = Convert.FromBase64String(Convert.ToString(groupData.foto));
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);
-            this.pbxImagen.Image = bitmap;
+            this.pictureBox3.Image = bitmap;
         }
 
         private void pbxAsociarContenido_Click(object sender, EventArgs e)
@@ -366,14 +381,15 @@ namespace Frontend
             {
                 MessageControl messageControl = new MessageControl(mensaje, token);
                 messageControl.Size=new Size(312, 409);
+                await messageControl.aplicarDatos(mensaje);
                 if (pnlChat.Controls.Count > 0)
                 {
                     var lastControl = pnlChat.Controls[pnlChat.Controls.Count - 1];
-                    messageControl.Location = new Point(0, lastControl.Bottom);
+                    messageControl.Location = new Point(50, lastControl.Bottom);
                 }
                 else
                 {
-                    messageControl.Location = new Point(0, 0);
+                    messageControl.Location = new Point(50, 0);
                 }
                 pnlChat.Controls.Add(messageControl);
             }
