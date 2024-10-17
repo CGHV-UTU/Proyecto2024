@@ -19,7 +19,7 @@ namespace Frontend
     class GruposComunidad : Form
     {
         private PictureBox pbxImagen;
-        private string user;
+        
         private Label lblNombre;
         private Panel panel1;
         private PictureBox pbxEnviar;
@@ -31,15 +31,26 @@ namespace Frontend
         private Panel pnlAsociarContenido;
         private Label lblAsociarImagen;
         private PictureBox pictureBox2;
-        private Label lblAsociarPost;
-        private PictureBox pictureBox1;
-        private Panel pnlChat;
+        private Label lblAsociarVideo;
+        private Panel pnlGruposComunidad;
         private Panel panel2;
-        private Panel panel3;
-        private PictureBox pbxImage;
-        private string token;
-        private PictureBox pictureBox3;
+        private PictureBox pbxCrearPostGrupo;
+       
+        private PictureBox pbxFotoGrupo;
+        private PictureBox pbxAsociarVideo;
+        private Panel pnlChat;
+        private Panel panel6;
+        private Panel panel4;
+        private Label lblPostsGrupo;
+        private Label lblChat;
+        private Panel pnlPostsGrupo;
+        private Panel panel8;
+        private Panel panel7;
+
         private string nombreGrupo;
+        private string user;
+        private TextBox txtURL;
+        private string token;
         public GruposComunidad(dynamic groupData, string user, string token)
         {
             InitializeComponent();
@@ -56,33 +67,42 @@ namespace Frontend
             this.pbxImagen = new System.Windows.Forms.PictureBox();
             this.lblNombre = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.pbxEnviar = new System.Windows.Forms.PictureBox();
             this.pbxAsociarContenido = new System.Windows.Forms.PictureBox();
             this.txtMensajeAEnviar = new System.Windows.Forms.TextBox();
+            this.pbxCrearPostGrupo = new System.Windows.Forms.PictureBox();
             this.PictureBoxConfiguraciones = new System.Windows.Forms.PictureBox();
             this.lblMiembros = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.pnlAsociarContenido = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.lblAsociarImagen = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.lblAsociarPost = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lblAsociarVideo = new System.Windows.Forms.Label();
+            this.pbxAsociarVideo = new System.Windows.Forms.PictureBox();
+            this.pnlGruposComunidad = new System.Windows.Forms.Panel();
+            this.lblPostsGrupo = new System.Windows.Forms.Label();
+            this.lblChat = new System.Windows.Forms.Label();
+            this.pbxFotoGrupo = new System.Windows.Forms.PictureBox();
             this.pnlChat = new System.Windows.Forms.Panel();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pbxImage = new System.Windows.Forms.PictureBox();
+            this.pnlPostsGrupo = new System.Windows.Forms.Panel();
+            this.txtURL = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEnviar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxAsociarContenido)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxCrearPostGrupo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxConfiguraciones)).BeginInit();
             this.pnlAsociarContenido.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxAsociarVideo)).BeginInit();
+            this.pnlGruposComunidad.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupo)).BeginInit();
             this.pnlChat.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxImage)).BeginInit();
             this.SuspendLayout();
             // 
             // pbxImagen
@@ -107,19 +127,56 @@ namespace Frontend
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.Color.MediumPurple;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.panel8);
+            this.panel1.Controls.Add(this.panel7);
+            this.panel1.Controls.Add(this.panel6);
+            this.panel1.Controls.Add(this.panel4);
             this.panel1.Controls.Add(this.pbxEnviar);
             this.panel1.Controls.Add(this.pbxAsociarContenido);
             this.panel1.Controls.Add(this.txtMensajeAEnviar);
-            this.panel1.Location = new System.Drawing.Point(13, 501);
+            this.panel1.Location = new System.Drawing.Point(13, 528);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(971, 65);
             this.panel1.TabIndex = 49;
             // 
+            // panel8
+            // 
+            this.panel8.BackColor = System.Drawing.Color.SlateBlue;
+            this.panel8.Location = new System.Drawing.Point(967, 3);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(3, 60);
+            this.panel8.TabIndex = 79;
+            // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.Color.SlateBlue;
+            this.panel7.Location = new System.Drawing.Point(0, 1);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(3, 60);
+            this.panel7.TabIndex = 78;
+            // 
+            // panel6
+            // 
+            this.panel6.BackColor = System.Drawing.Color.SlateBlue;
+            this.panel6.Location = new System.Drawing.Point(0, 61);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(971, 3);
+            this.panel6.TabIndex = 77;
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.SlateBlue;
+            this.panel4.Location = new System.Drawing.Point(-1, 0);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(971, 3);
+            this.panel4.TabIndex = 76;
+            // 
             // pbxEnviar
             // 
             this.pbxEnviar.Image = ((System.Drawing.Image)(resources.GetObject("pbxEnviar.Image")));
-            this.pbxEnviar.Location = new System.Drawing.Point(915, 10);
+            this.pbxEnviar.Location = new System.Drawing.Point(915, 8);
             this.pbxEnviar.Name = "pbxEnviar";
             this.pbxEnviar.Size = new System.Drawing.Size(50, 50);
             this.pbxEnviar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -130,7 +187,7 @@ namespace Frontend
             // pbxAsociarContenido
             // 
             this.pbxAsociarContenido.Image = global::Frontend.Properties.Resources.crear;
-            this.pbxAsociarContenido.Location = new System.Drawing.Point(3, 10);
+            this.pbxAsociarContenido.Location = new System.Drawing.Point(5, 8);
             this.pbxAsociarContenido.Name = "pbxAsociarContenido";
             this.pbxAsociarContenido.Size = new System.Drawing.Size(50, 50);
             this.pbxAsociarContenido.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -140,11 +197,23 @@ namespace Frontend
             // 
             // txtMensajeAEnviar
             // 
-            this.txtMensajeAEnviar.Location = new System.Drawing.Point(59, 10);
+            this.txtMensajeAEnviar.Location = new System.Drawing.Point(59, 8);
             this.txtMensajeAEnviar.Multiline = true;
             this.txtMensajeAEnviar.Name = "txtMensajeAEnviar";
             this.txtMensajeAEnviar.Size = new System.Drawing.Size(854, 50);
             this.txtMensajeAEnviar.TabIndex = 8;
+            // 
+            // pbxCrearPostGrupo
+            // 
+            this.pbxCrearPostGrupo.Image = global::Frontend.Properties.Resources.crear;
+            this.pbxCrearPostGrupo.Location = new System.Drawing.Point(456, 474);
+            this.pbxCrearPostGrupo.Name = "pbxCrearPostGrupo";
+            this.pbxCrearPostGrupo.Size = new System.Drawing.Size(55, 58);
+            this.pbxCrearPostGrupo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxCrearPostGrupo.TabIndex = 77;
+            this.pbxCrearPostGrupo.TabStop = false;
+            this.pbxCrearPostGrupo.Visible = false;
+            this.pbxCrearPostGrupo.Click += new System.EventHandler(this.pbxCrearPostGrupo_Click);
             // 
             // PictureBoxConfiguraciones
             // 
@@ -180,99 +249,140 @@ namespace Frontend
             // 
             // pnlAsociarContenido
             // 
-            this.pnlAsociarContenido.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.pnlAsociarContenido.BackColor = System.Drawing.Color.MediumPurple;
             this.pnlAsociarContenido.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlAsociarContenido.Controls.Add(this.panel3);
             this.pnlAsociarContenido.Controls.Add(this.lblAsociarImagen);
             this.pnlAsociarContenido.Controls.Add(this.pictureBox2);
-            this.pnlAsociarContenido.Controls.Add(this.lblAsociarPost);
-            this.pnlAsociarContenido.Controls.Add(this.pictureBox1);
-            this.pnlAsociarContenido.Location = new System.Drawing.Point(12, 378);
+            this.pnlAsociarContenido.Controls.Add(this.lblAsociarVideo);
+            this.pnlAsociarContenido.Controls.Add(this.pbxAsociarVideo);
+            this.pnlAsociarContenido.Location = new System.Drawing.Point(9, 399);
             this.pnlAsociarContenido.Name = "pnlAsociarContenido";
-            this.pnlAsociarContenido.Size = new System.Drawing.Size(168, 117);
+            this.pnlAsociarContenido.Size = new System.Drawing.Size(169, 125);
             this.pnlAsociarContenido.TabIndex = 5;
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.SlateBlue;
-            this.panel3.Location = new System.Drawing.Point(0, 122);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(971, 3);
-            this.panel3.TabIndex = 76;
             // 
             // lblAsociarImagen
             // 
             this.lblAsociarImagen.AutoSize = true;
-            this.lblAsociarImagen.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAsociarImagen.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAsociarImagen.ForeColor = System.Drawing.SystemColors.Control;
             this.lblAsociarImagen.Location = new System.Drawing.Point(70, 69);
             this.lblAsociarImagen.Name = "lblAsociarImagen";
-            this.lblAsociarImagen.Size = new System.Drawing.Size(82, 25);
+            this.lblAsociarImagen.Size = new System.Drawing.Size(88, 25);
             this.lblAsociarImagen.TabIndex = 61;
             this.lblAsociarImagen.Text = "Imagen";
+            this.lblAsociarImagen.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Frontend.Properties.Resources.foto_blanca;
             this.pictureBox2.Location = new System.Drawing.Point(15, 60);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(49, 45);
+            this.pictureBox2.Size = new System.Drawing.Size(49, 56);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 60;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
-            // lblAsociarPost
+            // lblAsociarVideo
             // 
-            this.lblAsociarPost.AutoSize = true;
-            this.lblAsociarPost.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAsociarPost.Location = new System.Drawing.Point(70, 18);
-            this.lblAsociarPost.Name = "lblAsociarPost";
-            this.lblAsociarPost.Size = new System.Drawing.Size(55, 25);
-            this.lblAsociarPost.TabIndex = 59;
-            this.lblAsociarPost.Text = "Post";
+            this.lblAsociarVideo.AutoSize = true;
+            this.lblAsociarVideo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAsociarVideo.ForeColor = System.Drawing.SystemColors.Control;
+            this.lblAsociarVideo.Location = new System.Drawing.Point(70, 18);
+            this.lblAsociarVideo.Name = "lblAsociarVideo";
+            this.lblAsociarVideo.Size = new System.Drawing.Size(72, 25);
+            this.lblAsociarVideo.TabIndex = 59;
+            this.lblAsociarVideo.Text = "Video";
+            this.lblAsociarVideo.Click += new System.EventHandler(this.pbxAsociarVideo_Click);
             // 
-            // pictureBox1
+            // pbxAsociarVideo
             // 
-            this.pictureBox1.Image = global::Frontend.Properties.Resources.crear;
-            this.pictureBox1.Location = new System.Drawing.Point(15, 9);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(49, 45);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 58;
-            this.pictureBox1.TabStop = false;
+            this.pbxAsociarVideo.Image = global::Frontend.Properties.Resources.Video2222;
+            this.pbxAsociarVideo.Location = new System.Drawing.Point(15, 9);
+            this.pbxAsociarVideo.Name = "pbxAsociarVideo";
+            this.pbxAsociarVideo.Size = new System.Drawing.Size(49, 45);
+            this.pbxAsociarVideo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxAsociarVideo.TabIndex = 58;
+            this.pbxAsociarVideo.TabStop = false;
+            this.pbxAsociarVideo.Click += new System.EventHandler(this.pbxAsociarVideo_Click);
+            // 
+            // pnlGruposComunidad
+            // 
+            this.pnlGruposComunidad.AutoScroll = true;
+            this.pnlGruposComunidad.Controls.Add(this.pbxCrearPostGrupo);
+            this.pnlGruposComunidad.Controls.Add(this.pnlAsociarContenido);
+            this.pnlGruposComunidad.Controls.Add(this.lblPostsGrupo);
+            this.pnlGruposComunidad.Controls.Add(this.lblChat);
+            this.pnlGruposComunidad.Controls.Add(this.pbxFotoGrupo);
+            this.pnlGruposComunidad.Controls.Add(this.panel1);
+            this.pnlGruposComunidad.Controls.Add(this.pnlChat);
+            this.pnlGruposComunidad.Controls.Add(this.txtURL);
+            this.pnlGruposComunidad.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlGruposComunidad.Location = new System.Drawing.Point(0, 0);
+            this.pnlGruposComunidad.Name = "pnlGruposComunidad";
+            this.pnlGruposComunidad.Size = new System.Drawing.Size(996, 596);
+            this.pnlGruposComunidad.TabIndex = 47;
+            // 
+            // lblPostsGrupo
+            // 
+            this.lblPostsGrupo.AutoSize = true;
+            this.lblPostsGrupo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPostsGrupo.ForeColor = System.Drawing.Color.Black;
+            this.lblPostsGrupo.Location = new System.Drawing.Point(498, 76);
+            this.lblPostsGrupo.Name = "lblPostsGrupo";
+            this.lblPostsGrupo.Size = new System.Drawing.Size(66, 24);
+            this.lblPostsGrupo.TabIndex = 80;
+            this.lblPostsGrupo.Text = "Posts ";
+            this.lblPostsGrupo.Click += new System.EventHandler(this.lblPostsGrupo_Click);
+            // 
+            // lblChat
+            // 
+            this.lblChat.AutoSize = true;
+            this.lblChat.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblChat.ForeColor = System.Drawing.Color.Black;
+            this.lblChat.Location = new System.Drawing.Point(407, 76);
+            this.lblChat.Name = "lblChat";
+            this.lblChat.Size = new System.Drawing.Size(52, 24);
+            this.lblChat.TabIndex = 77;
+            this.lblChat.Text = "Chat";
+            this.lblChat.Click += new System.EventHandler(this.lblChat_Click);
+            // 
+            // pbxFotoGrupo
+            // 
+            this.pbxFotoGrupo.Image = global::Frontend.Properties.Resources.Usuario;
+            this.pbxFotoGrupo.Location = new System.Drawing.Point(17, 12);
+            this.pbxFotoGrupo.Name = "pbxFotoGrupo";
+            this.pbxFotoGrupo.Size = new System.Drawing.Size(90, 90);
+            this.pbxFotoGrupo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxFotoGrupo.TabIndex = 78;
+            this.pbxFotoGrupo.TabStop = false;
             // 
             // pnlChat
             // 
             this.pnlChat.AutoScroll = true;
-            this.pnlChat.Controls.Add(this.pictureBox3);
-            this.pnlChat.Controls.Add(this.pbxImage);
-            this.pnlChat.Controls.Add(this.pnlAsociarContenido);
-            this.pnlChat.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlChat.Location = new System.Drawing.Point(0, 0);
+            this.pnlChat.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.pnlChat.Controls.Add(this.pnlPostsGrupo);
+            this.pnlChat.Location = new System.Drawing.Point(13, 113);
             this.pnlChat.Name = "pnlChat";
-            this.pnlChat.Size = new System.Drawing.Size(996, 574);
-            this.pnlChat.TabIndex = 47;
+            this.pnlChat.Size = new System.Drawing.Size(971, 378);
+            this.pnlChat.TabIndex = 79;
             // 
-            // pictureBox3
+            // pnlPostsGrupo
             // 
-            this.pictureBox3.Image = global::Frontend.Properties.Resources.Usuario;
-            this.pictureBox3.Location = new System.Drawing.Point(17, 12);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(90, 90);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox3.TabIndex = 78;
-            this.pictureBox3.Visible = true;
+            this.pnlPostsGrupo.AutoScroll = true;
+            this.pnlPostsGrupo.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.pnlPostsGrupo.Location = new System.Drawing.Point(0, 0);
+            this.pnlPostsGrupo.Name = "pnlPostsGrupo";
+            this.pnlPostsGrupo.Size = new System.Drawing.Size(971, 378);
+            this.pnlPostsGrupo.TabIndex = 80;
             // 
-            // pbxImage
+            // txtURL
             // 
-            this.pbxImage.Image = global::Frontend.Properties.Resources.foto_blanca;
-            this.pbxImage.Location = new System.Drawing.Point(186, 443);
-            this.pbxImage.Name = "pbxImage";
-            this.pbxImage.Size = new System.Drawing.Size(55, 58);
-            this.pbxImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbxImage.TabIndex = 77;
-            this.pbxImage.TabStop = false;
-            this.pbxImage.Visible = false;
+            this.txtURL.Location = new System.Drawing.Point(85, 497);
+            this.txtURL.Multiline = true;
+            this.txtURL.Name = "txtURL";
+            this.txtURL.Size = new System.Drawing.Size(854, 28);
+            this.txtURL.TabIndex = 80;
             // 
             // panel2
             // 
@@ -284,13 +394,12 @@ namespace Frontend
             // 
             // GruposComunidad
             // 
-            this.ClientSize = new System.Drawing.Size(996, 574);
+            this.ClientSize = new System.Drawing.Size(996, 596);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.lblMiembros);
             this.Controls.Add(this.PictureBoxConfiguraciones);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.pnlChat);
+            this.Controls.Add(this.pnlGruposComunidad);
             this.Controls.Add(this.lblNombre);
             this.Controls.Add(this.pbxImagen);
             this.Name = "GruposComunidad";
@@ -299,17 +408,36 @@ namespace Frontend
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEnviar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxAsociarContenido)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxCrearPostGrupo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxConfiguraciones)).EndInit();
             this.pnlAsociarContenido.ResumeLayout(false);
             this.pnlAsociarContenido.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxAsociarVideo)).EndInit();
+            this.pnlGruposComunidad.ResumeLayout(false);
+            this.pnlGruposComunidad.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupo)).EndInit();
             this.pnlChat.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
+        }
+
+        private void Iniciar()
+        {
+            pbxFotoGrupo.Visible = true;
+            lblMiembros.Visible = true;
+            lblChat.Visible = true;
+            lblChat.ForeColor = Color.Black;
+            lblPostsGrupo.Visible = true;
+            lblPostsGrupo.ForeColor = Color.Gray;
+            pnlPostsGrupo.Visible = false;
+            pnlChat.Visible = true;
+            pbxCrearPostGrupo.Visible = false;
+            PictureBoxConfiguraciones.Visible = true;
+            pnlAsociarContenido.Visible = false;
+            panel1.Visible = true;
+            txtURL.Visible = false;
         }
 
         private void AplicarDatos(dynamic groupData)
@@ -318,7 +446,7 @@ namespace Frontend
             byte[] imagen = Convert.FromBase64String(Convert.ToString(groupData.foto));
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);
-            this.pictureBox3.Image = bitmap;
+            this.pbxFotoGrupo.Image = bitmap;
         }
 
         private void pbxAsociarContenido_Click(object sender, EventArgs e)
@@ -375,23 +503,23 @@ namespace Frontend
 
         private async void AñadirMensajes()
         {
-            pnlChat.Visible = true;
+            pnlGruposComunidad.Visible = true;
             var listaDeMensajes = await ObtenerMensajes(token);
             foreach(var mensaje in listaDeMensajes)
             {
                 MessageControl messageControl = new MessageControl(mensaje, token);
                 messageControl.Size=new Size(312, 409);
                 await messageControl.aplicarDatos(mensaje);
-                if (pnlChat.Controls.Count > 0)
+                if (pnlGruposComunidad.Controls.Count > 0)
                 {
-                    var lastControl = pnlChat.Controls[pnlChat.Controls.Count - 1];
+                    var lastControl = pnlGruposComunidad.Controls[pnlGruposComunidad.Controls.Count - 1];
                     messageControl.Location = new Point(50, lastControl.Bottom);
                 }
                 else
                 {
                     messageControl.Location = new Point(50, 0);
                 }
-                pnlChat.Controls.Add(messageControl);
+                pnlGruposComunidad.Controls.Add(messageControl);
             }
         }
         private async void pbxEnviar_Click(object sender, EventArgs e)
@@ -399,28 +527,29 @@ namespace Frontend
             DateTime fechayhoraactual = DateTime.Now;
             string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
             byte[] data;
-            if (pbxImage.Image == null)
+            if (pbxCrearPostGrupo.Image == null)
             {
                 data = new byte[0];
             }
             else
             {
                 MemoryStream ms = new MemoryStream();
-                pbxImage.Image.Save(ms, ImageFormat.Jpeg);
+                pbxCrearPostGrupo.Image.Save(ms, ImageFormat.Jpeg);
                 data = ms.ToArray();
             }
             string video;
             string texto;
-            if (txtMensajeAEnviar.Text.Contains("https://youtu.be/"))
+            if (txtURL.Text.Contains("https://youtu.be/"))
             {
                 video = txtMensajeAEnviar.Text;
-                texto = "";
+                
             }
             else
             {
                 video = "";
-                texto = txtMensajeAEnviar.Text;
+                
             }
+            texto = txtMensajeAEnviar.Text;
             var respuesta=await EnviarMensaje(fechaHoraString, texto, data, video);
             MessageBox.Show(""+respuesta);
         }
@@ -431,9 +560,44 @@ namespace Frontend
             ofd.Filter = "Archivos de imagen|*.png;*.jpg;*.jpeg"; //Para que sólo aparezcan fotos
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                pbxImage.ImageLocation = ofd.FileName;
-                pbxImage.SizeMode = PictureBoxSizeMode.StretchImage;
-                pbxImage.Visible = true;
+                pbxCrearPostGrupo.ImageLocation = ofd.FileName;
+                pbxCrearPostGrupo.SizeMode = PictureBoxSizeMode.StretchImage;
+                pbxCrearPostGrupo.Visible = true;
+            }
+        }
+
+        private void lblChat_Click(object sender, EventArgs e)
+        {
+            lblPostsGrupo.ForeColor = Color.Gray;
+            pnlPostsGrupo.Visible = false;
+            pnlChat.Visible = true;
+        }
+
+        private void lblPostsGrupo_Click(object sender, EventArgs e)
+        {
+            lblChat.ForeColor = Color.Gray;
+            pnlChat.Visible = false;
+            pnlPostsGrupo.Visible = true;
+        }
+
+        private void pbxCrearPostGrupo_Click(object sender, EventArgs e)
+        {
+            CrearPostGrupo crearPostGrupo = new CrearPostGrupo(user, nombreGrupo, token);
+            crearPostGrupo.TopLevel = false;
+            crearPostGrupo.FormBorderStyle = FormBorderStyle.None;
+            crearPostGrupo.Dock = DockStyle.Fill;
+            pnlPostsGrupo.Controls.Add(crearPostGrupo);
+            crearPostGrupo.Show();
+        }
+
+        private void pbxAsociarVideo_Click(object sender, EventArgs e)
+        {
+            if(txtURL.Visible == false)
+            {
+                txtURL.Visible = true;
+            } else
+            {
+                txtURL.Visible = false;
             }
         }
     }

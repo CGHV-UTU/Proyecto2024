@@ -33,10 +33,8 @@ namespace Frontend
         private Label lblFechaYHora; //Capaz que registro el año también, porque en el DDL es
         private PictureBox pbxImagenCompartida;
         private Panel pnlOpciones;
+        private TextBox txtURL;
         private Panel panel1;
-
-        // un DATETIME
-        private Panel pnlPost; 
 
         
         public MessageControl(dynamic MessageData, string token)
@@ -45,6 +43,8 @@ namespace Frontend
             txtMensaje.ReadOnly = true;
             this.token = token;
         }
+
+
         public async Task aplicarDatos(dynamic MessageData)
         {
             //anda mas o menos aun, no carga las imagenes ni del usuario ni la del mensaje
@@ -91,6 +91,7 @@ namespace Frontend
             }
         }
 
+        //Habría que sacarlo
         static async Task<string[]> BuscarPost(int id, string token)
         {
             using (HttpClient client = new HttpClient())
@@ -127,24 +128,16 @@ namespace Frontend
             pbxFotoUsuario.Image = image;
         }
 
-        //private async Task ObtenerFotoDelUsuario(string nombreDeCuenta){}
-
-        //private async Task RecibirMensaje(){}
-
-        //private asy
-
-
-
-        private void InitializeComponent()
+            private void InitializeComponent()
         {
             this.lblNombreDeCuenta = new System.Windows.Forms.Label();
             this.txtMensaje = new System.Windows.Forms.TextBox();
-            this.pnlPost = new System.Windows.Forms.Panel();
             this.lblFechaYHora = new System.Windows.Forms.Label();
             this.pbxImagenCompartida = new System.Windows.Forms.PictureBox();
             this.pbxFotoUsuario = new System.Windows.Forms.PictureBox();
             this.pnlOpciones = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtURL = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagenCompartida)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoUsuario)).BeginInit();
             this.SuspendLayout();
@@ -166,22 +159,14 @@ namespace Frontend
             this.txtMensaje.MaxLength = 255;
             this.txtMensaje.Multiline = true;
             this.txtMensaje.Name = "txtMensaje";
-            this.txtMensaje.Size = new System.Drawing.Size(204, 60);
+            this.txtMensaje.Size = new System.Drawing.Size(381, 60);
             this.txtMensaje.TabIndex = 1;
             this.txtMensaje.Text = "Inserte su texto";
-            // 
-            // pnlPost
-            // 
-            this.pnlPost.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.pnlPost.Location = new System.Drawing.Point(3, 318);
-            this.pnlPost.Name = "pnlPost";
-            this.pnlPost.Size = new System.Drawing.Size(290, 71);
-            this.pnlPost.TabIndex = 4;
             // 
             // lblFechaYHora
             // 
             this.lblFechaYHora.AutoSize = true;
-            this.lblFechaYHora.Location = new System.Drawing.Point(228, 12);
+            this.lblFechaYHora.Location = new System.Drawing.Point(405, 12);
             this.lblFechaYHora.Name = "lblFechaYHora";
             this.lblFechaYHora.Size = new System.Drawing.Size(65, 13);
             this.lblFechaYHora.TabIndex = 5;
@@ -190,9 +175,9 @@ namespace Frontend
             // pbxImagenCompartida
             // 
             this.pbxImagenCompartida.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.pbxImagenCompartida.Location = new System.Drawing.Point(3, 94);
+            this.pbxImagenCompartida.Location = new System.Drawing.Point(3, 133);
             this.pbxImagenCompartida.Name = "pbxImagenCompartida";
-            this.pbxImagenCompartida.Size = new System.Drawing.Size(290, 218);
+            this.pbxImagenCompartida.Size = new System.Drawing.Size(467, 262);
             this.pbxImagenCompartida.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxImagenCompartida.TabIndex = 6;
             this.pbxImagenCompartida.TabStop = false;
@@ -213,29 +198,41 @@ namespace Frontend
             this.pnlOpciones.BackColor = System.Drawing.Color.SlateBlue;
             this.pnlOpciones.Location = new System.Drawing.Point(3, 3);
             this.pnlOpciones.Name = "pnlOpciones";
-            this.pnlOpciones.Size = new System.Drawing.Size(300, 3);
+            this.pnlOpciones.Size = new System.Drawing.Size(467, 3);
             this.pnlOpciones.TabIndex = 72;
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.SlateBlue;
-            this.panel1.Location = new System.Drawing.Point(3, 395);
+            this.panel1.Location = new System.Drawing.Point(3, 401);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(300, 3);
+            this.panel1.Size = new System.Drawing.Size(467, 3);
             this.panel1.TabIndex = 73;
+            // 
+            // txtURL
+            // 
+            this.txtURL.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtURL.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.txtURL.Location = new System.Drawing.Point(3, 94);
+            this.txtURL.MaxLength = 255;
+            this.txtURL.Multiline = true;
+            this.txtURL.Name = "txtURL";
+            this.txtURL.Size = new System.Drawing.Size(467, 24);
+            this.txtURL.TabIndex = 74;
+            this.txtURL.Text = "URL";
             // 
             // MessageControl
             // 
+            this.Controls.Add(this.txtURL);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnlOpciones);
             this.Controls.Add(this.pbxImagenCompartida);
             this.Controls.Add(this.lblFechaYHora);
-            this.Controls.Add(this.pnlPost);
             this.Controls.Add(this.pbxFotoUsuario);
             this.Controls.Add(this.txtMensaje);
             this.Controls.Add(this.lblNombreDeCuenta);
             this.Name = "MessageControl";
-            this.Size = new System.Drawing.Size(312, 409);
+            this.Size = new System.Drawing.Size(473, 409);
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagenCompartida)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoUsuario)).EndInit();
             this.ResumeLayout(false);
