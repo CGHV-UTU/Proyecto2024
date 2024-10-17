@@ -427,6 +427,7 @@ namespace Frontend
             //comunidad.AbrirEvento += PostControl_AbrirComentarios;
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
+            comunidad.MensajesNuevos();
         }
 
         private void EventoComunidad_PostearEnEvento(object sender, PersonalizedArgs e)

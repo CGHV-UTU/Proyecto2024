@@ -51,6 +51,7 @@ namespace Frontend
         private string user;
         private TextBox txtURL;
         private string token;
+        private string idUltimoMensaje;
         public GruposComunidad(dynamic groupData, string user, string token)
         {
             InitializeComponent();
@@ -480,7 +481,7 @@ namespace Frontend
                 }
             }
         }
-        private async Task<dynamic> ObtenerMensajes(string token)
+        private async Task<dynamic> ObtenerMensajes()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -501,10 +502,58 @@ namespace Frontend
             }
         }
 
-        private async void AñadirMensajes()
+        private async Task<dynamic> ObtenerMensajesNuevos()
         {
-            pnlGruposComunidad.Visible = true;
-            var listaDeMensajes = await ObtenerMensajes(token);
+            using (HttpClient client = new HttpClient())
+            {
+                await Task.Delay(1000);
+                try
+                {
+                    var datos = new { nombreReal = nombreGrupo, idMensaje=idUltimoMensaje, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/ObtenerMensajesMayorID", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        public async void MensajesNuevos()
+        {
+            while (true)
+            {
+                var salida = await ObtenerMensajesNuevos();
+                try
+                {
+                    if (!Convert.ToString(salida).Equals("No se encontraron Mensajes para el grupo especificado") && !Convert.ToString(salida).Equals("Ocurrió un error al intentar obtener los mensajes del grupo.") && !Convert.ToString(salida).Equals("Token expirado"))
+                    {
+                        AñadirMensajes(salida);
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("ERROR");
+                }
+            }
+        }
+        private async void AñadirMensajes(dynamic mensajes=null)
+        {
+            dynamic listaDeMensajes;
+            if (mensajes==null)
+            {
+                pnlGruposComunidad.Visible = true;
+                listaDeMensajes = await ObtenerMensajes();
+            }
+            else
+            {
+                listaDeMensajes = mensajes;
+            }
             foreach(var mensaje in listaDeMensajes)
             {
                 MessageControl messageControl = new MessageControl(mensaje, token);
@@ -520,6 +569,7 @@ namespace Frontend
                     messageControl.Location = new Point(50, 0);
                 }
                 pnlGruposComunidad.Controls.Add(messageControl);
+                idUltimoMensaje = Convert.ToString(mensaje.idMensaje);
             }
         }
         private async void pbxEnviar_Click(object sender, EventArgs e)
@@ -551,7 +601,6 @@ namespace Frontend
             }
             texto = txtMensajeAEnviar.Text;
             var respuesta=await EnviarMensaje(fechaHoraString, texto, data, video);
-            MessageBox.Show(""+respuesta);
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
