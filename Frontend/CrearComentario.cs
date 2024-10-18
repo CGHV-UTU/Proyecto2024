@@ -32,6 +32,8 @@ namespace Frontend
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44340/hacerComentario", content);
                     response.EnsureSuccessStatusCode();
+                    MessageBox.Show("El comentario se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 }
                 catch (Exception ex)
                 {
@@ -65,7 +67,14 @@ namespace Frontend
             DateTime now = DateTime.Now;
             string fechayhora = now.ToString("yyyy-MM-dd HH:mm:ss");
             var creadorPost = await conseguirCreador(int.Parse(idpost));
-            await Publicar(user,idpost,creadorPost,txtBox.Text,fechayhora);
+            if (string.IsNullOrEmpty(txtBox.Text))
+            {
+                MessageBox.Show("No puede realizar un comentario sin contenido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                await Publicar(user, idpost, creadorPost, txtBox.Text, fechayhora);
+            }
         }
     }
 }

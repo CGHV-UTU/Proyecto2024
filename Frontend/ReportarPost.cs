@@ -117,15 +117,29 @@ namespace Frontend
             if (string.IsNullOrEmpty(idcomentario))
             {
                 string creadorPost = await obtenerCreador(int.Parse(idpost), token);
-                var respuesta = await ReportaPost(usuario,creadorPost, int.Parse(idpost), cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
-                MessageBox.Show(respuesta);
+                if (!string.IsNullOrEmpty(cbxRazon.Text))
+                {
+                    var respuesta = await ReportaPost(usuario, creadorPost, int.Parse(idpost), cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
+                    MessageBox.Show(respuesta);
+                }
+                else
+                {
+                    MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
-                string creadorComentario = await obtenerCreadorComentario(int.Parse(idcomentario), token);
-                var respuesta = await ReportaComentario(usuario,creadorComentario, idcomentario, cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
-                MessageBox.Show(respuesta);
-            }
+                if (!string.IsNullOrEmpty(cbxRazon.Text))
+                {
+                    string creadorComentario = await obtenerCreadorComentario(int.Parse(idcomentario), token);
+                    var respuesta = await ReportaComentario(usuario, creadorComentario, idcomentario, cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
+                    MessageBox.Show(respuesta);
+                }
+                else
+                {
+                    MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                }
         }
     }
 }

@@ -405,7 +405,7 @@ namespace Frontend
                     var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/modificarComentario", content);
                     response.EnsureSuccessStatusCode();
-                    MessageBox.Show("Comentario modificado correctamente");
+                    MessageBox.Show("Comentario modificado correctamente" ,"Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception)
                 {
@@ -415,7 +415,14 @@ namespace Frontend
         }
         private async void PictureBoxConfirmarCambios_Click(object sender, EventArgs e)
         {
-            await Modificar(Convert.ToString(idcomentario),this.txtBoxEditar.Text, token);
+            if (string.IsNullOrEmpty(txtBoxEditar.Text))
+            {
+                MessageBox.Show("No se ha editado el comentario", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                await Modificar(Convert.ToString(idcomentario), this.txtBoxEditar.Text, token);
+            }
         }
     }
 }

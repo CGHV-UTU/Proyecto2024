@@ -45,6 +45,7 @@ namespace Frontend
                 this.creador = creador;
                 if(data == null)
                 {
+                    MessageBox.Show(data.ToString());
                     MessageBox.Show("Error. No se encontraron posts");
                     return;
                 }
