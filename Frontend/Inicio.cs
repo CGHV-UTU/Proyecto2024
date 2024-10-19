@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -24,13 +25,44 @@ namespace Frontend
             InitializeComponent();
             user = usuario;
             this.token = token;
-            MessageBox.Show(token);
             VerPosts();
             PanelComentarios.Visible = false;
             PictureBoxSalir.Visible = false;
             PanelPostear.Visible = false;
             PanelNotificaciones.Visible = false;
             PanelMostrarUsuario.Visible = false;
+            panelBusqueda.Visible = false;
+            cargarLaImagen(); //hacer que se muestre circular
+        }
+
+        private async void cargarLaImagen()
+        {
+            string imagenB64 = await conseguirImagenDePerfil(user, token);
+            byte[] imagen = Convert.FromBase64String(imagenB64);
+            MemoryStream ms = new MemoryStream(imagen);
+            Bitmap bitmap = new Bitmap(ms);
+            this.PictureBoxUsuario.Image = bitmap;
+        }
+        static async Task<string> conseguirImagenDePerfil(string creador, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var dato = new { nombreDeCuenta = creador, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/obtenerImagenUsuario", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic imagen = JsonConvert.DeserializeObject(responseBody);
+                    return imagen;
+                }
+                catch
+                {
+                    MessageBox.Show("Error de conexión");
+                    return "error";
+                }
+            }
         }
 
         // Método para inicializar componentes adicionales, incluido el PanelNotificaciones
@@ -299,6 +331,7 @@ namespace Frontend
         {
             PanelPostear.Visible = false;
             PanelPosts.Visible = true;
+            panelBusqueda.Visible = false;
             PanelMostrarUsuario.Controls.Clear();
         }
          
@@ -422,9 +455,6 @@ namespace Frontend
             comunidad.BackColor = Color.LightGray;
             comunidad.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
-            //comunidad.BackColor = Color.FromArgb(34, 67, 220);
-            //comunidad.ReportarPost += PostControl_ReportarPost;
-            //comunidad.AbrirEvento += PostControl_AbrirComentarios;
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
             comunidad.MensajesNuevos();
@@ -434,10 +464,34 @@ namespace Frontend
         {
             VerPost(e.arg);
         }
-
         private void pbxBuscar_Click(object sender, EventArgs e)
         {
 
+            if (panelBusqueda.Visible == false)
+            {
+                if (panelBusqueda.Controls.Count == 0)
+                {
+                    panelBusqueda.Visible = true;
+                    PanelMostrarUsuario.Parent = this;
+                    PanelMostrarUsuario.Location = PanelPosts.Location;
+                    Busqueda busqueda = new Busqueda(token);
+                    busqueda.TopLevel = false;
+                    busqueda.FormBorderStyle = FormBorderStyle.None;
+                    busqueda.BackColor = Color.LightGray;
+                    busqueda.Dock = DockStyle.Fill;
+                    panelBusqueda.BackColor = Color.LightGray;
+                    panelBusqueda.Controls.Add(busqueda);
+                    busqueda.Show();
+                }
+                else
+                {
+                    panelBusqueda.Visible = true;
+                }
+            }
+            else
+            {
+                panelBusqueda.Visible = false;
+            }
         }
     }
 }

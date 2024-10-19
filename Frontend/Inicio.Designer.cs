@@ -44,6 +44,7 @@ namespace Frontend
             this.PictureBoxNotificaciones = new System.Windows.Forms.PictureBox();
             this.PictureBoxCrear = new System.Windows.Forms.PictureBox();
             this.PictureBoxComunidad = new System.Windows.Forms.PictureBox();
+            this.panelBusqueda = new System.Windows.Forms.Panel();
             this.PanelPosts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxSalir)).BeginInit();
             this.PanelSuperior.SuspendLayout();
@@ -226,11 +227,19 @@ namespace Frontend
             this.PictureBoxComunidad.TabStop = false;
             this.PictureBoxComunidad.Click += new System.EventHandler(this.PictureBoxComunidad_Click);
             // 
+            // panelBusqueda
+            // 
+            this.panelBusqueda.Location = new System.Drawing.Point(160, 56);
+            this.panelBusqueda.Name = "panelBusqueda";
+            this.panelBusqueda.Size = new System.Drawing.Size(1012, 342);
+            this.panelBusqueda.TabIndex = 0;
+            // 
             // Inicio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.panelBusqueda);
             this.Controls.Add(this.PanelNotificaciones);
             this.Controls.Add(this.PanelPostear);
             this.Controls.Add(this.PanelComentarios);
@@ -271,6 +280,7 @@ namespace Frontend
         private System.Windows.Forms.Panel PanelNotificaciones;
         private System.Windows.Forms.Panel PanelMostrarUsuario;
         private System.Windows.Forms.PictureBox pbxBuscar;
+        private System.Windows.Forms.Panel panelBusqueda;
     }
 }
 

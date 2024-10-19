@@ -21,18 +21,22 @@ namespace Frontend
         private string token;
         private string user;
         private dynamic datos;
+        private dynamic datosDelUsuario;
         public event EventHandler<PersonalizedArgs> AbrirEvento;
         public event EventHandler<PersonalizedArgs> AbrirGrupo;
-        public Grupo_EventoParaListar(string usuario, string token, string nombreRealGrupo="", int idEvento=0)
+        public Grupo_EventoParaListar(string usuario, string token, string nombreRealGrupo="", int idEvento=0, dynamic usuariobuscar=null)
         {
             this.nombreReal = nombreRealGrupo;
             this.idevento = idEvento;
             this.token = token;
             this.user = usuario;
+            this.datosDelUsuario = usuariobuscar;
             InitializeComponent();
             Iniciar();
             AplicarDatos();
         }
+
+
 
         static async Task<dynamic> BuscarEvento(int id, string token)
         {
@@ -78,34 +82,57 @@ namespace Frontend
 
         private async void AplicarDatos()
         {
-            if (idevento>0)
+            if (this.datosDelUsuario == null)
             {
-                var data = await BuscarEvento(idevento, token);
-                this.lblNombre.Text = data.titulo;
-                try
+                if (idevento > 0)
                 {
-                    byte[] imagen = Convert.FromBase64String(Convert.ToString(data.foto));
-                    MemoryStream ms = new MemoryStream(imagen);
-                    Bitmap bitmap = new Bitmap(ms);
-                    this.PictureBoxImagen.Image = bitmap;
-                    if (this.PictureBoxImagen.Image == null)
+                    var data = await BuscarEvento(idevento, token);
+                    this.lblNombre.Text = data.titulo;
+                    try
                     {
-                        MessageBox.Show("Imagen nula");
+                        byte[] imagen = Convert.FromBase64String(Convert.ToString(data.foto));
+                        MemoryStream ms = new MemoryStream(imagen);
+                        Bitmap bitmap = new Bitmap(ms);
+                        this.PictureBoxImagen.Image = bitmap;
+                        if (this.PictureBoxImagen.Image == null)
+                        {
+                            MessageBox.Show("Imagen nula");
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Ha ocurrido un error " + ex);
+                    }
+                    datos = data;
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show("Ha ocurrido un error " + ex);
+                    var data = await BuscarGrupo(nombreReal, token);
+                    this.lblNombre.Text = data.nombreVisible;
+                    try
+                    {
+                        byte[] imagen = Convert.FromBase64String(Convert.ToString(data.foto));
+                        MemoryStream ms = new MemoryStream(imagen);
+                        Bitmap bitmap = new Bitmap(ms);
+                        this.PictureBoxImagen.Image = bitmap;
+                        if (this.PictureBoxImagen.Image == null)
+                        {
+                            MessageBox.Show("Imagen nula");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Ha ocurrido un error " + ex);
+                    }
+                    datos = data;
                 }
-                datos = data;
             }
             else
             {
-                var data = await BuscarGrupo(nombreReal, token);
-                this.lblNombre.Text = data.nombreVisible;
+                this.lblNombre.Text = this.datosDelUsuario.nombreVisible;
                 try
                 {
-                    byte[] imagen = Convert.FromBase64String(Convert.ToString(data.foto));
+                    byte[] imagen = Convert.FromBase64String(Convert.ToString(this.datosDelUsuario.foto));
                     MemoryStream ms = new MemoryStream(imagen);
                     Bitmap bitmap = new Bitmap(ms);
                     this.PictureBoxImagen.Image = bitmap;
@@ -118,7 +145,6 @@ namespace Frontend
                 {
                     MessageBox.Show("Ha ocurrido un error " + ex);
                 }
-                datos = data;
             }
         }
 

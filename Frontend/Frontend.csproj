@@ -70,9 +70,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Buscar.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Busqueda.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,9 +199,6 @@
     <Compile Include="ReportarPost.Designer.cs">
       <DependentUpon>ReportarPost.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Buscar.resx">
-      <DependentUpon>Buscar.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Busqueda.resx">
       <DependentUpon>Busqueda.cs</DependentUpon>
     </EmbeddedResource>

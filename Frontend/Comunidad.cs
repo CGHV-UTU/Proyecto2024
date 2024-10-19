@@ -95,8 +95,7 @@ namespace Frontend
         }
 
         private async void CargarEventos()
-        {
-            
+        {  
             eventos = await Eventos(user, token);
             if (eventos != null)
             {

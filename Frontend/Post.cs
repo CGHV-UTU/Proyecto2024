@@ -25,7 +25,6 @@ namespace Frontend
             txtUrl.Visible = false;
             user = usuario;
             this.idevento = idevento;
-            MessageBox.Show(idevento);
             this.token = token;
             this.BackColor = Color.LightGray;
             this.btnUbicacion.Visible = false;
@@ -40,6 +39,7 @@ namespace Frontend
             this.pnlOpcionEvento.Visible = false;
             this.pnlOpcionGrupo.Visible = false;
             this.pnlURL.Visible = false;
+            this.txtCategorias.Visible = false;
             lblEvento.ForeColor = Color.Gray;
             lblGrupo.ForeColor = Color.Gray;
             pnlOpcionPost.Visible = true;
@@ -51,6 +51,7 @@ namespace Frontend
                 pnlOpcionGrupo.Visible = false;
                 lblPost.Visible = false;
                 pnlOpcionPost.Visible = false;
+                this.txtCategorias.Visible = false;
             }
         }
 
@@ -223,7 +224,7 @@ namespace Frontend
             }
         }
 
-        public static async Task Publicar(string texto, string url, byte[] imagen, string fechaHora, string token, string idevento="")
+        public static async Task Publicar(string texto, string url, byte[] imagen, string fechaHora, string token, string idevento="", string categoria="")
         {
             using (HttpClient client = new HttpClient())
             {
@@ -231,14 +232,14 @@ namespace Frontend
                 {
                     if (imagen.Length == 0)
                     {
-                        var datos = new { text = texto, link = url, user = user, fechayhora = fechaHora, idEvento=idevento,token = token };
+                        var datos = new { text = texto, link = url, user = user, fechayhora = fechaHora, idEvento=idevento,token = token, categoria=categoria};
                         var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
                         response.EnsureSuccessStatusCode();
                     }
                     else
                     {
-                        var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user, fechayhora = fechaHora, idEvento = idevento, token = token };
+                        var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user, fechayhora = fechaHora, idEvento = idevento, token = token , categoria = categoria };
                         var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
                         response.EnsureSuccessStatusCode();
@@ -331,6 +332,7 @@ namespace Frontend
             this.pnlTexto.Visible = true;
             this.dtpFechaFinal.Visible = false;
             this.dtpFechaInicio.Visible = false;
+            this.txtCategorias.Visible = true;
             menuActual = "post";
         }
 
@@ -353,6 +355,7 @@ namespace Frontend
             this.pnlTexto.Visible = false;
             this.dtpFechaFinal.Visible = true;
             this.dtpFechaInicio.Visible = true;
+            this.txtCategorias.Visible = false;
             menuActual = "evento";
         }
 
@@ -376,6 +379,7 @@ namespace Frontend
             this.dtpFechaInicio.Visible = false;
             this.txtUrl.Visible = false;
             this.pnlURL.Visible = false;
+            this.txtCategorias.Visible = false;
             menuActual = "grupo";
         }
 

@@ -53,6 +53,7 @@ namespace Frontend
             this.btnCrear = new System.Windows.Forms.PictureBox();
             this.btnVideo = new System.Windows.Forms.PictureBox();
             this.btnImagen = new System.Windows.Forms.PictureBox();
+            this.txtCategorias = new System.Windows.Forms.TextBox();
             this.pnlOpcionGrupo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnUbicacion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
@@ -319,12 +320,25 @@ namespace Frontend
             this.btnImagen.TabStop = false;
             this.btnImagen.Click += new System.EventHandler(this.btnImagen_Click);
             // 
+            // txtCategorias
+            // 
+            this.txtCategorias.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCategorias.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCategorias.ForeColor = System.Drawing.Color.Gray;
+            this.txtCategorias.Location = new System.Drawing.Point(16, 184);
+            this.txtCategorias.Multiline = true;
+            this.txtCategorias.Name = "txtCategorias";
+            this.txtCategorias.Size = new System.Drawing.Size(216, 54);
+            this.txtCategorias.TabIndex = 76;
+            this.txtCategorias.Text = "Categorías";
+            // 
             // Post
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(420, 511);
+            this.Controls.Add(this.txtCategorias);
             this.Controls.Add(this.pnlOpcionGrupo);
             this.Controls.Add(this.pnlOpcionEvento);
             this.Controls.Add(this.pnlOpcionPost);
@@ -385,5 +399,6 @@ namespace Frontend
         private System.Windows.Forms.Panel pnlOpcionEvento;
         private System.Windows.Forms.Panel pnlOpcionGrupo;
         private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.TextBox txtCategorias;
     }
 }
