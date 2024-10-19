@@ -15,6 +15,8 @@ namespace Frontend
     public partial class Busqueda : Form
     {
         private string token;
+        public event EventHandler<PersonalizedArgs> AbrirUsuario;
+        public event EventHandler<PersonalizedArgs> AbrirEvento;
         public Busqueda(string token)
         {
             this.token = token;
@@ -117,7 +119,8 @@ namespace Frontend
                         pnlMostrar.Controls.Clear();
                         foreach (dynamic usuario in respuesta)
                         {
-                            var usercontrol = new Grupo_EventoParaListar("", token, "", 0, usuario);
+                            var usercontrol = new Grupo_EventoParaListar("", token, "", 0, usuario, true);
+                            usercontrol.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
                             if (pnlMostrar.Controls.Count > 0)
                             {
                                 var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];
@@ -142,17 +145,17 @@ namespace Frontend
                         pnlMostrar.Controls.Clear();
                         foreach (dynamic grupo in respuesta2)
                         {
-                            var usercontrol = new Grupo_EventoParaListar("", token, Convert.ToString(grupo.nombreReal));
+                            var groupcontrol = new Grupo_EventoParaListar("", token, Convert.ToString(grupo.nombreReal),0,null,true);
                             if (pnlMostrar.Controls.Count > 0)
                             {
                                 var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];
-                                usercontrol.Location = new Point(0, lastControl.Bottom);
+                                groupcontrol.Location = new Point(0, lastControl.Bottom);
                             }
                             else
                             {
-                                usercontrol.Location = new Point(0, 52);
+                                groupcontrol.Location = new Point(0, 52);
                             }
-                            pnlMostrar.Controls.Add(usercontrol);
+                            pnlMostrar.Controls.Add(groupcontrol);
                         }
                     }
                     break;
@@ -167,21 +170,30 @@ namespace Frontend
                         pnlMostrar.Controls.Clear();
                         foreach (dynamic evento in respuesta3)
                         {
-                            var usercontrol = new Grupo_EventoParaListar("", token, "", int.Parse(Convert.ToString(evento.idEvento)));
+                            var eventControl = new Grupo_EventoParaListar("", token, "", int.Parse(Convert.ToString(evento.idEvento)), null, true);
+                            eventControl.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
                             if (pnlMostrar.Controls.Count > 0)
                             {
                                 var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];
-                                usercontrol.Location = new Point(0, lastControl.Bottom);
+                                eventControl.Location = new Point(0, lastControl.Bottom);
                             }
                             else
                             {
-                                usercontrol.Location = new Point(0, 52);
+                                eventControl.Location = new Point(0, 52);
                             }
-                            pnlMostrar.Controls.Add(usercontrol);
+                            pnlMostrar.Controls.Add(eventControl);
                         }
                     }
                     break;
             }
+        }
+        private void Grupo_EventoParaListar_AbrirUsuario(object sender, PersonalizedArgs e)
+        {
+            AbrirUsuario?.Invoke(this, new PersonalizedArgs(e.arg));
+        }
+        private void Grupo_EventoParaListar_AbrirEvento(object sender, PersonalizedArgs e)
+        {
+            AbrirEvento?.Invoke(this, new PersonalizedArgs(e.arg));
         }
         private string tipoDeBusqueda;
         private void pnlUsuario_Click(object sender, EventArgs e)

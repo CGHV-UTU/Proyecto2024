@@ -22,22 +22,22 @@ namespace Frontend
         private string user;
         private dynamic datos;
         private dynamic datosDelUsuario;
+        private bool busqueda;
         public event EventHandler<PersonalizedArgs> AbrirEvento;
         public event EventHandler<PersonalizedArgs> AbrirGrupo;
-        public Grupo_EventoParaListar(string usuario, string token, string nombreRealGrupo="", int idEvento=0, dynamic usuariobuscar=null)
+        public event EventHandler<PersonalizedArgs> AbrirUsuario;
+        public Grupo_EventoParaListar(string usuario, string token, string nombreRealGrupo = "", int idEvento = 0, dynamic usuariobuscar = null, bool busqueda = false)
         {
             this.nombreReal = nombreRealGrupo;
             this.idevento = idEvento;
             this.token = token;
             this.user = usuario;
             this.datosDelUsuario = usuariobuscar;
+            this.busqueda = busqueda;
             InitializeComponent();
             Iniciar();
             AplicarDatos();
         }
-
-
-
         static async Task<dynamic> BuscarEvento(int id, string token)
         {
             using (HttpClient client = new HttpClient())
@@ -197,13 +197,27 @@ namespace Frontend
 
         private void Grupo_EventoParaListar_Click(object sender, EventArgs e)
         {
-            if (idevento>0)
+            if (!busqueda)
             {
-                AbrirEvento?.Invoke(this, new PersonalizedArgs(datos));
+                if (idevento > 0)
+                {
+                    AbrirEvento?.Invoke(this, new PersonalizedArgs(datos));
+                }
+                else
+                {
+                    AbrirGrupo?.Invoke(this, new PersonalizedArgs(datos));
+                }
             }
             else
             {
-                AbrirGrupo?.Invoke(this, new PersonalizedArgs(datos));
+                if (idevento > 0)
+                {
+                    AbrirEvento?.Invoke(this, new PersonalizedArgs(datos));
+                }
+                else
+                {
+                    AbrirUsuario?.Invoke(this, new PersonalizedArgs(Convert.ToString(this.datosDelUsuario.nombreDeCuenta)));
+                }
             }
         }
     }

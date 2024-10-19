@@ -479,6 +479,8 @@ namespace Frontend
                     busqueda.FormBorderStyle = FormBorderStyle.None;
                     busqueda.BackColor = Color.LightGray;
                     busqueda.Dock = DockStyle.Fill;
+                    busqueda.AbrirUsuario += PostControl_AbrirPaginaUsuario;
+                    busqueda.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
                     panelBusqueda.BackColor = Color.LightGray;
                     panelBusqueda.Controls.Add(busqueda);
                     busqueda.Show();
