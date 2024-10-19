@@ -653,6 +653,50 @@ namespace ApiUsuarios.Controllers
             }
         }
 
+        [System.Web.Mvc.HttpPut]
+        [System.Web.Mvc.Route("BuscarUsuarios")]
+        public async Task<dynamic> BuscarUsuarios([FromBody] usuario usuario)
+        {
+            try
+            {
+                if (TestToken(usuario.token))
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT nombreDeCuenta, nombreVisible, foto FROM Usuarios WHERE nombreVisible LIKE CONCAT('%', @nombreVisible, '%')", conn);
+                    cmd.Parameters.AddWithValue("@nombreVisible", usuario.nombreVisible);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    List<dynamic> lista = new List<dynamic>();
+
+                    while (reader.Read())
+                    {
+                        lista.Add(new
+                        {
+                            nombreDeCuenta = reader["nombreDeCuenta"].ToString(),
+                            nombreVisible = reader["nombreVisible"].ToString(),
+                            foto = await CargarImagenDeGitHub(reader["foto"].ToString())
+                        });
+                    }
+                    conn.Close();
+                    if (lista.Count > 0)
+                    {
+                        return Json(lista);
+                    }
+                    else
+                    {
+                        return Json("No se encontraron usuarios cuyos nombres concuerden con los parámetros de búsqueda especificados");
+                    }
+                }
+                else
+                {
+                    return Json("Token expirado");
+                }
+            }
+            catch
+            {
+                return Json("Hubo un error");
+            }
+        }
 
 
         [System.Web.Mvc.HttpPost]
