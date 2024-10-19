@@ -887,6 +887,50 @@ namespace API_Grupos.Controllers
             return nombre;
         }
 
-        
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("BuscarGrupos")]
+        public async Task<dynamic> BuscarGrupos([FromBody] Grupo grupo)
+        {
+            try
+            {
+                if (TestToken(grupo.token))
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT nombreReal, nombreVisible, foto FROM Grupos WHERE nombreVisible LIKE CONCAT('%', @nombre, '%')", conn);
+                    cmd.Parameters.AddWithValue("@nombre", grupo.nombreVisible);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+
+                    List<dynamic> lista = new List<dynamic>();
+
+                    while (reader.Read())
+                    {
+                        lista.Add(new
+                        {
+                            nombreReal = reader["nombreReal"].ToString(),
+                            nombreVisible = reader["nombreVisible"].ToString(),
+                            foto = await CargarImagenDeGitHub(reader["foto"].ToString())
+                        });
+                    }
+                    conn.Close();
+                    if (lista.Count > 0)
+                    {
+                        return Json(lista);
+                    }
+                    else
+                    {
+                        return Json("No se encontraron grupos cuyos nombres concuerden con los parámetros de búsqueda especificados");
+                    }
+                }
+                else
+                {
+                    return Json("Token expirado");
+                }
+            }
+            catch(Exception ex)
+            {
+                return Json("Hubo un error"+ ex.Message);
+            }
+        }
     }
 }
