@@ -847,3 +847,39 @@ C:\Users\FedeG\Downloads\1810front\Proyecto2024\Frontend\obj\Debug\Frontend.cspr
 C:\Users\FedeG\Downloads\1810front\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CopyComplete
 C:\Users\FedeG\Downloads\1810front\Proyecto2024\Frontend\obj\Debug\Frontend.exe
 C:\Users\FedeG\Downloads\1810front\Proyecto2024\Frontend\obj\Debug\Frontend.pdb
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\bin\Debug\Frontend.exe.config
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\bin\Debug\Frontend.exe
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\bin\Debug\Frontend.pdb
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\bin\Debug\Newtonsoft.Json.dll
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\bin\Debug\Newtonsoft.Json.xml
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.AssemblyReference.cache
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Buscar.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Busqueda.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Comentarios.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.CommentControl.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Comunidad.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Configuracion.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.CreadorComentarios.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.CrearComentario.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.CrearPostGrupo.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.EventoComunidad.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Font.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Grupo_EventoParaListar.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.GruposComunidad.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.IniciarSesion.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Inicio.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.MessageControl.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.NotificacionControl.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Notificaciones.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.PaginaDeUsuario.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Post.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.PostControl.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Posts.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Properties.Resources.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.Registrarse.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.ReportarPost.resources
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.GenerateResource.cache
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CoreCompileInputs.cache
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.csproj.CopyComplete
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.exe
+D:\Utu 2024\Programacion\Frontend\Proyecto2024\Frontend\obj\Debug\Frontend.pdb

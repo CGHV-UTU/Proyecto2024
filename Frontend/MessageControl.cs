@@ -91,28 +91,6 @@ namespace Frontend
             }
         }
 
-        //Habría que sacarlo
-        static async Task<string[]> BuscarPost(int id, string token)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    var dato = new { id = id, token = token };
-                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/postPorId", content);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de nin}guna manera, tengo que hallar alguna forma de pasar los datos
-                    return new string[] { data.text, data.link, data.image, data.fechayhora };
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-        }
-
         public void redondearPictureBox(Image image) //Para la imagen del usuario
         {
             if (image == null)
@@ -166,7 +144,7 @@ namespace Frontend
             // lblFechaYHora
             // 
             this.lblFechaYHora.AutoSize = true;
-            this.lblFechaYHora.Location = new System.Drawing.Point(405, 12);
+            this.lblFechaYHora.Location = new System.Drawing.Point(274, 12);
             this.lblFechaYHora.Name = "lblFechaYHora";
             this.lblFechaYHora.Size = new System.Drawing.Size(65, 13);
             this.lblFechaYHora.TabIndex = 5;

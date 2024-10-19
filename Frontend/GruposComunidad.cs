@@ -201,9 +201,9 @@ namespace Frontend
             // txtMensajeAEnviar
             // 
             this.txtMensajeAEnviar.Location = new System.Drawing.Point(59, 8);
-            this.txtMensajeAEnviar.Multiline = true;
+            this.txtMensajeAEnviar.MaxLength = 255;
             this.txtMensajeAEnviar.Name = "txtMensajeAEnviar";
-            this.txtMensajeAEnviar.Size = new System.Drawing.Size(854, 50);
+            this.txtMensajeAEnviar.Size = new System.Drawing.Size(854, 20);
             this.txtMensajeAEnviar.TabIndex = 8;
             // 
             // pbxCrearPostGrupo
@@ -333,7 +333,7 @@ namespace Frontend
             this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblName.Location = new System.Drawing.Point(119, 37);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(45, 13);
+            this.lblName.Size = new System.Drawing.Size(120, 31);
             this.lblName.TabIndex = 81;
             this.lblName.Text = "lblName";
             // 
@@ -397,6 +397,7 @@ namespace Frontend
             this.txtURL.Name = "txtURL";
             this.txtURL.Size = new System.Drawing.Size(854, 28);
             this.txtURL.TabIndex = 80;
+            this.txtURL.Visible = false;
             // 
             // panel2
             // 
@@ -480,13 +481,26 @@ namespace Frontend
             {
                 try
                 {
-                    var datos = new { texto = texto, video = video, imagen = Convert.ToBase64String(imagen), nombreDeCuenta = user, nombreReal=nombreGrupo, fechaYHora = fechayhora, token = token };
-                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44304/AñadirMensaje", content);
-                    response.EnsureSuccessStatusCode();
-                    var responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody);
-                    return data;
+                    if (imagen.Length == 0)
+                    {
+                        var datos = new { texto = texto, video = video, nombreDeCuenta = user, nombreReal = nombreGrupo, fechaYHora = fechayhora, token = token };
+                        var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                        HttpResponseMessage response = await client.PostAsync("https://localhost:44304/AñadirMensaje", content);
+                        response.EnsureSuccessStatusCode();
+                        var responseBody = await response.Content.ReadAsStringAsync();
+                        dynamic data = JsonConvert.DeserializeObject(responseBody);
+                        return data;
+                    }
+                    else
+                    {
+                        var datos = new { texto = texto, video = video, imagen = Convert.ToBase64String(imagen), nombreDeCuenta = user, nombreReal = nombreGrupo, fechaYHora = fechayhora, token = token };
+                        var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                        HttpResponseMessage response = await client.PostAsync("https://localhost:44304/AñadirMensaje", content);
+                        response.EnsureSuccessStatusCode();
+                        var responseBody = await response.Content.ReadAsStringAsync();
+                        dynamic data = JsonConvert.DeserializeObject(responseBody);
+                        return data;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -519,7 +533,7 @@ namespace Frontend
         {
             using (HttpClient client = new HttpClient())
             {
-                await Task.Delay(1000);
+                await Task.Delay(5000);
                 try
                 {
                     var datos = new { nombreReal = nombreGrupo, idMensaje=idUltimoMensaje, token = token };
@@ -555,66 +569,84 @@ namespace Frontend
                 }
             }
         }
-        private async void AñadirMensajes(dynamic mensajes=null)
+        private async void AñadirMensajes(dynamic mensajes = null)
         {
-            dynamic listaDeMensajes;
-            if (mensajes==null)
+            try
             {
-                pnlChat.Visible = true;
-                listaDeMensajes = await ObtenerMensajes();
-            }
-            else
-            {
-                listaDeMensajes = mensajes;
-            }
-            foreach(var mensaje in listaDeMensajes)
-            {
-                MessageControl messageControl = new MessageControl(mensaje, token);
-                await messageControl.aplicarDatos(mensaje);
-                MessageBox.Show("dd" + pnlChat.Controls.Count);
-                if (pnlChat.Controls.Count-1 > 0)
+                dynamic listaDeMensajes;
+                if (mensajes == null)
                 {
-                    var lastControl = pnlChat.Controls[pnlChat.Controls.Count - 1];
-                    messageControl.Location = new Point(50, lastControl.Bottom);
+                    pnlChat.Visible = true;
+                    listaDeMensajes = await ObtenerMensajes();
                 }
                 else
                 {
-                    messageControl.Location = new Point(50, 0);
+                    listaDeMensajes = mensajes;
                 }
-                pnlChat.Controls.Add(messageControl);
-                MessageBox.Show("ubicacion"+messageControl.Location);
-                idUltimoMensaje = Convert.ToString(mensaje.idMensaje);
+                foreach (var mensaje in listaDeMensajes)
+                {
+                    MessageBox.Show(Convert.ToString(mensaje.idMensaje));
+                    MessageControl messageControl = new MessageControl(mensaje, token);
+                    await messageControl.aplicarDatos(mensaje);
+                    MessageBox.Show("dd" + pnlChat.Controls.Count);
+                    if (pnlChat.Controls.Count - 1 > 0)
+                    {
+                        var lastControl = pnlChat.Controls[pnlChat.Controls.Count - 1];
+                        messageControl.Location = new Point(50, lastControl.Bottom);
+                    }
+                    else
+                    {
+                        messageControl.Location = new Point(50, 0);
+                    }
+                    pnlChat.Controls.Add(messageControl);
+                    MessageBox.Show("ubicacion" + messageControl.Location);
+                    idUltimoMensaje = Convert.ToString(mensaje.idMensaje);
+                }
             }
+            catch
+            {
+                MessageBox.Show("no hay mensaje");
+            }
+
         }
         private async void pbxEnviar_Click(object sender, EventArgs e)
         {
-            DateTime fechayhoraactual = DateTime.Now;
-            string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
-            byte[] data;
-            if (pbxCrearPostGrupo.Image == null)
+            if (string.IsNullOrEmpty(txtMensajeAEnviar.Text) && pbxCrearPostGrupo.Image == null) // pbx crar post grupo no le gusta a santi
             {
-                data = new byte[0];
+
             }
             else
             {
-                MemoryStream ms = new MemoryStream();
-                pbxCrearPostGrupo.Image.Save(ms, ImageFormat.Jpeg);
-                data = ms.ToArray();
+                DateTime fechayhoraactual = DateTime.Now;
+                string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
+                byte[] data;
+                if (pbxCrearPostGrupo.Image == null)
+                {
+                    data = new byte[0];
+                }
+                else
+                {
+                    MemoryStream ms = new MemoryStream();
+                    pbxCrearPostGrupo.Image.Save(ms, ImageFormat.Jpeg);
+                    data = ms.ToArray();
+                }
+                string video;
+                string texto;
+                if (txtURL.Text.Contains("https://youtu.be/"))
+                {
+                    video = txtMensajeAEnviar.Text;
+
+                }
+                else
+                {
+                    video = "";
+
+                }
+                texto = txtMensajeAEnviar.Text;
+                MessageBox.Show(data.ToString());
+                var respuesta = await EnviarMensaje(fechaHoraString, texto, data, video);
+                txtMensajeAEnviar.Text = "";
             }
-            string video;
-            string texto;
-            if (txtURL.Text.Contains("https://youtu.be/"))
-            {
-                video = txtMensajeAEnviar.Text;
-                
-            }
-            else
-            {
-                video = "";
-                
-            }
-            texto = txtMensajeAEnviar.Text;
-            var respuesta=await EnviarMensaje(fechaHoraString, texto, data, video);
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
