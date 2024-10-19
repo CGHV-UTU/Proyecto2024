@@ -408,7 +408,7 @@ namespace API_Grupos.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return Json("Ocurrió un error al intentar obtener los mensajes del grupo." + ex.Message);
+                    return Json("Ocurrio un error al intentar obtener los mensajes del grupo." + ex.Message);
                 }
             }
             else
@@ -442,7 +442,7 @@ namespace API_Grupos.Controllers
                                 string nombreReal = reader["nombreReal"].ToString();
                                 string texto = reader["texto"].ToString();
                                 string fechaYHora = reader["fechaYHora"].ToString();
-                                string video = reader["texto"].ToString();
+                                string video = reader["video"].ToString();
                                 string imagen = await CargarImagenDeGitHub(reader["imagen"].ToString());
 
                                 var mensaje = new Mensajes
@@ -475,7 +475,7 @@ namespace API_Grupos.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return Json("Ocurrió un error al intentar obtener los mensajes del grupo.");
+                    return Json("OcurriÃ³ un error al intentar obtener los mensajes del grupo.");
                 }
             }
             else
@@ -570,7 +570,7 @@ namespace API_Grupos.Controllers
 
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("AñadirMensaje")]
-        public async Task<dynamic> AñadirMensaje([FromBody] Mensajes mensajeData)
+        public async Task<dynamic> A単adirMensaje([FromBody] Mensajes mensajeData)
         {
             if (TestToken(mensajeData.token))
             {
@@ -600,7 +600,7 @@ namespace API_Grupos.Controllers
                         }
                         cmd.ExecuteNonQuery();
                         conn.Close();
-                        return Json("Se añadió el mensaje correctamente");
+                        return Json("Se añadio el mensaje correctamente");
                     }
                 }
                 catch (Exception ex)
