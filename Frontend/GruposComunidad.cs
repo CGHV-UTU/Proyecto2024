@@ -51,6 +51,7 @@ namespace Frontend
         private string user;
         private TextBox txtURL;
         private string token;
+        private Label lblName;
         private string idUltimoMensaje;
         public GruposComunidad(dynamic groupData, string user, string token)
         {
@@ -85,6 +86,7 @@ namespace Frontend
             this.lblAsociarVideo = new System.Windows.Forms.Label();
             this.pbxAsociarVideo = new System.Windows.Forms.PictureBox();
             this.pnlGruposComunidad = new System.Windows.Forms.Panel();
+            this.lblName = new System.Windows.Forms.Label();
             this.lblPostsGrupo = new System.Windows.Forms.Label();
             this.lblChat = new System.Windows.Forms.Label();
             this.pbxFotoGrupo = new System.Windows.Forms.PictureBox();
@@ -310,6 +312,7 @@ namespace Frontend
             // pnlGruposComunidad
             // 
             this.pnlGruposComunidad.AutoScroll = true;
+            this.pnlGruposComunidad.Controls.Add(this.lblName);
             this.pnlGruposComunidad.Controls.Add(this.pbxCrearPostGrupo);
             this.pnlGruposComunidad.Controls.Add(this.pnlAsociarContenido);
             this.pnlGruposComunidad.Controls.Add(this.lblPostsGrupo);
@@ -323,6 +326,16 @@ namespace Frontend
             this.pnlGruposComunidad.Name = "pnlGruposComunidad";
             this.pnlGruposComunidad.Size = new System.Drawing.Size(996, 596);
             this.pnlGruposComunidad.TabIndex = 47;
+            // 
+            // lblName
+            // 
+            this.lblName.AutoSize = true;
+            this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblName.Location = new System.Drawing.Point(119, 37);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(45, 13);
+            this.lblName.TabIndex = 81;
+            this.lblName.Text = "lblName";
             // 
             // lblPostsGrupo
             // 
@@ -443,7 +456,7 @@ namespace Frontend
 
         private void AplicarDatos(dynamic groupData)
         {
-            lblNombre.Text = groupData.nombreVisible;
+            this.lblName.Text = groupData.nombreVisible;
             byte[] imagen = Convert.FromBase64String(Convert.ToString(groupData.foto));
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);
@@ -547,7 +560,7 @@ namespace Frontend
             dynamic listaDeMensajes;
             if (mensajes==null)
             {
-                pnlGruposComunidad.Visible = true;
+                pnlChat.Visible = true;
                 listaDeMensajes = await ObtenerMensajes();
             }
             else
@@ -557,18 +570,19 @@ namespace Frontend
             foreach(var mensaje in listaDeMensajes)
             {
                 MessageControl messageControl = new MessageControl(mensaje, token);
-                messageControl.Size=new Size(312, 409);
                 await messageControl.aplicarDatos(mensaje);
-                if (pnlGruposComunidad.Controls.Count > 0)
+                MessageBox.Show("dd" + pnlChat.Controls.Count);
+                if (pnlChat.Controls.Count-1 > 0)
                 {
-                    var lastControl = pnlGruposComunidad.Controls[pnlGruposComunidad.Controls.Count - 1];
+                    var lastControl = pnlChat.Controls[pnlChat.Controls.Count - 1];
                     messageControl.Location = new Point(50, lastControl.Bottom);
                 }
                 else
                 {
                     messageControl.Location = new Point(50, 0);
                 }
-                pnlGruposComunidad.Controls.Add(messageControl);
+                pnlChat.Controls.Add(messageControl);
+                MessageBox.Show("ubicacion"+messageControl.Location);
                 idUltimoMensaje = Convert.ToString(mensaje.idMensaje);
             }
         }

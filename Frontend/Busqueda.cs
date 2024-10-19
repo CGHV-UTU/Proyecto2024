@@ -15,6 +15,16 @@ namespace Frontend
         public Busqueda()
         {
             InitializeComponent();
+            this.pnlOpciones.Visible = false;
+            this.Size= new Size(1012, 128);
+            this.pnlMostrar.Size = new Size(869, 211);
+        }
+
+        private void btnOpciones_Click(object sender, EventArgs e)
+        {
+            pnlOpciones.Visible = true;
+            this.Size = new Size(1012, 342);
+            this.pnlOpciones.Parent = this;
         }
     }
 }

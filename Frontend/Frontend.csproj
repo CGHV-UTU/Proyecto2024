@@ -349,6 +349,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\lupa-removebg-preview1.png" />
+    <None Include="Resources\lupa.jpeg" />
+    <None Include="Resources\lupa-removebg-preview.png" />
     <None Include="Resources\seguir-removebg-preview.png" />
     <None Include="Resources\seguir.jpeg" />
     <None Include="Resources\panelSuperior2.jpg" />
