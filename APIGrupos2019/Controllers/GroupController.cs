@@ -570,7 +570,7 @@ namespace API_Grupos.Controllers
 
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("AñadirMensaje")]
-        public async Task<dynamic> A単adirMensaje([FromBody] Mensajes mensajeData)
+        public async Task<dynamic> AñadirMensaje([FromBody] Mensajes mensajeData)
         {
             if (TestToken(mensajeData.token))
             {
