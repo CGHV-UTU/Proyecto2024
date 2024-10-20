@@ -474,7 +474,7 @@ namespace Frontend
                     panelBusqueda.Visible = true;
                     PanelMostrarUsuario.Parent = this;
                     PanelMostrarUsuario.Location = PanelPosts.Location;
-                    Busqueda busqueda = new Busqueda(token);
+                    Busqueda busqueda = new Busqueda(user,token);
                     busqueda.TopLevel = false;
                     busqueda.FormBorderStyle = FormBorderStyle.None;
                     busqueda.BackColor = Color.LightGray;

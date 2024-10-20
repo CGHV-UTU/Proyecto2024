@@ -47,6 +47,7 @@ namespace Frontend
             this.btnEliminar = new System.Windows.Forms.Label();
             this.btnReportar = new System.Windows.Forms.Label();
             this.lblFechaYhora = new System.Windows.Forms.Label();
+            this.lblLikes = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxEditar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOpcionesPost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCompartir)).BeginInit();
@@ -253,10 +254,21 @@ namespace Frontend
             this.lblFechaYhora.TabIndex = 42;
             this.lblFechaYhora.Text = "fecha";
             // 
+            // lblLikes
+            // 
+            this.lblLikes.AutoSize = true;
+            this.lblLikes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLikes.Location = new System.Drawing.Point(133, 511);
+            this.lblLikes.Name = "lblLikes";
+            this.lblLikes.Size = new System.Drawing.Size(40, 20);
+            this.lblLikes.TabIndex = 43;
+            this.lblLikes.Text = "likes";
+            // 
             // PostControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblLikes);
             this.Controls.Add(this.lblFechaYhora);
             this.Controls.Add(this.btnReportar);
             this.Controls.Add(this.btnEliminar);
@@ -312,5 +324,6 @@ namespace Frontend
         private System.Windows.Forms.Label btnEliminar;
         private System.Windows.Forms.Label btnReportar;
         private System.Windows.Forms.Label lblFechaYhora;
+        private System.Windows.Forms.Label lblLikes;
     }
 }

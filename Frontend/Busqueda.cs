@@ -15,11 +15,13 @@ namespace Frontend
     public partial class Busqueda : Form
     {
         private string token;
+        private string user;
         public event EventHandler<PersonalizedArgs> AbrirUsuario;
         public event EventHandler<PersonalizedArgs> AbrirEvento;
-        public Busqueda(string token)
+        public Busqueda(string user,string token)
         {
             this.token = token;
+            this.user = user;
             InitializeComponent();
             this.pnlOpciones.Visible = false;
             this.Size= new Size(1012, 342);
@@ -68,13 +70,13 @@ namespace Frontend
                 }
             }
         }
-        static async Task<dynamic> BuscarGrupos(string nombre, string token)
+        static async Task<dynamic> BuscarGrupos(string nombreGrupo, string nombreUsuario, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var datos = new { nombreVisible = nombre, token = token };
+                    var datos = new { nombreDeCuenta=nombreUsuario, nombreVisible = nombreGrupo, token = token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/BuscarGrupos", content);
                     response.EnsureSuccessStatusCode();
@@ -135,7 +137,7 @@ namespace Frontend
                     }
                     break;
                 case "grupos":
-                    var respuesta2 = await BuscarGrupos(txtBusqueda.Text, token);
+                    var respuesta2 = await BuscarGrupos(user,txtBusqueda.Text, token);
                     if (Convert.ToString(respuesta2).Equals("No se encontraron grupos cuyos nombres concuerden con los parámetros de búsqueda especificados") || Convert.ToString(respuesta2).Equals("Token expirado") || Convert.ToString(respuesta2).Equals("Hubo un error"))
                     {
                         MessageBox.Show(Convert.ToString(respuesta2));
@@ -145,7 +147,7 @@ namespace Frontend
                         pnlMostrar.Controls.Clear();
                         foreach (dynamic grupo in respuesta2)
                         {
-                            var groupcontrol = new Grupo_EventoParaListar("", token, Convert.ToString(grupo.nombreReal),0,null,true);
+                            var groupcontrol = new Grupo_EventoParaListar(user, token, Convert.ToString(grupo.nombreReal),0,null,true);
                             if (pnlMostrar.Controls.Count > 0)
                             {
                                 var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];

@@ -33,7 +33,6 @@ namespace Frontend
             this.token = token;
             this.user = usuario;
             this.datosDelUsuario = usuariobuscar;
-            this.busqueda = busqueda;
             InitializeComponent();
             Iniciar();
             AplicarDatos();
@@ -68,6 +67,27 @@ namespace Frontend
                     var datos = new { nombreReal = nombreReal, token = token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/ObtenerGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        static async Task<dynamic> UnirseAlGrupo(string nombreReal,string nombre, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = nombre, nombreReal = nombreReal, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/EnviarSolicitudParaUnirseAlGrupo", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -193,6 +213,20 @@ namespace Frontend
             this.Size = new System.Drawing.Size(350, 67);
             this.ResumeLayout(false);
             this.PerformLayout();
+
+            if (this.busqueda && !this.nombreReal.Equals(""))
+            {
+                //pbxUnirse
+                this.pbxUnirse = new PictureBox();
+                this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                this.pbxUnirse.Name = "pbxUnirse";
+                this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
+                this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
+                this.pbxUnirse.Image = Properties.Resources.grupos_removebg_preview;
+                this.pbxUnirse.Cursor = Cursors.Hand;
+                this.pbxUnirse.Visible = true;
+                this.Controls.Add(this.pbxUnirse);
+            }
         }
 
         private void Grupo_EventoParaListar_Click(object sender, EventArgs e)
@@ -219,6 +253,11 @@ namespace Frontend
                     AbrirUsuario?.Invoke(this, new PersonalizedArgs(Convert.ToString(this.datosDelUsuario.nombreDeCuenta)));
                 }
             }
+        }
+
+        private async void pbxUnirse_Click(object sender, EventArgs e)
+        {
+            dynamic respuesta = await UnirseAlGrupo(nombreReal, user, token);
         }
     }
 }

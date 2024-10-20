@@ -33,7 +33,9 @@ namespace Frontend
             this.lblNombre = new System.Windows.Forms.Label();
             this.pnlTop = new System.Windows.Forms.Panel();
             this.pnlBot = new System.Windows.Forms.Panel();
+            this.pbxUnirse = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxImagen)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxUnirse)).BeginInit();
             this.SuspendLayout();
             // 
             // PictureBoxImagen
@@ -69,10 +71,20 @@ namespace Frontend
             this.pnlBot.Size = new System.Drawing.Size(200, 3);
             this.pnlBot.TabIndex = 74;
             // 
+            // pbxUnirse
+            // 
+            this.pbxUnirse.Location = new System.Drawing.Point(247, 11);
+            this.pbxUnirse.Name = "pbxUnirse";
+            this.pbxUnirse.Size = new System.Drawing.Size(50, 10);
+            this.pbxUnirse.TabIndex = 75;
+            this.pbxUnirse.TabStop = false;
+            this.pbxUnirse.Click += new System.EventHandler(this.pbxUnirse_Click);
+            // 
             // Grupo_EventoParaListar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.pbxUnirse);
             this.Controls.Add(this.pnlBot);
             this.Controls.Add(this.pnlTop);
             this.Controls.Add(this.lblNombre);
@@ -82,6 +94,7 @@ namespace Frontend
             this.Size = new System.Drawing.Size(300, 67);
             this.Click += new System.EventHandler(this.Grupo_EventoParaListar_Click);
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxImagen)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxUnirse)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -93,5 +106,6 @@ namespace Frontend
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.Panel pnlTop;
         private System.Windows.Forms.Panel pnlBot;
+        private System.Windows.Forms.PictureBox pbxUnirse;
     }
 }

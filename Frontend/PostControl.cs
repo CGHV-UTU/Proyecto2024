@@ -111,6 +111,17 @@ namespace Frontend
                 MemoryStream ms2 = new MemoryStream(imagen2);
                 Bitmap bitmap2 = new Bitmap(ms2);
                 this.PictureBoxUsuarioPost.Image = bitmap2;
+                var likes = await conseguirNumeroDeLikes(Convert.ToString(idpost),token);
+                if (Convert.ToString(likes).Equals("0") || Convert.ToString(likes).Equals("ERROR"))
+                {
+                    this.lblLikes.Visible = false;
+                }
+                else
+                {
+                    this.lblLikes.Visible = true;
+                    this.lblLikes.Text = Convert.ToString(likes);
+                }
+                MessageBox.Show(Convert.ToString(likes));
             }
             catch (Exception)
             {
@@ -183,6 +194,26 @@ namespace Frontend
             }
         }
 
+        static async Task<dynamic> conseguirNumeroDeLikes(string idpost, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { id = idpost, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirNumeroDeLikes", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return "ERROR";
+                }
+            }
+        }
         public static async Task<dynamic> AgregarNotificaciones(string user, string notificaciones, string token)
         {
             using (HttpClient client = new HttpClient())
@@ -410,6 +441,7 @@ namespace Frontend
         private async void iniciar(string postType)
         {
             this.lblNombre = new Label();
+            this.lblLikes = new Label();
             this.PictureBoxUsuarioPost = new PictureBox();
             this.imagen = new PictureBox();
             this.PictureBoxLike = new PictureBox();
@@ -459,6 +491,11 @@ namespace Frontend
             this.PictureBoxLike.Image = Frontend.Properties.Resources.like_infini;
             this.PictureBoxLike.Click += PictureBoxLike_Click; //Acá salta error cuando cambio el evento a async
             this.PictureBoxLike.Cursor = Cursors.Hand;
+
+            this.lblLikes.Location = new Point(this.PictureBoxLike.Location.X + 10, this.PictureBoxLike.Bottom-20);
+            this.lblLikes.Name = "lblLikes";
+            this.lblLikes.Size = new Size(40, 20);
+            this.lblLikes.Font= new System.Drawing.Font("Microsoft Sans Serif", 12);
 
             // comentarios
             this.PictureBoxComentarios.Location = new System.Drawing.Point(548, 440);
@@ -523,6 +560,7 @@ namespace Frontend
             this.Controls.Add(this.txtDescripcion);
             this.Controls.Add(this.txtUrl);
             this.Controls.Add(this.lblFechaYhora);
+            this.Controls.Add(this.lblLikes);
             this.Name = "PostControl";
             this.Size = new System.Drawing.Size(787, 578);
 
