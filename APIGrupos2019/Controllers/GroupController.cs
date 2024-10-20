@@ -826,6 +826,39 @@ namespace API_Grupos.Controllers
             }
         }
 
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("EnviarSolicitudParaUnirseAlGrupo")]
+        public async Task<IHttpActionResult> EnviarSolicitudParaUnirseAlGrupo([FromBody] Grupo groupData)
+        {
+            if (TestToken(groupData.token))
+            {
+                try
+                {
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
+                    {
+                        await conn.OpenAsync();
+                        string query = "INSERT INTO Participa (nombreDeCuenta, nombreReal, rol) VALUES (@nombreUsuario, @nombreGrupo, @rol)";
+                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@nombreUsuario", groupData.nombreDeCuenta);
+                            cmd.Parameters.AddWithValue("@nombreGrupo", groupData.nombreReal);
+                            cmd.Parameters.AddWithValue("@rol", "solicitante");
+                            await cmd.ExecuteNonQueryAsync();
+                        }
+                    }
+                    return Json("Solicitud enviada correctamente");
+                }
+                catch (Exception ex)
+                {
+                    return Json($"Hubo un error {ex.Message}");
+                }
+            }
+            else
+            {
+                return Json("Token expirado");
+            }
+        }
+
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("EliminarUsuarioDeGrupo")]
         public async Task <dynamic> EliminarUsuarioDeGrupo([FromBody] Grupo groupData)
