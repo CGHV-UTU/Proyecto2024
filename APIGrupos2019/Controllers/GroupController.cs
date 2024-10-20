@@ -808,7 +808,7 @@ namespace API_Grupos.Controllers
                         {
                             cmd.Parameters.AddWithValue("@nombreUsuario", groupData.nombreDeCuenta);
                             cmd.Parameters.AddWithValue("@nombreGrupo", groupData.nombreReal);
-                            cmd.Parameters.AddWithValue("@rol", groupData.rol);
+                            cmd.Parameters.AddWithValue("@rol", "usuario");
                             await cmd.ExecuteNonQueryAsync();
                         }
                     }
