@@ -375,6 +375,42 @@ namespace APIPostYEventos2019.Controllers
         }
 
         [HttpPut]
+        [Route("conseguirNumeroDeLikes")]
+        public dynamic conseguirNumeroDeLikes([FromBody] PostData post)
+        {
+            if (TestToken(post.token))
+            {
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT COUNT(*) FROM DaLike WHERE idPost=@Id", conn);
+                    command.Parameters.AddWithValue("@Id", post.id);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        string numeroLikes = reader["COUNT(*)"].ToString();
+                        conn.Close();
+                        return Json(numeroLikes);
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return Json("no se encuentra");
+                    }
+                }
+                catch (Exception)
+                {
+                    return Json("no se encuentra");
+                }
+            }
+            else
+            {
+                return Json("Token expirado");
+            }
+        }
+
+        [HttpPut]
         [Route("conseguirCreador")]
         public dynamic conseguirCreador([FromBody] PostData post)
         {
