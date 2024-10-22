@@ -594,7 +594,56 @@ namespace Testing
             Assert.IsTrue(resultData.Contains("Se ha reportado correctamente al usuario"), "La respuesta no coincide con el reporte del usuario.");
         }
 
+        [TestMethod]
+        public async Task TestMethod14()
+        {
+            var authController = new ApiUsuarios.Controllers.AuthController();
+            var login = new ApiUsuarios.Controllers.AuthController.formaLogin
+            {
+                User = "nombre",
+                Pass = "contraseña" 
+            };
 
+            var tokenResult = authController.Token(login) as JsonResult;
+            Assert.IsNotNull(tokenResult, "El resultado del token no debería ser nulo.");
+            var tokenString = tokenResult.Data?.ToString();
+            Assert.IsNotNull(tokenString, "El token no debería ser nulo.");
+
+            var isTokenValidResult = authController.TestToken(new ApiUsuarios.Controllers.AuthController.TipoToken { token = tokenString }) as JsonResult;
+            Assert.IsNotNull(isTokenValidResult, "Resultado de validación del token no debería ser nulo.");
+            Assert.IsTrue(isTokenValidResult.Data is bool isTokenValid && isTokenValid, "El token debería ser válido.");
+
+            var userController = new ApiUsuarios.Controllers.UserController();
+
+            var usuario = new ApiUsuarios.Controllers.UserController.usuario
+            {
+                token = tokenString,
+                nombreVisible = "Nombre Modificado"
+            };
+
+            var response = await userController.BuscarUsuarios(usuario);
+            Console.WriteLine($"Response from BuscarUsuarios: {response}");
+
+            var jsonResult = response as JsonResult;
+            Assert.IsNotNull(jsonResult, "Se esperaba un JsonResult.");
+
+            var resultData = jsonResult.Data;
+            string resultString = JsonConvert.SerializeObject(resultData);
+
+            if (resultString.Contains("nombreVisible"))
+            {
+                dynamic resultObject = JsonConvert.DeserializeObject<dynamic>(resultString);
+                Assert.AreEqual("Nombre Modificado", (string)resultObject[0].nombreVisible, "El nombreVisible no coincide con el valor esperado.");
+            }
+            else if (resultString.Contains("No se encontraron usuarios"))
+            {
+                Assert.Fail("No se encontró ningún usuario con los parámetros especificados.");
+            }
+            else
+            {
+                Assert.Fail($"Ocurrió un error inesperado. Respuesta: {resultString}");
+            }
+        }
 
 
     }
