@@ -1858,5 +1858,30 @@ namespace APIPostYEventos2019.Controllers
                 return Json("Hubo un error");
             }
         }
+        public dynamic CompartirPost([FromBody] PostData post)
+        {
+            try
+            {
+                if (TestToken(post.token))
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("INSERT INTO PostGrupo (idPost, nombreDeCuenta, nombreReal) VALUES (@idPost, @nombreDeCuenta, @nombreReal)", conn);
+                    cmd.Parameters.AddWithValue("@idPost", post.id);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", post.user);
+                    cmd.Parameters.AddWithValue("@nombreReal", post.nombreReal);
+                    cmd.ExecuteNonQuery();
+                    return Json("Post compartido correctamente");
+                }
+                else
+                {
+                    return Json("Token expirado");
+                }
+            }
+            catch
+            {
+                return Json("Hubo un error");
+            }
+        }
     }
 }

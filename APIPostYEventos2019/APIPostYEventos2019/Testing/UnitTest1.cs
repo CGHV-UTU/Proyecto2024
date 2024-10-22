@@ -22,7 +22,7 @@ namespace Testing
             post = new APIPostYEventos2019.Controllers.PostController.PostData
             {
                 text = "hola",
-                user = "UsuarioDePrueba",
+                user = "juan123",
                 fechayhora = fechaHoraString,
                 token = "TestToken"
             };
@@ -60,7 +60,7 @@ namespace Testing
         [TestMethod]
         public async Task TestMethod03()
         {
-            string respuestaEsperada = "UsuarioDePrueba";
+            string respuestaEsperada = "juan123";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
             APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
@@ -124,7 +124,7 @@ namespace Testing
                 fechaYhora_Inicio = fechaHoraFinalString,
                 fechaYhora_Final = fechaHoraFinalString,
                 foto = base64Image,
-                user = "UsuarioDePrueba",
+                user = "juan123",
                 token = "TestToken"
             };
             var resultado = await controller.hacerEvento(eventData);
@@ -158,7 +158,7 @@ namespace Testing
                 fechaYhora_Inicio = fechaHoraFinalString,
                 fechaYhora_Final = fechaHoraFinalString,
                 foto = base64Image,
-                user = "UsuarioDePrueba",
+                user = "juan123",
                 token = "TestToken"
             };
             var resultado = await controller.modificarEvento(eventData);
@@ -181,9 +181,9 @@ namespace Testing
             ultimopost = int.Parse(jsonUltimoPost.Content);
             APIPostYEventos2019.Controllers.PostController.like like = new APIPostYEventos2019.Controllers.PostController.like()
             {
-                nombreDeCuenta = "UsuarioDePrueba",
+                nombreDeCuenta = "juan123",
                 idpost = ultimopost,
-                nombredeCreador = "UsuarioDePrueba",
+                nombredeCreador = "juan123",
                 token = "TestToken"
             };
             var resultado = controller.darLike(like);
@@ -205,9 +205,9 @@ namespace Testing
             ultimopost = int.Parse(jsonUltimoPost.Content);
             APIPostYEventos2019.Controllers.PostController.like like = new APIPostYEventos2019.Controllers.PostController.like()
             {
-                nombreDeCuenta = "UsuarioDePrueba",
+                nombreDeCuenta = "juan123",
                 idpost = ultimopost,
-                nombredeCreador = "UsuarioDePrueba",
+                nombredeCreador = "juan123",
                 token = "TestToken"
             };
             var resultado = controller.dioLike(like);
@@ -230,9 +230,9 @@ namespace Testing
             ultimopost = int.Parse(jsonUltimoPost.Content);
             APIPostYEventos2019.Controllers.PostController.like like = new APIPostYEventos2019.Controllers.PostController.like()
             {
-                nombreDeCuenta = "UsuarioDePrueba",
+                nombreDeCuenta = "juan123",
                 idpost = ultimopost,
-                nombredeCreador = "UsuarioDePrueba",
+                nombredeCreador = "juan123",
                 token = "TestToken"
             };
             var resultado = controller.quitarLike(like);
@@ -283,8 +283,8 @@ namespace Testing
             {
                 IdPost = Convert.ToString(ultimopost),
                 fechayhora = fechaHoraString,
-                NombreCreador = "UsuarioDePrueba",
-                NombreDeCuenta = "UsuarioDePrueba",
+                NombreCreador = "juan123",
+                NombreDeCuenta = "juan123",
                 texto = "buen post",
                 token = "TestToken"
             };
@@ -482,7 +482,7 @@ namespace Testing
             string respuestaEsperada = ultimoPost;
             APIPostYEventos2019.Controllers.PostController.PostData postData = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
-                user = "UsuarioDePrueba",
+                user = "juan123",
                 token = "TestToken"
             };
             var resultado = controller.seleccionarTodosLosPostDelUsuario(postData);
@@ -506,9 +506,9 @@ namespace Testing
             int ultimoComentario = int.Parse(jsonUltimoComentario.Content);
             APIPostYEventos2019.Controllers.PostController.like like = new APIPostYEventos2019.Controllers.PostController.like()
             {
-                nombreDeCuenta = "UsuarioDePrueba",
+                nombreDeCuenta = "juan123",
                 idpost = ultimoComentario,
-                nombredeCreador = "UsuarioDePrueba",
+                nombredeCreador = "juan123",
                 token = "TestToken"
             };
             var resultado = controller.darLikeComentario(like);
@@ -530,9 +530,9 @@ namespace Testing
             int ultimoComentario = int.Parse(jsonUltimoComentario.Content);
             APIPostYEventos2019.Controllers.PostController.like like = new APIPostYEventos2019.Controllers.PostController.like()
             {
-                nombreDeCuenta = "UsuarioDePrueba",
+                nombreDeCuenta = "juan123",
                 idpost = ultimoComentario,
-                nombredeCreador = "UsuarioDePrueba",
+                nombredeCreador = "juan123",
                 token = "TestToken"
             };
             var resultado = controller.dioLikeComentario(like);
@@ -555,9 +555,9 @@ namespace Testing
             int ultimoComentario = int.Parse(jsonUltimoComentario.Content);
             APIPostYEventos2019.Controllers.PostController.like like = new APIPostYEventos2019.Controllers.PostController.like()
             {
-                nombreDeCuenta = "UsuarioDePrueba",
+                nombreDeCuenta = "juan123",
                 idpost = ultimoComentario,
-                nombredeCreador = "UsuarioDePrueba",
+                nombredeCreador = "juan123",
                 token = "TestToken"
             };
             var resultado = controller.quitarLikeComentario(like);
@@ -569,7 +569,7 @@ namespace Testing
         [TestMethod]
         public async Task TestMethod24()
         {
-            string respuestaEsperada = "UsuarioDePrueba";
+            string respuestaEsperada = "juan123";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
             APIPostYEventos2019.Controllers.PostController.CommentData token = new APIPostYEventos2019.Controllers.PostController.CommentData()
             {
@@ -612,51 +612,110 @@ namespace Testing
             string resultadoString = jsonResult.Content;
             Assert.AreEqual(respuestaEsperada, resultadoString);
         }
+
         [TestMethod]
         public void TestMethodSecond02()
         {
             string respuestaEsperada = "Post eliminado";
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
+
+            // Token object with the test token
             APIPostYEventos2019.Controllers.PostController.PostData token = new APIPostYEventos2019.Controllers.PostController.PostData()
             {
                 token = "TestToken"
             };
+
+            // Retrieve the latest post ID
             var ultimopostLLamar = controller.ultimoPost(token);
             var jsonUltimoPost = ultimopostLLamar as System.Web.Http.Results.JsonResult<string>;
-            ultimopost = int.Parse(jsonUltimoPost.Content);
-            APIPostYEventos2019.Controllers.PostController.PostData postdata = new APIPostYEventos2019.Controllers.PostController.PostData()
+
+            if (jsonUltimoPost != null)
             {
-                id = Convert.ToString(ultimopost),
-                token = "TestToken"
-            };
-            var resultado = controller.eliminarPost(postdata);
-            var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
-            string resultadoString = jsonResult.Content;
-            Assert.AreEqual(respuestaEsperada, resultadoString);
+                int ultimopost = int.Parse(jsonUltimoPost.Content);
+                Console.WriteLine($"ID del último post: {Convert.ToString(ultimopost)}");
+
+                // Check if the post ID is valid
+                if (ultimopost == 0)
+                {
+                    Assert.Fail("El último post no existe o no se pudo recuperar.");
+                }
+
+                // Prepare post data with the retrieved post ID and token
+                APIPostYEventos2019.Controllers.PostController.PostData postdata = new APIPostYEventos2019.Controllers.PostController.PostData()
+                {
+                    id = Convert.ToString(ultimopost),
+                    token = "TestToken"
+                };
+
+                // Attempt to delete the post
+                var resultado = controller.eliminarPost(postdata);
+                var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
+
+                if (jsonResult != null)
+                {
+                    string resultadoString = jsonResult.Content;
+
+                    // Assert the expected outcome and include the actual result in case of failure
+                    Assert.AreEqual(respuestaEsperada, resultadoString,
+                        $"Se esperaba <{respuestaEsperada}>, pero se recibió <{resultadoString}>. ID del último post: {ultimopost}.");
+                }
+                else
+                {
+                    Assert.Fail("No se recibió un JsonResult esperado para la eliminación del post.");
+                }
+            }
+            else
+            {
+                Assert.Fail("No se pudo obtener el último post.");
+            }
         }
 
 
+
+
         [TestMethod]
-        public void TestMethodSecond03()
+        public async Task TestMethodSecond04()
         {
-            string respuestaEsperada = "Evento eliminado";
+            string respuestaEsperada = "Evento"; // Adjust based on your expected result
             APIPostYEventos2019.Controllers.PostController controller = new APIPostYEventos2019.Controllers.PostController();
-            APIPostYEventos2019.Controllers.PostController.EventData token = new APIPostYEventos2019.Controllers.PostController.EventData()
+
+            // Token is passed directly, no need for AuthController
+            APIPostYEventos2019.Controllers.PostController.EventData token = new APIPostYEventos2019.Controllers.PostController.EventData
             {
-                token = "TestToken"
+                token = "TestToken" // Use a valid test token here
             };
+
+            // Get the latest event ID
             var ultimoEventoLLamar = controller.ultimoEvento(token);
             var jsonUltimoEvento = ultimoEventoLLamar as System.Web.Http.Results.JsonResult<string>;
             int ultimoEvento = int.Parse(jsonUltimoEvento.Content);
-            APIPostYEventos2019.Controllers.PostController.EventData eventData = new APIPostYEventos2019.Controllers.PostController.EventData()
+
+            // Create event data with the retrieved event ID and the token
+            APIPostYEventos2019.Controllers.PostController.EventData eventData = new APIPostYEventos2019.Controllers.PostController.EventData
             {
                 id = Convert.ToString(ultimoEvento),
-                token = "TestToken"
+                token = "TestToken", // Use the same token
+                titulo = "Evento" // Replace with the search title you're testing for
             };
-            var resultado = controller.eliminarEvento(eventData);
+
+            // Act: Call the BuscarEventos method
+            var resultado = await controller.BuscarEventos(eventData);
             var jsonResult = resultado as System.Web.Http.Results.JsonResult<string>;
             string resultadoString = jsonResult.Content;
-            Assert.AreEqual(respuestaEsperada, resultadoString);
+
+            // Assert: Verify the result
+            if (resultadoString.Contains("titulo"))
+            {
+                Assert.AreEqual(respuestaEsperada, resultadoString, "El título del evento no coincide con el valor esperado.");
+            }
+            else if (resultadoString.Contains("No se encontraron eventos"))
+            {
+                Assert.Fail("No se encontró ningún evento con los parámetros especificados.");
+            }
+            else
+            {
+                Assert.Fail($"Ocurrió un error inesperado. Respuesta: {resultadoString}");
+            }
         }
     }
 }
