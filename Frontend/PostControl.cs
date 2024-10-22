@@ -513,6 +513,7 @@ namespace Frontend
             this.PictureBoxCompartir.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxCompartir.Image = Frontend.Properties.Resources.compartir;
             this.PictureBoxCompartir.Cursor = Cursors.Hand;
+            this.PictureBoxCompartir.Click += PictureBoxCompartir_Click;
 
             // PictureBoxOpcionesPost
             this.PictureBoxOpcionesPost.Location = new System.Drawing.Point(660, 440);
@@ -998,10 +999,56 @@ namespace Frontend
                 RecargarFeed?.Invoke(this, EventArgs.Empty);
             }
         }
-
-        private void PictureBoxCompartir_Click(object sender, EventArgs e)
+        static async Task<dynamic> grupos(string usuario, string token)
         {
-
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = usuario, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/ObtenerGruposPorUsuario", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        private async void PictureBoxCompartir_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("HOLA");
+            this.pnlGrupos = new Panel();
+            this.pnlGrupos.Name = "pnlGrupos";
+            this.pnlGrupos.Location = new Point(236, 138);
+            this.pnlGrupos.Size = new Size(300, 268);
+            this.pnlGrupos.Parent = this;
+            this.pnlGrupos.AutoScroll = true;
+            this.pnlGrupos.Dock = DockStyle.Fill;
+            this.pnlGrupos.BackColor = Color.LightGray;
+            var lista = await grupos(user, token);
+            if (lista != null)
+            {
+                foreach (var elemento in lista)
+                {
+                    var eventControl = new Grupo_EventoParaListar(user, token, Convert.ToString(elemento.nombreReal), 0, idpost:Convert.ToString(idpost));
+                    if (pnlGrupos.Controls.Count > 0)
+                    {
+                        var lastControl = pnlGrupos.Controls[pnlGrupos.Controls.Count - 1];
+                        eventControl.Location = new Point(0, lastControl.Bottom);
+                    }
+                    else
+                    {
+                        eventControl.Location = new Point(0, 52);
+                    }
+                    pnlGrupos.Controls.Add(eventControl);
+                }
+            }
+            MessageBox.Show(""+this.pnlGrupos.Controls.Count);
         }
 
         private void btnReportar_Click(object sender, EventArgs e)

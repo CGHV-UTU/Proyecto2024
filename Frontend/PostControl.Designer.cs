@@ -48,6 +48,7 @@ namespace Frontend
             this.btnReportar = new System.Windows.Forms.Label();
             this.lblFechaYhora = new System.Windows.Forms.Label();
             this.lblLikes = new System.Windows.Forms.Label();
+            this.pnlGrupos = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxEditar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOpcionesPost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCompartir)).BeginInit();
@@ -264,10 +265,18 @@ namespace Frontend
             this.lblLikes.TabIndex = 43;
             this.lblLikes.Text = "likes";
             // 
+            // pnlGrupos
+            // 
+            this.pnlGrupos.Location = new System.Drawing.Point(236, 138);
+            this.pnlGrupos.Name = "pnlGrupos";
+            this.pnlGrupos.Size = new System.Drawing.Size(300, 268);
+            this.pnlGrupos.TabIndex = 44;
+            // 
             // PostControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.pnlGrupos);
             this.Controls.Add(this.lblLikes);
             this.Controls.Add(this.lblFechaYhora);
             this.Controls.Add(this.btnReportar);
@@ -325,5 +334,6 @@ namespace Frontend
         private System.Windows.Forms.Label btnReportar;
         private System.Windows.Forms.Label lblFechaYhora;
         private System.Windows.Forms.Label lblLikes;
+        private System.Windows.Forms.Panel pnlGrupos;
     }
 }

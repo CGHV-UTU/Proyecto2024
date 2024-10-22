@@ -23,16 +23,18 @@ namespace Frontend
         private dynamic datos;
         private dynamic datosDelUsuario;
         private bool busqueda;
+        private string idpost;
         public event EventHandler<PersonalizedArgs> AbrirEvento;
         public event EventHandler<PersonalizedArgs> AbrirGrupo;
         public event EventHandler<PersonalizedArgs> AbrirUsuario;
-        public Grupo_EventoParaListar(string usuario, string token, string nombreRealGrupo = "", int idEvento = 0, dynamic usuariobuscar = null, bool busqueda = false)
+        public Grupo_EventoParaListar(string usuario, string token, string nombreRealGrupo = "", int idEvento = 0, dynamic usuariobuscar = null, bool busqueda = false, string idpost="")
         {
             this.nombreReal = nombreRealGrupo;
             this.idevento = idEvento;
             this.token = token;
             this.user = usuario;
             this.datosDelUsuario = usuariobuscar;
+            this.idpost = idpost;
             InitializeComponent();
             Iniciar();
             AplicarDatos();
@@ -227,6 +229,18 @@ namespace Frontend
                 this.pbxUnirse.Visible = true;
                 this.Controls.Add(this.pbxUnirse);
             }
+            if (!string.IsNullOrEmpty(this.idpost))
+            {
+                this.pbxUnirse = new PictureBox();
+                this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                this.pbxUnirse.Name = "pbxUnirse";
+                this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
+                this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
+                this.pbxUnirse.Image = Properties.Resources.compartir;
+                this.pbxUnirse.Cursor = Cursors.Hand;
+                this.pbxUnirse.Visible = true;
+                this.Controls.Add(this.pbxUnirse);
+            }
         }
 
         private void Grupo_EventoParaListar_Click(object sender, EventArgs e)
@@ -255,9 +269,37 @@ namespace Frontend
             }
         }
 
+        static async Task<dynamic> CompartirPost(string usuario, string idPost, string grupo, string token)
+        {
+            using (HttpClient client=new HttpClient())
+            {
+                try
+                {
+                    var datos = new { user = usuario, nombreReal = grupo, id=idPost, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/CompartirPost", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
         private async void pbxUnirse_Click(object sender, EventArgs e)
         {
-            dynamic respuesta = await UnirseAlGrupo(nombreReal, user, token);
+            if (!string.IsNullOrEmpty(this.idpost))
+            {
+                string respuesta = await CompartirPost(user,idpost,nombreReal,token);
+                MessageBox.Show(respuesta);
+            }
+            else
+            {
+                dynamic respuesta = await UnirseAlGrupo(nombreReal, user, token);
+            }
         }
     }
 }
