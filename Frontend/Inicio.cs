@@ -182,6 +182,7 @@ namespace Frontend
             post.AbrirComentarios += PostControl_AbrirComentarios;
             post.ReportarPost += PostControl_ReportarPost;
             post.AbrirPaginaUsuario += PostControl_AbrirPaginaUsuario;
+            post.Compartir += PostControl_Compartir;
             PanelPosts.Controls.Add(post);
             post.Show();
         }
@@ -214,6 +215,24 @@ namespace Frontend
             PanelMostrarUsuario.Controls.Add(paginaDeUsuario);
             paginaDeUsuario.Show();
         }
+
+        private void PostControl_Compartir(object sender, PersonalizedArgs e)
+        {
+            PanelComentarios.Visible = false;
+            PanelPosts.Visible = false;
+            PanelMostrarUsuario.Visible = true;
+            PanelMostrarUsuario.Parent = this;
+            PanelMostrarUsuario.Location = PanelPosts.Location;
+            Comunidad comunidad = new Comunidad(modo, user, token, Convert.ToString(e.arg));
+            comunidad.TopLevel = false;
+            comunidad.FormBorderStyle = FormBorderStyle.None;
+            comunidad.BackColor = Color.LightGray;
+            comunidad.Dock = DockStyle.Fill;
+            PanelMostrarUsuario.BackColor = Color.LightGray;
+            PanelMostrarUsuario.Controls.Add(comunidad);
+            comunidad.Show();
+        }
+
         private void ReportarPost(string idpost, string token, string idcomentario="")
         {
             PanelComentarios.Visible = false;

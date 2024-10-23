@@ -73,9 +73,9 @@ namespace Frontend
             // 
             // pbxUnirse
             // 
-            this.pbxUnirse.Location = new System.Drawing.Point(247, 11);
+            this.pbxUnirse.Location = new System.Drawing.Point(253, 57);
             this.pbxUnirse.Name = "pbxUnirse";
-            this.pbxUnirse.Size = new System.Drawing.Size(50, 10);
+            this.pbxUnirse.Size = new System.Drawing.Size(38, 10);
             this.pbxUnirse.TabIndex = 75;
             this.pbxUnirse.TabStop = false;
             this.pbxUnirse.Click += new System.EventHandler(this.pbxUnirse_Click);

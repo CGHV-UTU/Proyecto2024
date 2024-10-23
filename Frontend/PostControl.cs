@@ -21,6 +21,7 @@ namespace Frontend
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarPost;
         public event EventHandler<PersonalizedArgs> AbrirPaginaUsuario;
+        public event EventHandler<PersonalizedArgs> Compartir;
         public event EventHandler RecargarFeed;
         private string modo;
         private int idpost;
@@ -121,7 +122,6 @@ namespace Frontend
                     this.lblLikes.Visible = true;
                     this.lblLikes.Text = Convert.ToString(likes);
                 }
-                MessageBox.Show(Convert.ToString(likes));
             }
             catch (Exception)
             {
@@ -1021,34 +1021,7 @@ namespace Frontend
         }
         private async void PictureBoxCompartir_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("HOLA");
-            this.pnlGrupos = new Panel();
-            this.pnlGrupos.Name = "pnlGrupos";
-            this.pnlGrupos.Location = new Point(236, 138);
-            this.pnlGrupos.Size = new Size(300, 268);
-            this.pnlGrupos.Parent = this;
-            this.pnlGrupos.AutoScroll = true;
-            this.pnlGrupos.Dock = DockStyle.Fill;
-            this.pnlGrupos.BackColor = Color.LightGray;
-            var lista = await grupos(user, token);
-            if (lista != null)
-            {
-                foreach (var elemento in lista)
-                {
-                    var eventControl = new Grupo_EventoParaListar(user, token, Convert.ToString(elemento.nombreReal), 0, idpost:Convert.ToString(idpost));
-                    if (pnlGrupos.Controls.Count > 0)
-                    {
-                        var lastControl = pnlGrupos.Controls[pnlGrupos.Controls.Count - 1];
-                        eventControl.Location = new Point(0, lastControl.Bottom);
-                    }
-                    else
-                    {
-                        eventControl.Location = new Point(0, 52);
-                    }
-                    pnlGrupos.Controls.Add(eventControl);
-                }
-            }
-            MessageBox.Show(""+this.pnlGrupos.Controls.Count);
+            Compartir?.Invoke(this, new PersonalizedArgs(idpost));
         }
 
         private void btnReportar_Click(object sender, EventArgs e)

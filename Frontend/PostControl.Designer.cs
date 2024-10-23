@@ -269,7 +269,7 @@ namespace Frontend
             // 
             this.pnlGrupos.Location = new System.Drawing.Point(236, 138);
             this.pnlGrupos.Name = "pnlGrupos";
-            this.pnlGrupos.Size = new System.Drawing.Size(300, 268);
+            this.pnlGrupos.Size = new System.Drawing.Size(45, 33);
             this.pnlGrupos.TabIndex = 44;
             // 
             // PostControl

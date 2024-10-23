@@ -35,6 +35,7 @@ namespace Frontend
             this.user = usuario;
             this.datosDelUsuario = usuariobuscar;
             this.idpost = idpost;
+            this.busqueda = busqueda;
             InitializeComponent();
             Iniciar();
             AplicarDatos();
@@ -227,6 +228,7 @@ namespace Frontend
                 this.pbxUnirse.Image = Properties.Resources.grupos_removebg_preview;
                 this.pbxUnirse.Cursor = Cursors.Hand;
                 this.pbxUnirse.Visible = true;
+                this.pbxUnirse.Click += pbxUnirse_Click;
                 this.Controls.Add(this.pbxUnirse);
             }
             if (!string.IsNullOrEmpty(this.idpost))
@@ -239,6 +241,7 @@ namespace Frontend
                 this.pbxUnirse.Image = Properties.Resources.compartir;
                 this.pbxUnirse.Cursor = Cursors.Hand;
                 this.pbxUnirse.Visible = true;
+                this.pbxUnirse.Click += pbxUnirse_Click;
                 this.Controls.Add(this.pbxUnirse);
             }
         }

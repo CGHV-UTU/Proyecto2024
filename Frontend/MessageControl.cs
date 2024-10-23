@@ -17,15 +17,7 @@ namespace Frontend
         // Agregar: AplicarDatos();
 
 
-        private string nombreDeCuenta; //Había considerado crear un nombre
-        // de cuenta enviador y otro creador, pero creo que va a ser una mejor idea
-        // manejar eso desde el front. Ej: Si el nombre de cuenta del mensaje es igual
-        // al nombre del que lo envió, entonces el mensaje aparece a la izquierda
-        private string nombreVisible;
-        private string mensaje;
-        private int idPost; // Para poder hacer referencia a un post
-        // private string nombreDeCuentaPost //Por si es necesario usarlo para encontrar 
-        // el post
+        private string idMensaje;
         private string token; //Para la autenticación. No tengo ni idea de cómo hacerlo
         private Label lblNombreDeCuenta;
         private TextBox txtMensaje;
@@ -34,6 +26,9 @@ namespace Frontend
         private PictureBox pbxImagenCompartida;
         private Panel pnlOpciones;
         private TextBox txtURL;
+        private PictureBox pbxOpciones;
+        private Label btnEliminar;
+        private Label btnEditar;
         private Panel panel1;
 
         
@@ -42,6 +37,7 @@ namespace Frontend
             InitializeComponent();
             txtMensaje.ReadOnly = true;
             this.token = token;
+            this.idMensaje = Convert.ToString(MessageData.idMensaje);
         }
 
 
@@ -116,8 +112,12 @@ namespace Frontend
             this.pnlOpciones = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtURL = new System.Windows.Forms.TextBox();
+            this.pbxOpciones = new System.Windows.Forms.PictureBox();
+            this.btnEliminar = new System.Windows.Forms.Label();
+            this.btnEditar = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagenCompartida)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoUsuario)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxOpciones)).BeginInit();
             this.SuspendLayout();
             // 
             // lblNombreDeCuenta
@@ -199,8 +199,42 @@ namespace Frontend
             this.txtURL.TabIndex = 74;
             this.txtURL.Text = "URL";
             // 
+            // pbxOpciones
+            // 
+            this.pbxOpciones.Image = global::Frontend.Properties.Resources.mas_opciones;
+            this.pbxOpciones.Location = new System.Drawing.Point(420, 7);
+            this.pbxOpciones.Name = "pbxOpciones";
+            this.pbxOpciones.Size = new System.Drawing.Size(50, 20);
+            this.pbxOpciones.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxOpciones.TabIndex = 75;
+            this.pbxOpciones.TabStop = false;
+            this.pbxOpciones.Click += new System.EventHandler(this.pbxOpciones_Click);
+            // 
+            // btnEliminar
+            // 
+            this.btnEliminar.AutoSize = true;
+            this.btnEliminar.Location = new System.Drawing.Point(379, 3);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(43, 13);
+            this.btnEliminar.TabIndex = 76;
+            this.btnEliminar.Text = "Eliminar";
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+            // 
+            // btnEditar
+            // 
+            this.btnEditar.AutoSize = true;
+            this.btnEditar.Location = new System.Drawing.Point(380, 16);
+            this.btnEditar.Name = "btnEditar";
+            this.btnEditar.Size = new System.Drawing.Size(34, 13);
+            this.btnEditar.TabIndex = 77;
+            this.btnEditar.Text = "Editar";
+            this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
+            // 
             // MessageControl
             // 
+            this.Controls.Add(this.btnEditar);
+            this.Controls.Add(this.btnEliminar);
+            this.Controls.Add(this.pbxOpciones);
             this.Controls.Add(this.txtURL);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnlOpciones);
@@ -213,8 +247,55 @@ namespace Frontend
             this.Size = new System.Drawing.Size(473, 409);
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagenCompartida)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoUsuario)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxOpciones)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
+        }
+
+        private void pbxOpciones_Click(object sender, EventArgs e)
+        {
+            if (btnEditar.Visible == false)
+            {
+                btnEditar.Visible = true;
+                btnEditar.Visible = true;
+            }
+            else
+            {
+                btnEditar.Visible = false;
+                btnEditar.Visible = false;
+            }
+        }
+
+        static async Task<dynamic> eliminar(string idMensaje, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { idMensaje=idMensaje, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44304/EliminarMensaje", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return Convert.ToString(data);
+                }
+                catch (Exception ex)
+                {
+                    return "Error de conexión";
+                }
+            }
+        }
+
+        private async void btnEliminar_Click(object sender, EventArgs e)
+        {
+            string resultado = await eliminar(idMensaje, token);
+            MessageBox.Show(resultado);
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
 
         }
     }

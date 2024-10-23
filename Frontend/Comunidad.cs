@@ -19,14 +19,16 @@ namespace Frontend
         private string token;
         private bool eventosCargados = false;
         private bool gruposCargados = false;
+        private string idpost;
         private DataTable eventos;
         public event EventHandler<PersonalizedArgs> AbrirEvento;
         public event EventHandler<PersonalizedArgs> AbrirGrupo;
-        public Comunidad(string modo, string user, string token)
+        public Comunidad(string modo, string user, string token, string idpost="")
         {
             this.modo = modo;
             this.user = user;
             this.token = token;
+            this.idpost = idpost;
             InitializeComponent();
             Iniciar();
         }
@@ -34,9 +36,8 @@ namespace Frontend
         private void Iniciar()
         {
             this.SuspendLayout();
-            // panelPosts
+            // panelGrupos
             this.PanelGrupos.AutoScroll = true;
-            this.PanelGrupos.Dock = DockStyle.Fill;
             this.PanelGrupos.Location = new System.Drawing.Point(58, 69);
             this.PanelGrupos.Name = "PanelMostrar";
             this.PanelGrupos.Size = new System.Drawing.Size(893, 493);
@@ -50,6 +51,14 @@ namespace Frontend
             this.Name = "Form1";
             this.Text = "Infinite Scroll Posts";
             this.ResumeLayout(false);
+            if (!string.IsNullOrEmpty(idpost))
+            {
+                PictureBoxGrupos.Visible = false;
+                PictureBoxEventos.Visible = false;
+                pictureBox5.Visible = false;
+                pictureBox6.Visible = false;
+                CargarGrupos();
+            }
         }
 
         static async Task<DataTable> Eventos(string usuario, string token)
@@ -134,22 +143,43 @@ namespace Frontend
             var lista = await grupos(user, token);
             if (lista != null)
             {
-                foreach(var elemento in lista)
+                if (string.IsNullOrEmpty(idpost))
                 {
-                    var eventControl = new Grupo_EventoParaListar(user, token, Convert.ToString(elemento.nombreReal), 0);
-                    eventControl.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
-                    // probando, antes iba debajo del else
-                    if (PanelGrupos.Controls.Count > 0)
+                    foreach (var elemento in lista)
                     {
-                        var lastControl = PanelGrupos.Controls[PanelGrupos.Controls.Count - 1];
-                        eventControl.Location = new Point(0, lastControl.Bottom);
+                        var eventControl = new Grupo_EventoParaListar(user, token, Convert.ToString(elemento.nombreReal), 0);
+                        eventControl.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
+                        // probando, antes iba debajo del else
+                        if (PanelGrupos.Controls.Count > 0)
+                        {
+                            var lastControl = PanelGrupos.Controls[PanelGrupos.Controls.Count - 1];
+                            eventControl.Location = new Point(0, lastControl.Bottom);
+                        }
+                        else
+                        {
+                            eventControl.Location = new Point(0, 52);
+                        }
+                        PanelGrupos.Controls.Add(eventControl);
+                        // aca
                     }
-                    else
+                }
+                else
+                {
+                    panelEventos.Visible = false;
+                    foreach (var elemento in lista)
                     {
-                        eventControl.Location = new Point(0, 52);
+                        var eventControl = new Grupo_EventoParaListar(user, token, Convert.ToString(elemento.nombreReal), 0, idpost:idpost);
+                        if (PanelGrupos.Controls.Count > 0)
+                        {
+                            var lastControl = PanelGrupos.Controls[PanelGrupos.Controls.Count - 1];
+                            eventControl.Location = new Point(0, lastControl.Bottom);
+                        }
+                        else
+                        {
+                            eventControl.Location = new Point(0, 52);
+                        }
+                        PanelGrupos.Controls.Add(eventControl);
                     }
-                    PanelGrupos.Controls.Add(eventControl);
-                    // aca
                 }
             }
         }

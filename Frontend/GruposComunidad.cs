@@ -61,6 +61,8 @@ namespace Frontend
             this.nombreGrupo = groupData.nombreReal;
             this.pnlAsociarContenido.Visible = false;
             AplicarDatos(groupData);
+            pnlPostsGrupo.Visible = false;
+            pnlChat.Visible = true;
             AñadirMensajes();
         }
         private void InitializeComponent()
@@ -585,10 +587,8 @@ namespace Frontend
                 }
                 foreach (var mensaje in listaDeMensajes)
                 {
-                    MessageBox.Show(Convert.ToString(mensaje.idMensaje));
                     MessageControl messageControl = new MessageControl(mensaje, token);
                     await messageControl.aplicarDatos(mensaje);
-                    MessageBox.Show("dd" + pnlChat.Controls.Count);
                     if (pnlChat.Controls.Count - 1 > 0)
                     {
                         var lastControl = pnlChat.Controls[pnlChat.Controls.Count - 1];
@@ -599,7 +599,6 @@ namespace Frontend
                         messageControl.Location = new Point(50, 0);
                     }
                     pnlChat.Controls.Add(messageControl);
-                    MessageBox.Show("ubicacion" + messageControl.Location);
                     idUltimoMensaje = Convert.ToString(mensaje.idMensaje);
                 }
             }
@@ -663,16 +662,60 @@ namespace Frontend
 
         private void lblChat_Click(object sender, EventArgs e)
         {
-            lblPostsGrupo.ForeColor = Color.Gray;
             pnlPostsGrupo.Visible = false;
             pnlChat.Visible = true;
         }
-
-        private void lblPostsGrupo_Click(object sender, EventArgs e)
+        static async Task<dynamic> ConseguirPosts(string nombreGrupo, string token)
         {
-            lblChat.ForeColor = Color.Gray;
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var dato = new { nombreReal = nombreGrupo, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44304/ConseguirPostsDeGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject<DataTable>(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        private async void lblPostsGrupo_Click(object sender, EventArgs e)
+        {
+            pnlPostsGrupo.Controls.Clear();
+            pnlPostsGrupo.Parent = this;
+            pnlPostsGrupo.Location = new Point(13, 113);
             pnlChat.Visible = false;
             pnlPostsGrupo.Visible = true;
+            pnlPostsGrupo.BringToFront();
+            DataTable posts = await ConseguirPosts(nombreGrupo, token);
+            if (posts != null)
+            {
+                for (int i = posts.Rows.Count - 1; i >= 0; i--)
+                {
+                    int idpost = Convert.ToInt32(posts.Rows[i]["idPost"]);
+                    var postControl = new PostControl(idpost, "Claro", user, token); //donde dice claro hay que poner el modo luego
+                    await postControl.aplicarDatos();
+                    // Calcula la ubicación Y acumulada
+                    int currentYPosition = 0;
+                    if (pnlPostsGrupo.Controls.Count > 0)
+                    {
+                        var lastControl = pnlPostsGrupo.Controls[pnlPostsGrupo.Controls.Count - 1];
+                        if (postControl.tipo.Equals("imageOnly") || postControl.tipo.Equals("textAndImage"))
+                        {
+                            await Task.Delay(300);
+                        }
+                        currentYPosition = lastControl.Bottom;  // La posición inferior del último control agregado
+                    }
+                    postControl.Location = new Point(0, currentYPosition);
+                    pnlPostsGrupo.Controls.Add(postControl);
+                }
+            }
         }
 
         private void pbxCrearPostGrupo_Click(object sender, EventArgs e)
