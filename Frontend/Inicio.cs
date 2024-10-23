@@ -514,5 +514,25 @@ namespace Frontend
                 panelBusqueda.Visible = false;
             }
         }
+
+        private void PictureBoxUsuario_Click(object sender, EventArgs e)
+        {
+            PanelComentarios.Visible = false;
+            PanelPosts.Visible = false;
+            PanelMostrarUsuario.Visible = true;
+            PanelMostrarUsuario.Parent = this;
+            PanelMostrarUsuario.Location = PanelPosts.Location;
+            PaginaDeUsuario paginaDeUsuario = new PaginaDeUsuario(user, modo, user, token);
+            paginaDeUsuario.TopLevel = false;
+            paginaDeUsuario.FormBorderStyle = FormBorderStyle.None;
+            paginaDeUsuario.BackColor = Color.LightGray;
+            paginaDeUsuario.Dock = DockStyle.Fill;
+            PanelMostrarUsuario.BackColor = Color.LightGray;
+            //  paginaDeUsuario.BackColor = Color.FromArgb(34, 67, 220);
+            paginaDeUsuario.ReportarPost += PostControl_ReportarPost;
+            paginaDeUsuario.AbrirComentarios += PostControl_AbrirComentarios;
+            PanelMostrarUsuario.Controls.Add(paginaDeUsuario);
+            paginaDeUsuario.Show();
+        }
     }
 }

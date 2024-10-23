@@ -131,7 +131,6 @@ namespace Frontend
             this.SuspendLayout();
             // panelPosts
             this.panelPosts.AutoScroll = true;
-            this.panelPosts.Dock = DockStyle.Fill;
             this.panelPosts.Location = new System.Drawing.Point(12, 200);
             this.panelPosts.Name = "panelPosts";
             this.panelPosts.Size = new System.Drawing.Size(972, 424);

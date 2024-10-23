@@ -157,6 +157,7 @@ namespace Frontend
             this.PictureBoxUsuario.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PictureBoxUsuario.TabIndex = 4;
             this.PictureBoxUsuario.TabStop = false;
+            this.PictureBoxUsuario.Click += new System.EventHandler(this.PictureBoxUsuario_Click);
             // 
             // PictureboxLogo
             // 

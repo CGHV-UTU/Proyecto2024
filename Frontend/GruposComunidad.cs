@@ -52,6 +52,7 @@ namespace Frontend
         private TextBox txtURL;
         private string token;
         private Label lblName;
+        private Label lblEditando;
         private string idUltimoMensaje;
         public GruposComunidad(dynamic groupData, string user, string token)
         {
@@ -64,6 +65,7 @@ namespace Frontend
             pnlPostsGrupo.Visible = false;
             pnlChat.Visible = true;
             AñadirMensajes();
+            lblEditando.Visible = false;
         }
         private void InitializeComponent()
         {
@@ -96,6 +98,7 @@ namespace Frontend
             this.pnlPostsGrupo = new System.Windows.Forms.Panel();
             this.txtURL = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.lblEditando = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEnviar)).BeginInit();
@@ -134,6 +137,7 @@ namespace Frontend
             // 
             this.panel1.BackColor = System.Drawing.Color.MediumPurple;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.lblEditando);
             this.panel1.Controls.Add(this.panel8);
             this.panel1.Controls.Add(this.panel7);
             this.panel1.Controls.Add(this.panel6);
@@ -409,6 +413,15 @@ namespace Frontend
             this.panel2.Size = new System.Drawing.Size(971, 3);
             this.panel2.TabIndex = 76;
             // 
+            // lblEditando
+            // 
+            this.lblEditando.AutoSize = true;
+            this.lblEditando.Location = new System.Drawing.Point(59, 35);
+            this.lblEditando.Name = "lblEditando";
+            this.lblEditando.Size = new System.Drawing.Size(63, 13);
+            this.lblEditando.TabIndex = 80;
+            this.lblEditando.Text = "EDITANDO";
+            // 
             // GruposComunidad
             // 
             this.ClientSize = new System.Drawing.Size(996, 596);
@@ -588,6 +601,7 @@ namespace Frontend
                 foreach (var mensaje in listaDeMensajes)
                 {
                     MessageControl messageControl = new MessageControl(mensaje, token);
+                    messageControl.EditarMensaje += MessageControl_EditarMensaje;
                     await messageControl.aplicarDatos(mensaje);
                     if (pnlChat.Controls.Count - 1 > 0)
                     {
@@ -608,6 +622,34 @@ namespace Frontend
             }
 
         }
+
+        static async Task<dynamic> EditarMensaje(string texto, string idmensaje, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { texto = texto, idMensaje=idmensaje, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44304/ActualizarMensaje", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return "Error de conexión";
+                }
+            }
+        }
+        private string idMensajeAModificar;
+        private void MessageControl_EditarMensaje(object sender, PersonalizedArgs e)
+        {
+            lblEditando.Visible = true;
+            idMensajeAModificar = e.arg;
+        }
+
         private async void pbxEnviar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtMensajeAEnviar.Text) && pbxCrearPostGrupo.Image == null) // pbx crar post grupo no le gusta a santi
@@ -616,35 +658,44 @@ namespace Frontend
             }
             else
             {
-                DateTime fechayhoraactual = DateTime.Now;
-                string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
-                byte[] data;
-                if (pbxCrearPostGrupo.Image == null)
+                if (lblEditando.Visible==false)
                 {
-                    data = new byte[0];
+                    DateTime fechayhoraactual = DateTime.Now;
+                    string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
+                    byte[] data;
+                    if (pbxCrearPostGrupo.Image == null)
+                    {
+                        data = new byte[0];
+                    }
+                    else
+                    {
+                        MemoryStream ms = new MemoryStream();
+                        pbxCrearPostGrupo.Image.Save(ms, ImageFormat.Jpeg);
+                        data = ms.ToArray();
+                    }
+                    string video;
+                    string texto;
+                    if (txtURL.Text.Contains("https://youtu.be/"))
+                    {
+                        video = txtMensajeAEnviar.Text;
+
+                    }
+                    else
+                    {
+                        video = "";
+
+                    }
+                    texto = txtMensajeAEnviar.Text;
+                    MessageBox.Show(data.ToString());
+                    var respuesta = await EnviarMensaje(fechaHoraString, texto, data, video);
+                    txtMensajeAEnviar.Text = "";
                 }
                 else
                 {
-                    MemoryStream ms = new MemoryStream();
-                    pbxCrearPostGrupo.Image.Save(ms, ImageFormat.Jpeg);
-                    data = ms.ToArray();
+                    string texto = txtMensajeAEnviar.Text;
+                    var respuesta = await EditarMensaje(texto, idMensajeAModificar, token);
+                    MessageBox.Show(""+respuesta);
                 }
-                string video;
-                string texto;
-                if (txtURL.Text.Contains("https://youtu.be/"))
-                {
-                    video = txtMensajeAEnviar.Text;
-
-                }
-                else
-                {
-                    video = "";
-
-                }
-                texto = txtMensajeAEnviar.Text;
-                MessageBox.Show(data.ToString());
-                var respuesta = await EnviarMensaje(fechaHoraString, texto, data, video);
-                txtMensajeAEnviar.Text = "";
             }
         }
 

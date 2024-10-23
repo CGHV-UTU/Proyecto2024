@@ -30,14 +30,16 @@ namespace Frontend
         private Label btnEliminar;
         private Label btnEditar;
         private Panel panel1;
+        public event EventHandler<PersonalizedArgs> EditarMensaje;
 
-        
         public MessageControl(dynamic MessageData, string token)
         {
             InitializeComponent();
             txtMensaje.ReadOnly = true;
             this.token = token;
             this.idMensaje = Convert.ToString(MessageData.idMensaje);
+            btnEditar.Visible = false;
+            btnEliminar.Visible = false;
         }
 
 
@@ -57,7 +59,7 @@ namespace Frontend
             else
             {
                 this.Controls.Remove(this.pbxImagenCompartida);
-                this.Size = new Size(312, 92);
+                this.Size = new Size(473, 92);
             }
             string imagenB64 = await conseguirImagenDelCreador(Convert.ToString(MessageData.nombreDeCuenta), token);
             byte[] imagen2 = Convert.FromBase64String(imagenB64);
@@ -250,7 +252,6 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.pbxOpciones)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         private void pbxOpciones_Click(object sender, EventArgs e)
@@ -258,12 +259,12 @@ namespace Frontend
             if (btnEditar.Visible == false)
             {
                 btnEditar.Visible = true;
-                btnEditar.Visible = true;
+                btnEliminar.Visible = true;
             }
             else
             {
                 btnEditar.Visible = false;
-                btnEditar.Visible = false;
+                btnEliminar.Visible = false;
             }
         }
 
@@ -296,7 +297,7 @@ namespace Frontend
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
-
+            EditarMensaje?.Invoke(this, new PersonalizedArgs(idMensaje));
         }
     }
 
