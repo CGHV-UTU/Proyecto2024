@@ -331,6 +331,7 @@ namespace Frontend
             this.txtCategorias.Size = new System.Drawing.Size(216, 54);
             this.txtCategorias.TabIndex = 76;
             this.txtCategorias.Text = "Categorías";
+            this.txtCategorias.Enter += new System.EventHandler(this.txtCategorias_Enter);
             // 
             // Post
             // 

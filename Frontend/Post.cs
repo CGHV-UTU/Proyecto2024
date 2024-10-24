@@ -39,7 +39,7 @@ namespace Frontend
             this.pnlOpcionEvento.Visible = false;
             this.pnlOpcionGrupo.Visible = false;
             this.pnlURL.Visible = false;
-            this.txtCategorias.Visible = false;
+            this.txtCategorias.Visible = true;
             lblEvento.ForeColor = Color.Gray;
             lblGrupo.ForeColor = Color.Gray;
             pnlOpcionPost.Visible = true;
@@ -105,7 +105,8 @@ namespace Frontend
                             if (pbxImagen.Image == null)
                             {
                                 byte[] data = new byte[0];
-                                await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token);
+                                var respuesta=await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, categoria: txtCategorias.Text);
+                                MessageBox.Show("" + respuesta);
                                 MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 Creado?.Invoke(this, EventArgs.Empty);
                             }
@@ -114,7 +115,8 @@ namespace Frontend
                                 MemoryStream ms = new MemoryStream();
                                 pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                                 byte[] data = ms.ToArray();
-                                await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token);
+                                var respuesta = await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, categoria:txtCategorias.Text);
+                                MessageBox.Show("" + respuesta);
                                 MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 Creado?.Invoke(this, EventArgs.Empty);
                             }
@@ -224,7 +226,7 @@ namespace Frontend
             }
         }
 
-        public static async Task Publicar(string texto, string url, byte[] imagen, string fechaHora, string token, string idevento="", string categoria="")
+        public static async Task<dynamic> Publicar(string texto, string url, byte[] imagen, string fechaHora, string token, string idevento="", string categoria="")
         {
             using (HttpClient client = new HttpClient())
             {
@@ -236,6 +238,9 @@ namespace Frontend
                         var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
                         response.EnsureSuccessStatusCode();
+                        var responseBody = await response.Content.ReadAsStringAsync();
+                        dynamic data = JsonConvert.DeserializeObject(responseBody);
+                        return data;
                     }
                     else
                     {
@@ -243,12 +248,14 @@ namespace Frontend
                         var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
                         response.EnsureSuccessStatusCode();
+                        var responseBody = await response.Content.ReadAsStringAsync();
+                        dynamic data = JsonConvert.DeserializeObject(responseBody);
+                        return data;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error: " + ex.Message);
-                    Console.ReadLine();
+                    return "ERROR"+ex.Message;
                 }
             }
         }
@@ -491,6 +498,14 @@ namespace Frontend
         private void pnlDescripcion_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void txtCategorias_Enter(object sender, EventArgs e)
+        {
+            if (txtCategorias.Text== "Categorías")
+            {
+                txtUrl.Text = "";
+            }
         }
     }
 }   

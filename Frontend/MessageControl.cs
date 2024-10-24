@@ -18,7 +18,9 @@ namespace Frontend
 
 
         private string idMensaje;
-        private string token; //Para la autenticación. No tengo ni idea de cómo hacerlo
+        private string token;
+        private string user;
+        private string creador;
         private Label lblNombreDeCuenta;
         private TextBox txtMensaje;
         private PictureBox pbxFotoUsuario;
@@ -31,12 +33,15 @@ namespace Frontend
         private Label btnEditar;
         private Panel panel1;
         public event EventHandler<PersonalizedArgs> EditarMensaje;
+        public event EventHandler<PersonalizedArgs> MensajeEliminado;
 
-        public MessageControl(dynamic MessageData, string token)
+        public MessageControl(dynamic MessageData, string user, string token)
         {
             InitializeComponent();
             txtMensaje.ReadOnly = true;
             this.token = token;
+            this.user = user;
+            this.creador = Convert.ToString(MessageData.nombreDeCuenta);
             this.idMensaje = Convert.ToString(MessageData.idMensaje);
             btnEditar.Visible = false;
             btnEliminar.Visible = false;
@@ -66,6 +71,42 @@ namespace Frontend
             MemoryStream ms2 = new MemoryStream(imagen2);
             Bitmap bitmap2 = new Bitmap(ms2);
             this.pbxFotoUsuario.Image = bitmap2;
+            if (user.Equals(creador))
+            {
+                // pbxOpciones
+                // 
+                this.pbxOpciones.Image = global::Frontend.Properties.Resources.mas_opciones;
+                this.pbxOpciones.Location = new System.Drawing.Point(420, 7);
+                this.pbxOpciones.Name = "pbxOpciones";
+                this.pbxOpciones.Size = new System.Drawing.Size(50, 20);
+                this.pbxOpciones.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+                this.pbxOpciones.TabIndex = 75;
+                this.pbxOpciones.TabStop = false;
+                this.pbxOpciones.Click += new System.EventHandler(this.pbxOpciones_Click);
+                // 
+                // btnEliminar
+                // 
+                this.btnEliminar.AutoSize = true;
+                this.btnEliminar.Location = new System.Drawing.Point(379, 3);
+                this.btnEliminar.Name = "btnEliminar";
+                this.btnEliminar.Size = new System.Drawing.Size(43, 13);
+                this.btnEliminar.TabIndex = 76;
+                this.btnEliminar.Text = "Eliminar";
+                this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+                // 
+                // btnEditar
+                // 
+                this.btnEditar.AutoSize = true;
+                this.btnEditar.Location = new System.Drawing.Point(380, 16);
+                this.btnEditar.Name = "btnEditar";
+                this.btnEditar.Size = new System.Drawing.Size(34, 13);
+                this.btnEditar.TabIndex = 77;
+                this.btnEditar.Text = "Editar";
+                this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
+                this.Controls.Add(this.btnEditar);
+                this.Controls.Add(this.btnEliminar);
+                this.Controls.Add(this.pbxOpciones);
+            }
         }
         static async Task<string> conseguirImagenDelCreador(string creador, string token)
         {
@@ -201,42 +242,12 @@ namespace Frontend
             this.txtURL.TabIndex = 74;
             this.txtURL.Text = "URL";
             // 
-            // pbxOpciones
-            // 
-            this.pbxOpciones.Image = global::Frontend.Properties.Resources.mas_opciones;
-            this.pbxOpciones.Location = new System.Drawing.Point(420, 7);
-            this.pbxOpciones.Name = "pbxOpciones";
-            this.pbxOpciones.Size = new System.Drawing.Size(50, 20);
-            this.pbxOpciones.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbxOpciones.TabIndex = 75;
-            this.pbxOpciones.TabStop = false;
-            this.pbxOpciones.Click += new System.EventHandler(this.pbxOpciones_Click);
-            // 
-            // btnEliminar
-            // 
-            this.btnEliminar.AutoSize = true;
-            this.btnEliminar.Location = new System.Drawing.Point(379, 3);
-            this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(43, 13);
-            this.btnEliminar.TabIndex = 76;
-            this.btnEliminar.Text = "Eliminar";
-            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
-            // 
-            // btnEditar
-            // 
-            this.btnEditar.AutoSize = true;
-            this.btnEditar.Location = new System.Drawing.Point(380, 16);
-            this.btnEditar.Name = "btnEditar";
-            this.btnEditar.Size = new System.Drawing.Size(34, 13);
-            this.btnEditar.TabIndex = 77;
-            this.btnEditar.Text = "Editar";
-            this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
+            
             // 
             // MessageControl
             // 
-            this.Controls.Add(this.btnEditar);
-            this.Controls.Add(this.btnEliminar);
-            this.Controls.Add(this.pbxOpciones);
+            
+            
             this.Controls.Add(this.txtURL);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnlOpciones);
@@ -292,7 +303,7 @@ namespace Frontend
         private async void btnEliminar_Click(object sender, EventArgs e)
         {
             string resultado = await eliminar(idMensaje, token);
-            MessageBox.Show(resultado);
+            MensajeEliminado?.Invoke(this, new PersonalizedArgs("ELIMINADO"));
         }
 
         private void btnEditar_Click(object sender, EventArgs e)

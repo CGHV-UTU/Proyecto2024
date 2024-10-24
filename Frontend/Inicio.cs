@@ -439,7 +439,7 @@ namespace Frontend
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
         }
-        private void Grupo_EventoParaListar_AbrirEvento(object sender, PersonalizedArgs e)
+        private async void Grupo_EventoParaListar_AbrirEvento(object sender, PersonalizedArgs e)
         {
             PanelMostrarUsuario.Controls.Clear();
             PanelComentarios.Visible = false;

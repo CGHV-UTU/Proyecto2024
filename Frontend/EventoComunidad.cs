@@ -26,33 +26,15 @@ namespace Frontend
         private Label lblNombre;
         private Panel panelPosts;
         private PictureBox btnSeguir;
-
-        //Todo esto está basado en la ventana "Post" que te deja crear
-        //publicaciones, eventos y grupos.
-        //Claramente no probé nada.
-        //⡴⠒⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠉⠳⡆⠀
-        //⣇⠰⠉⢙⡄⠀⠀⣴⠖⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣆⠁⠙⡆
-        //⡇⢠⠞⠉⠙⣾⠃⢀⡼⠀⠀⠀⠀⠀⠀⠀⢀⣼⡀⠄⢷⣄⣀⠀⠀⠀⠀⠀⠀⠀⠰⠒⠲⡄⠀⣏⣆⣀⡍
-        //⢠⡏⠀⡤⠒⠃⠀⡜⠀⠀⠀⠀⠀⢀⣴⠾⠛⡁⠀⠀⢀⣈⡉⠙⠳⣤⡀⠀⠀⠀⠘⣆⠀⣇⡼⢋⠀⠀⢱
-        //⠀⠘⣇⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⡴⢋⡣⠊⡩⠋⠀⠀⠀⠣⡉⠲⣄⠀⠙⢆⠀⠀⠀⣸⠀⢉⠀⢀⠿⠀⢸
-        //⠀⠀⠸⡄⠀⠈⢳⣄⡇⠀⠀⢀⡞⠀⠈⠀⢀⣴⣾⣿⣿⣿⣿⣦⡀⠀⠀⠀⠈⢧⠀⠀⢳⣰⠁⠀⠀⠀⣠⠃
-        //⠀⠀⠀⠘⢄⣀⣸⠃⠀⠀⠀⡸⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠈⣇⠀⠀⠙⢄⣀⠤⠚⠁⠀
-        //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⢹⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⢘⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⢰⣿⣿⣿⡿⠛⠁⠀⠉⠛⢿⣿⣿⣿⣧⠀⠀⣼⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡀⣸⣿⣿⠟⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⡀⢀⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡇⠹⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⡿⠁⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣤⣞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢢⣀⣠⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-        //⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠲⢤⣀⣀⠀⢀⣀⣀⠤⠒⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-
-
-        //Recibo los datos de evento desde Grupo-EventoParaListar.
-        //No tiene sentido buscarlos de nuevo acá si ya en la
-        //ventana anterior los tenemos guardados en un datatable.
         private string token;
         private string user;
         private PictureBox btnCrear;
         private string idEvento;
+        private PictureBox pbxEditar;
+        private TextBox txtNombre;
+        private TextBox txtDesc;
+        private TextBox txtUbicacion;
+        private TextBox txtHora;
         private string modo;
         public event EventHandler<PersonalizedArgs> PostearEnEvento;
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
@@ -66,9 +48,37 @@ namespace Frontend
             this.modo = modo;
             AplicarDatos(EventData);
             LoadPosts();
+            CompararCreador();
         }
         
-       //Tuqui
+        private async void CompararCreador()
+        {
+            string creador = await ConseguirCreador(idEvento,user,token);
+            if (!creador.Equals(user))
+            {
+                pbxEditar.Visible = false;
+            }
+        }
+        static async Task<dynamic> ConseguirCreador(string idevento, string usuario, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var dato = new { idEvento = idevento, user=usuario, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/CreadorDelEvento", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
         private void InitializeComponent()
         {
             this.dtpFechaInicio = new System.Windows.Forms.DateTimePicker();
@@ -83,18 +93,24 @@ namespace Frontend
             this.btnUbicacion = new System.Windows.Forms.PictureBox();
             this.pbxImagen = new System.Windows.Forms.PictureBox();
             this.btnCrear = new System.Windows.Forms.PictureBox();
+            this.pbxEditar = new System.Windows.Forms.PictureBox();
+            this.txtNombre = new System.Windows.Forms.TextBox();
+            this.txtDesc = new System.Windows.Forms.TextBox();
+            this.txtUbicacion = new System.Windows.Forms.TextBox();
+            this.txtHora = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUbicacion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnCrear)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxEditar)).BeginInit();
             this.SuspendLayout();
             // 
             // dtpFechaInicio
             // 
             this.dtpFechaInicio.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dtpFechaInicio.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpFechaInicio.Location = new System.Drawing.Point(531, 47);
+            this.dtpFechaInicio.Location = new System.Drawing.Point(531, 65);
             this.dtpFechaInicio.Name = "dtpFechaInicio";
             this.dtpFechaInicio.ShowUpDown = true;
             this.dtpFechaInicio.Size = new System.Drawing.Size(200, 20);
@@ -104,7 +120,7 @@ namespace Frontend
             // 
             this.dtpFechaFinal.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dtpFechaFinal.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpFechaFinal.Location = new System.Drawing.Point(760, 47);
+            this.dtpFechaFinal.Location = new System.Drawing.Point(760, 65);
             this.dtpFechaFinal.Name = "dtpFechaFinal";
             this.dtpFechaFinal.ShowUpDown = true;
             this.dtpFechaFinal.Size = new System.Drawing.Size(200, 20);
@@ -218,9 +234,56 @@ namespace Frontend
             this.btnCrear.TabStop = false;
             this.btnCrear.Click += new System.EventHandler(this.btnCrear_Click);
             // 
+            // pbxEditar
+            // 
+            this.pbxEditar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxEditar.BackColor = System.Drawing.Color.Transparent;
+            this.pbxEditar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxEditar.Image = global::Frontend.Properties.Resources.config;
+            this.pbxEditar.Location = new System.Drawing.Point(910, 5);
+            this.pbxEditar.Name = "pbxEditar";
+            this.pbxEditar.Size = new System.Drawing.Size(50, 50);
+            this.pbxEditar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxEditar.TabIndex = 53;
+            this.pbxEditar.TabStop = false;
+            this.pbxEditar.Click += new System.EventHandler(this.pbxEditar_Click);
+            // 
+            // txtNombre
+            // 
+            this.txtNombre.Location = new System.Drawing.Point(259, 13);
+            this.txtNombre.Name = "txtNombre";
+            this.txtNombre.Size = new System.Drawing.Size(100, 20);
+            this.txtNombre.TabIndex = 54;
+            // 
+            // txtDesc
+            // 
+            this.txtDesc.Location = new System.Drawing.Point(259, 44);
+            this.txtDesc.Name = "txtDesc";
+            this.txtDesc.Size = new System.Drawing.Size(100, 20);
+            this.txtDesc.TabIndex = 55;
+            // 
+            // txtUbicacion
+            // 
+            this.txtUbicacion.Location = new System.Drawing.Point(101, 161);
+            this.txtUbicacion.Name = "txtUbicacion";
+            this.txtUbicacion.Size = new System.Drawing.Size(100, 20);
+            this.txtUbicacion.TabIndex = 56;
+            // 
+            // txtHora
+            // 
+            this.txtHora.Location = new System.Drawing.Point(605, 161);
+            this.txtHora.Name = "txtHora";
+            this.txtHora.Size = new System.Drawing.Size(100, 20);
+            this.txtHora.TabIndex = 57;
+            // 
             // EventoComunidad
             // 
             this.ClientSize = new System.Drawing.Size(996, 574);
+            this.Controls.Add(this.txtHora);
+            this.Controls.Add(this.txtUbicacion);
+            this.Controls.Add(this.txtDesc);
+            this.Controls.Add(this.txtNombre);
+            this.Controls.Add(this.pbxEditar);
             this.Controls.Add(this.btnCrear);
             this.Controls.Add(this.btnSeguir);
             this.Controls.Add(this.panelPosts);
@@ -239,12 +302,12 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.btnUbicacion)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnCrear)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxEditar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
-        //El nombre lo dice todo.
         private void AplicarDatos(dynamic EventData)
         {
             lblNombre.Text = EventData.titulo;
@@ -346,6 +409,11 @@ namespace Frontend
         {
             // Disparar el evento para que lo maneje quien esté suscrito (en este caso, Inicio)
             ReportarPost?.Invoke(this, new PersonalizedArgs(e.arg));
+        }
+
+        private void pbxEditar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

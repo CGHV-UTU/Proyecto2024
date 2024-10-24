@@ -600,8 +600,9 @@ namespace Frontend
                 }
                 foreach (var mensaje in listaDeMensajes)
                 {
-                    MessageControl messageControl = new MessageControl(mensaje, token);
+                    MessageControl messageControl = new MessageControl(mensaje, user,token);
                     messageControl.EditarMensaje += MessageControl_EditarMensaje;
+                    messageControl.MensajeEliminado+= MessageControl_RefrescarMensajes;
                     await messageControl.aplicarDatos(mensaje);
                     if (pnlChat.Controls.Count - 1 > 0)
                     {
@@ -650,6 +651,12 @@ namespace Frontend
             idMensajeAModificar = e.arg;
         }
 
+        private void MessageControl_RefrescarMensajes(object sender, PersonalizedArgs e)
+        {
+            pnlChat.Controls.Clear();
+            AñadirMensajes();
+        }
+      
         private async void pbxEnviar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtMensajeAEnviar.Text) && pbxCrearPostGrupo.Image == null) // pbx crar post grupo no le gusta a santi
@@ -683,7 +690,6 @@ namespace Frontend
                     else
                     {
                         video = "";
-
                     }
                     texto = txtMensajeAEnviar.Text;
                     MessageBox.Show(data.ToString());
@@ -695,6 +701,8 @@ namespace Frontend
                     string texto = txtMensajeAEnviar.Text;
                     var respuesta = await EditarMensaje(texto, idMensajeAModificar, token);
                     MessageBox.Show(""+respuesta);
+                    pnlChat.Controls.Clear();
+                    AñadirMensajes();
                 }
             }
         }
