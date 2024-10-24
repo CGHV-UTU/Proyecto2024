@@ -249,7 +249,7 @@ namespace Frontend
             // lblFechaYhora
             // 
             this.lblFechaYhora.AutoSize = true;
-            this.lblFechaYhora.Location = new System.Drawing.Point(196, 50);
+            this.lblFechaYhora.Location = new System.Drawing.Point(291, 50);
             this.lblFechaYhora.Name = "lblFechaYhora";
             this.lblFechaYhora.Size = new System.Drawing.Size(34, 13);
             this.lblFechaYhora.TabIndex = 42;

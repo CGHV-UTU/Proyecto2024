@@ -19,13 +19,15 @@ namespace Frontend
         private static string user;
         private string token;
         private string idevento;
-        public Post(string usuario,string token, string idevento="")//Deberíamos sacar el "" en idevento
+        private string nombreReal;
+        public Post(string usuario, string token, string idevento = "", string nombreReal = "")//Deberíamos sacar el "" en idevento
         {
             InitializeComponent();
             txtUrl.Visible = false;
             user = usuario;
             this.idevento = idevento;
             this.token = token;
+            this.nombreReal = nombreReal;
             this.BackColor = Color.LightGray;
             this.btnUbicacion.Visible = false;
             this.txtNombre.Visible = false;
@@ -43,7 +45,7 @@ namespace Frontend
             lblEvento.ForeColor = Color.Gray;
             lblGrupo.ForeColor = Color.Gray;
             pnlOpcionPost.Visible = true;
-            if (!idevento.Equals(""))
+            if (!idevento.Equals("") || !nombreReal.Equals(""))
             {
                 lblEvento.Visible = false;
                 pnlOpcionEvento.Visible = false;
@@ -53,13 +55,21 @@ namespace Frontend
                 pnlOpcionPost.Visible = false;
                 this.txtCategorias.Visible = false;
             }
+            Console.WriteLine(nombreReal);
         }
+
+
 
         public event EventHandler Creado;
         public event EventHandler Salir;
         public event EventHandler CambiaTamaño;
         private async void btnCrear_Click(object sender, EventArgs e)
         {
+            if (nombreReal != "" && idevento != "")
+            {
+                MessageBox.Show("Se ha enviado un id de grupo y evento", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             if (!idevento.Equals(""))
             {
                 if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text))
@@ -87,10 +97,41 @@ namespace Frontend
                         Creado?.Invoke(this, EventArgs.Empty);
                     }
                 }
+                return;
             }
-            else
+
+            if (!nombreReal.Equals(""))
             {
-                switch (menuActual)
+                if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text))
+                {
+                    MessageBox.Show("No puede realizar un post sin contenido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    DateTime fechayhoraactual = DateTime.Now;
+                    string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
+                    if (pbxImagen.Image == null)
+                    {
+                        byte[] data = new byte[0];
+                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, "", "", nombreReal);
+                        MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Creado?.Invoke(this, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        MemoryStream ms = new MemoryStream();
+                        pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
+                        byte[] data = ms.ToArray();
+                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento);
+                        MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Creado?.Invoke(this, EventArgs.Empty);
+                    }
+                }
+                return;
+            }
+
+
+            switch (menuActual)
                 {
                     case "post":
                         if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text))
@@ -105,7 +146,7 @@ namespace Frontend
                             if (pbxImagen.Image == null)
                             {
                                 byte[] data = new byte[0];
-                                var respuesta=await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, categoria: txtCategorias.Text);
+                                var respuesta =await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, categoria: txtCategorias.Text);
                                 MessageBox.Show("" + respuesta);
                                 MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 Creado?.Invoke(this, EventArgs.Empty);
@@ -170,7 +211,7 @@ namespace Frontend
 
                         }
                         break;
-                }
+                
             }
         }
 
@@ -226,7 +267,7 @@ namespace Frontend
             }
         }
 
-        public static async Task<dynamic> Publicar(string texto, string url, byte[] imagen, string fechaHora, string token, string idevento="", string categoria="")
+        public static async Task<dynamic> Publicar(string texto, string url, byte[] imagen, string fechaHora, string token, string idevento="", string categoria="", string nombreReal="")
         {
             using (HttpClient client = new HttpClient())
             {
@@ -234,7 +275,7 @@ namespace Frontend
                 {
                     if (imagen.Length == 0)
                     {
-                        var datos = new { text = texto, link = url, user = user, fechayhora = fechaHora, idEvento=idevento,token = token, categoria=categoria};
+                        var datos = new { text = texto, link = url, user = user, fechayhora = fechaHora, idEvento=idevento,token = token, categoria=categoria, nombreReal = nombreReal};
                         var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
                         response.EnsureSuccessStatusCode();

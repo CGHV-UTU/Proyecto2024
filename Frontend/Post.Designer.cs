@@ -284,7 +284,7 @@ namespace Frontend
             this.btnCrear.BackColor = System.Drawing.Color.Transparent;
             this.btnCrear.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCrear.Image = ((System.Drawing.Image)(resources.GetObject("btnCrear.Image")));
-            this.btnCrear.Location = new System.Drawing.Point(22, 404);
+            this.btnCrear.Location = new System.Drawing.Point(22, 443);
             this.btnCrear.Name = "btnCrear";
             this.btnCrear.Size = new System.Drawing.Size(372, 87);
             this.btnCrear.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -338,7 +338,7 @@ namespace Frontend
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(420, 511);
+            this.ClientSize = new System.Drawing.Size(420, 526);
             this.Controls.Add(this.txtCategorias);
             this.Controls.Add(this.pnlOpcionGrupo);
             this.Controls.Add(this.pnlOpcionEvento);

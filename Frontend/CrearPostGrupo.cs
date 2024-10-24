@@ -16,7 +16,7 @@ namespace Frontend
 {
     public partial class CrearPostGrupo : Form
     {
-        private static string user;
+        private string user;
         private string token;
         private Panel pnlURL;
         private Panel pnlTexto;
@@ -37,6 +37,9 @@ namespace Frontend
         public CrearPostGrupo(string usuario, string nombreReal, string token)//Deberíamos sacar el "" en idevento
         {
             InitializeComponent();
+            this.token = token;
+            this.nombreReal = nombreReal;
+            this.user = usuario;
         }
 
         private void InitializeComponent()
@@ -184,7 +187,7 @@ namespace Frontend
                 if (pbxImagen.Image == null)
                 {
                     byte[] data = new byte[0];
-                    await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, nombreReal);
+                    await Publicar(user, txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, nombreReal);
                     MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Creado?.Invoke(this, EventArgs.Empty);
                 }
@@ -193,7 +196,7 @@ namespace Frontend
                     MemoryStream ms = new MemoryStream();
                     pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                     byte[] data = ms.ToArray();
-                    await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, nombreReal);
+                    await Publicar(user, txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, nombreReal);
                     MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Creado?.Invoke(this, EventArgs.Empty);
                 }
@@ -253,7 +256,7 @@ namespace Frontend
         }
 
         //Por revisar
-        public static async Task Publicar(string texto, string url, byte[] imagen, string fechaHora, string token, string nombreReal)
+        public static async Task Publicar(string user, string texto, string url, byte[] imagen, string fechaHora, string token, string nombreReal)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -268,7 +271,7 @@ namespace Frontend
                     }
                     else
                     {
-                        var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user, fechayhora = fechaHora, token = token };
+                        var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user, fechayhora = fechaHora, token = token , nombreReal = nombreReal };
                         var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
                         response.EnsureSuccessStatusCode();

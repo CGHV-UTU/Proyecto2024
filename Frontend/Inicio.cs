@@ -32,7 +32,7 @@ namespace Frontend
             PanelNotificaciones.Visible = false;
             PanelMostrarUsuario.Visible = false;
             panelBusqueda.Visible = false;
-            cargarLaImagen(); //hacer que se muestre circular
+            cargarLaImagen(); 
         }
 
         private async void cargarLaImagen()
@@ -42,6 +42,7 @@ namespace Frontend
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);
             this.PictureBoxUsuario.Image = bitmap;
+            redondearPictureBox(bitmap);
         }
         static async Task<string> conseguirImagenDePerfil(string creador, string token)
         {
@@ -64,6 +65,23 @@ namespace Frontend
                 }
             }
         }
+
+
+        public void redondearPictureBox(Image image)
+        {
+            if (image == null)
+            {
+                MessageBox.Show("La imagen es nula. No se puede redondear.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            System.Drawing.Drawing2D.GraphicsPath gp = new System.Drawing.Drawing2D.GraphicsPath();
+            gp.AddEllipse(0, 0, PictureBoxUsuario.Width, PictureBoxUsuario.Height);
+            Region rg = new Region(gp);
+            PictureBoxUsuario.Region = rg;
+            PictureBoxUsuario.Image = image;
+        }
+
 
         // Método para inicializar componentes adicionales, incluido el PanelNotificaciones
         private void IniciarComponentesAdicionales()
@@ -171,6 +189,7 @@ namespace Frontend
             {
                 BackColor = Color.FromArgb(20, 20, 20);
                 post.BackColor = Color.FromArgb(40, 40, 40);
+               
             }
             else
             {

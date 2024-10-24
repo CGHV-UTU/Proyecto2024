@@ -543,7 +543,7 @@ namespace Frontend
 
             // lblFechaYhora
             this.lblFechaYhora.AutoSize = true;
-            this.lblFechaYhora.Location = new System.Drawing.Point(170, 50);
+            this.lblFechaYhora.Location = new System.Drawing.Point(300, 50);
             this.lblFechaYhora.Name = "lblFechaYhora";
             this.lblFechaYhora.Size = new System.Drawing.Size(44, 13);
             this.lblFechaYhora.TabIndex = 42;

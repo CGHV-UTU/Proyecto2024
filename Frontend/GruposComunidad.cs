@@ -73,6 +73,7 @@ namespace Frontend
             this.pbxImagen = new System.Windows.Forms.PictureBox();
             this.lblNombre = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblEditando = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
@@ -98,7 +99,6 @@ namespace Frontend
             this.pnlPostsGrupo = new System.Windows.Forms.Panel();
             this.txtURL = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lblEditando = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEnviar)).BeginInit();
@@ -149,6 +149,15 @@ namespace Frontend
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(971, 65);
             this.panel1.TabIndex = 49;
+            // 
+            // lblEditando
+            // 
+            this.lblEditando.AutoSize = true;
+            this.lblEditando.Location = new System.Drawing.Point(59, 35);
+            this.lblEditando.Name = "lblEditando";
+            this.lblEditando.Size = new System.Drawing.Size(63, 13);
+            this.lblEditando.TabIndex = 80;
+            this.lblEditando.Text = "EDITANDO";
             // 
             // panel8
             // 
@@ -215,7 +224,7 @@ namespace Frontend
             // pbxCrearPostGrupo
             // 
             this.pbxCrearPostGrupo.Image = global::Frontend.Properties.Resources.crear;
-            this.pbxCrearPostGrupo.Location = new System.Drawing.Point(456, 474);
+            this.pbxCrearPostGrupo.Location = new System.Drawing.Point(460, 497);
             this.pbxCrearPostGrupo.Name = "pbxCrearPostGrupo";
             this.pbxCrearPostGrupo.Size = new System.Drawing.Size(55, 58);
             this.pbxCrearPostGrupo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -413,15 +422,6 @@ namespace Frontend
             this.panel2.Size = new System.Drawing.Size(971, 3);
             this.panel2.TabIndex = 76;
             // 
-            // lblEditando
-            // 
-            this.lblEditando.AutoSize = true;
-            this.lblEditando.Location = new System.Drawing.Point(59, 35);
-            this.lblEditando.Name = "lblEditando";
-            this.lblEditando.Size = new System.Drawing.Size(63, 13);
-            this.lblEditando.TabIndex = 80;
-            this.lblEditando.Text = "EDITANDO";
-            // 
             // GruposComunidad
             // 
             this.ClientSize = new System.Drawing.Size(996, 596);
@@ -557,6 +557,7 @@ namespace Frontend
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    MessageBox.Show("Nuevo ciclo");
                     return data;
                 }
                 catch
@@ -713,9 +714,9 @@ namespace Frontend
             ofd.Filter = "Archivos de imagen|*.png;*.jpg;*.jpeg"; //Para que sólo aparezcan fotos
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                pbxCrearPostGrupo.ImageLocation = ofd.FileName;
-                pbxCrearPostGrupo.SizeMode = PictureBoxSizeMode.StretchImage;
-                pbxCrearPostGrupo.Visible = true;
+                pictureBox2.ImageLocation = ofd.FileName;
+                pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox2.Visible = true;
             }
         }
 
@@ -723,6 +724,8 @@ namespace Frontend
         {
             pnlPostsGrupo.Visible = false;
             pnlChat.Visible = true;
+            panel1.Visible = true;
+            pbxCrearPostGrupo.Visible = false;
         }
         static async Task<dynamic> ConseguirPosts(string nombreGrupo, string token)
         {
@@ -752,6 +755,9 @@ namespace Frontend
             pnlChat.Visible = false;
             pnlPostsGrupo.Visible = true;
             pnlPostsGrupo.BringToFront();
+            pbxCrearPostGrupo.Visible = true;
+            pnlAsociarContenido.Visible = false;
+            panel1.Visible = false;
             DataTable posts = await ConseguirPosts(nombreGrupo, token);
             if (posts != null)
             {
@@ -779,10 +785,11 @@ namespace Frontend
 
         private void pbxCrearPostGrupo_Click(object sender, EventArgs e)
         {
-            CrearPostGrupo crearPostGrupo = new CrearPostGrupo(user, nombreGrupo, token);
+            Post crearPostGrupo = new Post(user, token, "", nombreGrupo);
             crearPostGrupo.TopLevel = false;
             crearPostGrupo.FormBorderStyle = FormBorderStyle.None;
-            crearPostGrupo.Dock = DockStyle.Fill;
+            crearPostGrupo.Dock = DockStyle.None;
+
             pnlPostsGrupo.Controls.Add(crearPostGrupo);
             crearPostGrupo.Show();
         }
