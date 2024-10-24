@@ -1336,3 +1336,21 @@ D:\Utu 2024\Programacion\Api Grupos mensajes\Proyecto2024\UnitTest1\bin\Debug\es
 D:\Utu 2024\Programacion\Api Grupos mensajes\Proyecto2024\UnitTest1\bin\Debug\es\System.Web.Razor.resources.dll
 D:\Utu 2024\Programacion\Api Grupos mensajes\Proyecto2024\UnitTest1\bin\Debug\es\System.Web.WebPages.Deployment.resources.dll
 D:\Utu 2024\Programacion\Api Grupos mensajes\Proyecto2024\UnitTest1\obj\Debug\UnitTest1.csproj.CopyComplete
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\System.IdentityModel.Tokens.Jwt.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\Microsoft.IdentityModel.Tokens.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\System.Text.Json.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\Microsoft.IdentityModel.Logging.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\System.Text.Encodings.Web.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\Microsoft.IdentityModel.Abstractions.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\Microsoft.Bcl.TimeProvider.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\System.ValueTuple.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\System.IdentityModel.Tokens.Jwt.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\Microsoft.IdentityModel.Tokens.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\System.Text.Json.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\Microsoft.IdentityModel.JsonWebTokens.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\Microsoft.IdentityModel.Logging.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\System.Text.Encodings.Web.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\Microsoft.IdentityModel.Abstractions.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\Microsoft.Bcl.TimeProvider.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\UnitTest1\bin\Debug\System.ValueTuple.xml

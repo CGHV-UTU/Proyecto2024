@@ -1202,3 +1202,21 @@ C:\Users\FedeG\Downloads\1910grupos\Proyecto2024\APIGrupos2019\obj\Debug\APIGrup
 C:\Users\FedeG\Downloads\1910grupos\Proyecto2024\APIGrupos2019\obj\Debug\APIGrupos2019.csproj.CopyComplete
 C:\Users\FedeG\Downloads\1910grupos\Proyecto2024\APIGrupos2019\obj\Debug\APIGrupos2019.dll
 C:\Users\FedeG\Downloads\1910grupos\Proyecto2024\APIGrupos2019\obj\Debug\APIGrupos2019.pdb
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\Microsoft.Bcl.TimeProvider.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\Microsoft.IdentityModel.Abstractions.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\Microsoft.IdentityModel.Logging.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\Microsoft.IdentityModel.Tokens.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\System.IdentityModel.Tokens.Jwt.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\System.Text.Encodings.Web.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\System.Text.Json.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\System.ValueTuple.dll
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\Microsoft.Bcl.TimeProvider.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\Microsoft.IdentityModel.Abstractions.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\Microsoft.IdentityModel.JsonWebTokens.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\Microsoft.IdentityModel.Logging.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\Microsoft.IdentityModel.Tokens.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\System.IdentityModel.Tokens.Jwt.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\System.Text.Encodings.Web.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\System.Text.Json.xml
+D:\Utu 2024\Programacion\apigrupos\Proyecto2024\APIGrupos2019\bin\System.ValueTuple.xml

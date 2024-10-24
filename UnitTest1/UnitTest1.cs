@@ -445,6 +445,31 @@ namespace UnitTest1
         public async Task TestMethod13()
         {
             var controller = new API_Grupos.Controllers.GroupController();
+            API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreVisible = "Nuevo",
+                token = "TestToken" 
+            };
+
+            var result = await controller.BuscarGrupos(testGroupData);
+
+            var jsonResult = result as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
+
+            Assert.IsNotNull(jsonResult, "El resultado no debe ser nulo");
+
+            var gruposList = jsonResult.Content;
+
+            Assert.IsNotNull(gruposList, "El contenido no debe ser nulo");
+
+            Assert.IsTrue(gruposList.Count > 0, "El resultado debe contener al menos un grupo");
+
+            Assert.AreEqual("Nuevo Nombre Visible", gruposList[0].nombreVisible, "Nombre Visible incorrecto");
+        }
+
+        [TestMethod]
+        public async Task TestMethod14()
+        {
+            var controller = new API_Grupos.Controllers.GroupController();
 
             API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
             {
@@ -458,7 +483,45 @@ namespace UnitTest1
             var jsonResultList = obtenerGruposResult as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
             Assert.IsNotNull(jsonResultList, "El resultado de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
 
-            // Validar que el contenido de la respuesta no sea nulo y contenga al menos un grupo
+            var gruposList = jsonResultList.Content;
+            Assert.IsNotNull(gruposList, "El contenido de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
+            Assert.IsTrue(gruposList.Count > 0, "El resultado de ObtenerGruposPorNombreVisibleYUsuario debe contener al menos un grupo");
+
+            string nombreReal = gruposList[0].nombreReal;
+
+            API_Grupos.Controllers.GroupController.Grupo groupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreReal = nombreReal,
+                nombreDeCuenta = "usuarioReportar",
+                token = "TestToken"
+            };
+
+            var enviarSolicitudResult = await controller.EnviarSolicitudParaUnirseAlGrupo(groupData);
+
+            var jsonResult = enviarSolicitudResult as System.Web.Http.Results.JsonResult<string>;
+            Assert.IsNotNull(jsonResult, "El resultado de EnviarSolicitudParaUnirseAlGrupo no debe ser nulo");
+
+            string mensajeSolicitud = jsonResult.Content;
+            Assert.AreEqual("Solicitud enviada correctamente", mensajeSolicitud, $"Se esperaba que la solicitud fuera enviada correctamente, pero el mensaje fue: {mensajeSolicitud}");
+        }
+
+        [TestMethod]
+        public async Task TestMethod15()
+        {
+            var controller = new API_Grupos.Controllers.GroupController();
+
+            API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreVisible = "Nuevo Nombre Visible",
+                nombreDeCuenta = "nombre",
+                token = "TestToken"
+            };
+
+            var obtenerGruposResult = await controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData);
+
+            var jsonResultList = obtenerGruposResult as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
+            Assert.IsNotNull(jsonResultList, "El resultado de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
+
             var gruposList = jsonResultList.Content;
             Assert.IsNotNull(gruposList, "El contenido de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
             Assert.IsTrue(gruposList.Count > 0, "El resultado de ObtenerGruposPorNombreVisibleYUsuario debe contener al menos un grupo");
@@ -477,6 +540,9 @@ namespace UnitTest1
             string mensajeEliminacion = eliminarJsonResult.Content;
             Assert.AreEqual("Se pudo eliminar", mensajeEliminacion, $"Se esperaba que el grupo fuera eliminado correctamente, pero el mensaje fue: {mensajeEliminacion}");
         }
+
+
+
 
 
 
