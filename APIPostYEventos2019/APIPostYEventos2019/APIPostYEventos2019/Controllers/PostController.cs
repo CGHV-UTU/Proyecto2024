@@ -929,7 +929,7 @@ namespace APIPostYEventos2019.Controllers
                     }
                     if (!string.IsNullOrEmpty(eventdata.fechaYhora_Final))
                     {
-                        cmd.Parameters.AddWithValue("@FechayHoraFinal", fechaYhoraInicio);
+                        cmd.Parameters.AddWithValue("@FechayHoraFinal", fechaYhoraFinal);
                     }
                     else
                     {
@@ -941,9 +941,9 @@ namespace APIPostYEventos2019.Controllers
                     return Json("modificacion correcta");
 
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return Json("modificacion erronea");
+                    return Json("modificacion erronea" + ex.Message);
                 }
             }
             else
@@ -1826,50 +1826,70 @@ namespace APIPostYEventos2019.Controllers
         {
             try
             {
-                if (TestToken(evento.token))
+                if (!TestToken(evento.token))
                 {
-                    using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+                    return Json("Token expirado");
+                }
+
+                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+                {
+                    await conn.OpenAsync();
+                    string query = "SELECT idEvento, titulo, foto FROM Eventos WHERE titulo LIKE CONCAT('%', @titulo, '%')";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        await conn.OpenAsync();
-                        string query = "SELECT idEvento, titulo, foto FROM Eventos WHERE titulo LIKE CONCAT('%', @titulo, '%')";
-                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                        cmd.Parameters.AddWithValue("@titulo", evento.titulo);
+
+                        using (MySqlDataReader reader = (MySqlDataReader)await cmd.ExecuteReaderAsync())
                         {
-                            cmd.Parameters.AddWithValue("@titulo", evento.titulo);
-                            using (MySqlDataReader reader = (MySqlDataReader)await cmd.ExecuteReaderAsync())
+                            List<EventoResponse> lista = new List<EventoResponse>();
+
+                            while (await reader.ReadAsync())
                             {
-                                List<EventoResponse> lista = new List<EventoResponse>();
-                                while (await reader.ReadAsync())
+                                string fotoUrl = reader["foto"].ToString();
+                                string fotoCargada;
+
+                                try
                                 {
+                                    fotoCargada = await CargarImagenDeGitHub(fotoUrl);
+                                }
+                                catch (Exception ex)
+                                {
+                                    fotoCargada = "Imagen no disponible";
                                     lista.Add(new EventoResponse
                                     {
                                         idEvento = reader["idEvento"].ToString(),
-                                        titulo = reader["titulo"].ToString(),
-                                        foto = await CargarImagenDeGitHub(reader["foto"].ToString())
+                                        titulo = reader["titulo"].ToString()
                                     });
                                 }
 
-                                if (lista.Count > 0)
+                                lista.Add(new EventoResponse
                                 {
-                                    return Json(lista);  // Retornar la lista de eventos tipada
-                                }
-                                else
-                                {
-                                    return Json("No se encontraron eventos cuyos nombres concuerden con los parámetros de búsqueda especificados");
-                                }
+                                    idEvento = reader["idEvento"].ToString(),
+                                    titulo = reader["titulo"].ToString(),
+                                    foto = fotoCargada
+                                });
+                            }
+
+                            if (lista.Count > 0)
+                            {
+                                return Json(lista);
+                            }
+                            else
+                            {
+                                return Json("No se encontraron eventos cuyos nombres concuerden con los parámetros de búsqueda especificados");
                             }
                         }
                     }
                 }
-                else
-                {
-                    return Json("Token expirado");
-                }
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error en BuscarEventos: {ex.Message}\n{ex.StackTrace}");
                 return Json("Hubo un error: " + ex.Message);
             }
         }
+
 
 
 
@@ -1898,6 +1918,7 @@ namespace APIPostYEventos2019.Controllers
                 return Json("Hubo un error");
             }
         }
+
         [HttpPut]
         [Route("CreadorDelEvento")]
         public dynamic CreadorDelEvento([FromBody] EventData eventData)
@@ -1920,6 +1941,40 @@ namespace APIPostYEventos2019.Controllers
                     else
                     {
                         return Json("EL EVENTO NO TIENE CREADOR");
+                    }
+                }
+                else 
+                {
+                    return Json("Token expirado");
+                }
+            }
+            catch
+            {
+                return Json("Hubo un error");
+            }
+        }
+
+        [HttpPut]
+        [Route("RolDelEvento")]
+        public dynamic RolDelEvento([FromBody] EventData eventData)
+        {
+            try
+            {
+                if (TestToken(eventData.token))
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT rol FROM infini.ParticipaEvento WHERE idEvento=@id AND nombreDeCuenta=@nombreDeCuenta", conn);
+                    cmd.Parameters.AddWithValue("@id", eventData.id);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", eventData.user);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        return Json(reader["rol"].ToString());
+                    }
+                    else
+                    {
+                        return Json("El usuario no participa del evento");
                     }
                 }
                 else
