@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http.Results;
 using API_Grupos.Controllers;
+using System.Data;
 
 namespace UnitTest1
 {
@@ -505,8 +506,51 @@ namespace UnitTest1
             Assert.AreEqual("Solicitud enviada correctamente", mensajeSolicitud, $"Se esperaba que la solicitud fuera enviada correctamente, pero el mensaje fue: {mensajeSolicitud}");
         }
 
+        [TestMethod] //Se debe crear un post de grupo si no el metodo no funcionara
+        public void TestMethod15()
+        {
+            var controller = new API_Grupos.Controllers.GroupController();
+            var testGroupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreVisible = "Nuevo Nombre Visible",
+                nombreDeCuenta = "nombre",
+                token = "TestToken"
+            };
+
+            var obtenerGruposResult = controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData).Result;
+            var jsonResultList = obtenerGruposResult as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
+            Assert.IsNotNull(jsonResultList, "El resultado de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo.");
+
+            var gruposList = jsonResultList.Content;
+            Assert.IsNotNull(gruposList, "La lista de grupos no debe ser nula.");
+            Assert.IsTrue(gruposList.Count > 0, "Debe existir al menos un grupo en la lista de resultados.");
+
+            string nombreReal = gruposList[0].nombreReal;
+            var groupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreReal = nombreReal,
+                token = "TestToken"
+            };
+
+            var conseguirPostsResult = controller.ConseguirPostsDeGrupo(groupData);
+            var jsonResult = conseguirPostsResult as System.Web.Http.Results.JsonResult<DataTable>;
+            Assert.IsNotNull(jsonResult, "El resultado de ConseguirPostsDeGrupo debe ser un JsonResult.");
+
+            var dataTable = jsonResult.Content;
+            Assert.IsNotNull(dataTable, "El DataTable devuelto no debe ser nulo.");
+            Assert.IsTrue(dataTable.Rows.Count > 0, "El DataTable debe contener al menos un post.");
+            Assert.IsTrue(dataTable.Columns.Contains("idPost"), "El DataTable debe contener la columna 'idPost'.");
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                Assert.IsNotNull(row["idPost"], "Cada fila debe contener un valor en 'idPost'.");
+            }
+        }
+
+
+
         [TestMethod]
-        public async Task TestMethod15()
+        public async Task TestMethod16()
         {
             var controller = new API_Grupos.Controllers.GroupController();
 

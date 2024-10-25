@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Data;
 
 namespace API_Grupos.Controllers
 {
@@ -972,6 +973,35 @@ namespace API_Grupos.Controllers
             catch (Exception ex)
             {
                 return Json("Hubo un error: " + ex.Message);
+            }
+        }
+
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("ConseguirPostsDeGrupo")]
+        public dynamic ConseguirPostsDeGrupo([FromBody] Grupo grupo)
+        {
+            try
+            {
+                if (TestToken(grupo.token))
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT idPost FROM PostGrupo WHERE nombreReal=@nombre", conn);
+                    cmd.Parameters.AddWithValue("@nombre", grupo.nombreReal);
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+                    conn.Close();
+                    return Json(dataTable);
+                }
+                else
+                {
+                    return Json("Token expirado");
+                }
+            }
+            catch
+            {
+                return Json("Hubo un error");
             }
         }
 
