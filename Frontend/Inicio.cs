@@ -473,7 +473,8 @@ namespace Frontend
             comunidad.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
             //comunidad.BackColor = Color.FromArgb(34, 67, 220);
-            comunidad.PostearEnEvento+= EventoComunidad_PostearEnEvento;
+            comunidad.PostearEnEvento += EventoComunidad_PostearEnEvento;
+            comunidad.EventoEliminado += PictureboxLogo_Click;
             //comunidad.AbrirEvento += PostControl_AbrirComentarios;
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();

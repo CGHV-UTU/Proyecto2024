@@ -21,8 +21,6 @@ namespace Frontend
         private PictureBox btnUbicacion;
         private Label lblDescripcion;
         private Label lblUbicacion;
-        private PictureBox pictureBox1;
-        private Label lblHorario;
         private Label lblNombre;
         private Panel panelPosts;
         private PictureBox btnSeguir;
@@ -34,11 +32,19 @@ namespace Frontend
         private TextBox txtNombre;
         private TextBox txtDesc;
         private TextBox txtUbicacion;
-        private TextBox txtHora;
+        private Label lblEditar;
+        private Label lblEliminar;
+        private PictureBox pbxConfirmarCambios;
+        private PictureBox pbxSeleccionarImagen;
+        private Label lblCancelar;
+        private PictureBox pbxImagenEditar;
+        private Label label1;
+        private Label label2;
         private string modo;
         public event EventHandler<PersonalizedArgs> PostearEnEvento;
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarPost;
+        public event EventHandler<PersonalizedArgs> EventoEliminado;
         public EventoComunidad(dynamic EventData,string user, string token, string modo)
         {
             InitializeComponent();
@@ -49,6 +55,17 @@ namespace Frontend
             AplicarDatos(EventData);
             LoadPosts();
             CompararCreador();
+            txtNombre.Visible = false;
+            txtDesc.Visible = false;
+            txtUbicacion.Visible = false;
+            dtpFechaInicio.Enabled = false;
+            dtpFechaFinal.Enabled = false;
+            pbxConfirmarCambios.Visible = false;
+            lblEditar.Visible = false;
+            lblEliminar.Visible = false;
+            lblCancelar.Visible = false;
+            pbxImagenEditar.Visible = false;
+            pbxSeleccionarImagen.Visible = false;
         }
         
         private async void CompararCreador()
@@ -65,7 +82,7 @@ namespace Frontend
             {
                 try
                 {
-                    var dato = new { idEvento = idevento, user=usuario, token = token };
+                    var dato = new { id = idevento, user=usuario, token = token };
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/CreadorDelEvento", content);
                     response.EnsureSuccessStatusCode();
@@ -86,10 +103,8 @@ namespace Frontend
             this.lblNombre = new System.Windows.Forms.Label();
             this.lblDescripcion = new System.Windows.Forms.Label();
             this.lblUbicacion = new System.Windows.Forms.Label();
-            this.lblHorario = new System.Windows.Forms.Label();
             this.panelPosts = new System.Windows.Forms.Panel();
             this.btnSeguir = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnUbicacion = new System.Windows.Forms.PictureBox();
             this.pbxImagen = new System.Windows.Forms.PictureBox();
             this.btnCrear = new System.Windows.Forms.PictureBox();
@@ -97,20 +112,29 @@ namespace Frontend
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.txtDesc = new System.Windows.Forms.TextBox();
             this.txtUbicacion = new System.Windows.Forms.TextBox();
-            this.txtHora = new System.Windows.Forms.TextBox();
+            this.lblEditar = new System.Windows.Forms.Label();
+            this.lblEliminar = new System.Windows.Forms.Label();
+            this.pbxConfirmarCambios = new System.Windows.Forms.PictureBox();
+            this.pbxSeleccionarImagen = new System.Windows.Forms.PictureBox();
+            this.lblCancelar = new System.Windows.Forms.Label();
+            this.pbxImagenEditar = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUbicacion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnCrear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEditar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxConfirmarCambios)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSeleccionarImagen)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxImagenEditar)).BeginInit();
             this.SuspendLayout();
             // 
             // dtpFechaInicio
             // 
             this.dtpFechaInicio.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dtpFechaInicio.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpFechaInicio.Location = new System.Drawing.Point(531, 65);
+            this.dtpFechaInicio.Location = new System.Drawing.Point(760, 108);
             this.dtpFechaInicio.Name = "dtpFechaInicio";
             this.dtpFechaInicio.ShowUpDown = true;
             this.dtpFechaInicio.Size = new System.Drawing.Size(200, 20);
@@ -120,7 +144,7 @@ namespace Frontend
             // 
             this.dtpFechaFinal.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dtpFechaFinal.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpFechaFinal.Location = new System.Drawing.Point(760, 65);
+            this.dtpFechaFinal.Location = new System.Drawing.Point(760, 134);
             this.dtpFechaFinal.Name = "dtpFechaFinal";
             this.dtpFechaFinal.ShowUpDown = true;
             this.dtpFechaFinal.Size = new System.Drawing.Size(200, 20);
@@ -156,16 +180,6 @@ namespace Frontend
             this.lblUbicacion.TabIndex = 47;
             this.lblUbicacion.Text = "lblUbicacion";
             // 
-            // lblHorario
-            // 
-            this.lblHorario.AutoSize = true;
-            this.lblHorario.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHorario.Location = new System.Drawing.Point(618, 142);
-            this.lblHorario.Name = "lblHorario";
-            this.lblHorario.Size = new System.Drawing.Size(35, 16);
-            this.lblHorario.TabIndex = 49;
-            this.lblHorario.Text = "hora";
-            // 
             // panelPosts
             // 
             this.panelPosts.AutoScroll = true;
@@ -184,19 +198,6 @@ namespace Frontend
             this.btnSeguir.TabIndex = 51;
             this.btnSeguir.TabStop = false;
             this.btnSeguir.Click += new System.EventHandler(this.btnSeguir_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Image = global::Frontend.Properties.Resources.buscar;
-            this.pictureBox1.Location = new System.Drawing.Point(531, 108);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 48;
-            this.pictureBox1.TabStop = false;
             // 
             // btnUbicacion
             // 
@@ -239,7 +240,7 @@ namespace Frontend
             this.pbxEditar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxEditar.BackColor = System.Drawing.Color.Transparent;
             this.pbxEditar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbxEditar.Image = global::Frontend.Properties.Resources.config;
+            this.pbxEditar.Image = global::Frontend.Properties.Resources.mas_opciones;
             this.pbxEditar.Location = new System.Drawing.Point(910, 5);
             this.pbxEditar.Name = "pbxEditar";
             this.pbxEditar.Size = new System.Drawing.Size(50, 50);
@@ -250,36 +251,129 @@ namespace Frontend
             // 
             // txtNombre
             // 
-            this.txtNombre.Location = new System.Drawing.Point(259, 13);
+            this.txtNombre.Location = new System.Drawing.Point(159, 17);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(100, 20);
             this.txtNombre.TabIndex = 54;
             // 
             // txtDesc
             // 
-            this.txtDesc.Location = new System.Drawing.Point(259, 44);
+            this.txtDesc.Location = new System.Drawing.Point(159, 47);
             this.txtDesc.Name = "txtDesc";
             this.txtDesc.Size = new System.Drawing.Size(100, 20);
             this.txtDesc.TabIndex = 55;
             // 
             // txtUbicacion
             // 
-            this.txtUbicacion.Location = new System.Drawing.Point(101, 161);
+            this.txtUbicacion.Location = new System.Drawing.Point(101, 142);
             this.txtUbicacion.Name = "txtUbicacion";
             this.txtUbicacion.Size = new System.Drawing.Size(100, 20);
             this.txtUbicacion.TabIndex = 56;
             // 
-            // txtHora
+            // lblEditar
             // 
-            this.txtHora.Location = new System.Drawing.Point(605, 161);
-            this.txtHora.Name = "txtHora";
-            this.txtHora.Size = new System.Drawing.Size(100, 20);
-            this.txtHora.TabIndex = 57;
+            this.lblEditar.AutoSize = true;
+            this.lblEditar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEditar.Location = new System.Drawing.Point(853, 9);
+            this.lblEditar.Name = "lblEditar";
+            this.lblEditar.Size = new System.Drawing.Size(51, 20);
+            this.lblEditar.TabIndex = 57;
+            this.lblEditar.Text = "Editar";
+            this.lblEditar.Click += new System.EventHandler(this.lblEditar_Click);
+            // 
+            // lblEliminar
+            // 
+            this.lblEliminar.AutoSize = true;
+            this.lblEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEliminar.Location = new System.Drawing.Point(839, 35);
+            this.lblEliminar.Name = "lblEliminar";
+            this.lblEliminar.Size = new System.Drawing.Size(65, 20);
+            this.lblEliminar.TabIndex = 58;
+            this.lblEliminar.Text = "Eliminar";
+            this.lblEliminar.Click += new System.EventHandler(this.lblEliminar_Click);
+            // 
+            // pbxConfirmarCambios
+            // 
+            this.pbxConfirmarCambios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxConfirmarCambios.BackColor = System.Drawing.Color.Transparent;
+            this.pbxConfirmarCambios.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxConfirmarCambios.Image = global::Frontend.Properties.Resources.aceptar;
+            this.pbxConfirmarCambios.Location = new System.Drawing.Point(474, 5);
+            this.pbxConfirmarCambios.Name = "pbxConfirmarCambios";
+            this.pbxConfirmarCambios.Size = new System.Drawing.Size(50, 50);
+            this.pbxConfirmarCambios.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxConfirmarCambios.TabIndex = 59;
+            this.pbxConfirmarCambios.TabStop = false;
+            this.pbxConfirmarCambios.Click += new System.EventHandler(this.pbxConfirmarCambios_Click);
+            // 
+            // pbxSeleccionarImagen
+            // 
+            this.pbxSeleccionarImagen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxSeleccionarImagen.BackColor = System.Drawing.Color.Transparent;
+            this.pbxSeleccionarImagen.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxSeleccionarImagen.Image = global::Frontend.Properties.Resources.Foto;
+            this.pbxSeleccionarImagen.Location = new System.Drawing.Point(103, 12);
+            this.pbxSeleccionarImagen.Name = "pbxSeleccionarImagen";
+            this.pbxSeleccionarImagen.Size = new System.Drawing.Size(50, 50);
+            this.pbxSeleccionarImagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxSeleccionarImagen.TabIndex = 60;
+            this.pbxSeleccionarImagen.TabStop = false;
+            this.pbxSeleccionarImagen.Click += new System.EventHandler(this.pbxSeleccionarImagen_Click);
+            // 
+            // lblCancelar
+            // 
+            this.lblCancelar.AutoSize = true;
+            this.lblCancelar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCancelar.Location = new System.Drawing.Point(542, 35);
+            this.lblCancelar.Name = "lblCancelar";
+            this.lblCancelar.Size = new System.Drawing.Size(72, 20);
+            this.lblCancelar.TabIndex = 61;
+            this.lblCancelar.Text = "Cancelar";
+            this.lblCancelar.Click += new System.EventHandler(this.lblCancelar_Click);
+            // 
+            // pbxImagenEditar
+            // 
+            this.pbxImagenEditar.Location = new System.Drawing.Point(12, 12);
+            this.pbxImagenEditar.Name = "pbxImagenEditar";
+            this.pbxImagenEditar.Size = new System.Drawing.Size(90, 90);
+            this.pbxImagenEditar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxImagenEditar.TabIndex = 62;
+            this.pbxImagenEditar.TabStop = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(660, 108);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(46, 20);
+            this.label1.TabIndex = 63;
+            this.label1.Text = "Inicia";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(660, 134);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(63, 20);
+            this.label2.TabIndex = 64;
+            this.label2.Text = "Finaliza";
             // 
             // EventoComunidad
             // 
             this.ClientSize = new System.Drawing.Size(996, 574);
-            this.Controls.Add(this.txtHora);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.pbxImagenEditar);
+            this.Controls.Add(this.lblCancelar);
+            this.Controls.Add(this.pbxSeleccionarImagen);
+            this.Controls.Add(this.pbxConfirmarCambios);
+            this.Controls.Add(this.lblEliminar);
+            this.Controls.Add(this.lblEditar);
+            this.Controls.Add(this.lblUbicacion);
+            this.Controls.Add(this.lblNombre);
+            this.Controls.Add(this.lblDescripcion);
             this.Controls.Add(this.txtUbicacion);
             this.Controls.Add(this.txtDesc);
             this.Controls.Add(this.txtNombre);
@@ -287,22 +381,19 @@ namespace Frontend
             this.Controls.Add(this.btnCrear);
             this.Controls.Add(this.btnSeguir);
             this.Controls.Add(this.panelPosts);
-            this.Controls.Add(this.lblHorario);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.lblUbicacion);
-            this.Controls.Add(this.lblDescripcion);
-            this.Controls.Add(this.lblNombre);
             this.Controls.Add(this.btnUbicacion);
             this.Controls.Add(this.dtpFechaFinal);
             this.Controls.Add(this.dtpFechaInicio);
             this.Controls.Add(this.pbxImagen);
             this.Name = "EventoComunidad";
             ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUbicacion)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnCrear)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEditar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxConfirmarCambios)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSeleccionarImagen)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxImagenEditar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -413,7 +504,138 @@ namespace Frontend
 
         private void pbxEditar_Click(object sender, EventArgs e)
         {
+            if (lblEditar.Visible == false)
+            {
+                lblEditar.Visible = true;
+                lblEliminar.Visible = true;
+            }
+            else
+            {
+                lblEditar.Visible = false;
+                lblEliminar.Visible = false;
+            }
+        }
 
+        private void lblEditar_Click(object sender, EventArgs e)
+        {
+            txtNombre.Visible = true;
+            txtDesc.Visible = true;
+            txtUbicacion.Visible = true;
+            dtpFechaInicio.Enabled = true;
+            dtpFechaFinal.Enabled = true;
+            pbxConfirmarCambios.Visible = true;
+            txtNombre.Text = lblNombre.Text;
+            txtDesc.Text = lblDescripcion.Text;
+            txtUbicacion.Text = lblUbicacion.Text;
+            lblCancelar.Visible = true;
+            pbxImagenEditar.Visible = true;
+            pbxImagenEditar.Image = pbxImagen.Image;
+            pbxSeleccionarImagen.Visible = true;
+            lblNombre.Visible = false;
+            lblDescripcion.Visible = false;
+            lblUbicacion.Visible = false;
+        }
+
+        static async Task<dynamic> EliminarEvento(string id, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var data = new { id = id, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/eliminarEvento", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic resultado = JsonConvert.DeserializeObject(responseBody);
+                    return resultado;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("ERROR DE CONEXIÓN");
+                    return "MAL";
+                }
+            }
+        }
+        private async void lblEliminar_Click(object sender, EventArgs e)
+        {
+            var resultado = await EliminarEvento(idEvento, token);
+            MessageBox.Show(""+resultado);
+            EventoEliminado?.Invoke(this, new PersonalizedArgs("Eliminado"));
+        }
+
+        static async Task<dynamic> Modificar(string id, string titulo, string fechaYhoraInicio, string fechaYhoraFinal, byte[] imagen, string ubicacion, string descripcion, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var data = new { id = id, titulo = titulo, fechaYhora_Inicio = fechaYhoraInicio, fechaYhora_Final=fechaYhoraFinal, ubicacion=ubicacion, descripcion=descripcion, foto = Convert.ToBase64String(imagen), token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/modificarEvento", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic resultado = JsonConvert.DeserializeObject(responseBody);
+                    return resultado;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("ERROR DE CONEXIÓN");
+                    return "MAL";
+                }
+            }
+        }
+        private async void pbxConfirmarCambios_Click(object sender, EventArgs e)
+        {
+            MemoryStream ms = new MemoryStream();
+            this.pbxImagenEditar.Image.Save(ms, ImageFormat.Jpeg);
+            byte[] imagen = ms.ToArray();
+            var respuesta = await Modificar(idEvento,txtNombre.Text,dtpFechaInicio.Text,dtpFechaFinal.Text, imagen, txtUbicacion.Text, txtDesc.Text, token);
+            MessageBox.Show("" + respuesta);
+            lblNombre.Text = txtNombre.Text;
+            lblDescripcion.Text= txtDesc.Text;
+            lblUbicacion.Text = txtUbicacion.Text;
+            pbxImagen.Image = pbxImagenEditar.Image;
+            pbxImagenEditar.Visible = false;
+            txtNombre.Visible = false;
+            txtDesc.Visible = false;
+            txtUbicacion.Visible = false;
+            dtpFechaInicio.Enabled = false;
+            dtpFechaFinal.Enabled = false;
+            pbxConfirmarCambios.Visible = false;
+            lblCancelar.Visible = false;
+            pbxSeleccionarImagen.Visible = false;
+            lblNombre.Visible = true;
+            lblDescripcion.Visible = true;
+            lblUbicacion.Visible = true;
+        }
+
+        private void pbxSeleccionarImagen_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    pbxImagenEditar.Image = Image.FromFile(ofd.FileName);
+                    pbxImagenEditar.SizeMode = PictureBoxSizeMode.StretchImage;
+                }
+            }
+        }
+
+        private void lblCancelar_Click(object sender, EventArgs e)
+        {
+            txtNombre.Visible = false;
+            txtDesc.Visible = false;
+            txtUbicacion.Visible = false;
+            dtpFechaInicio.Enabled = false;
+            dtpFechaFinal.Enabled = false;
+            pbxConfirmarCambios.Visible = false;
+            lblCancelar.Visible = false;
+            pbxImagenEditar.Visible = false;
+            pbxSeleccionarImagen.Visible = false;
+            lblNombre.Visible = true;
+            lblDescripcion.Visible = true;
+            lblUbicacion.Visible = true;
         }
     }
 }

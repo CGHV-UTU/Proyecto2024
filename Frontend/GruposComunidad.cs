@@ -53,6 +53,7 @@ namespace Frontend
         private string token;
         private Label lblName;
         private Label lblEditando;
+        private Panel pnlCrear;
         private string idUltimoMensaje;
         public GruposComunidad(dynamic groupData, string user, string token)
         {
@@ -66,6 +67,7 @@ namespace Frontend
             pnlChat.Visible = true;
             AñadirMensajes();
             lblEditando.Visible = false;
+            pnlCrear.Visible = false;
         }
         private void InitializeComponent()
         {
@@ -91,12 +93,13 @@ namespace Frontend
             this.lblAsociarVideo = new System.Windows.Forms.Label();
             this.pbxAsociarVideo = new System.Windows.Forms.PictureBox();
             this.pnlGruposComunidad = new System.Windows.Forms.Panel();
+            this.pnlCrear = new System.Windows.Forms.Panel();
+            this.pnlPostsGrupo = new System.Windows.Forms.Panel();
             this.lblName = new System.Windows.Forms.Label();
             this.lblPostsGrupo = new System.Windows.Forms.Label();
             this.lblChat = new System.Windows.Forms.Label();
             this.pbxFotoGrupo = new System.Windows.Forms.PictureBox();
             this.pnlChat = new System.Windows.Forms.Panel();
-            this.pnlPostsGrupo = new System.Windows.Forms.Panel();
             this.txtURL = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
@@ -110,7 +113,6 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.pbxAsociarVideo)).BeginInit();
             this.pnlGruposComunidad.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupo)).BeginInit();
-            this.pnlChat.SuspendLayout();
             this.SuspendLayout();
             // 
             // pbxImagen
@@ -145,7 +147,7 @@ namespace Frontend
             this.panel1.Controls.Add(this.pbxEnviar);
             this.panel1.Controls.Add(this.pbxAsociarContenido);
             this.panel1.Controls.Add(this.txtMensajeAEnviar);
-            this.panel1.Location = new System.Drawing.Point(13, 528);
+            this.panel1.Location = new System.Drawing.Point(8, 649);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(971, 65);
             this.panel1.TabIndex = 49;
@@ -224,7 +226,7 @@ namespace Frontend
             // pbxCrearPostGrupo
             // 
             this.pbxCrearPostGrupo.Image = global::Frontend.Properties.Resources.crear;
-            this.pbxCrearPostGrupo.Location = new System.Drawing.Point(460, 497);
+            this.pbxCrearPostGrupo.Location = new System.Drawing.Point(450, 615);
             this.pbxCrearPostGrupo.Name = "pbxCrearPostGrupo";
             this.pbxCrearPostGrupo.Size = new System.Drawing.Size(55, 58);
             this.pbxCrearPostGrupo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -273,7 +275,7 @@ namespace Frontend
             this.pnlAsociarContenido.Controls.Add(this.pictureBox2);
             this.pnlAsociarContenido.Controls.Add(this.lblAsociarVideo);
             this.pnlAsociarContenido.Controls.Add(this.pbxAsociarVideo);
-            this.pnlAsociarContenido.Location = new System.Drawing.Point(9, 399);
+            this.pnlAsociarContenido.Location = new System.Drawing.Point(3, 520);
             this.pnlAsociarContenido.Name = "pnlAsociarContenido";
             this.pnlAsociarContenido.Size = new System.Drawing.Size(169, 125);
             this.pnlAsociarContenido.TabIndex = 5;
@@ -327,9 +329,11 @@ namespace Frontend
             // pnlGruposComunidad
             // 
             this.pnlGruposComunidad.AutoScroll = true;
-            this.pnlGruposComunidad.Controls.Add(this.lblName);
             this.pnlGruposComunidad.Controls.Add(this.pbxCrearPostGrupo);
+            this.pnlGruposComunidad.Controls.Add(this.pnlCrear);
             this.pnlGruposComunidad.Controls.Add(this.pnlAsociarContenido);
+            this.pnlGruposComunidad.Controls.Add(this.pnlPostsGrupo);
+            this.pnlGruposComunidad.Controls.Add(this.lblName);
             this.pnlGruposComunidad.Controls.Add(this.lblPostsGrupo);
             this.pnlGruposComunidad.Controls.Add(this.lblChat);
             this.pnlGruposComunidad.Controls.Add(this.pbxFotoGrupo);
@@ -339,8 +343,24 @@ namespace Frontend
             this.pnlGruposComunidad.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlGruposComunidad.Location = new System.Drawing.Point(0, 0);
             this.pnlGruposComunidad.Name = "pnlGruposComunidad";
-            this.pnlGruposComunidad.Size = new System.Drawing.Size(996, 596);
+            this.pnlGruposComunidad.Size = new System.Drawing.Size(996, 717);
             this.pnlGruposComunidad.TabIndex = 47;
+            // 
+            // pnlCrear
+            // 
+            this.pnlCrear.Location = new System.Drawing.Point(281, 18);
+            this.pnlCrear.Name = "pnlCrear";
+            this.pnlCrear.Size = new System.Drawing.Size(436, 35);
+            this.pnlCrear.TabIndex = 0;
+            // 
+            // pnlPostsGrupo
+            // 
+            this.pnlPostsGrupo.AutoScroll = true;
+            this.pnlPostsGrupo.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.pnlPostsGrupo.Location = new System.Drawing.Point(12, 110);
+            this.pnlPostsGrupo.Name = "pnlPostsGrupo";
+            this.pnlPostsGrupo.Size = new System.Drawing.Size(971, 499);
+            this.pnlPostsGrupo.TabIndex = 80;
             // 
             // lblName
             // 
@@ -390,24 +410,14 @@ namespace Frontend
             // 
             this.pnlChat.AutoScroll = true;
             this.pnlChat.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.pnlChat.Controls.Add(this.pnlPostsGrupo);
             this.pnlChat.Location = new System.Drawing.Point(13, 113);
             this.pnlChat.Name = "pnlChat";
-            this.pnlChat.Size = new System.Drawing.Size(971, 378);
+            this.pnlChat.Size = new System.Drawing.Size(971, 499);
             this.pnlChat.TabIndex = 79;
-            // 
-            // pnlPostsGrupo
-            // 
-            this.pnlPostsGrupo.AutoScroll = true;
-            this.pnlPostsGrupo.BackColor = System.Drawing.Color.LightSkyBlue;
-            this.pnlPostsGrupo.Location = new System.Drawing.Point(0, 0);
-            this.pnlPostsGrupo.Name = "pnlPostsGrupo";
-            this.pnlPostsGrupo.Size = new System.Drawing.Size(971, 378);
-            this.pnlPostsGrupo.TabIndex = 80;
             // 
             // txtURL
             // 
-            this.txtURL.Location = new System.Drawing.Point(85, 497);
+            this.txtURL.Location = new System.Drawing.Point(71, 618);
             this.txtURL.Multiline = true;
             this.txtURL.Name = "txtURL";
             this.txtURL.Size = new System.Drawing.Size(854, 28);
@@ -424,7 +434,7 @@ namespace Frontend
             // 
             // GruposComunidad
             // 
-            this.ClientSize = new System.Drawing.Size(996, 596);
+            this.ClientSize = new System.Drawing.Size(996, 717);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.lblMiembros);
@@ -447,7 +457,6 @@ namespace Frontend
             this.pnlGruposComunidad.ResumeLayout(false);
             this.pnlGruposComunidad.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupo)).EndInit();
-            this.pnlChat.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -749,6 +758,11 @@ namespace Frontend
         }
         private async void lblPostsGrupo_Click(object sender, EventArgs e)
         {
+            if (pnlCrear.Visible == true)
+            {
+                pnlCrear.Visible = false;
+                pnlCrear.Controls.Clear();
+            }
             pnlPostsGrupo.Controls.Clear();
             pnlPostsGrupo.Parent = this;
             pnlPostsGrupo.Location = new Point(13, 113);
@@ -785,13 +799,16 @@ namespace Frontend
 
         private void pbxCrearPostGrupo_Click(object sender, EventArgs e)
         {
+            pnlCrear.Visible = true;
+            pnlCrear.Height = 692;
             Post crearPostGrupo = new Post(user, token, "", nombreGrupo);
             crearPostGrupo.TopLevel = false;
             crearPostGrupo.FormBorderStyle = FormBorderStyle.None;
-            crearPostGrupo.Dock = DockStyle.None;
-
-            pnlPostsGrupo.Controls.Add(crearPostGrupo);
+            crearPostGrupo.Creado += lblPostsGrupo_Click;
+            pnlCrear.Controls.Add(crearPostGrupo);
             crearPostGrupo.Show();
+            pnlCrear.BringToFront();
+            pnlPostsGrupo.Visible = false;
         }
 
         private void pbxAsociarVideo_Click(object sender, EventArgs e)

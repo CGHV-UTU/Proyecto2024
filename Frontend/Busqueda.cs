@@ -137,7 +137,7 @@ namespace Frontend
                     }
                     break;
                 case "grupos":
-                    var respuesta2 = await BuscarGrupos(user,txtBusqueda.Text, token);
+                    var respuesta2 = await BuscarGrupos(txtBusqueda.Text, user, token);
                     if (Convert.ToString(respuesta2).Equals("No se encontraron grupos cuyos nombres concuerden con los parámetros de búsqueda especificados") || Convert.ToString(respuesta2).Equals("Token expirado") || Convert.ToString(respuesta2).Equals("Hubo un error"))
                     {
                         MessageBox.Show(Convert.ToString(respuesta2));
