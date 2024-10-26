@@ -197,10 +197,11 @@ namespace API_Grupos.Controllers
                             cmd.Parameters.AddWithValue("@foto", linkImagen);
                             cmd.ExecuteNonQuery();
                         }
-                        using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, 'c')", conn))
+                        using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, @rol)", conn))
                         {
                             cmd2.Parameters.AddWithValue("@nombreDeCuenta", group.nombreDeCuenta);
                             cmd2.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                            cmd2.Parameters.AddWithValue("@rol", "creador");
                             cmd2.ExecuteNonQuery();
                         }
                         if (!string.IsNullOrEmpty(group.descripcion))
@@ -809,7 +810,7 @@ namespace API_Grupos.Controllers
                         {
                             cmd.Parameters.AddWithValue("@nombreUsuario", groupData.nombreDeCuenta);
                             cmd.Parameters.AddWithValue("@nombreGrupo", groupData.nombreReal);
-                            cmd.Parameters.AddWithValue("@rol", "usuario");
+                            cmd.Parameters.AddWithValue("@rol", groupData.rol);
                             await cmd.ExecuteNonQueryAsync();
                         }
                     }
@@ -1002,6 +1003,75 @@ namespace API_Grupos.Controllers
             catch
             {
                 return Json("Hubo un error");
+            }
+        }
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("ParticipaDelGrupo")]
+        public dynamic ParticipaDelGrupo([FromBody] Grupo grupo)
+        {
+            try
+            {
+                if (TestToken(grupo.token))
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT nombreDeCuenta FROM Participa WHERE nombreReal=@nombreReal AND nombreDeCuenta=@nombreDeCuenta", conn);
+                    cmd.Parameters.AddWithValue("@nombreReal", grupo.nombreReal);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", grupo.nombreDeCuenta);
+                    var result = cmd.ExecuteScalar();
+                    if (result != null)
+                    {
+                        return Json(result.ToString());
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return Json("No participa");
+                    }
+                }
+                else
+                {
+                    return Json("Token expirado");
+                }
+            }
+            catch
+            {
+                return Json("Hubo un error");
+            }
+        }
+
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("ObtenerRolDelUsuarioEnElGrupo")]
+        public dynamic ObtenerRolDelUsuarioEnElGrupo([FromBody] Grupo grupo)
+        {
+            try
+            {
+                if (TestToken(grupo.token))
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT rol FROM Participa WHERE nombreReal=@nombreReal AND nombreDeCuenta=@nombreDeCuenta", conn);
+                    cmd.Parameters.AddWithValue("@nombreReal", grupo.nombreReal);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", grupo.nombreDeCuenta);
+                    var result = cmd.ExecuteScalar();
+                    if (result != null)
+                    {
+                        return Json(result.ToString());
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return Json("No participa");
+                    }
+                }
+                else
+                {
+                    return Json("Token expirado");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json("Hubo un error" + ex.Message);
             }
         }
 

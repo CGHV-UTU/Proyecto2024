@@ -44,6 +44,8 @@ namespace UnitTest1
             Assert.IsNotNull(resultData, "El Data en JsonResult no es del tipo esperado.");
             Console.WriteLine($"Response: {resultData}");
             Assert.AreEqual("Registro correcto", resultData, "El grupo no se registró correctamente.");
+            Console.WriteLine($"Response: {resultData}");
+
         }
 
         private bool IsBase64String(string base64)
@@ -78,6 +80,8 @@ namespace UnitTest1
             Assert.IsNotNull(gruposList, "El contenido no debe ser nulo");
             Assert.IsTrue(gruposList.Count > 0, "El resultado debe contener un grupo");
             Assert.AreEqual(testGroupData.nombreVisible, gruposList[0].nombreVisible, "Nombre Visible incorrecto");
+            Console.WriteLine($"Response: {gruposList[0].nombreVisible}");
+
         }
 
         [TestMethod]
@@ -121,6 +125,8 @@ namespace UnitTest1
             var grupo = jsonResult.Content;
             Assert.IsNotNull(grupo, "El contenido no debe ser nulo");
             Assert.AreEqual(nombreReal, grupo.nombreReal, "Nombre de cuenta erróneo");
+            Console.WriteLine($"Response: {nombreReal + "=" + grupo.nombreReal}");
+
         }
 
 
@@ -159,6 +165,8 @@ namespace UnitTest1
 
             Assert.IsNotNull(editarJsonResult, "El contenido no debe ser nulo");
             Assert.AreEqual("Se editó el grupo correctamente", editarJsonResult.Content, "No se edito correctamente");
+            Console.WriteLine($"Response: {editarJsonResult.Content}");
+
         }
 
         [TestMethod]
@@ -177,6 +185,7 @@ namespace UnitTest1
             Assert.IsNotNull(gruposList, "El contenido no debe ser nulo");
             Assert.IsTrue(gruposList.Count > 0, "El resultado debe contener al menos un grupo");
             Assert.AreEqual("nombre", testGroupData.nombreDeCuenta, "Nombre de cuenta erroneo");
+            Console.WriteLine($"Response: CantidadGrupos={gruposList.Count}");
         }
 
         [TestMethod]
@@ -211,7 +220,7 @@ namespace UnitTest1
             var jsonResult = result as System.Web.Http.Results.JsonResult<string>;
             Assert.AreEqual("Usuario agregado al grupo", jsonResult.Content, "El usuario debería ser agregado al grupo correctamente");
         }
-  
+
         [TestMethod]
         public async Task TestMethod07()
         {
@@ -506,8 +515,103 @@ namespace UnitTest1
             Assert.AreEqual("Solicitud enviada correctamente", mensajeSolicitud, $"Se esperaba que la solicitud fuera enviada correctamente, pero el mensaje fue: {mensajeSolicitud}");
         }
 
+        [TestMethod]
+        public async Task TestMethod15()
+        {
+            var controller = new API_Grupos.Controllers.GroupController();
+            API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreVisible = "Nuevo Nombre Visible",
+                nombreDeCuenta = "nombre",
+                token = "TestToken"
+            };
+
+            var obtenerGruposResult = await controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData);
+            var jsonResultList = obtenerGruposResult as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
+            Assert.IsNotNull(jsonResultList, "El resultado de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
+
+            var gruposList = jsonResultList.Content;
+            Assert.IsNotNull(gruposList, "El contenido de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
+            Assert.IsTrue(gruposList.Count > 0, "El resultado de ObtenerGruposPorNombreVisibleYUsuario debe contener al menos un grupo");
+            string nombreReal = gruposList[0].nombreReal;
+            API_Grupos.Controllers.GroupController.Grupo groupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreReal = nombreReal,
+                nombreDeCuenta = "juan123",
+                token = "TestToken"
+            };
+
+            var participaResult = controller.ParticipaDelGrupo(groupData);
+            var jsonResult = participaResult as System.Web.Http.Results.JsonResult<string>;
+            Assert.IsNotNull(jsonResult, "El resultado de ParticipaDelGrupo no debe ser nulo");
+
+            string mensajeParticipa = jsonResult.Content;
+            if (mensajeParticipa == "Token expirado")
+            {
+                Assert.AreEqual("Token expirado", mensajeParticipa, "Se esperaba que el token expirara.");
+            }
+            else if (mensajeParticipa == "No participa")
+            {
+                Assert.AreEqual("No participa", mensajeParticipa, "Se esperaba que el usuario no participara en el grupo.");
+            }
+            else
+            {
+                Assert.AreEqual("usuarioReportar", mensajeParticipa, $"Se esperaba que el nombre de cuenta coincidiera con 'usuarioReportar', pero el mensaje fue: {mensajeParticipa}");
+            }
+        }
+
+        [TestMethod]
+        public async Task TestMethod16()
+        {
+            var controller = new API_Grupos.Controllers.GroupController();
+
+            API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreVisible = "Nuevo Nombre Visible",
+                nombreDeCuenta = "nombre",
+                token = "TestToken"
+            };
+
+            var obtenerGruposResult = await controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData);
+            var jsonResultList = obtenerGruposResult as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
+            Assert.IsNotNull(jsonResultList, "The result of ObtenerGruposPorNombreVisibleYUsuario should not be null");
+
+            var gruposList = jsonResultList.Content;
+            Assert.IsNotNull(gruposList, "The content of ObtenerGruposPorNombreVisibleYUsuario should not be null");
+            Assert.IsTrue(gruposList.Count > 0, "The result of ObtenerGruposPorNombreVisibleYUsuario should contain at least one group");
+
+            string nombreReal = gruposList[0].nombreReal;
+            API_Grupos.Controllers.GroupController.Grupo groupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreReal = nombreReal,
+                nombreDeCuenta = "nombre",
+                token = "TestToken"
+            };
+
+            var rolResult = controller.ObtenerRolDelUsuarioEnElGrupo(groupData);
+            var jsonResultRol = rolResult as System.Web.Http.Results.JsonResult<string>;
+            Assert.IsNotNull(jsonResultRol, "The result of ObtenerRolDelUsuarioEnElGrupo should not be null");
+
+            string mensajeRol = jsonResultRol.Content;
+            if (mensajeRol == "Token expirado")
+            {
+                Assert.AreEqual("Token expirado", mensajeRol, "Expected the token to expire.");
+            }
+            else if (mensajeRol == "No participa")
+            {
+                Assert.AreEqual("No participa", mensajeRol, "Expected 'No participa' when the user is not in the group.");
+            }
+            else
+            {
+                Assert.AreEqual("creador", mensajeRol, $"Expected the role to be 'creador', but got: {mensajeRol}");
+            }
+        }
+
+
+
+
         [TestMethod] //Se debe crear un post de grupo si no el metodo no funcionara
-        public void TestMethod15()
+        public void TestMethod17()
         {
             var controller = new API_Grupos.Controllers.GroupController();
             var testGroupData = new API_Grupos.Controllers.GroupController.Grupo
@@ -547,10 +651,8 @@ namespace UnitTest1
             }
         }
 
-
-
         [TestMethod]
-        public async Task TestMethod16()
+        public async Task TestMethod18()
         {
             var controller = new API_Grupos.Controllers.GroupController();
 
@@ -584,6 +686,8 @@ namespace UnitTest1
             string mensajeEliminacion = eliminarJsonResult.Content;
             Assert.AreEqual("Se pudo eliminar", mensajeEliminacion, $"Se esperaba que el grupo fuera eliminado correctamente, pero el mensaje fue: {mensajeEliminacion}");
         }
+
+
 
 
 
