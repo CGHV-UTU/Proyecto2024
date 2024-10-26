@@ -931,7 +931,6 @@ C:\Users\FedeG\Downloads\2510front\Proyecto2024\Frontend\obj\Debug\Frontend.Comu
 C:\Users\FedeG\Downloads\2510front\Proyecto2024\Frontend\obj\Debug\Frontend.Configuracion.resources
 C:\Users\FedeG\Downloads\2510front\Proyecto2024\Frontend\obj\Debug\Frontend.CreadorComentarios.resources
 C:\Users\FedeG\Downloads\2510front\Proyecto2024\Frontend\obj\Debug\Frontend.CrearComentario.resources
-C:\Users\FedeG\Downloads\2510front\Proyecto2024\Frontend\obj\Debug\Frontend.CrearPostGrupo.resources
 C:\Users\FedeG\Downloads\2510front\Proyecto2024\Frontend\obj\Debug\Frontend.EventoComunidad.resources
 C:\Users\FedeG\Downloads\2510front\Proyecto2024\Frontend\obj\Debug\Frontend.Font.resources
 C:\Users\FedeG\Downloads\2510front\Proyecto2024\Frontend\obj\Debug\Frontend.Grupo_EventoParaListar.resources

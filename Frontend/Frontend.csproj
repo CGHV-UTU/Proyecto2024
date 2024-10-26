@@ -113,9 +113,6 @@
     <Compile Include="CrearComentario.Designer.cs">
       <DependentUpon>CrearComentario.cs</DependentUpon>
     </Compile>
-    <Compile Include="CrearPostGrupo.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="EventoComunidad.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -219,9 +216,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CrearComentario.resx">
       <DependentUpon>CrearComentario.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CrearPostGrupo.resx">
-      <DependentUpon>CrearPostGrupo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EventoComunidad.resx">
       <DependentUpon>EventoComunidad.cs</DependentUpon>

@@ -48,13 +48,22 @@ namespace Frontend
         private Panel panel7;
 
         private string nombreGrupo;
+        private string configuracion;
         private string user;
         private TextBox txtURL;
         private string token;
         private Label lblName;
         private Label lblEditando;
         private Panel pnlCrear;
+        private Label lblEliminar;
+        private Label lblEditar;
+        private PictureBox pbxSeleccionarImagen;
+        private TextBox txtNombre;
+        private PictureBox pbxFotoGrupoEditar;
+        private Label lblCancelar;
+        private PictureBox pbxConfirmarCambios;
         private string idUltimoMensaje;
+        public event EventHandler GrupoEliminado;
         public GruposComunidad(dynamic groupData, string user, string token)
         {
             InitializeComponent();
@@ -68,6 +77,13 @@ namespace Frontend
             AñadirMensajes();
             lblEditando.Visible = false;
             pnlCrear.Visible = false;
+            pbxConfirmarCambios.Visible = false;
+            pbxSeleccionarImagen.Visible = false;
+            txtNombre.Visible = false;
+            lblCancelar.Visible = false;
+            lblEditar.Visible = false;
+            lblEliminar.Visible = false;
+            pbxFotoGrupoEditar.Visible = false;
         }
         private void InitializeComponent()
         {
@@ -93,6 +109,13 @@ namespace Frontend
             this.lblAsociarVideo = new System.Windows.Forms.Label();
             this.pbxAsociarVideo = new System.Windows.Forms.PictureBox();
             this.pnlGruposComunidad = new System.Windows.Forms.Panel();
+            this.lblCancelar = new System.Windows.Forms.Label();
+            this.pbxConfirmarCambios = new System.Windows.Forms.PictureBox();
+            this.pbxSeleccionarImagen = new System.Windows.Forms.PictureBox();
+            this.txtNombre = new System.Windows.Forms.TextBox();
+            this.pbxFotoGrupoEditar = new System.Windows.Forms.PictureBox();
+            this.lblEliminar = new System.Windows.Forms.Label();
+            this.lblEditar = new System.Windows.Forms.Label();
             this.pnlCrear = new System.Windows.Forms.Panel();
             this.pnlPostsGrupo = new System.Windows.Forms.Panel();
             this.lblName = new System.Windows.Forms.Label();
@@ -112,6 +135,9 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxAsociarVideo)).BeginInit();
             this.pnlGruposComunidad.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxConfirmarCambios)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSeleccionarImagen)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupoEditar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -259,6 +285,7 @@ namespace Frontend
             this.lblMiembros.Size = new System.Drawing.Size(157, 20);
             this.lblMiembros.TabIndex = 51;
             this.lblMiembros.Text = "Miembro1, Miembro2";
+            this.lblMiembros.Click += new System.EventHandler(this.lblMiembros_Click);
             // 
             // panel5
             // 
@@ -330,6 +357,13 @@ namespace Frontend
             // pnlGruposComunidad
             // 
             this.pnlGruposComunidad.AutoScroll = true;
+            this.pnlGruposComunidad.Controls.Add(this.lblCancelar);
+            this.pnlGruposComunidad.Controls.Add(this.pbxConfirmarCambios);
+            this.pnlGruposComunidad.Controls.Add(this.pbxSeleccionarImagen);
+            this.pnlGruposComunidad.Controls.Add(this.txtNombre);
+            this.pnlGruposComunidad.Controls.Add(this.pbxFotoGrupoEditar);
+            this.pnlGruposComunidad.Controls.Add(this.lblEliminar);
+            this.pnlGruposComunidad.Controls.Add(this.lblEditar);
             this.pnlGruposComunidad.Controls.Add(this.pbxCrearPostGrupo);
             this.pnlGruposComunidad.Controls.Add(this.pnlCrear);
             this.pnlGruposComunidad.Controls.Add(this.pnlAsociarContenido);
@@ -347,11 +381,83 @@ namespace Frontend
             this.pnlGruposComunidad.Size = new System.Drawing.Size(996, 717);
             this.pnlGruposComunidad.TabIndex = 47;
             // 
+            // lblCancelar
+            // 
+            this.lblCancelar.AutoSize = true;
+            this.lblCancelar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCancelar.Location = new System.Drawing.Point(537, 48);
+            this.lblCancelar.Name = "lblCancelar";
+            this.lblCancelar.Size = new System.Drawing.Size(72, 20);
+            this.lblCancelar.TabIndex = 88;
+            this.lblCancelar.Text = "Cancelar";
+            // 
+            // pbxConfirmarCambios
+            // 
+            this.pbxConfirmarCambios.Image = global::Frontend.Properties.Resources.aceptar;
+            this.pbxConfirmarCambios.Location = new System.Drawing.Point(465, 10);
+            this.pbxConfirmarCambios.Name = "pbxConfirmarCambios";
+            this.pbxConfirmarCambios.Size = new System.Drawing.Size(50, 50);
+            this.pbxConfirmarCambios.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxConfirmarCambios.TabIndex = 87;
+            this.pbxConfirmarCambios.TabStop = false;
+            this.pbxConfirmarCambios.Click += new System.EventHandler(this.pbxConfirmarCambios_Click);
+            // 
+            // pbxSeleccionarImagen
+            // 
+            this.pbxSeleccionarImagen.Image = global::Frontend.Properties.Resources.Foto;
+            this.pbxSeleccionarImagen.Location = new System.Drawing.Point(122, 7);
+            this.pbxSeleccionarImagen.Name = "pbxSeleccionarImagen";
+            this.pbxSeleccionarImagen.Size = new System.Drawing.Size(50, 50);
+            this.pbxSeleccionarImagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxSeleccionarImagen.TabIndex = 86;
+            this.pbxSeleccionarImagen.TabStop = false;
+            this.pbxSeleccionarImagen.Click += new System.EventHandler(this.pbxSeleccionarImagen_Click);
+            // 
+            // txtNombre
+            // 
+            this.txtNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNombre.Location = new System.Drawing.Point(122, 59);
+            this.txtNombre.Name = "txtNombre";
+            this.txtNombre.Size = new System.Drawing.Size(161, 38);
+            this.txtNombre.TabIndex = 85;
+            // 
+            // pbxFotoGrupoEditar
+            // 
+            this.pbxFotoGrupoEditar.Image = global::Frontend.Properties.Resources.Usuario;
+            this.pbxFotoGrupoEditar.Location = new System.Drawing.Point(17, 12);
+            this.pbxFotoGrupoEditar.Name = "pbxFotoGrupoEditar";
+            this.pbxFotoGrupoEditar.Size = new System.Drawing.Size(90, 90);
+            this.pbxFotoGrupoEditar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxFotoGrupoEditar.TabIndex = 84;
+            this.pbxFotoGrupoEditar.TabStop = false;
+            // 
+            // lblEliminar
+            // 
+            this.lblEliminar.AutoSize = true;
+            this.lblEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEliminar.Location = new System.Drawing.Point(857, 37);
+            this.lblEliminar.Name = "lblEliminar";
+            this.lblEliminar.Size = new System.Drawing.Size(65, 20);
+            this.lblEliminar.TabIndex = 83;
+            this.lblEliminar.Text = "Eliminar";
+            this.lblEliminar.Click += new System.EventHandler(this.lblEliminar_Click);
+            // 
+            // lblEditar
+            // 
+            this.lblEditar.AutoSize = true;
+            this.lblEditar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEditar.Location = new System.Drawing.Point(857, 12);
+            this.lblEditar.Name = "lblEditar";
+            this.lblEditar.Size = new System.Drawing.Size(51, 20);
+            this.lblEditar.TabIndex = 82;
+            this.lblEditar.Text = "Editar";
+            this.lblEditar.Click += new System.EventHandler(this.lblEditar_Click);
+            // 
             // pnlCrear
             // 
             this.pnlCrear.Location = new System.Drawing.Point(281, 18);
             this.pnlCrear.Name = "pnlCrear";
-            this.pnlCrear.Size = new System.Drawing.Size(436, 35);
+            this.pnlCrear.Size = new System.Drawing.Size(436, 10);
             this.pnlCrear.TabIndex = 0;
             // 
             // pnlPostsGrupo
@@ -457,6 +563,9 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.pbxAsociarVideo)).EndInit();
             this.pnlGruposComunidad.ResumeLayout(false);
             this.pnlGruposComunidad.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxConfirmarCambios)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSeleccionarImagen)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupoEditar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -504,6 +613,7 @@ namespace Frontend
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);
             this.pbxFotoGrupo.Image = bitmap;
+            configuracion = groupData.configuracion;
         }
 
         private void pbxAsociarContenido_Click(object sender, EventArgs e)
@@ -698,14 +808,14 @@ namespace Frontend
                     DateTime fechayhoraactual = DateTime.Now;
                     string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
                     byte[] data;
-                    if (pbxCrearPostGrupo.Image == null)
+                    if (pictureBox2.Image == null)
                     {
                         data = new byte[0];
                     }
                     else
                     {
                         MemoryStream ms = new MemoryStream();
-                        pbxCrearPostGrupo.Image.Save(ms, ImageFormat.Jpeg);
+                        pictureBox2.Image.Save(ms, ImageFormat.Jpeg);
                         data = ms.ToArray();
                     }
                     string video;
@@ -842,7 +952,166 @@ namespace Frontend
 
         private void PictureBoxConfiguraciones_Click(object sender, EventArgs e)
         {
+            if (lblEditar.Visible == false)
+            {
+                lblEditar.Visible = true;
+                lblEliminar.Visible = true;
+            }
+            else
+            {
+                lblEditar.Visible = false;
+                lblEliminar.Visible = false;
+            }
+        }
+        static async Task<dynamic> Miembros(string grupo, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreReal = grupo, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/ObtenerUsuariosDelGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
 
+        private async void lblMiembros_Click(object sender, EventArgs e)
+        {
+            if (pnlCrear.Visible == true)
+            {
+                pnlCrear.Visible = false;
+                pnlCrear.Controls.Clear();
+            }
+            pnlPostsGrupo.Controls.Clear();
+            pnlPostsGrupo.Parent = this;
+            pnlPostsGrupo.Location = new Point(13, 113);
+            pnlChat.Visible = false;
+            pnlPostsGrupo.Visible = true;
+            pnlPostsGrupo.BringToFront();
+            pbxCrearPostGrupo.Visible = true;
+            pnlAsociarContenido.Visible = false;
+            panel1.Visible = false;
+            var lista = await Miembros(nombreGrupo, token);
+            if (lista!=null)
+            {
+                foreach (var elemento in lista)
+                {
+                    var eventControl = new Grupo_EventoParaListar(user, token,usuariobuscar:elemento);
+                    if (pnlPostsGrupo.Controls.Count > 0)
+                    {
+                        var lastControl = pnlPostsGrupo.Controls[pnlPostsGrupo.Controls.Count - 1];
+                        eventControl.Location = new Point(0, lastControl.Bottom);
+                    }
+                    else
+                    {
+                        eventControl.Location = new Point(0, 52);
+                    }
+                    pnlPostsGrupo.Controls.Add(eventControl);
+                }
+            }
+        }
+
+        private void lblEditar_Click(object sender, EventArgs e)
+        {
+            pbxSeleccionarImagen.Visible = true;
+            pbxFotoGrupoEditar.Visible = true;
+            txtNombre.Visible = true;
+            lblName.Visible = false;
+            lblMiembros.Visible = false;
+            txtNombre.Text = lblName.Text;
+            pbxConfirmarCambios.Visible = true;
+            lblCancelar.Visible = true;
+            pbxFotoGrupoEditar.Image = pbxFotoGrupo.Image;
+            lblEditar.Visible = false;
+            lblEliminar.Visible = false;
+        }
+        static async Task<dynamic> EliminarGrupo(string nombreReal, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var data = new { nombreReal = nombreReal, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44304/EliminarGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic resultado = JsonConvert.DeserializeObject(responseBody);
+                    return resultado;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("ERROR DE CONEXIÓN");
+                    return "MAL";
+                }
+            }
+        }
+
+        private async void lblEliminar_Click(object sender, EventArgs e)
+        {
+            var respuesta = await EliminarGrupo(nombreGrupo,token);
+            GrupoEliminado?.Invoke(this, EventArgs.Empty);
+        }
+
+        static async Task<dynamic> Modificar(string nombrereal, string nombreVisible, string configuracion, byte[] imagen, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var data = new { nombreReal=nombrereal, nombreVisible=nombreVisible, configuracion=configuracion, imagen = Convert.ToBase64String(imagen), token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44304/EditarGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic resultado = JsonConvert.DeserializeObject(responseBody);
+                    return resultado;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("ERROR DE CONEXIÓN");
+                    return "MAL";
+                }
+            }
+        }
+
+        private async void pbxConfirmarCambios_Click(object sender, EventArgs e)
+        {
+            pbxSeleccionarImagen.Visible = false;
+            pbxFotoGrupoEditar.Visible = false;
+            txtNombre.Visible = false;
+            lblName.Visible = true;
+            lblMiembros.Visible = true;
+            lblName.Text = txtNombre.Text;
+            pbxConfirmarCambios.Visible = false;
+            lblCancelar.Visible = false;
+            pbxFotoGrupo.Image = pbxFotoGrupoEditar.Image;
+            MemoryStream ms = new MemoryStream();
+            this.pbxFotoGrupo.Image.Save(ms, ImageFormat.Jpeg);
+            byte[] imagen = ms.ToArray();
+            var resultado = await Modificar(nombreGrupo,lblName.Text,configuracion,imagen,token);
+            MessageBox.Show(""+resultado);
+        }
+
+        private void pbxSeleccionarImagen_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    pbxFotoGrupoEditar.Image = Image.FromFile(ofd.FileName);
+                    pbxFotoGrupoEditar.SizeMode = PictureBoxSizeMode.StretchImage;
+                }
+            }
         }
     }
 }

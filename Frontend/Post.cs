@@ -250,7 +250,7 @@ namespace Frontend
                 {
                     CambiaTamaño?.Invoke(this, EventArgs.Empty);
                     this.Height = 692;
-                    btnCrear.Location = new Point(16, 445);
+                    btnCrear.Location = new Point(16, pbxImagen.Bottom+10);
                     OpenFileDialog ofd = new OpenFileDialog();
                     ofd.Filter = "Archivos de imagen|*.png;*.jpg;*.jpeg"; //Para que sólo aparezcan fotos
                     if (ofd.ShowDialog() == DialogResult.OK)

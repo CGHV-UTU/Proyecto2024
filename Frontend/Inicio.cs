@@ -457,7 +457,6 @@ namespace Frontend
             //comunidad.ReportarPost += PostControl_ReportarPost;
             comunidad.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
             comunidad.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
-            
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
         }
@@ -498,6 +497,7 @@ namespace Frontend
             comunidad.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
             comunidad.TieneConfiguraciones();
+            comunidad.GrupoEliminado += PictureboxLogo_Click;
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
             comunidad.MensajesNuevos();

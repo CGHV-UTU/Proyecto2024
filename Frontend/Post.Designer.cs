@@ -284,7 +284,7 @@ namespace Frontend
             this.btnCrear.BackColor = System.Drawing.Color.Transparent;
             this.btnCrear.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCrear.Image = ((System.Drawing.Image)(resources.GetObject("btnCrear.Image")));
-            this.btnCrear.Location = new System.Drawing.Point(22, 443);
+            this.btnCrear.Location = new System.Drawing.Point(22, 339);
             this.btnCrear.Name = "btnCrear";
             this.btnCrear.Size = new System.Drawing.Size(372, 87);
             this.btnCrear.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;

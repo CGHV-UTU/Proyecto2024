@@ -18,7 +18,6 @@ namespace Frontend
         private string user;
         private string token;
         private bool eventosCargados = false;
-        private bool gruposCargados = false;
         private string idpost;
         private DataTable eventos;
         public event EventHandler<PersonalizedArgs> AbrirEvento;
@@ -31,6 +30,14 @@ namespace Frontend
             this.idpost = idpost;
             InitializeComponent();
             Iniciar();
+            PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_removebg_preview;
+            PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_seleccionar_removebg_preview__1_;
+            pictureBox5.Visible = true;
+            pictureBox6.Visible = false;
+            PanelGrupos.Visible = true;
+            panelEventos.Visible = false;
+            PanelGrupos.Parent = this;
+            CargarGrupos();
         }
 
         private void Iniciar()
@@ -38,9 +45,9 @@ namespace Frontend
             this.SuspendLayout();
             // panelGrupos
             this.PanelGrupos.AutoScroll = true;
-            this.PanelGrupos.Location = new System.Drawing.Point(58, 69);
+            this.PanelGrupos.Location = panelEventos.Location;
             this.PanelGrupos.Name = "PanelMostrar";
-            this.PanelGrupos.Size = new System.Drawing.Size(893, 493);
+            this.PanelGrupos.Size = new System.Drawing.Size(357, 493);
             this.PanelGrupos.TabIndex = 0;
             this.BackColor = Color.LightGray;
             // Form1
@@ -200,12 +207,10 @@ namespace Frontend
             PanelGrupos.Visible = true;
             panelEventos.Visible = false;
             PanelGrupos.Parent = this;
-            if (!gruposCargados)
+            if (PanelGrupos.Controls.Count>1)
             {
                 CargarGrupos();
-                gruposCargados = true;
             }
-                
         }
 
         private void PictureBoxEventos_Click(object sender, EventArgs e)
