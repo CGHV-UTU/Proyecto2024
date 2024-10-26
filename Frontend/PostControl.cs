@@ -45,10 +45,10 @@ namespace Frontend
             }
 
             System.Drawing.Drawing2D.GraphicsPath gp = new System.Drawing.Drawing2D.GraphicsPath();
-            gp.AddEllipse(0, 0, this.imagen.Width, this.imagen.Height);
+            gp.AddEllipse(0, 0, this.PictureBoxUsuarioPost.Width, this.PictureBoxUsuarioPost.Height);
             Region rg = new Region(gp);
-            this.imagen.Region = rg;
-            this.imagen.Image = image;
+            this.PictureBoxUsuarioPost.Region = rg;
+            this.PictureBoxUsuarioPost.Image = image;
         }
         public async Task aplicarDatos()
         {
@@ -99,7 +99,6 @@ namespace Frontend
                         Bitmap bitmap = new Bitmap(ms);
                         this.imagen.Image = bitmap;
                         this.imagen.SizeMode = PictureBoxSizeMode.StretchImage;
-                        redondearPictureBox(bitmap);
                     }
                     else
                     {
@@ -111,7 +110,6 @@ namespace Frontend
                         Bitmap bitmap = new Bitmap(ms);
                         this.imagen.Image = bitmap;
                         this.imagen.SizeMode = PictureBoxSizeMode.StretchImage;
-                        redondearPictureBox(bitmap);
                     }
                 }
                 bool Like = await dioLike(user, idpost, creador, token);
@@ -127,6 +125,7 @@ namespace Frontend
                 MemoryStream ms2 = new MemoryStream(imagen2);
                 Bitmap bitmap2 = new Bitmap(ms2);
                 this.PictureBoxUsuarioPost.Image = bitmap2;
+                redondearPictureBox(bitmap2);
                 var likes = await conseguirNumeroDeLikes(Convert.ToString(idpost),token);
                 if (Convert.ToString(likes).Equals("0") || Convert.ToString(likes).Equals("ERROR"))
                 {

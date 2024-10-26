@@ -103,8 +103,45 @@ namespace Frontend
             }
         }
 
+        static async Task<dynamic> ParticipaDelGrupo(string nombreReal, string nombre, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = nombre, nombreReal = nombreReal, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/ParticipaDelGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return "ERROR";
+                }
+            }
+        }
+
         private async void AplicarDatos()
         {
+            var respuesta=await ParticipaDelGrupo(nombreReal,user,token);
+            if (this.busqueda && !this.nombreReal.Equals("") && Convert.ToString(respuesta).Equals("No participa"))
+            {
+                //pbxUnirse
+                this.pbxUnirse = new PictureBox();
+                this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                this.pbxUnirse.Name = "pbxUnirse";
+                this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
+                this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
+                this.pbxUnirse.Image = Properties.Resources.grupos_removebg_preview;
+                this.pbxUnirse.Cursor = Cursors.Hand;
+                this.pbxUnirse.Visible = true;
+                this.pbxUnirse.Click += pbxUnirse_Click;
+                this.Controls.Add(this.pbxUnirse);
+            }
+
             if (this.datosDelUsuario == null)
             {
                 if (idevento > 0)
@@ -217,20 +254,6 @@ namespace Frontend
             this.ResumeLayout(false);
             this.PerformLayout();
 
-            if (this.busqueda && !this.nombreReal.Equals(""))
-            {
-                //pbxUnirse
-                this.pbxUnirse = new PictureBox();
-                this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
-                this.pbxUnirse.Name = "pbxUnirse";
-                this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
-                this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
-                this.pbxUnirse.Image = Properties.Resources.grupos_removebg_preview;
-                this.pbxUnirse.Cursor = Cursors.Hand;
-                this.pbxUnirse.Visible = true;
-                this.pbxUnirse.Click += pbxUnirse_Click;
-                this.Controls.Add(this.pbxUnirse);
-            }
             if (!string.IsNullOrEmpty(this.idpost))
             {
                 this.pbxUnirse = new PictureBox();

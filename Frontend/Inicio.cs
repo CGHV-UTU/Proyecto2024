@@ -300,6 +300,7 @@ namespace Frontend
         }
         private void VerPost(string idevento="")
         {
+            PanelMostrarUsuario.Controls.Clear();
             PanelPostear.Controls.Clear();
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
@@ -336,6 +337,7 @@ namespace Frontend
 
         private void PictureBoxConfiguraciones_Click(object sender, EventArgs e)
         {
+            PanelMostrarUsuario.Controls.Clear();
             PanelPostear.Controls.Clear();
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
@@ -439,6 +441,7 @@ namespace Frontend
 
         private void PictureBoxComunidad_Click(object sender, EventArgs e)
         {
+            PanelMostrarUsuario.Controls.Clear();
             PanelComentarios.Visible = false;
             PanelPosts.Visible = false;
             PanelMostrarUsuario.Visible = true;
@@ -458,7 +461,7 @@ namespace Frontend
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
         }
-        private async void Grupo_EventoParaListar_AbrirEvento(object sender, PersonalizedArgs e)
+        private void Grupo_EventoParaListar_AbrirEvento(object sender, PersonalizedArgs e)
         {
             PanelMostrarUsuario.Controls.Clear();
             PanelComentarios.Visible = false;
@@ -494,11 +497,12 @@ namespace Frontend
             comunidad.BackColor = Color.LightGray;
             comunidad.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
+            comunidad.TieneConfiguraciones();
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
             comunidad.MensajesNuevos();
         }
-
+        
         private void EventoComunidad_PostearEnEvento(object sender, PersonalizedArgs e)
         {
             VerPost(e.arg);
@@ -537,6 +541,7 @@ namespace Frontend
 
         private void PictureBoxUsuario_Click(object sender, EventArgs e)
         {
+            PanelMostrarUsuario.Controls.Clear();
             PanelComentarios.Visible = false;
             PanelPosts.Visible = false;
             PanelMostrarUsuario.Visible = true;

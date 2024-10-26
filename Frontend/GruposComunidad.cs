@@ -247,6 +247,7 @@ namespace Frontend
             this.PictureBoxConfiguraciones.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PictureBoxConfiguraciones.TabIndex = 50;
             this.PictureBoxConfiguraciones.TabStop = false;
+            this.PictureBoxConfiguraciones.Click += new System.EventHandler(this.PictureBoxConfiguraciones_Click);
             // 
             // lblMiembros
             // 
@@ -461,22 +462,39 @@ namespace Frontend
             this.PerformLayout();
 
         }
-
-        private void Iniciar()
+        static async Task<dynamic> RolEnElGrupo(string nombreReal, string nombre, string token)
         {
-            pbxFotoGrupo.Visible = true;
-            lblMiembros.Visible = true;
-            lblChat.Visible = true;
-            lblChat.ForeColor = Color.Black;
-            lblPostsGrupo.Visible = true;
-            lblPostsGrupo.ForeColor = Color.Gray;
-            pnlPostsGrupo.Visible = false;
-            pnlChat.Visible = true;
-            pbxCrearPostGrupo.Visible = false;
-            PictureBoxConfiguraciones.Visible = true;
-            pnlAsociarContenido.Visible = false;
-            panel1.Visible = true;
-            txtURL.Visible = false;
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = nombre, nombreReal = nombreReal, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/ObtenerRolDelUsuarioEnElGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return "ERROR";
+                }
+            }
+        }
+
+        public async void TieneConfiguraciones()
+        {
+            var respuesta = await RolEnElGrupo(nombreGrupo, user, token);
+            MessageBox.Show(""+respuesta);
+            if (Convert.ToString(respuesta).Equals("admin") || Convert.ToString(respuesta).Equals("creador"))
+            {
+                PictureBoxConfiguraciones.Visible = true;
+            }
+            else
+            {
+                PictureBoxConfiguraciones.Visible = false;
+            }
         }
 
         private void AplicarDatos(dynamic groupData)
@@ -820,6 +838,11 @@ namespace Frontend
             {
                 txtURL.Visible = false;
             }
+        }
+
+        private void PictureBoxConfiguraciones_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
