@@ -189,6 +189,8 @@ namespace Frontend
             }
             else
             {
+                this.pnlTop.Visible = false;
+                this.pnlBot.BackColor = Color.Black;
                 this.lblNombre.Text = this.datosDelUsuario.nombreVisible;
                 try
                 {
@@ -204,6 +206,28 @@ namespace Frontend
                 catch (Exception ex)
                 {
                     MessageBox.Show("Ha ocurrido un error " + ex);
+                }
+                var rol = await RolEnElGrupo(nombreReal, user, token);
+                if (!string.IsNullOrEmpty(nombreReal) && (Convert.ToString(rol).Equals("admin") || Convert.ToString(rol).Equals("creador")) && !user.Equals(Convert.ToString(this.datosDelUsuario.nombreReal)))
+                {
+                    //pbxUnirse acá se usa para eliminar al usuario del grupo o darle admin
+                    this.pbxUnirse = new PictureBox();
+                    this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                    this.pbxUnirse.Name = "pbxUnirse";
+                    this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
+                    this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
+                    if (Convert.ToString(datosDelUsuario.rol).Equals("solicitante"))
+                    {
+                        this.pbxUnirse.Image = Frontend.Properties.Resources.aceptar;
+                    }
+                    else
+                    {
+                        this.pbxUnirse.Image = Properties.Resources.mas_opciones;
+                    }
+                    this.pbxUnirse.Cursor = Cursors.Hand;
+                    this.pbxUnirse.Visible = true;
+                    this.pbxUnirse.Click += pbxUnirse_Click;
+                    this.Controls.Add(this.pbxUnirse);
                 }
             }
         }
@@ -273,13 +297,20 @@ namespace Frontend
         {
             if (!busqueda)
             {
-                if (idevento > 0)
+                if (this.datosDelUsuario!=null)
                 {
-                    AbrirEvento?.Invoke(this, new PersonalizedArgs(datos));
+                    AbrirUsuario?.Invoke(this, new PersonalizedArgs(Convert.ToString(this.datosDelUsuario.nombreReal)));
                 }
                 else
                 {
-                    AbrirGrupo?.Invoke(this, new PersonalizedArgs(datos));
+                    if (idevento > 0)
+                    {
+                        AbrirEvento?.Invoke(this, new PersonalizedArgs(datos));
+                    }
+                    else
+                    {
+                        AbrirGrupo?.Invoke(this, new PersonalizedArgs(datos));
+                    }
                 }
             }
             else
@@ -315,18 +346,156 @@ namespace Frontend
                 }
             }
         }
+        static async Task<dynamic> AñadirUsuarioAlGrupo(string nombreReal, string nombreDeCuenta,string rol, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = nombreDeCuenta, nombreReal = nombreReal, rol=rol, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync($"https://localhost:44304/AgregarUsuarioAGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
         private async void pbxUnirse_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.idpost))
+            if (datosDelUsuario==null)
             {
-                string respuesta = await CompartirPost(user,idpost,nombreReal,token);
-                MessageBox.Show(respuesta);
+                if (!string.IsNullOrEmpty(this.idpost))
+                {
+                    string respuesta = await CompartirPost(user, idpost, nombreReal, token);
+                    MessageBox.Show(respuesta);
+                }
+                else
+                {
+                    dynamic respuesta = await UnirseAlGrupo(nombreReal, user, token);
+                    MessageBox.Show("" + respuesta);
+                }
             }
             else
             {
-                dynamic respuesta = await UnirseAlGrupo(nombreReal, user, token);
-                MessageBox.Show(""+respuesta);
+                if (Convert.ToString(datosDelUsuario.rol).Equals("solicitante"))
+                {
+                    await EliminarUsuarioDelGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
+                    var respuesta = await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal),"usuario" ,token);
+                    MessageBox.Show(""+respuesta);
+                }
+                else
+                {
+                    if (!this.Controls.Contains(this.lblEliminar))
+                    {
+                        this.lblEliminar = new Label();
+                        this.lblDarOQuitarAdmin = new Label();
+                        // Eliminar
+                        this.lblEliminar.AutoSize = true;
+                        this.lblEliminar.Location = new System.Drawing.Point(200, 15);
+                        this.lblEliminar.Name = "lblEliminar";
+                        this.lblEliminar.Size = new System.Drawing.Size(100, 24);
+                        this.lblEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+                        this.lblEliminar.TabIndex = 0;
+                        this.lblEliminar.Text = "Eliminar";
+                        this.lblEliminar.Click += lblEliminar_Click;
+
+                        // DarOQuitarAdmin
+                        this.lblDarOQuitarAdmin.AutoSize = true;
+                        this.lblDarOQuitarAdmin.Location = new System.Drawing.Point(200, lblEliminar.Bottom + 10);
+                        this.lblDarOQuitarAdmin.Name = "lblDarOQuitarAdmin";
+                        this.lblDarOQuitarAdmin.Size = new System.Drawing.Size(100, 24);
+                        this.lblDarOQuitarAdmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+                        this.lblDarOQuitarAdmin.TabIndex = 0;
+                        this.lblDarOQuitarAdmin.Text = "Dar admin";
+                        this.lblDarOQuitarAdmin.Click += lblDarOQuitarAdmin_Click;
+                        this.Controls.Add(lblEliminar);
+                        this.Controls.Add(lblDarOQuitarAdmin);
+                    }
+                    else
+                    {
+                        this.Controls.Remove(this.lblEliminar);
+                        this.Controls.Remove(this.lblDarOQuitarAdmin);
+                    }
+                }
             }
+        }
+
+        static async Task<dynamic> EliminarUsuarioDelGrupo(string nombreReal, string nombreDeCuenta, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = nombreDeCuenta, nombreReal = nombreReal, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/EliminarUsuarioDeGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        private async void lblEliminar_Click(object sender, EventArgs e)
+        {
+            var respuesta = await EliminarUsuarioDelGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
+            MessageBox.Show(""+respuesta);
+            this.Controls.Remove(this.lblEliminar);
+            this.Controls.Remove(this.lblDarOQuitarAdmin);
+        }
+        static async Task<dynamic> RolEnElGrupo(string nombreReal, string nombre, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = nombre, nombreReal = nombreReal, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/ObtenerRolDelUsuarioEnElGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return "ERROR";
+                }
+            }
+        }
+        private async void lblDarOQuitarAdmin_Click(object sender, EventArgs e)
+        {
+            var rol = await RolEnElGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
+            if (Convert.ToString(rol).Equals("usuario"))
+            {
+                await EliminarUsuarioDelGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
+                var respuesta = await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), "admin", token);
+                if (Convert.ToString(respuesta).Equals("Usuario agregado al grupo"))
+                {
+                    MessageBox.Show("Administrador asignado");
+                }
+            }
+            else
+            {
+                await EliminarUsuarioDelGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
+                var respuesta = await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), "usuario", token);
+                if (Convert.ToString(respuesta).Equals("Usuario agregado al grupo"))
+                {
+                    MessageBox.Show("Administrador eliminado");
+                }
+            }
+            this.Controls.Remove(this.lblEliminar);
+            this.Controls.Remove(this.lblDarOQuitarAdmin);
         }
     }
 }

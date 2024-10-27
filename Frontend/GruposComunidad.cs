@@ -65,6 +65,7 @@ namespace Frontend
         private Label lblAñadir;
         private string idUltimoMensaje;
         public event EventHandler GrupoEliminado;
+        public event EventHandler<PersonalizedArgs> AbrirUsuario;
         public GruposComunidad(dynamic groupData, string user, string token)
         {
             InitializeComponent();
@@ -606,18 +607,14 @@ namespace Frontend
                 }
             }
         }
-
+        private string rol;
         public async void TieneConfiguraciones()
         {
             var respuesta = await RolEnElGrupo(nombreGrupo, user, token);
-            MessageBox.Show(""+respuesta);
-            if (Convert.ToString(respuesta).Equals("admin") || Convert.ToString(respuesta).Equals("creador"))
+            rol = Convert.ToString(respuesta);
+            if (rol.Equals("admin")|| rol.Equals("creador"))
             {
                 PictureBoxConfiguraciones.Visible = true;
-            }
-            else
-            {
-                PictureBoxConfiguraciones.Visible = false;
             }
         }
 
@@ -970,7 +967,10 @@ namespace Frontend
             if (lblEditar.Visible == false)
             {
                 lblEditar.Visible = true;
-                lblEliminar.Visible = true;
+                if (rol.Equals("creador"))
+                {
+                    lblEliminar.Visible = true;
+                }
                 lblAñadir.Visible = true;
             }
             else
@@ -1024,22 +1024,26 @@ namespace Frontend
                 {
                     if (!Convert.ToString(elemento.rol).Equals("solicitante"))
                     {
-                        var eventControl = new Grupo_EventoParaListar(user, token, usuariobuscar: elemento);
+                        var groupControl = new Grupo_EventoParaListar(user, token, nombreRealGrupo: nombreGrupo, usuariobuscar: elemento);
+                        groupControl.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
                         if (pnlPostsGrupo.Controls.Count > 0)
                         {
                             var lastControl = pnlPostsGrupo.Controls[pnlPostsGrupo.Controls.Count - 1];
-                            eventControl.Location = new Point(0, lastControl.Bottom);
+                            groupControl.Location = new Point(0, lastControl.Bottom);
                         }
                         else
                         {
-                            eventControl.Location = new Point(0, 52);
+                            groupControl.Location = new Point(0, 52);
                         }
-                        pnlPostsGrupo.Controls.Add(eventControl);
+                        pnlPostsGrupo.Controls.Add(groupControl);
                     }
                 }
             }
         }
-
+        private void Grupo_EventoParaListar_AbrirUsuario(object sender, PersonalizedArgs e)
+        {
+            AbrirUsuario?.Invoke(this, new PersonalizedArgs(e.arg));
+        }
         private void lblEditar_Click(object sender, EventArgs e)
         {
             pbxSeleccionarImagen.Visible = true;
@@ -1157,17 +1161,18 @@ namespace Frontend
                 {
                     if (Convert.ToString(elemento.rol).Equals("solicitante"))
                     {
-                        var eventControl = new Grupo_EventoParaListar(user, token, usuariobuscar: elemento);
+                        var groupControl = new Grupo_EventoParaListar(user, token, nombreRealGrupo: nombreGrupo,usuariobuscar: elemento);
+                        groupControl.AbrirUsuario +=Grupo_EventoParaListar_AbrirUsuario;
                         if (pnlPostsGrupo.Controls.Count > 0)
                         {
                             var lastControl = pnlPostsGrupo.Controls[pnlPostsGrupo.Controls.Count - 1];
-                            eventControl.Location = new Point(0, lastControl.Bottom);
+                            groupControl.Location = new Point(0, lastControl.Bottom);
                         }
                         else
                         {
-                            eventControl.Location = new Point(0, 52);
+                            groupControl.Location = new Point(0, 52);
                         }
-                        pnlPostsGrupo.Controls.Add(eventControl);
+                        pnlPostsGrupo.Controls.Add(groupControl);
                     }
                 }
             }

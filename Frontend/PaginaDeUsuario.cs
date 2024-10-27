@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -144,6 +145,83 @@ namespace Frontend
             this.Name = "Form1";
             this.Text = "Infinite Scroll Posts";
             this.ResumeLayout(false);
+        }
+        public static async Task Seguir(string user, string aQuienSigue, string tipo, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = user, nombreDeCuenta2=aQuienSigue, tipoInteraccion=tipo, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/Interactuar", content);
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ERROR AL LLAMAR A LA API"+ex.Message);
+                }
+            }
+        }
+        private async void btnSeguir_Click(object sender, EventArgs e)
+        {
+            await Seguir(user, nombreDeCreador, "seguir", token);
+        }
+        public static async Task PublicarGrupo(string nombreVisible, string configuracion, byte[] imagen, string descripcion, string user, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    if (imagen.Length == 0)
+                    {
+                        var datos = new { nombreVisible = nombreVisible, configuracion = configuracion, nombreDeCuenta = user, token = token, descripcion = descripcion };
+                        var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                        HttpResponseMessage response = await client.PostAsync("https://localhost:44304/RegistrarGrupo", content);
+                        response.EnsureSuccessStatusCode();
+                    }
+                    else
+                    {
+                        var datos = new { nombreVisible = nombreVisible, configuracion = configuracion, imagen = Convert.ToBase64String(imagen), nombreDeCuenta = user, token = token, descripcion = descripcion };
+                        var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                        HttpResponseMessage response = await client.PostAsync("https://localhost:44304/RegistrarGrupo", content);
+                        response.EnsureSuccessStatusCode();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                    Console.ReadLine();
+                }
+            }
+        }
+        static async Task<dynamic> AñadirUsuarioAlGrupo(string nombreReal, string nombreDeCuenta, string rol, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = nombreDeCuenta, nombreReal = nombreReal, rol = rol, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync($"https://localhost:44304/AgregarUsuarioAGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        private async void pbxChatear_Click(object sender, EventArgs e)
+        {
+            MemoryStream ms = new MemoryStream();
+            PictureBoxUsuario.Image.Save(ms, ImageFormat.Jpeg);
+            byte[] data = ms.ToArray();
+            await PublicarGrupo(lblNombre.Text,"default",data,"",user,token);
+            await AñadirUsuarioAlGrupo(lblNombre.Text, nombreDeCreador, "usuario", token); // hacer que se añada al grupo, no puedo pq no tengo el nombre real del grupo, se reemplaza en lblnombre.text
         }
     }
 }

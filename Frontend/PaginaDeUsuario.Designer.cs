@@ -33,7 +33,11 @@ namespace Frontend
             this.lblNombre = new System.Windows.Forms.Label();
             this.lblDescripcion = new System.Windows.Forms.Label();
             this.panelPosts = new System.Windows.Forms.Panel();
+            this.btnSeguir = new System.Windows.Forms.PictureBox();
+            this.pbxChatear = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxChatear)).BeginInit();
             this.SuspendLayout();
             // 
             // PictureBoxUsuario
@@ -73,11 +77,35 @@ namespace Frontend
             this.panelPosts.Size = new System.Drawing.Size(972, 424);
             this.panelPosts.TabIndex = 26;
             // 
+            // btnSeguir
+            // 
+            this.btnSeguir.Image = global::Frontend.Properties.Resources.seguir_removebg_preview;
+            this.btnSeguir.Location = new System.Drawing.Point(138, 87);
+            this.btnSeguir.Name = "btnSeguir";
+            this.btnSeguir.Size = new System.Drawing.Size(188, 41);
+            this.btnSeguir.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btnSeguir.TabIndex = 52;
+            this.btnSeguir.TabStop = false;
+            this.btnSeguir.Click += new System.EventHandler(this.btnSeguir_Click);
+            // 
+            // pbxChatear
+            // 
+            this.pbxChatear.Image = global::Frontend.Properties.Resources.Comunidad;
+            this.pbxChatear.Location = new System.Drawing.Point(362, 82);
+            this.pbxChatear.Name = "pbxChatear";
+            this.pbxChatear.Size = new System.Drawing.Size(50, 50);
+            this.pbxChatear.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxChatear.TabIndex = 53;
+            this.pbxChatear.TabStop = false;
+            this.pbxChatear.Click += new System.EventHandler(this.pbxChatear_Click);
+            // 
             // PaginaDeUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(996, 574);
+            this.Controls.Add(this.pbxChatear);
+            this.Controls.Add(this.btnSeguir);
             this.Controls.Add(this.panelPosts);
             this.Controls.Add(this.lblDescripcion);
             this.Controls.Add(this.lblNombre);
@@ -85,6 +113,8 @@ namespace Frontend
             this.Name = "PaginaDeUsuario";
             this.Text = "PaginaDeUsuario";
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxChatear)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -96,5 +126,7 @@ namespace Frontend
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.Label lblDescripcion;
         private System.Windows.Forms.Panel panelPosts;
+        private System.Windows.Forms.PictureBox btnSeguir;
+        private System.Windows.Forms.PictureBox pbxChatear;
     }
 }

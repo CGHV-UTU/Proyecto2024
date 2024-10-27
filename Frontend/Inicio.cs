@@ -217,6 +217,7 @@ namespace Frontend
         }
         private void PostControl_AbrirPaginaUsuario(object sender, PersonalizedArgs e)
         {
+            PanelMostrarUsuario.Controls.Clear();
             PanelComentarios.Visible = false;
             PanelPosts.Visible = false;
             PanelMostrarUsuario.Visible = true;
@@ -498,6 +499,7 @@ namespace Frontend
             PanelMostrarUsuario.BackColor = Color.LightGray;
             comunidad.TieneConfiguraciones();
             comunidad.GrupoEliminado += PictureboxLogo_Click;
+            comunidad.AbrirUsuario += PostControl_AbrirPaginaUsuario;
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
             comunidad.MensajesNuevos();

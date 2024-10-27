@@ -34,6 +34,8 @@ namespace Frontend
             this.pnlTop = new System.Windows.Forms.Panel();
             this.pnlBot = new System.Windows.Forms.Panel();
             this.pbxUnirse = new System.Windows.Forms.PictureBox();
+            this.lblDarOQuitarAdmin = new System.Windows.Forms.Label();
+            this.lblEliminar = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxImagen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxUnirse)).BeginInit();
             this.SuspendLayout();
@@ -80,10 +82,30 @@ namespace Frontend
             this.pbxUnirse.TabStop = false;
             this.pbxUnirse.Click += new System.EventHandler(this.pbxUnirse_Click);
             // 
+            // lblDarOQuitarAdmin
+            // 
+            this.lblDarOQuitarAdmin.AutoSize = true;
+            this.lblDarOQuitarAdmin.Location = new System.Drawing.Point(12, 57);
+            this.lblDarOQuitarAdmin.Name = "lblDarOQuitarAdmin";
+            this.lblDarOQuitarAdmin.Size = new System.Drawing.Size(0, 13);
+            this.lblDarOQuitarAdmin.TabIndex = 76;
+            this.lblDarOQuitarAdmin.Click += new System.EventHandler(this.lblDarOQuitarAdmin_Click);
+            // 
+            // lblEliminar
+            // 
+            this.lblEliminar.AutoSize = true;
+            this.lblEliminar.Location = new System.Drawing.Point(22, 56);
+            this.lblEliminar.Name = "lblEliminar";
+            this.lblEliminar.Size = new System.Drawing.Size(0, 13);
+            this.lblEliminar.TabIndex = 77;
+            this.lblEliminar.Click += new System.EventHandler(this.lblEliminar_Click);
+            // 
             // Grupo_EventoParaListar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblEliminar);
+            this.Controls.Add(this.lblDarOQuitarAdmin);
             this.Controls.Add(this.pbxUnirse);
             this.Controls.Add(this.pnlBot);
             this.Controls.Add(this.pnlTop);
@@ -107,5 +129,7 @@ namespace Frontend
         private System.Windows.Forms.Panel pnlTop;
         private System.Windows.Forms.Panel pnlBot;
         private System.Windows.Forms.PictureBox pbxUnirse;
+        private System.Windows.Forms.Label lblDarOQuitarAdmin;
+        private System.Windows.Forms.Label lblEliminar;
     }
 }

@@ -144,7 +144,26 @@ namespace Frontend
         {
             AbrirGrupo?.Invoke(this, new PersonalizedArgs(e.arg));
         }
-
+        static async Task<dynamic> RolEnElGrupo(string nombreReal, string nombre, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = nombre, nombreReal = nombreReal, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/ObtenerRolDelUsuarioEnElGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return "ERROR";
+                }
+            }
+        }
         private async void CargarGrupos()
         {
             var lista = await grupos(user, token);
@@ -154,20 +173,22 @@ namespace Frontend
                 {
                     foreach (var elemento in lista)
                     {
-                        var eventControl = new Grupo_EventoParaListar(user, token, Convert.ToString(elemento.nombreReal), 0);
-                        eventControl.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
-                        // probando, antes iba debajo del else
-                        if (PanelGrupos.Controls.Count > 0)
+                        var rol = await RolEnElGrupo(Convert.ToString(elemento.nombreReal), user, token);
+                        if (!Convert.ToString(rol).Equals("solicitante"))
                         {
-                            var lastControl = PanelGrupos.Controls[PanelGrupos.Controls.Count - 1];
-                            eventControl.Location = new Point(0, lastControl.Bottom);
+                            var groupcontrol = new Grupo_EventoParaListar(user, token, Convert.ToString(elemento.nombreReal), 0);
+                            groupcontrol.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
+                            if (PanelGrupos.Controls.Count > 0)
+                            {
+                                var lastControl = PanelGrupos.Controls[PanelGrupos.Controls.Count - 1];
+                                groupcontrol.Location = new Point(0, lastControl.Bottom);
+                            }
+                            else
+                            {
+                                groupcontrol.Location = new Point(0, 52);
+                            }
+                            PanelGrupos.Controls.Add(groupcontrol);
                         }
-                        else
-                        {
-                            eventControl.Location = new Point(0, 52);
-                        }
-                        PanelGrupos.Controls.Add(eventControl);
-                        // aca
                     }
                 }
                 else
