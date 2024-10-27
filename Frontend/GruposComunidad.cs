@@ -62,6 +62,7 @@ namespace Frontend
         private PictureBox pbxFotoGrupoEditar;
         private Label lblCancelar;
         private PictureBox pbxConfirmarCambios;
+        private Label lblAñadir;
         private string idUltimoMensaje;
         public event EventHandler GrupoEliminado;
         public GruposComunidad(dynamic groupData, string user, string token)
@@ -84,6 +85,7 @@ namespace Frontend
             lblEditar.Visible = false;
             lblEliminar.Visible = false;
             pbxFotoGrupoEditar.Visible = false;
+            lblAñadir.Visible = false;
         }
         private void InitializeComponent()
         {
@@ -109,6 +111,7 @@ namespace Frontend
             this.lblAsociarVideo = new System.Windows.Forms.Label();
             this.pbxAsociarVideo = new System.Windows.Forms.PictureBox();
             this.pnlGruposComunidad = new System.Windows.Forms.Panel();
+            this.lblAñadir = new System.Windows.Forms.Label();
             this.lblCancelar = new System.Windows.Forms.Label();
             this.pbxConfirmarCambios = new System.Windows.Forms.PictureBox();
             this.pbxSeleccionarImagen = new System.Windows.Forms.PictureBox();
@@ -357,6 +360,7 @@ namespace Frontend
             // pnlGruposComunidad
             // 
             this.pnlGruposComunidad.AutoScroll = true;
+            this.pnlGruposComunidad.Controls.Add(this.lblAñadir);
             this.pnlGruposComunidad.Controls.Add(this.lblCancelar);
             this.pnlGruposComunidad.Controls.Add(this.pbxConfirmarCambios);
             this.pnlGruposComunidad.Controls.Add(this.pbxSeleccionarImagen);
@@ -380,6 +384,17 @@ namespace Frontend
             this.pnlGruposComunidad.Name = "pnlGruposComunidad";
             this.pnlGruposComunidad.Size = new System.Drawing.Size(996, 717);
             this.pnlGruposComunidad.TabIndex = 47;
+            // 
+            // lblAñadir
+            // 
+            this.lblAñadir.AutoSize = true;
+            this.lblAñadir.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAñadir.Location = new System.Drawing.Point(801, 47);
+            this.lblAñadir.Name = "lblAñadir";
+            this.lblAñadir.Size = new System.Drawing.Size(122, 20);
+            this.lblAñadir.TabIndex = 89;
+            this.lblAñadir.Text = "Añadir Usuarios";
+            this.lblAñadir.Click += new System.EventHandler(this.lblAñadir_Click);
             // 
             // lblCancelar
             // 
@@ -435,7 +450,7 @@ namespace Frontend
             // 
             this.lblEliminar.AutoSize = true;
             this.lblEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEliminar.Location = new System.Drawing.Point(857, 37);
+            this.lblEliminar.Location = new System.Drawing.Point(858, 27);
             this.lblEliminar.Name = "lblEliminar";
             this.lblEliminar.Size = new System.Drawing.Size(65, 20);
             this.lblEliminar.TabIndex = 83;
@@ -446,7 +461,7 @@ namespace Frontend
             // 
             this.lblEditar.AutoSize = true;
             this.lblEditar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEditar.Location = new System.Drawing.Point(857, 12);
+            this.lblEditar.Location = new System.Drawing.Point(872, 7);
             this.lblEditar.Name = "lblEditar";
             this.lblEditar.Size = new System.Drawing.Size(51, 20);
             this.lblEditar.TabIndex = 82;
@@ -956,11 +971,13 @@ namespace Frontend
             {
                 lblEditar.Visible = true;
                 lblEliminar.Visible = true;
+                lblAñadir.Visible = true;
             }
             else
             {
                 lblEditar.Visible = false;
                 lblEliminar.Visible = false;
+                lblAñadir.Visible = false;
             }
         }
         static async Task<dynamic> Miembros(string grupo, string token)
@@ -1000,22 +1017,25 @@ namespace Frontend
             pbxCrearPostGrupo.Visible = true;
             pnlAsociarContenido.Visible = false;
             panel1.Visible = false;
-            var lista = await Miembros(nombreGrupo, token);
-            if (lista!=null)
+            var listaDeUsuarios = await Miembros(nombreGrupo, token);
+            if (listaDeUsuarios !=null)
             {
-                foreach (var elemento in lista)
+                foreach (var elemento in listaDeUsuarios)
                 {
-                    var eventControl = new Grupo_EventoParaListar(user, token,usuariobuscar:elemento);
-                    if (pnlPostsGrupo.Controls.Count > 0)
+                    if (!Convert.ToString(elemento.rol).Equals("solicitante"))
                     {
-                        var lastControl = pnlPostsGrupo.Controls[pnlPostsGrupo.Controls.Count - 1];
-                        eventControl.Location = new Point(0, lastControl.Bottom);
+                        var eventControl = new Grupo_EventoParaListar(user, token, usuariobuscar: elemento);
+                        if (pnlPostsGrupo.Controls.Count > 0)
+                        {
+                            var lastControl = pnlPostsGrupo.Controls[pnlPostsGrupo.Controls.Count - 1];
+                            eventControl.Location = new Point(0, lastControl.Bottom);
+                        }
+                        else
+                        {
+                            eventControl.Location = new Point(0, 52);
+                        }
+                        pnlPostsGrupo.Controls.Add(eventControl);
                     }
-                    else
-                    {
-                        eventControl.Location = new Point(0, 52);
-                    }
-                    pnlPostsGrupo.Controls.Add(eventControl);
                 }
             }
         }
@@ -1110,6 +1130,45 @@ namespace Frontend
                 {
                     pbxFotoGrupoEditar.Image = Image.FromFile(ofd.FileName);
                     pbxFotoGrupoEditar.SizeMode = PictureBoxSizeMode.StretchImage;
+                }
+            }
+        }
+
+        private async void lblAñadir_Click(object sender, EventArgs e)
+        {
+            if (pnlCrear.Visible == true)
+            {
+                pnlCrear.Visible = false;
+                pnlCrear.Controls.Clear();
+            }
+            pnlPostsGrupo.Controls.Clear();
+            pnlPostsGrupo.Parent = this;
+            pnlPostsGrupo.Location = new Point(13, 113);
+            pnlChat.Visible = false;
+            pnlPostsGrupo.Visible = true;
+            pnlPostsGrupo.BringToFront();
+            pbxCrearPostGrupo.Visible = true;
+            pnlAsociarContenido.Visible = false;
+            panel1.Visible = false;
+            var listaDeUsuarios = await Miembros(nombreGrupo, token);
+            if (listaDeUsuarios != null)
+            {
+                foreach (var elemento in listaDeUsuarios)
+                {
+                    if (Convert.ToString(elemento.rol).Equals("solicitante"))
+                    {
+                        var eventControl = new Grupo_EventoParaListar(user, token, usuariobuscar: elemento);
+                        if (pnlPostsGrupo.Controls.Count > 0)
+                        {
+                            var lastControl = pnlPostsGrupo.Controls[pnlPostsGrupo.Controls.Count - 1];
+                            eventControl.Location = new Point(0, lastControl.Bottom);
+                        }
+                        else
+                        {
+                            eventControl.Location = new Point(0, 52);
+                        }
+                        pnlPostsGrupo.Controls.Add(eventControl);
+                    }
                 }
             }
         }

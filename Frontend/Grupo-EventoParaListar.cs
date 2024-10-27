@@ -88,9 +88,9 @@ namespace Frontend
             {
                 try
                 {
-                    var datos = new { nombreDeCuenta = nombre, nombreReal = nombreReal, token = token };
+                    var datos = new { nombreDeCuenta = nombre, nombreReal = nombreReal, rol= "solicitante", token = token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/EnviarSolicitudParaUnirseAlGrupo", content);
+                    HttpResponseMessage response = await client.PostAsync($"https://localhost:44304/EnviarSolicitudParaUnirseAlGrupo", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -325,6 +325,7 @@ namespace Frontend
             else
             {
                 dynamic respuesta = await UnirseAlGrupo(nombreReal, user, token);
+                MessageBox.Show(""+respuesta);
             }
         }
     }
