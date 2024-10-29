@@ -225,7 +225,7 @@ namespace Frontend
             MemoryStream ms = new MemoryStream();
             PictureBoxUsuario.Image.Save(ms, ImageFormat.Jpeg);
             byte[] data = ms.ToArray();
-            var respuesta = await PublicarGrupo(lblNombre.Text,"default",data,"",user,token);
+            var respuesta = await PublicarGrupo("-----------------------------------------","default",data,"",user,token);
             string[] nombreRealDelGrupo=Convert.ToString(respuesta).Split(' ');
             var respuesta2=await AñadirUsuarioAlGrupo(nombreRealDelGrupo[6], nombreDeCreador, "usuario", token);
             MessageBox.Show("" + respuesta2);

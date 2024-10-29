@@ -81,7 +81,26 @@ namespace Frontend
                 }
             }
         }
-
+        static async Task<dynamic> EsChatPrivado(string nombreReal, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreReal = nombreReal, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/EsChatPrivado", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
         static async Task<dynamic> UnirseAlGrupo(string nombreReal,string nombre, string token)
         {
             using (HttpClient client = new HttpClient())
@@ -120,6 +139,27 @@ namespace Frontend
                 catch
                 {
                     return "ERROR";
+                }
+            }
+        }
+        static async Task<string> conseguirImagenDelUsuario(string creador, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var dato = new { nombreDeCuenta = creador, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/obtenerImagenUsuario", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic imagen = JsonConvert.DeserializeObject(responseBody);
+                    return imagen;
+                }
+                catch
+                {
+                    MessageBox.Show("Error de conexión");
+                    return "error";
                 }
             }
         }
@@ -167,24 +207,68 @@ namespace Frontend
                 }
                 else
                 {
-                    var data = await BuscarGrupo(nombreReal, token);
-                    this.lblNombre.Text = data.nombreVisible;
-                    try
+                    var datos = await EsChatPrivado(nombreReal, token);
+                    if (datos!=null && !Convert.ToString(datos).Equals("No participa") || !Convert.ToString(datos).Equals("Token expirado") || !Convert.ToString(datos).Equals("Hubo un error"))
                     {
-                        byte[] imagen = Convert.FromBase64String(Convert.ToString(data.foto));
-                        MemoryStream ms = new MemoryStream(imagen);
-                        Bitmap bitmap = new Bitmap(ms);
-                        this.PictureBoxImagen.Image = bitmap;
-                        if (this.PictureBoxImagen.Image == null)
+                        string[] lista = Convert.ToString(datos).Split('"');
+                        string user1="";
+                        string user2="";
+                        int x = 1;
+                        foreach (string palabra in lista)
                         {
-                            MessageBox.Show("Imagen nula");
+                            if (!palabra.Equals("{") && !palabra.Equals("}") && !palabra.Equals(",") && !palabra.Equals(":") && !palabra.Equals("nombreDeCuenta1") && !palabra.Equals("nombreDeCuenta2"))
+                            {
+                                if (x==3)
+                                {
+                                    user1 = palabra;
+                                }
+                                if (x == 6)
+                                {
+                                    user2 = palabra;
+                                }
+                                x++;
+                            }
+                        }
+                        if (user1.Equals(user))
+                        {
+                            this.lblNombre.Text = user2;
+                            string imagenB64 = await conseguirImagenDelUsuario(user2, token);
+                            byte[] imagen = Convert.FromBase64String(imagenB64);
+                            MemoryStream ms = new MemoryStream(imagen);
+                            Bitmap bitmap = new Bitmap(ms);
+                            this.PictureBoxImagen.Image = bitmap;
+                        }
+                        else
+                        {
+                            this.lblNombre.Text = user1;
+                            string imagenB64 = await conseguirImagenDelUsuario(user1, token);
+                            byte[] imagen = Convert.FromBase64String(imagenB64);
+                            MemoryStream ms = new MemoryStream(imagen);
+                            Bitmap bitmap = new Bitmap(ms);
+                            this.PictureBoxImagen.Image = bitmap;
                         }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        MessageBox.Show("Ha ocurrido un error " + ex);
+                        var data = await BuscarGrupo(nombreReal, token);
+                        this.lblNombre.Text = data.nombreVisible;
+                        try
+                        {
+                            byte[] imagen = Convert.FromBase64String(Convert.ToString(data.foto));
+                            MemoryStream ms = new MemoryStream(imagen);
+                            Bitmap bitmap = new Bitmap(ms);
+                            this.PictureBoxImagen.Image = bitmap;
+                            if (this.PictureBoxImagen.Image == null)
+                            {
+                                MessageBox.Show("Imagen nula");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Ha ocurrido un error " + ex);
+                        }
+                        this.datos = data;
                     }
-                    datos = data;
                 }
             }
             else

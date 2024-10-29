@@ -188,7 +188,7 @@ namespace Frontend
                         }
                         break;
                     case "grupo":
-                        if (string.IsNullOrEmpty(txtNombre.Text))
+                        if (string.IsNullOrEmpty(txtNombre.Text) || txtNombre.Text.Equals("-----------------------------------------"))
                         {
                             MessageBox.Show("No puede realizar un grupo sin nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             break;
