@@ -167,7 +167,7 @@ namespace Frontend
         {
             await Seguir(user, nombreDeCreador, "seguir", token);
         }
-        public static async Task PublicarGrupo(string nombreVisible, string configuracion, byte[] imagen, string descripcion, string user, string token)
+        public static async Task<dynamic> PublicarGrupo(string nombreVisible, string configuracion, byte[] imagen, string descripcion, string user, string token)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -175,23 +175,28 @@ namespace Frontend
                 {
                     if (imagen.Length == 0)
                     {
-                        var datos = new { nombreVisible = nombreVisible, configuracion = configuracion, nombreDeCuenta = user, token = token, descripcion = descripcion };
+                        var datos = new { nombreVisible = nombreVisible, configuracion = configuracion, nombreDeCuenta = user, rol= "usuario", token = token, descripcion = descripcion };
                         var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync("https://localhost:44304/RegistrarGrupo", content);
                         response.EnsureSuccessStatusCode();
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        dynamic data = JsonConvert.DeserializeObject(responseBody);
+                        return data;
                     }
                     else
                     {
-                        var datos = new { nombreVisible = nombreVisible, configuracion = configuracion, imagen = Convert.ToBase64String(imagen), nombreDeCuenta = user, token = token, descripcion = descripcion };
+                        var datos = new { nombreVisible = nombreVisible, configuracion = configuracion, imagen = Convert.ToBase64String(imagen), nombreDeCuenta = user, rol = "usuario", token = token, descripcion = descripcion };
                         var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync("https://localhost:44304/RegistrarGrupo", content);
                         response.EnsureSuccessStatusCode();
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        dynamic data = JsonConvert.DeserializeObject(responseBody);
+                        return data;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error: " + ex.Message);
-                    Console.ReadLine();
+                    return "Error: " + ex.Message;
                 }
             }
         }
@@ -220,8 +225,10 @@ namespace Frontend
             MemoryStream ms = new MemoryStream();
             PictureBoxUsuario.Image.Save(ms, ImageFormat.Jpeg);
             byte[] data = ms.ToArray();
-            await PublicarGrupo(lblNombre.Text,"default",data,"",user,token);
-            await AñadirUsuarioAlGrupo(lblNombre.Text, nombreDeCreador, "usuario", token); // hacer que se añada al grupo, no puedo pq no tengo el nombre real del grupo, se reemplaza en lblnombre.text
+            var respuesta = await PublicarGrupo(lblNombre.Text,"default",data,"",user,token);
+            string[] nombreRealDelGrupo=Convert.ToString(respuesta).Split(' ');
+            var respuesta2=await AñadirUsuarioAlGrupo(nombreRealDelGrupo[6], nombreDeCreador, "usuario", token);
+            MessageBox.Show("" + respuesta2);
         }
     }
 }

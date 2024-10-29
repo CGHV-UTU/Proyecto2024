@@ -612,9 +612,13 @@ namespace Frontend
         {
             var respuesta = await RolEnElGrupo(nombreGrupo, user, token);
             rol = Convert.ToString(respuesta);
-            if (rol.Equals("admin")|| rol.Equals("creador"))
+            if (rol.Equals("admin") || rol.Equals("creador"))
             {
                 PictureBoxConfiguraciones.Visible = true;
+            }
+            else
+            {
+                PictureBoxConfiguraciones.Visible = false;
             }
         }
 
