@@ -645,6 +645,83 @@ namespace Testing
             }
         }
 
+        [TestMethod]
+        public void TestMethod15()
+        {
+            // Arrange
+            var authController = new ApiUsuarios.Controllers.AuthController();
+            var login = new ApiUsuarios.Controllers.AuthController.formaLogin
+            {
+                User = "nombre",
+                Pass = "contraseña"
+            };
+
+            var tokenResult = authController.Token(login) as JsonResult;
+            Assert.IsNotNull(tokenResult, "El resultado del token no debería ser nulo.");
+            var tokenString = tokenResult.Data?.ToString();
+            Assert.IsNotNull(tokenString, "El token no debería ser nulo.");
+
+            var isTokenValidResult = authController.TestToken(new ApiUsuarios.Controllers.AuthController.TipoToken { token = tokenString }) as JsonResult;
+            Assert.IsNotNull(isTokenValidResult, "Resultado de validación del token no debería ser nulo.");
+            Assert.IsTrue(isTokenValidResult.Data is bool isTokenValid && isTokenValid, "El token debería ser válido.");
+
+            var controller = new ApiUsuarios.Controllers.UserController();
+
+            var usuario = new ApiUsuarios.Controllers.UserController.usuario
+            {
+                nombreDeCuenta = "nombre",
+                nombreDeCuenta2 = "usuarioReportar",
+                tipoInteraccion = "bloquear",
+                token = tokenString
+            };
+
+            var interactuarResult = controller.Interactuar(usuario) as JsonResult;
+            Assert.IsNotNull(interactuarResult, "Se esperaba un JsonResult.");
+
+            string interactuarResultData = interactuarResult.Data as string;
+            Assert.IsNotNull(interactuarResultData, "El Data en JsonResult no es del tipo esperado.");
+            Assert.AreEqual("Seguido con Exito", interactuarResultData, "No se pudo completar la interacción.");
+        }
+
+        [TestMethod]
+        public void TestMethod16()
+        {
+            // Arrange
+            var authController = new ApiUsuarios.Controllers.AuthController();
+            var login = new ApiUsuarios.Controllers.AuthController.formaLogin
+            {
+                User = "nombre",
+                Pass = "contraseña"
+            };
+
+            var tokenResult = authController.Token(login) as JsonResult;
+            Assert.IsNotNull(tokenResult, "El resultado del token no debería ser nulo.");
+            var tokenString = tokenResult.Data?.ToString();
+            Assert.IsNotNull(tokenString, "El token no debería ser nulo.");
+
+            var isTokenValidResult = authController.TestToken(new ApiUsuarios.Controllers.AuthController.TipoToken { token = tokenString }) as JsonResult;
+            Assert.IsNotNull(isTokenValidResult, "Resultado de validación del token no debería ser nulo.");
+            Assert.IsTrue(isTokenValidResult.Data is bool isTokenValid && isTokenValid, "El token debería ser válido.");
+
+            var controller = new ApiUsuarios.Controllers.UserController();
+
+            var usuario = new ApiUsuarios.Controllers.UserController.usuario
+            {
+                nombreDeCuenta = "nombre",
+                nombreDeCuenta2 = "usuarioReportar",
+                token = tokenString
+            };
+
+            var conseguirInteraccionResult = controller.ConseguirInteraccion(usuario) as JsonResult;
+            Assert.IsNotNull(conseguirInteraccionResult, "Se esperaba un JsonResult.");
+
+            string conseguirInteraccionResultData = conseguirInteraccionResult.Data as string;
+            Assert.IsNotNull(conseguirInteraccionResultData, "El Data en JsonResult no es del tipo esperado.");
+            Assert.AreEqual("bloquear", conseguirInteraccionResultData, "El tipo de interacción no coincide.");
+        }
+
+
+
 
     }
 }

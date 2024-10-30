@@ -22,6 +22,8 @@ namespace ApiUsuarios.Controllers
         public class usuario
         {
             public string nombreDeCuenta { get; set; }
+            public string nombreDeCuenta2 { get; set; }
+            public string tipoInteraccion { get; set; }
             public string nombreVisible { get; set; }
             public string email { get; set; }
             public string descripcion { get; set; }
@@ -791,6 +793,79 @@ namespace ApiUsuarios.Controllers
                 return Json("Error: " + ex.Message);
             }
         }
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Route("Interactuar")]
+        public dynamic Interactuar([FromBody] usuario user)
+        {
+            if (user == null)
+            {
+                return Json("nulo");
+            }
+            else
+            {
+                if (TestToken(user.token))
+                {
+                    try
+                    {
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand("INSERT INTO Interactua (nombreDeCuenta,nombreDeCuenta2,tipoInteraccion) VALUES (@nombreDeCuenta, @nombreDeCuenta2, @tipo)", conn);
+                        cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                        cmd.Parameters.AddWithValue("@nombreDeCuenta2", user.nombreDeCuenta2);
+                        cmd.Parameters.AddWithValue("@tipo", user.tipoInteraccion);
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                        return Json("Seguido con Exito");
+                    }
+                    catch (Exception ex)
+                    {
+                        conn.Close();
+                        return Json("Hubo un error: " + ex.Message);
+                    }
+
+                }
+                else
+                {
+                    return Json("Token expirado");
+                }
+            }
+        }
+
+        [System.Web.Mvc.HttpPut]
+        [System.Web.Mvc.Route("ConseguirInteraccion")]
+        public dynamic ConseguirInteraccion([FromBody] usuario user)
+        {
+            if (user == null)
+            {
+                return Json("nulo");
+            }
+            else
+            {
+                if (TestToken(user.token))
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT tipoInteraccion FROM Interactua WHERE nombreDeCuenta=@nombreDeCuenta AND nombreDeCuenta2=@nombreDeCuenta2", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta2", user.nombreDeCuenta2);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows && reader.Read())
+                    {
+                        string tipoInteraccion = reader["tipoInteraccion"].ToString();
+                        conn.Close();
+                        return Json(tipoInteraccion);
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return Json("Hubo un error: no se encontró interacción para el usuario");
+                    }
+                }
+                else
+                {
+                    return Json("Token expirado");
+                }
+            }
+        }
+
 
     }
 
