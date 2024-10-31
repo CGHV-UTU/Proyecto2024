@@ -43,7 +43,7 @@ namespace UnitTest1
             string resultData = jsonResult.Content;
             Assert.IsNotNull(resultData, "El Data en JsonResult no es del tipo esperado.");
             Console.WriteLine($"Response: {resultData}");
-            Assert.AreEqual("Registro correcto", resultData, "El grupo no se registró correctamente.");
+            Assert.IsTrue(resultData.Contains("Registro correcto"), "Al menos un registro debería tener 'Registro correcto'.");
             Console.WriteLine($"Response: {resultData}");
 
         }
@@ -252,7 +252,7 @@ namespace UnitTest1
             var eliminarJsonResult = eliminarResult as System.Web.Http.Results.JsonResult<string>;
 
             Assert.IsNotNull(eliminarJsonResult, "El resultado de EliminarUsuarioDeGrupo no debe ser nulo");
-            Assert.AreEqual("Grupo eliminado del usuario correctamente", eliminarJsonResult.Content, "El usuario debería ser eliminado del grupo correctamente");
+            Assert.AreEqual("Usuario eliminado del grupo correctamente", eliminarJsonResult.Content, "El usuario debería ser eliminado del grupo correctamente");
 
             Console.WriteLine(eliminarJsonResult.Content);
         }
@@ -377,7 +377,7 @@ namespace UnitTest1
             var result = await controller.ObtenerMensajes(mensaje);
             var jsonResult = result as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.Mensajes>>;
 
-            Assert.IsNotNull(jsonResult, "The result should not be null");
+            Assert.IsNotNull(jsonResult, "El resultado no debe ser nulo");
             var mensajesList = jsonResult.Content;
             Console.WriteLine(mensajesList.AsReadOnly());
             Assert.IsTrue(mensajesList.Count > 0, "El resultado debe contener un mensaje");
@@ -413,7 +413,7 @@ namespace UnitTest1
             var result = await controller.ObtenerMensajesMayorID(mensaje);
             var jsonResult = result as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.Mensajes>>;
 
-            Assert.IsNotNull(jsonResult, "The result should not be null");
+            Assert.IsNotNull(jsonResult, "El resultado no debe ser nulo");
             var mensajesList = jsonResult.Content;
             Console.WriteLine(mensajesList.AsReadOnly());
             Assert.IsTrue(mensajesList.Count > 0, "El resultado debe contener un mensaje");
@@ -574,11 +574,11 @@ namespace UnitTest1
 
             var obtenerGruposResult = await controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData);
             var jsonResultList = obtenerGruposResult as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
-            Assert.IsNotNull(jsonResultList, "The result of ObtenerGruposPorNombreVisibleYUsuario should not be null");
+            Assert.IsNotNull(jsonResultList, "El resultado de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
 
             var gruposList = jsonResultList.Content;
-            Assert.IsNotNull(gruposList, "The content of ObtenerGruposPorNombreVisibleYUsuario should not be null");
-            Assert.IsTrue(gruposList.Count > 0, "The result of ObtenerGruposPorNombreVisibleYUsuario should contain at least one group");
+            Assert.IsNotNull(gruposList, "El resultado de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
+            Assert.IsTrue(gruposList.Count > 0, "El resultado de ObtenerGruposPorNombreVisibleYUsuario debe haber al menos un grupo");
 
             string nombreReal = gruposList[0].nombreReal;
             API_Grupos.Controllers.GroupController.Grupo groupData = new API_Grupos.Controllers.GroupController.Grupo
@@ -590,20 +590,20 @@ namespace UnitTest1
 
             var rolResult = controller.ObtenerRolDelUsuarioEnElGrupo(groupData);
             var jsonResultRol = rolResult as System.Web.Http.Results.JsonResult<string>;
-            Assert.IsNotNull(jsonResultRol, "The result of ObtenerRolDelUsuarioEnElGrupo should not be null");
+            Assert.IsNotNull(jsonResultRol, "El resultado de ObtenerRolDelUsuarioEnElGrupo no debe ser nulo");
 
             string mensajeRol = jsonResultRol.Content;
             if (mensajeRol == "Token expirado")
             {
-                Assert.AreEqual("Token expirado", mensajeRol, "Expected the token to expire.");
+                Assert.AreEqual("Token expirado", mensajeRol, "Se esperaba token expirado");
             }
             else if (mensajeRol == "No participa")
             {
-                Assert.AreEqual("No participa", mensajeRol, "Expected 'No participa' when the user is not in the group.");
+                Assert.AreEqual("No participa", mensajeRol, "Se esperaba 'No participa' cuando el usuario no esta en el grupo");
             }
             else
             {
-                Assert.AreEqual("creador", mensajeRol, $"Expected the role to be 'creador', but got: {mensajeRol}");
+                Assert.AreEqual("creador", mensajeRol, $"Se  esperaba rol 'creador', pero es: {mensajeRol}");
             }
         }
 
@@ -656,6 +656,191 @@ namespace UnitTest1
         {
             var controller = new API_Grupos.Controllers.GroupController();
 
+            API_Grupos.Controllers.GroupController.Grupo initialGroupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreVisible = "Nuevo Nombre Visible",
+                nombreDeCuenta = "nombre",
+                token = "TestToken"
+            };
+
+            var obtenerGruposResult = await controller.ObtenerGruposPorNombreVisibleYUsuario(initialGroupData);
+            var jsonResultList = obtenerGruposResult as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
+            Assert.IsNotNull(jsonResultList, "El resultado de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
+
+            var gruposList = jsonResultList.Content;
+            Assert.IsNotNull(gruposList, "El contenido de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
+            Assert.IsTrue(gruposList.Count > 0, "El resultado de ObtenerGruposPorNombreVisibleYUsuario debe contener al menos un grupo");
+
+            string nombreReal = gruposList[0].nombreReal;
+
+            API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreReal = nombreReal,
+                token = "TestToken"
+            };
+
+            var obtenerUsuariosResult = await controller.ObtenerUsuariosDelGrupo(testGroupData);
+            var jsonResultUsuarios = obtenerUsuariosResult as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
+            Assert.IsNotNull(jsonResultUsuarios, "El resultado de ObtenerUsuariosDelGrupo no debe ser nulo");
+
+            var usuariosList = jsonResultUsuarios.Content;
+            Assert.IsNotNull(usuariosList, "El contenido de ObtenerUsuariosDelGrupo no debe ser nulo");
+            Assert.IsTrue(usuariosList.Count > 0, "El resultado de ObtenerUsuariosDelGrupo debe contener al menos un usuario");
+
+            var firstUsuario = usuariosList[0];
+            Assert.IsFalse(string.IsNullOrEmpty(firstUsuario.nombreReal), "nombreReal no debe ser nulo o vacío");
+            Assert.IsFalse(string.IsNullOrEmpty(firstUsuario.nombreVisible), "nombreVisible no debe ser nulo o vacío");
+            Assert.IsFalse(string.IsNullOrEmpty(firstUsuario.rol), "rol no debe ser nulo o vacío");
+            Assert.IsFalse(string.IsNullOrEmpty(firstUsuario.foto), "La URL de foto no debe ser nula o vacía");
+        }
+
+        [TestMethod]
+        public async Task TestMethod20()
+        {
+            API_Grupos.Controllers.GroupController controller = new API_Grupos.Controllers.GroupController();
+            string projectDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName;
+            string imagePath = Path.Combine(projectDirectory, "UnitTest1", "Imagen.jpg");
+            byte[] imageBytes = File.ReadAllBytes(imagePath);
+            string base64Image = Convert.ToBase64String(imageBytes);
+
+            // Crear un nuevo grupo
+            API_Grupos.Controllers.GroupController.Grupo grupoPrueba = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreVisible = "Nuevo Grupo",
+                configuracion = "default",
+                imagen = base64Image,
+                nombreDeCuenta = "nombre",
+                rol = "usuario",
+                descripcion = "Grupo para verificar chat privado",
+                token = "TestToken"
+            };
+
+            // Registrar el grupo
+            var registrarGrupoResult = await controller.RegistrarGrupo(grupoPrueba);
+            var registrarJsonResult = registrarGrupoResult as JsonResult<string>;
+            Assert.IsNotNull(registrarJsonResult, "Se esperaba un JsonResult.");
+
+            string resultData = registrarJsonResult.Content;
+            Assert.IsNotNull(resultData, "El Data en JsonResult no es del tipo esperado.");
+            Assert.IsTrue(resultData.Contains("Registro correcto"), "Al menos un registro debería tener 'Registro correcto'.");
+
+            // Obtener el nombre real del grupo recién creado
+            API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreVisible = "Nuevo Grupo",
+                nombreDeCuenta = "nombre",
+                token = "TestToken"
+            };
+
+            var obtenerGruposResult = await controller.ObtenerGruposPorNombreVisibleYUsuario(testGroupData);
+            var jsonResultList = obtenerGruposResult as System.Web.Http.Results.JsonResult<List<API_Grupos.Controllers.GroupController.GrupoResponse>>;
+            Assert.IsNotNull(jsonResultList, "El resultado de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
+
+            var gruposList = jsonResultList.Content;
+            Assert.IsNotNull(gruposList, "El contenido de ObtenerGruposPorNombreVisibleYUsuario no debe ser nulo");
+            Assert.IsTrue(gruposList.Count > 0, "El resultado de ObtenerGruposPorNombreVisibleYUsuario debe contener al menos un grupo");
+
+            string nombreReal = gruposList[0].nombreReal;
+
+            API_Grupos.Controllers.GroupController.Grupo groupData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreReal = nombreReal,
+                nombreDeCuenta = "usuarioReportar",
+                rol = "usuario",
+                token = "TestToken"
+            };
+
+            var agregarUsuarioResult = await controller.AgregarUsuarioAGrupo(groupData);
+            var agregarUsuarioJsonResult = agregarUsuarioResult as System.Web.Http.Results.JsonResult<string>;
+            Assert.AreEqual("Usuario agregado al grupo", agregarUsuarioJsonResult.Content, "El usuario debería ser agregado al grupo correctamente");
+
+            // Verificar si el grupo es un chat privado
+            API_Grupos.Controllers.GroupController.Grupo testChatData = new API_Grupos.Controllers.GroupController.Grupo
+            {
+                nombreReal = nombreReal,
+                token = "TestToken"
+            };
+
+            // Cambiar la llamada a EsChatPrivado para usar await
+            var esChatPrivadoResult = await controller.EsChatPrivado(testChatData);
+            var chatPrivado = esChatPrivadoResult as System.Web.Http.Results.JsonResult<API_Grupos.Controllers.GroupController.ChatPrivado>;
+
+            Assert.IsNotNull(chatPrivado, "El resultado de EsChatPrivado no debe ser nulo");
+
+            // Asegúrate de que el contenido no sea nulo
+            var resultDataChatPrivado = chatPrivado.Content;
+            Assert.IsNotNull(resultDataChatPrivado, "El contenido de EsChatPrivado no debe ser nulo");
+
+            // Verificar que se devuelven los datos esperados
+            if (resultDataChatPrivado is API_Grupos.Controllers.GroupController.ChatPrivado chatPrivadoData)
+            {
+                Assert.IsFalse(string.IsNullOrEmpty(chatPrivadoData.nombreDeCuenta1), "nombreDeCuenta1 no debe ser nulo o vacío");
+                Assert.IsFalse(string.IsNullOrEmpty(chatPrivadoData.nombreDeCuenta2), "nombreDeCuenta2 no debe ser nulo o vacío");
+                Assert.AreEqual(nombreReal, chatPrivadoData.nombreReal, "El nombreReal del chat privado debe coincidir con el grupo creado.");
+            }
+            else
+            {
+                Assert.AreEqual("No participa", (IEquatable<string>)resultDataChatPrivado, "El grupo no contiene un chat privado con solo dos usuarios.");
+            }
+        }
+
+        [TestMethod]
+        public async Task TestMethod21()
+        {
+            API_Grupos.Controllers.GroupController controller = new API_Grupos.Controllers.GroupController();
+            string projectDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName;
+            string imagePath = Path.Combine(projectDirectory, "UnitTest1", "Imagen.jpg");
+            byte[] imageBytes = File.ReadAllBytes(imagePath);
+            string base64Image = Convert.ToBase64String(imageBytes);
+
+            // Datos para verificar existencia de chat privado
+            API_Grupos.Controllers.GroupController.ChatPrivado chatPrivadoData = new API_Grupos.Controllers.GroupController.ChatPrivado
+            {
+                nombreDeCuenta1 = "nombre",
+                nombreDeCuenta2 = "usuarioReportar",
+                token = "TestToken"
+            };
+
+            // Verificar si hay un chat privado existente
+            var existeChatResult = await controller.ExisteChatPrivado(chatPrivadoData);
+            var jsonResult = existeChatResult as System.Web.Http.Results.JsonResult<string>;
+
+            Assert.IsNotNull(jsonResult, "El resultado de ExisteChatPrivado no debe ser nulo.");
+            bool existeChatPrivado = jsonResult.Content == "true";
+
+            if (!existeChatPrivado)
+            {
+                // Crear un nuevo grupo si no existe el chat privado
+                API_Grupos.Controllers.GroupController.Grupo nuevoGrupo = new API_Grupos.Controllers.GroupController.Grupo
+                {
+                    nombreVisible = "Grupo Alternativo",
+                    configuracion = "default",
+                    imagen = base64Image,
+                    nombreDeCuenta = "nombre",
+                    rol = "usuario",
+                    descripcion = "Grupo alternativo creado porque no existe chat privado.",
+                    token = "TestToken"
+                };
+
+                var registrarGrupoResult = await controller.RegistrarGrupo(nuevoGrupo);
+                var registrarJsonResult = registrarGrupoResult as JsonResult<string>;
+
+                Assert.IsNotNull(registrarJsonResult, "Se esperaba un JsonResult al registrar el nuevo grupo.");
+                Assert.IsTrue(registrarJsonResult.Content.Contains("Registro correcto"), "Se esperaba que el registro del grupo fuera correcto.");
+            }
+            else
+            {
+                Assert.IsTrue(existeChatPrivado, "Se esperaba que existiera un chat privado entre los usuarios.");
+            }
+        }
+
+
+
+        [TestMethod]
+        public async Task TestMethod22()
+        {
+            var controller = new API_Grupos.Controllers.GroupController();
+
             API_Grupos.Controllers.GroupController.Grupo testGroupData = new API_Grupos.Controllers.GroupController.Grupo
             {
                 nombreVisible = "Nuevo Nombre Visible",
@@ -686,6 +871,8 @@ namespace UnitTest1
             string mensajeEliminacion = eliminarJsonResult.Content;
             Assert.AreEqual("Se pudo eliminar", mensajeEliminacion, $"Se esperaba que el grupo fuera eliminado correctamente, pero el mensaje fue: {mensajeEliminacion}");
         }
+
+
 
 
 

@@ -50,6 +50,7 @@ namespace API_Grupos.Controllers
             public string configuracion { get; set; }
             public string descripcion { get; set; }
             public string foto { get; set; }
+            public string rol { get; set; }
         }
         public class Mensajes
         {
@@ -67,6 +68,14 @@ namespace API_Grupos.Controllers
 
             public string imagen { get; set; }
 
+            public string token { get; set; }
+        }
+        public class ChatPrivado
+        {
+            public string nombreDeCuenta1 { get; set; }
+            public string nombreDeCuenta2 { get; set; }
+            public string nombreGrupo { get; set; }
+            public string nombreReal { get; set; }
             public string token { get; set; }
         }
 
@@ -197,12 +206,24 @@ namespace API_Grupos.Controllers
                             cmd.Parameters.AddWithValue("@foto", linkImagen);
                             cmd.ExecuteNonQuery();
                         }
-                        using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, @rol)", conn))
+                        if (string.IsNullOrEmpty(Convert.ToString(group.rol)))
                         {
-                            cmd2.Parameters.AddWithValue("@nombreDeCuenta", group.nombreDeCuenta);
-                            cmd2.Parameters.AddWithValue("@nombreReal", group.nombreReal);
-                            cmd2.Parameters.AddWithValue("@rol", "creador");
-                            cmd2.ExecuteNonQuery();
+                            using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, 'creador')", conn))
+                            {
+                                cmd2.Parameters.AddWithValue("@nombreDeCuenta", group.nombreDeCuenta);
+                                cmd2.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                                cmd2.ExecuteNonQuery();
+                            }
+                        }
+                        else
+                        {
+                            using (MySqlCommand cmd2 = new MySqlCommand("INSERT INTO Participa (nombreReal, nombreDeCuenta, rol) VALUES (@nombreReal, @nombreDeCuenta, @rol)", conn))
+                            {
+                                cmd2.Parameters.AddWithValue("@nombreDeCuenta", group.nombreDeCuenta);
+                                cmd2.Parameters.AddWithValue("@nombreReal", group.nombreReal);
+                                cmd2.Parameters.AddWithValue("@rol", group.rol);
+                                cmd2.ExecuteNonQuery();
+                            }
                         }
                         if (!string.IsNullOrEmpty(group.descripcion))
                         {
@@ -215,7 +236,7 @@ namespace API_Grupos.Controllers
                         }
                     }
 
-                    return Json("Registro correcto");
+                    return Json("Registro correcto del grupo de codigo " + group.nombreReal);
                 }
                 catch (Exception ex)
                 {
@@ -793,7 +814,7 @@ namespace API_Grupos.Controllers
                 return Json("Token expirado");
             }
         }
-
+        
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("AgregarUsuarioAGrupo")]
         public async Task<IHttpActionResult> AgregarUsuarioAGrupo([FromBody] Grupo groupData)
@@ -827,6 +848,7 @@ namespace API_Grupos.Controllers
                 return Json("Token expirado");
             }
         }
+
 
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("EnviarSolicitudParaUnirseAlGrupo")]
@@ -863,7 +885,7 @@ namespace API_Grupos.Controllers
 
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("EliminarUsuarioDeGrupo")]
-        public async Task <dynamic> EliminarUsuarioDeGrupo([FromBody] Grupo groupData)
+        public async Task<dynamic> EliminarUsuarioDeGrupo([FromBody] Grupo groupData)
         {
             if (TestToken(groupData.token))
             {
@@ -890,7 +912,7 @@ namespace API_Grupos.Controllers
                             eliminarCmd.Parameters.AddWithValue("@nombreRealGrupo", groupData.nombreReal);
                             eliminarCmd.Parameters.AddWithValue("@nombreUsuario", groupData.nombreDeCuenta);
                             eliminarCmd.ExecuteNonQuery();
-                            return Json("Grupo eliminado del usuario correctamente");
+                            return Json("Usuario eliminado del grupo correctamente");
                         }
                         else
                         {
@@ -903,7 +925,7 @@ namespace API_Grupos.Controllers
                     return Json($"Error al eliminar el grupo: {ex.Message}");
                 }
             }
-            else 
+            else
             {
                 return Json("Token expirado");
             }
@@ -1074,6 +1096,132 @@ namespace API_Grupos.Controllers
                 return Json("Hubo un error" + ex.Message);
             }
         }
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("ObtenerUsuariosDelGrupo")]
+        public async Task<IHttpActionResult> ObtenerUsuariosDelGrupo([FromBody] Grupo groupData)
+        {
+            if (TestToken(groupData.token))
+            {
+                try
+                {
+                    List<GrupoResponse> grupos = new List<GrupoResponse>();
+
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
+                    {
+                        conn.Open();
+
+                        MySqlCommand cmd = new MySqlCommand(@"
+                SELECT u.nombreDeCuenta, u.nombreVisible, u.foto, p.rol
+                FROM Usuarios u
+                JOIN Participa p ON u.nombreDeCuenta= p.nombreDeCuenta
+                WHERE p.nombreReal = @nombreDeGrupo", conn);
+
+                        cmd.Parameters.AddWithValue("@nombreDeGrupo", groupData.nombreReal);
+                        MySqlDataReader reader = cmd.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            GrupoResponse grupo = new GrupoResponse
+                            {
+                                nombreReal = reader["nombreDeCuenta"].ToString(),
+                                nombreVisible = reader["nombreVisible"].ToString(),
+                                rol = reader["rol"].ToString(),
+                                foto = await CargarImagenDeGitHub(reader["foto"].ToString())
+                            };
+                            grupos.Add(grupo);
+                        }
+                        conn.Close();
+                    }
+
+                    return Json(grupos);
+                }
+                catch (Exception)
+                {
+                    return Json("No se pudieron obtener los Grupos");
+                }
+            }
+            else
+            {
+                return Json("Token expirado");
+            }
+        }
+
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("EsChatPrivado")]
+        public async Task<IHttpActionResult> EsChatPrivado([FromBody] Grupo grupo)
+        {
+            try
+            {
+                if (TestToken(grupo.token))
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT p1.nombreDeCuenta AS usuario1, p2.nombreDeCuenta AS usuario2, p1.nombreReal AS grupo FROM infini.Participa p1 JOIN infini.Participa p2 ON p1.nombreReal = p2.nombreReal WHERE p1.nombreDeCuenta < p2.nombreDeCuenta AND p1.rol = 'usuario' AND p2.rol = 'usuario' AND p1.nombreReal = @grupo AND p1.nombreReal IN (SELECT nombreReal FROM infini.Participa GROUP BY nombreReal HAVING COUNT(*) = 2)", conn);
+                    cmd.Parameters.AddWithValue("@grupo", grupo.nombreReal);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        var datos = new ChatPrivado
+                        {
+                            nombreDeCuenta1 = reader["usuario1"].ToString(),
+                            nombreDeCuenta2 = reader["usuario2"].ToString(),
+                            nombreReal = reader["grupo"].ToString() 
+                        };
+                        return Json(datos);
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return Json("No participa");
+                    }
+                }
+                else
+                {
+                    return Json("Token expirado");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json("Hubo un error");
+            }
+        }
+
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("ExisteChatPrivado")]
+        public async Task<IHttpActionResult> ExisteChatPrivado([FromBody] ChatPrivado chat)
+        {
+            try
+            {
+                if (TestToken(chat.token))
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT p1.nombreReal AS grupo FROM Participa p1 JOIN Participa p2 ON p1.nombreReal = p2.nombreReal WHERE p1.rol = 'usuario' AND p2.rol = 'usuario' AND p1.nombreDeCuenta < p2.nombreDeCuenta AND p1.nombreReal IN (SELECT nombreReal FROM infini.Participa GROUP BY nombreReal HAVING COUNT(*) = 2) AND ((p1.nombreDeCuenta = @nombreDeCuenta1 AND p2.nombreDeCuenta = @nombreDeCuenta2) OR (p1.nombreDeCuenta = @nombreDeCuenta2 AND p2.nombreDeCuenta = @nombreDeCuenta1)); ", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta1", chat.nombreDeCuenta1);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta2", chat.nombreDeCuenta2);
+                    var result = cmd.ExecuteScalar();
+                    if (result != null)
+                    {
+                        return Json(result.ToString());
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return Json(false);
+                    }
+                }
+                else
+                {
+                    return Json(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+        }
+
+
 
 
 
