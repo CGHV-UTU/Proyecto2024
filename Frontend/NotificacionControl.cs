@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,24 +14,17 @@ namespace Frontend
     public partial class NotificacionControl : UserControl
     {
 
-        public NotificacionControl(string notificacion)
+        public NotificacionControl(dynamic notificacion)
         {
             InitializeComponent();
             Iniciar();
-            lblNoti.Text = notificacion;
-            AjustarTamaño();
+            lblNoti.Text = notificacion.texto;
+            byte[] imagen = Convert.FromBase64String(Convert.ToString(notificacion.imagen));
+            MemoryStream ms = new MemoryStream(imagen);
+            Bitmap bitmap = new Bitmap(ms);
+            PictureBoxNotificacion.Image = bitmap;
         }
 
-        public Image ImagenNotificacion
-        {
-            get { return PictureBoxNotificacion.Image; }
-            set { PictureBoxNotificacion.Image = value; }
-        }
-
-        private void AjustarTamaño()
-        {
-            lblNoti.Size = new Size(this.Width - 70, this.Height - 20);
-        }
 
         private void Iniciar()
         {
@@ -50,7 +44,6 @@ namespace Frontend
             this.PictureBoxNotificacion.Name = "PictureBoxNotificacion";
             this.PictureBoxNotificacion.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxNotificacion.Image = Properties.Resources.notificacionLike;
-
             this.PictureBoxNotificacion.SizeMode = PictureBoxSizeMode.StretchImage;
             this.Cursor = Cursors.Hand;
 

@@ -228,7 +228,7 @@ namespace Frontend
                 }
             }
         }
-        public static async Task<dynamic> AgregarNotificaciones(string user, string notificaciones, string token)
+        public static async Task<dynamic> AgregarNotificaciones(string user, string texto, string tipo, string imagen, string token)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -236,17 +236,18 @@ namespace Frontend
                 {
                     var payload = new
                     {
-                        user = user,
-                        notificaciones = notificaciones,
+                        nombreDeCuenta = user,
+                        texto = texto,
+                        tipo=tipo,
+                        imagen=imagen,
                         token = token
                     };
 
                     // Serializar el objeto a JSON
                     string jsonPayload = JsonConvert.SerializeObject(payload);
                     var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/agregarNotificaciones", content);
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/agregarNotificaciones", content);
                     response.EnsureSuccessStatusCode();
-
                     return response;
                 }
                 catch (Exception ex)
@@ -263,8 +264,12 @@ namespace Frontend
                 dynamic creador = await obtenerCreador(idpost, token);
                 if (creador != null)
                 {
-                    string notificacion = $"Like:Usuario le ha dado like a tu publicación";
-                    dynamic response = await AgregarNotificaciones(creador, notificacion, token);
+                    string texto = $"{user} le ha dado like a tu publicación";
+                    Bitmap imagen = Frontend.Properties.Resources.like_claro;
+                    MemoryStream ms = new MemoryStream();
+                    imagen.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    string b64 = Convert.ToBase64String(ms.ToArray());
+                    dynamic response = await AgregarNotificaciones(creador,texto , "recibeLike", b64, token);
                     if (response != null && response.success)
                     {
                         MessageBox.Show("Like enviado con éxito a " + creador);
@@ -410,6 +415,7 @@ namespace Frontend
                 {
                     string respuesta = await darLike(user, idpost, creador, token);
                     MessageBox.Show(respuesta);
+                    await EnviarNotificacion();
                 }
                 HandleLikeClick();
             }
@@ -423,7 +429,6 @@ namespace Frontend
                 {
                     PictureBoxLike.Image = Properties.Resources.like_claro_relleno;
                     isImage1 = false;
-                    await EnviarNotificacion();
                 }
                 else
                 {

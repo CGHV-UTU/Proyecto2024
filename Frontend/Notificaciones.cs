@@ -15,14 +15,12 @@ namespace Frontend
     public partial class Notificaciones : Form
     {
         private string user;
-        private int currentPage = 0;
-        private const int notificationsPerPage = 5; // Número de notificaciones por página
-        private const int margin = 10; // margen para las notificaciones
-
-        public Notificaciones(string usuario)
+        private string token;
+        public Notificaciones(string usuario, string token)
         {
             InitializeComponent();
             this.user = usuario;
+            this.token = token;
             Iniciar();
             notificaciones(); // Carga todas las notificaciones
         }
@@ -30,46 +28,36 @@ namespace Frontend
         public async void notificaciones()
         {
             // Obtener las notificaciones desde la API o la fuente de datos
-            string notificaciones = await conseguirNotificaciones(user);
-            string[] notisarray = notificaciones.Split(';');
-            int i = notisarray.Length;
-
-            // Ajuste de la posición vertical inicial
-            int currentY = 10; // Comenzar a 10 píxeles desde la parte superior
-
-            for (int x = 0; x < i; x++)
+            var notificaciones = await conseguirNotificaciones(user, token);
+            foreach (var notificacion in notificaciones)
             {
-                // Crear un panel contenedor para cada notificación
-                Panel panelContenedor = new Panel();
-                panelContenedor.Size = new Size(PanelNotificaciones.Width - 20, 100); // Ancho del panel de notificación menos márgenes
-                panelContenedor.Location = new Point(10, currentY); // Ajusta la posición para cada panel
-                panelContenedor.BorderStyle = BorderStyle.FixedSingle; // Borde para diferenciar
-                panelContenedor.BackColor = Color.White; // Fondo blanco para contraste
-
                 // Crear el control de notificación o contenido y añadirlo al panel contenedor
-                var notiControl = new NotificacionControl(notisarray[x]);
-                notiControl.Dock = DockStyle.Fill; // Llenar el panel contenedor
-                panelContenedor.Controls.Add(notiControl);
-
-                // Añadir el panel contenedor al PanelNotificaciones
-                PanelNotificaciones.Controls.Add(panelContenedor);
-
-                // Incrementar la posición Y para el siguiente panel
-                currentY += panelContenedor.Height + 10; // Dejar un margen de 10 píxeles entre paneles
+                var notiControl = new NotificacionControl(notificacion);
+                if (PanelNotificaciones.Controls.Count==0)
+                {
+                    notiControl.Location = new Point(0, 0);
+                }
+                else
+                {
+                    var lastControl = PanelNotificaciones.Controls[PanelNotificaciones.Controls.Count - 1];
+                    notiControl.Location = new Point(0, lastControl.Bottom);
+                }
+                PanelNotificaciones.Controls.Add(notiControl);
             }
         }
 
-        public static async Task<string> conseguirNotificaciones(string usuario)
+        public static async Task<dynamic> conseguirNotificaciones(string usuario, string token)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    var datos = new { nombreDeCuenta = usuario };
+                    var datos = new { nombreDeCuenta = usuario, token=token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("https://localhost:44383/user/ConseguirNotificaciones", content);
                     var responseBody = await response.Content.ReadAsStringAsync();
-                    return responseBody; // Devuelve la cadena completa de notificaciones
+                    var data = JsonConvert.DeserializeObject(responseBody);
+                    return data; // Devuelve la cadena completa de notificaciones
                 }
             }
             catch
