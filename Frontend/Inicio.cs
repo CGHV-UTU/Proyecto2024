@@ -232,6 +232,7 @@ namespace Frontend
           //  paginaDeUsuario.BackColor = Color.FromArgb(34, 67, 220);
             paginaDeUsuario.ReportarPost += PostControl_ReportarPost;
             paginaDeUsuario.AbrirComentarios += PostControl_AbrirComentarios;
+            paginaDeUsuario.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
             PanelMostrarUsuario.Controls.Add(paginaDeUsuario);
             paginaDeUsuario.Show();
         }
@@ -491,7 +492,16 @@ namespace Frontend
             PanelMostrarUsuario.Visible = true;
             PanelMostrarUsuario.Parent = this;
             PanelMostrarUsuario.Location = PanelPosts.Location;
-            GruposComunidad comunidad = new GruposComunidad(e.arg, user, token);
+            bool esChatPrivado;
+            if (e.arg2.Equals("es chat privado"))
+            {
+                esChatPrivado = true;
+            }
+            else
+            {
+                esChatPrivado = false;
+            }
+            GruposComunidad comunidad = new GruposComunidad(e.arg, user, token,esChatPrivado);
             comunidad.TopLevel = false;
             comunidad.FormBorderStyle = FormBorderStyle.None;
             comunidad.BackColor = Color.LightGray;
@@ -555,7 +565,6 @@ namespace Frontend
             paginaDeUsuario.BackColor = Color.LightGray;
             paginaDeUsuario.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
-            //  paginaDeUsuario.BackColor = Color.FromArgb(34, 67, 220);
             paginaDeUsuario.ReportarPost += PostControl_ReportarPost;
             paginaDeUsuario.AbrirComentarios += PostControl_AbrirComentarios;
             PanelMostrarUsuario.Controls.Add(paginaDeUsuario);

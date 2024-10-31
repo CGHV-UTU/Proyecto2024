@@ -142,7 +142,7 @@ namespace Frontend
         }
         private void Grupo_EventoParaListar_AbrirGrupo(object sender, PersonalizedArgs e)
         {
-            AbrirGrupo?.Invoke(this, new PersonalizedArgs(e.arg));
+            AbrirGrupo?.Invoke(this, new PersonalizedArgs(e.arg,e.arg2));
         }
         static async Task<dynamic> RolEnElGrupo(string nombreReal, string nombre, string token)
         {

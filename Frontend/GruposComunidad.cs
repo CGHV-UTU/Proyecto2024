@@ -52,6 +52,7 @@ namespace Frontend
         private string user;
         private TextBox txtURL;
         private string token;
+        private bool esChatPrivado;
         private Label lblName;
         private Label lblEditando;
         private Panel pnlCrear;
@@ -66,13 +67,14 @@ namespace Frontend
         private string idUltimoMensaje;
         public event EventHandler GrupoEliminado;
         public event EventHandler<PersonalizedArgs> AbrirUsuario;
-        public GruposComunidad(dynamic groupData, string user, string token)
+        public GruposComunidad(dynamic groupData, string user, string token, bool esChatPrivado=false)
         {
             InitializeComponent();
             this.user = user;
             this.token = token;
             this.nombreGrupo = groupData.nombreReal;
             this.pnlAsociarContenido.Visible = false;
+            this.esChatPrivado = esChatPrivado;
             AplicarDatos(groupData);
             pnlPostsGrupo.Visible = false;
             pnlChat.Visible = true;
@@ -630,6 +632,10 @@ namespace Frontend
             Bitmap bitmap = new Bitmap(ms);
             this.pbxFotoGrupo.Image = bitmap;
             configuracion = groupData.configuracion;
+            if (esChatPrivado)
+            {
+                this.Controls.Remove(lblMiembros);
+            }
         }
 
         private void pbxAsociarContenido_Click(object sender, EventArgs e)

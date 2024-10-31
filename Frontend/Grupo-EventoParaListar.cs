@@ -163,7 +163,7 @@ namespace Frontend
                 }
             }
         }
-
+        private bool esChatPrivado=false;
         private async void AplicarDatos()
         {
             var respuesta=await ParticipaDelGrupo(nombreReal,user,token);
@@ -210,6 +210,7 @@ namespace Frontend
                     var datos = await EsChatPrivado(nombreReal, token);
                     if (datos!=null && !Convert.ToString(datos).Equals("No participa") || !Convert.ToString(datos).Equals("Token expirado") || !Convert.ToString(datos).Equals("Hubo un error"))
                     {
+                        esChatPrivado = true;
                         string[] lista = Convert.ToString(datos).Split('"');
                         string user1="";
                         string user2="";
@@ -229,10 +230,11 @@ namespace Frontend
                                 x++;
                             }
                         }
+                        string imagenB64;
                         if (user1.Equals(user))
                         {
                             this.lblNombre.Text = user2;
-                            string imagenB64 = await conseguirImagenDelUsuario(user2, token);
+                            imagenB64 = await conseguirImagenDelUsuario(user2, token);
                             byte[] imagen = Convert.FromBase64String(imagenB64);
                             MemoryStream ms = new MemoryStream(imagen);
                             Bitmap bitmap = new Bitmap(ms);
@@ -241,12 +243,16 @@ namespace Frontend
                         else
                         {
                             this.lblNombre.Text = user1;
-                            string imagenB64 = await conseguirImagenDelUsuario(user1, token);
+                            imagenB64 = await conseguirImagenDelUsuario(user1, token);
                             byte[] imagen = Convert.FromBase64String(imagenB64);
                             MemoryStream ms = new MemoryStream(imagen);
                             Bitmap bitmap = new Bitmap(ms);
                             this.PictureBoxImagen.Image = bitmap;
                         }
+                        var data = await BuscarGrupo(nombreReal, token);
+                        data.foto = imagenB64;
+                        data.nombreVisible = lblNombre.Text;
+                        this.datos = data;
                     }
                     else
                     {
@@ -393,7 +399,14 @@ namespace Frontend
                     }
                     else
                     {
-                        AbrirGrupo?.Invoke(this, new PersonalizedArgs(datos));
+                        if (esChatPrivado)
+                        {
+                            AbrirGrupo?.Invoke(this, new PersonalizedArgs(datos, "es chat privado"));
+                        }
+                        else
+                        {
+                            AbrirGrupo?.Invoke(this, new PersonalizedArgs(datos));
+                        }
                     }
                 }
             }

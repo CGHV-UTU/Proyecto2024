@@ -137,27 +137,30 @@ namespace Frontend
                     }
                     break;
                 case "grupos":
-                    var respuesta2 = await BuscarGrupos(txtBusqueda.Text, user, token);
-                    if (Convert.ToString(respuesta2).Equals("No se encontraron grupos cuyos nombres concuerden con los parámetros de búsqueda especificados") || Convert.ToString(respuesta2).Equals("Token expirado") || Convert.ToString(respuesta2).Equals("Hubo un error"))
+                    if (!txtBusqueda.Text.Equals("--------------------"))
                     {
-                        MessageBox.Show(Convert.ToString(respuesta2));
-                    }
-                    else
-                    {
-                        pnlMostrar.Controls.Clear();
-                        foreach (dynamic grupo in respuesta2)
+                        var respuesta2 = await BuscarGrupos(txtBusqueda.Text, user, token);
+                        if (Convert.ToString(respuesta2).Equals("No se encontraron grupos cuyos nombres concuerden con los parámetros de búsqueda especificados") || Convert.ToString(respuesta2).Equals("Token expirado") || Convert.ToString(respuesta2).Equals("Hubo un error"))
                         {
-                            var groupcontrol = new Grupo_EventoParaListar(user, token, Convert.ToString(grupo.nombreReal),0,null,true);
-                            if (pnlMostrar.Controls.Count > 0)
+                            MessageBox.Show(Convert.ToString(respuesta2));
+                        }
+                        else
+                        {
+                            pnlMostrar.Controls.Clear();
+                            foreach (dynamic grupo in respuesta2)
                             {
-                                var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];
-                                groupcontrol.Location = new Point(0, lastControl.Bottom);
+                                var groupcontrol = new Grupo_EventoParaListar(user, token, Convert.ToString(grupo.nombreReal), 0, null, true);
+                                if (pnlMostrar.Controls.Count > 0)
+                                {
+                                    var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];
+                                    groupcontrol.Location = new Point(0, lastControl.Bottom);
+                                }
+                                else
+                                {
+                                    groupcontrol.Location = new Point(0, 52);
+                                }
+                                pnlMostrar.Controls.Add(groupcontrol);
                             }
-                            else
-                            {
-                                groupcontrol.Location = new Point(0, 52);
-                            }
-                            pnlMostrar.Controls.Add(groupcontrol);
                         }
                     }
                     break;

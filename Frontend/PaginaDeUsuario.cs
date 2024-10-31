@@ -22,6 +22,7 @@ namespace Frontend
         private string token;
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarPost;
+        public event EventHandler<PersonalizedArgs> AbrirGrupo;
         public PaginaDeUsuario(string nombreCreador, string modo, string user, string token)
         {
             this.nombreDeCreador = nombreCreador;
@@ -220,15 +221,117 @@ namespace Frontend
                 }
             }
         }
+        static async Task<dynamic> ExisteChatPrivado(string nombreDeCuenta1, string nombreDeCuenta2, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta1 = nombreDeCuenta1, nombreDeCuenta2 = nombreDeCuenta2, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/ExisteChatPrivado", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        static async Task<string> conseguirImagenDelUsuario(string creador, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var dato = new { nombreDeCuenta = creador, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/obtenerImagenUsuario", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic imagen = JsonConvert.DeserializeObject(responseBody);
+                    return imagen;
+                }
+                catch
+                {
+                    MessageBox.Show("Error de conexión");
+                    return "error";
+                }
+            }
+        }
+        static async Task<dynamic> EsChatPrivado(string nombreReal, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreReal = nombreReal, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/EsChatPrivado", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        static async Task<dynamic> BuscarGrupo(string nombreReal, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreReal = nombreReal, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/ObtenerGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
         private async void pbxChatear_Click(object sender, EventArgs e)
         {
-            MemoryStream ms = new MemoryStream();
-            PictureBoxUsuario.Image.Save(ms, ImageFormat.Jpeg);
-            byte[] data = ms.ToArray();
-            var respuesta = await PublicarGrupo("-----------------------------------------","default",data,"",user,token);
-            string[] nombreRealDelGrupo=Convert.ToString(respuesta).Split(' ');
-            var respuesta2=await AñadirUsuarioAlGrupo(nombreRealDelGrupo[6], nombreDeCreador, "usuario", token);
-            MessageBox.Show("" + respuesta2);
+            if (!user.Equals(nombreDeCreador))
+            {
+                dynamic existe=await ExisteChatPrivado(user, nombreDeCreador,token);
+                if (Convert.ToString(existe).Equals("false") || Convert.ToString(existe).Equals("False"))
+                {
+                    MemoryStream ms = new MemoryStream();
+                    PictureBoxUsuario.Image.Save(ms, ImageFormat.Jpeg);
+                    byte[] data = ms.ToArray();
+                    var respuesta = await PublicarGrupo("-----------------------------------------", "default", data, "", user, token);
+                    string[] nombreRealDelGrupo = Convert.ToString(respuesta).Split(' ');
+                    var respuesta2 = await AñadirUsuarioAlGrupo(nombreRealDelGrupo[6], nombreDeCreador, "usuario", token);
+                    MessageBox.Show("" + respuesta2);
+                    string imagenB64= await conseguirImagenDelUsuario(nombreDeCreador, token);
+                    var data1 = await BuscarGrupo(Convert.ToString(existe), token);
+                    data1.foto = imagenB64;
+                    data1.nombreVisible = nombreDeCreador;
+                    AbrirGrupo?.Invoke(this, new PersonalizedArgs(data1, "es chat privado"));
+                }
+                else
+                {
+                    string imagenB64 = await conseguirImagenDelUsuario(nombreDeCreador, token);
+                    var data2 = await BuscarGrupo(Convert.ToString(existe), token);
+                    data2.foto = imagenB64;
+                    data2.nombreVisible = nombreDeCreador;
+                    AbrirGrupo?.Invoke(this, new PersonalizedArgs(data2, "es chat privado"));
+                }
+            }
         }
     }
 }
