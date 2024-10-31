@@ -603,7 +603,7 @@ namespace ApiUsuarios.Controllers
 
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("ConseguirNotificaciones")]
-        public async Task<JsonResult> ConseguirNotificaciones([FromBody] Notificaciones notificaciones)
+        public async Task<dynamic> ConseguirNotificaciones([FromBody] Notificaciones notificaciones)
         {
             if (notificaciones == null || string.IsNullOrEmpty(notificaciones.nombreDeCuenta))
             {
