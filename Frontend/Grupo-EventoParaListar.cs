@@ -166,22 +166,6 @@ namespace Frontend
         private bool esChatPrivado=false;
         private async void AplicarDatos()
         {
-            var respuesta=await ParticipaDelGrupo(nombreReal,user,token);
-            if (this.busqueda && !this.nombreReal.Equals("") && Convert.ToString(respuesta).Equals("No participa"))
-            {
-                //pbxUnirse
-                this.pbxUnirse = new PictureBox();
-                this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
-                this.pbxUnirse.Name = "pbxUnirse";
-                this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
-                this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
-                this.pbxUnirse.Image = Properties.Resources.grupos_removebg_preview;
-                this.pbxUnirse.Cursor = Cursors.Hand;
-                this.pbxUnirse.Visible = true;
-                this.pbxUnirse.Click += pbxUnirse_Click;
-                this.Controls.Add(this.pbxUnirse);
-            }
-
             if (this.datosDelUsuario == null)
             {
                 if (idevento > 0)
@@ -207,54 +191,7 @@ namespace Frontend
                 }
                 else
                 {
-                    var datos = await EsChatPrivado(nombreReal, token);
-                    if (datos!=null && !Convert.ToString(datos).Equals("No participa") || !Convert.ToString(datos).Equals("Token expirado") || !Convert.ToString(datos).Equals("Hubo un error"))
-                    {
-                        esChatPrivado = true;
-                        string[] lista = Convert.ToString(datos).Split('"');
-                        string user1="";
-                        string user2="";
-                        int x = 1;
-                        foreach (string palabra in lista)
-                        {
-                            if (!palabra.Equals("{") && !palabra.Equals("}") && !palabra.Equals(",") && !palabra.Equals(":") && !palabra.Equals("nombreDeCuenta1") && !palabra.Equals("nombreDeCuenta2"))
-                            {
-                                if (x==3)
-                                {
-                                    user1 = palabra;
-                                }
-                                if (x == 6)
-                                {
-                                    user2 = palabra;
-                                }
-                                x++;
-                            }
-                        }
-                        string imagenB64;
-                        if (user1.Equals(user))
-                        {
-                            this.lblNombre.Text = user2;
-                            imagenB64 = await conseguirImagenDelUsuario(user2, token);
-                            byte[] imagen = Convert.FromBase64String(imagenB64);
-                            MemoryStream ms = new MemoryStream(imagen);
-                            Bitmap bitmap = new Bitmap(ms);
-                            this.PictureBoxImagen.Image = bitmap;
-                        }
-                        else
-                        {
-                            this.lblNombre.Text = user1;
-                            imagenB64 = await conseguirImagenDelUsuario(user1, token);
-                            byte[] imagen = Convert.FromBase64String(imagenB64);
-                            MemoryStream ms = new MemoryStream(imagen);
-                            Bitmap bitmap = new Bitmap(ms);
-                            this.PictureBoxImagen.Image = bitmap;
-                        }
-                        var data = await BuscarGrupo(nombreReal, token);
-                        data.foto = imagenB64;
-                        data.nombreVisible = lblNombre.Text;
-                        this.datos = data;
-                    }
-                    else
+                    if (busqueda == true)
                     {
                         var data = await BuscarGrupo(nombreReal, token);
                         this.lblNombre.Text = data.nombreVisible;
@@ -274,6 +211,106 @@ namespace Frontend
                             MessageBox.Show("Ha ocurrido un error " + ex);
                         }
                         this.datos = data;
+                        var respuesta = await ParticipaDelGrupo(nombreReal, user, token);
+                        if (this.busqueda && !this.nombreReal.Equals("") && Convert.ToString(respuesta).Equals("No participa"))
+                        {
+                            //pbxUnirse
+                            this.pbxUnirse = new PictureBox();
+                            this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                            this.pbxUnirse.Name = "pbxUnirse";
+                            this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
+                            this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
+                            this.pbxUnirse.Image = Properties.Resources.grupos_removebg_preview;
+                            this.pbxUnirse.Cursor = Cursors.Hand;
+                            this.pbxUnirse.Visible = true;
+                            this.pbxUnirse.Click += pbxUnirse_Click;
+                            this.Controls.Add(this.pbxUnirse);
+                        }
+                    }
+                    {
+                        var datos = await EsChatPrivado(nombreReal, token);
+                        if (datos != null && !Convert.ToString(datos).Equals("No participa") && !Convert.ToString(datos).Equals("Token expirado") && !Convert.ToString(datos).Equals("Hubo un error"))
+                        {
+                            esChatPrivado = true;
+                            string[] lista = Convert.ToString(datos).Split('"');
+                            string user1 = "";
+                            string user2 = "";
+                            int x = 1;
+                            foreach (string palabra in lista)
+                            {
+                                if (!palabra.Equals("{") && !palabra.Equals("}") && !palabra.Equals(",") && !palabra.Equals(":") && !palabra.Equals("nombreDeCuenta1") && !palabra.Equals("nombreDeCuenta2"))
+                                {
+                                    if (x == 3)
+                                    {
+                                        user1 = palabra;
+                                    }
+                                    if (x == 6)
+                                    {
+                                        user2 = palabra;
+                                    }
+                                    x++;
+                                }
+                            }
+                            string imagenB64;
+                            if (user1.Equals(user))
+                            {
+                                this.lblNombre.Text = user2;
+                                imagenB64 = await conseguirImagenDelUsuario(user2, token);
+                                byte[] imagen = Convert.FromBase64String(imagenB64);
+                                MemoryStream ms = new MemoryStream(imagen);
+                                Bitmap bitmap = new Bitmap(ms);
+                                this.PictureBoxImagen.Image = bitmap;
+                            }
+                            else
+                            {
+                                this.lblNombre.Text = user1;
+                                imagenB64 = await conseguirImagenDelUsuario(user1, token);
+                                byte[] imagen = Convert.FromBase64String(imagenB64);
+                                MemoryStream ms = new MemoryStream(imagen);
+                                Bitmap bitmap = new Bitmap(ms);
+                                this.PictureBoxImagen.Image = bitmap;
+                            }
+                            var data = await BuscarGrupo(nombreReal, token);
+                            data.foto = imagenB64;
+                            data.nombreVisible = lblNombre.Text;
+                            this.datos = data;
+                        }
+                        else
+                        {
+                            var data = await BuscarGrupo(nombreReal, token);
+                            this.lblNombre.Text = data.nombreVisible;
+                            try
+                            {
+                                byte[] imagen = Convert.FromBase64String(Convert.ToString(data.foto));
+                                MemoryStream ms = new MemoryStream(imagen);
+                                Bitmap bitmap = new Bitmap(ms);
+                                this.PictureBoxImagen.Image = bitmap;
+                                if (this.PictureBoxImagen.Image == null)
+                                {
+                                    MessageBox.Show("Imagen nula");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Ha ocurrido un error " + ex);
+                            }
+                            this.datos = data;
+                            var respuesta = await ParticipaDelGrupo(nombreReal, user, token);
+                            if (this.busqueda && !this.nombreReal.Equals("") && Convert.ToString(respuesta).Equals("No participa"))
+                            {
+                                //pbxUnirse
+                                this.pbxUnirse = new PictureBox();
+                                this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                                this.pbxUnirse.Name = "pbxUnirse";
+                                this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
+                                this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
+                                this.pbxUnirse.Image = Properties.Resources.grupos_removebg_preview;
+                                this.pbxUnirse.Cursor = Cursors.Hand;
+                                this.pbxUnirse.Visible = true;
+                                this.pbxUnirse.Click += pbxUnirse_Click;
+                                this.Controls.Add(this.pbxUnirse);
+                            }
+                        }
                     }
                 }
             }
@@ -297,27 +334,30 @@ namespace Frontend
                 {
                     MessageBox.Show("Ha ocurrido un error " + ex);
                 }
-                var rol = await RolEnElGrupo(nombreReal, user, token);
-                if (!string.IsNullOrEmpty(nombreReal) && (Convert.ToString(rol).Equals("admin") || Convert.ToString(rol).Equals("creador")) && !user.Equals(Convert.ToString(this.datosDelUsuario.nombreReal)))
+                if (!nombreReal.Equals(""))
                 {
-                    //pbxUnirse acá se usa para eliminar al usuario del grupo o darle admin
-                    this.pbxUnirse = new PictureBox();
-                    this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
-                    this.pbxUnirse.Name = "pbxUnirse";
-                    this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
-                    this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
-                    if (Convert.ToString(datosDelUsuario.rol).Equals("solicitante"))
+                    var rol = await RolEnElGrupo(nombreReal, user, token);
+                    if (!string.IsNullOrEmpty(nombreReal) && (Convert.ToString(rol).Equals("admin") || Convert.ToString(rol).Equals("creador")) && !user.Equals(Convert.ToString(this.datosDelUsuario.nombreReal)))
                     {
-                        this.pbxUnirse.Image = Frontend.Properties.Resources.aceptar;
+                        //pbxUnirse acá se usa para eliminar al usuario del grupo o darle admin
+                        this.pbxUnirse = new PictureBox();
+                        this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                        this.pbxUnirse.Name = "pbxUnirse";
+                        this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
+                        this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
+                        if (Convert.ToString(datosDelUsuario.rol).Equals("solicitante"))
+                        {
+                            this.pbxUnirse.Image = Frontend.Properties.Resources.aceptar;
+                        }
+                        else
+                        {
+                            this.pbxUnirse.Image = Properties.Resources.mas_opciones;
+                        }
+                        this.pbxUnirse.Cursor = Cursors.Hand;
+                        this.pbxUnirse.Visible = true;
+                        this.pbxUnirse.Click += pbxUnirse_Click;
+                        this.Controls.Add(this.pbxUnirse);
                     }
-                    else
-                    {
-                        this.pbxUnirse.Image = Properties.Resources.mas_opciones;
-                    }
-                    this.pbxUnirse.Cursor = Cursors.Hand;
-                    this.pbxUnirse.Visible = true;
-                    this.pbxUnirse.Click += pbxUnirse_Click;
-                    this.Controls.Add(this.pbxUnirse);
                 }
             }
         }

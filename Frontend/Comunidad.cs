@@ -194,6 +194,7 @@ namespace Frontend
                 else
                 {
                     panelEventos.Visible = false;
+                    PanelGrupos.Controls.Clear();
                     foreach (var elemento in lista)
                     {
                         var eventControl = new Grupo_EventoParaListar(user, token, Convert.ToString(elemento.nombreReal), 0, idpost:idpost);

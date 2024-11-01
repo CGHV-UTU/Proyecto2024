@@ -137,10 +137,10 @@ namespace Frontend
                     }
                     break;
                 case "grupos":
-                    if (!txtBusqueda.Text.Equals("--------------------"))
+                    if (!txtBusqueda.Text.StartsWith("-"))
                     {
                         var respuesta2 = await BuscarGrupos(txtBusqueda.Text, user, token);
-                        if (Convert.ToString(respuesta2).Equals("No se encontraron grupos cuyos nombres concuerden con los parámetros de búsqueda especificados") || Convert.ToString(respuesta2).Equals("Token expirado") || Convert.ToString(respuesta2).Equals("Hubo un error"))
+                        if (Convert.ToString(respuesta2).StartsWith("No se encontraron grupos cuyos nombres concuerden con los parámetros de búsqueda especificados") || Convert.ToString(respuesta2).Equals("Token expirado") || Convert.ToString(respuesta2).Equals("Hubo un error"))
                         {
                             MessageBox.Show(Convert.ToString(respuesta2));
                         }

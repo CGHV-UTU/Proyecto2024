@@ -63,7 +63,7 @@ namespace Frontend
             this.Controls.Add(this.lblNoti);
             this.Controls.Add(this.PictureBoxNotificacion);
             this.Name = "NotificacionControl";
-            this.Size = new System.Drawing.Size(598, 87);
+            this.Size = new System.Drawing.Size(380, 87);
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxNotificacion)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

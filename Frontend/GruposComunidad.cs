@@ -46,7 +46,7 @@ namespace Frontend
         private Panel pnlPostsGrupo;
         private Panel panel8;
         private Panel panel7;
-
+        private dynamic listaDeMiembros;
         private string nombreGrupo;
         private string configuracion;
         private string user;
@@ -288,9 +288,9 @@ namespace Frontend
             this.lblMiembros.ForeColor = System.Drawing.Color.Gray;
             this.lblMiembros.Location = new System.Drawing.Point(118, 66);
             this.lblMiembros.Name = "lblMiembros";
-            this.lblMiembros.Size = new System.Drawing.Size(157, 20);
+            this.lblMiembros.Size = new System.Drawing.Size(78, 20);
             this.lblMiembros.TabIndex = 51;
-            this.lblMiembros.Text = "Miembro1, Miembro2";
+            this.lblMiembros.Text = "Miembros";
             this.lblMiembros.Click += new System.EventHandler(this.lblMiembros_Click);
             // 
             // panel5
@@ -781,7 +781,7 @@ namespace Frontend
             {
                 MessageBox.Show("no hay mensaje");
             }
-
+            listaDeMiembros= await Miembros(nombreGrupo, token);
         }
 
         static async Task<dynamic> EditarMensaje(string texto, string idmensaje, string token)
@@ -819,51 +819,98 @@ namespace Frontend
       
         private async void pbxEnviar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtMensajeAEnviar.Text) && pbxCrearPostGrupo.Image == null) // pbx crar post grupo no le gusta a santi
+            if (lblEditando.Visible == false)
             {
-
-            }
-            else
-            {
-                if (lblEditando.Visible==false)
+                DateTime fechayhoraactual = DateTime.Now;
+                string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
+                byte[] data;
+                if (pictureBox2.Image == null)
                 {
-                    DateTime fechayhoraactual = DateTime.Now;
-                    string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
-                    byte[] data;
-                    if (pictureBox2.Image == null)
-                    {
-                        data = new byte[0];
-                    }
-                    else
-                    {
-                        MemoryStream ms = new MemoryStream();
-                        pictureBox2.Image.Save(ms, ImageFormat.Jpeg);
-                        data = ms.ToArray();
-                    }
-                    string video;
-                    string texto;
-                    if (txtURL.Text.Contains("https://youtu.be/"))
-                    {
-                        video = txtMensajeAEnviar.Text;
-
-                    }
-                    else
-                    {
-                        video = "";
-                    }
-                    texto = txtMensajeAEnviar.Text;
-                    MessageBox.Show(data.ToString());
-                    var respuesta = await EnviarMensaje(fechaHoraString, texto, data, video);
-                    txtMensajeAEnviar.Text = "";
+                    data = new byte[0];
                 }
                 else
                 {
-                    string texto = txtMensajeAEnviar.Text;
-                    var respuesta = await EditarMensaje(texto, idMensajeAModificar, token);
-                    MessageBox.Show(""+respuesta);
-                    pnlChat.Controls.Clear();
-                    AñadirMensajes();
+                    MemoryStream ms = new MemoryStream();
+                    pictureBox2.Image.Save(ms, ImageFormat.Jpeg);
+                    data = ms.ToArray();
                 }
+                string video;
+                string texto;
+                if (txtURL.Text.Contains("https://youtu.be/"))
+                {
+                    video = txtMensajeAEnviar.Text;
+
+                }
+                else
+                {
+                    video = "";
+                }
+                texto = txtMensajeAEnviar.Text;
+                MessageBox.Show(data.ToString());
+                var respuesta = await EnviarMensaje(fechaHoraString, texto, data, video);
+                txtMensajeAEnviar.Text = "";
+                foreach (var miembros in listaDeMiembros)
+                {
+                    if (!Convert.ToString(miembros.nombreReal).Equals(user))
+                    {
+                        await EnviarNotificacion(Convert.ToString(miembros.nombreReal));
+                    }
+                }
+            }
+            else
+            {
+                string texto = txtMensajeAEnviar.Text;
+                var respuesta = await EditarMensaje(texto, idMensajeAModificar, token);
+                MessageBox.Show("" + respuesta);
+                pnlChat.Controls.Clear();
+                AñadirMensajes();
+            }
+        }
+        public static async Task<dynamic> AgregarNotificaciones(string user, string texto, string tipo, string imagen, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var payload = new
+                    {
+                        nombreDeCuenta = user,
+                        texto = texto,
+                        tipo = tipo,
+                        imagen = imagen,
+                        token = token
+                    };
+
+                    // Serializar el objeto a JSON
+                    string jsonPayload = JsonConvert.SerializeObject(payload);
+                    var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/agregarNotificaciones", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return $"Error al enviar la solicitud: {ex.Message}";
+                }
+            }
+        }
+        public async Task EnviarNotificacion(string usuario)
+        {
+            try
+            {
+                string texto = $"{user} envió un nuevo mensaje al grupo {lblName.Text}";
+                Bitmap imagen = Frontend.Properties.Resources.Comunidad_Claro;
+                MemoryStream ms = new MemoryStream();
+                imagen.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                string b64 = Convert.ToBase64String(ms.ToArray());
+                dynamic response=null;
+                response = await AgregarNotificaciones(usuario, texto, "nuevoMensaje", b64, token);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error: " + ex.Message);
             }
         }
 
@@ -1027,10 +1074,10 @@ namespace Frontend
             pbxCrearPostGrupo.Visible = true;
             pnlAsociarContenido.Visible = false;
             panel1.Visible = false;
-            var listaDeUsuarios = await Miembros(nombreGrupo, token);
-            if (listaDeUsuarios !=null)
+            if (listaDeMiembros !=null)
             {
-                foreach (var elemento in listaDeUsuarios)
+                listaDeMiembros = await Miembros(nombreGrupo, token);
+                foreach (var elemento in listaDeMiembros)
                 {
                     if (!Convert.ToString(elemento.rol).Equals("solicitante"))
                     {
@@ -1120,20 +1167,35 @@ namespace Frontend
 
         private async void pbxConfirmarCambios_Click(object sender, EventArgs e)
         {
-            pbxSeleccionarImagen.Visible = false;
-            pbxFotoGrupoEditar.Visible = false;
-            txtNombre.Visible = false;
-            lblName.Visible = true;
-            lblMiembros.Visible = true;
-            lblName.Text = txtNombre.Text;
-            pbxConfirmarCambios.Visible = false;
-            lblCancelar.Visible = false;
-            pbxFotoGrupo.Image = pbxFotoGrupoEditar.Image;
-            MemoryStream ms = new MemoryStream();
-            this.pbxFotoGrupo.Image.Save(ms, ImageFormat.Jpeg);
-            byte[] imagen = ms.ToArray();
-            var resultado = await Modificar(nombreGrupo,lblName.Text,configuracion,imagen,token);
-            MessageBox.Show(""+resultado);
+            if (lblName.Text.StartsWith("-"))
+            {
+                MessageBox.Show("ERROR");
+                pbxSeleccionarImagen.Visible = false;
+                pbxFotoGrupoEditar.Visible = false;
+                txtNombre.Visible = false;
+                lblName.Visible = true;
+                lblMiembros.Visible = true;
+                lblName.Text = txtNombre.Text;
+                pbxConfirmarCambios.Visible = false;
+                lblCancelar.Visible = false;
+            }
+            else
+            {
+                pbxSeleccionarImagen.Visible = false;
+                pbxFotoGrupoEditar.Visible = false;
+                txtNombre.Visible = false;
+                lblName.Visible = true;
+                lblMiembros.Visible = true;
+                lblName.Text = txtNombre.Text;
+                pbxConfirmarCambios.Visible = false;
+                lblCancelar.Visible = false;
+                pbxFotoGrupo.Image = pbxFotoGrupoEditar.Image;
+                MemoryStream ms = new MemoryStream();
+                this.pbxFotoGrupo.Image.Save(ms, ImageFormat.Jpeg);
+                byte[] imagen = ms.ToArray();
+                var resultado = await Modificar(nombreGrupo, lblName.Text, configuracion, imagen, token);
+                MessageBox.Show("" + resultado);
+            }
         }
 
         private void pbxSeleccionarImagen_Click(object sender, EventArgs e)
@@ -1164,10 +1226,10 @@ namespace Frontend
             pbxCrearPostGrupo.Visible = true;
             pnlAsociarContenido.Visible = false;
             panel1.Visible = false;
-            var listaDeUsuarios = await Miembros(nombreGrupo, token);
-            if (listaDeUsuarios != null)
+            if (listaDeMiembros != null)
             {
-                foreach (var elemento in listaDeUsuarios)
+                listaDeMiembros = await Miembros(nombreGrupo, token);
+                foreach (var elemento in listaDeMiembros)
                 {
                     if (Convert.ToString(elemento.rol).Equals("solicitante"))
                     {

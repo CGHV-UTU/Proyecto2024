@@ -34,16 +34,16 @@ namespace Frontend
             // 
             // PanelNotificaciones
             // 
-            this.PanelNotificaciones.Location = new System.Drawing.Point(75, 42);
+            this.PanelNotificaciones.Location = new System.Drawing.Point(1, 0);
             this.PanelNotificaciones.Name = "PanelNotificaciones";
-            this.PanelNotificaciones.Size = new System.Drawing.Size(634, 477);
+            this.PanelNotificaciones.Size = new System.Drawing.Size(380, 475);
             this.PanelNotificaciones.TabIndex = 19;
             // 
             // Notificaciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(364, 470);
             this.Controls.Add(this.PanelNotificaciones);
             this.Name = "Notificaciones";
             this.Text = "Notificaciones";

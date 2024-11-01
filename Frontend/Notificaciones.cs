@@ -16,6 +16,8 @@ namespace Frontend
     {
         private string user;
         private string token;
+        private dynamic Listanotificaciones;
+        public event EventHandler NuevasNotificaciones;
         public Notificaciones(string usuario, string token)
         {
             InitializeComponent();
@@ -25,24 +27,29 @@ namespace Frontend
             notificaciones(); // Carga todas las notificaciones
         }
 
-        public async void notificaciones()
+        public async void notificaciones(dynamic notis=null)
         {
             // Obtener las notificaciones desde la API o la fuente de datos
             var notificaciones = await conseguirNotificaciones(user, token);
-            foreach (var notificacion in notificaciones)
+            if (!Convert.ToString(notificaciones).Equals($"No se encontraron notificaciones para el usuario: {user}"))
             {
-                // Crear el control de notificación o contenido y añadirlo al panel contenedor
-                var notiControl = new NotificacionControl(notificacion);
-                if (PanelNotificaciones.Controls.Count==0)
+                PanelNotificaciones.Controls.Clear();
+                foreach (var notificacion in notificaciones)
                 {
-                    notiControl.Location = new Point(0, 0);
+                    // Crear el control de notificación o contenido y añadirlo al panel contenedor
+                    var notiControl = new NotificacionControl(notificacion);
+                    if (PanelNotificaciones.Controls.Count == 0)
+                    {
+                        notiControl.Location = new Point(0, 0);
+                    }
+                    else
+                    {
+                        var lastControl = PanelNotificaciones.Controls[PanelNotificaciones.Controls.Count - 1];
+                        notiControl.Location = new Point(0, lastControl.Bottom);
+                    }
+                    this.PanelNotificaciones.Controls.Add(notiControl);
                 }
-                else
-                {
-                    var lastControl = PanelNotificaciones.Controls[PanelNotificaciones.Controls.Count - 1];
-                    notiControl.Location = new Point(0, lastControl.Bottom);
-                }
-                PanelNotificaciones.Controls.Add(notiControl);
+                Listanotificaciones = notificaciones;
             }
         }
 
@@ -52,6 +59,7 @@ namespace Frontend
             {
                 using (HttpClient client = new HttpClient())
                 {
+                    await Task.Delay(5000);
                     var datos = new { nombreDeCuenta = usuario, token=token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("https://localhost:44383/user/ConseguirNotificaciones", content);
@@ -65,23 +73,26 @@ namespace Frontend
                 return "fallido"; // Retorna un valor de error si ocurre una excepción
             }
         }
-
+        public async void notificacionesNuevas()
+        {
+            while (true)
+            {
+                var notificaciones = await conseguirNotificaciones(user, token);
+                if (notificaciones.Count > Listanotificaciones.Count)
+                {
+                    this.notificaciones(notificaciones);
+                    NuevasNotificaciones?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
         private void Iniciar()
         {
-            this.PanelNotificaciones = new Panel();
             this.SuspendLayout();
 
             // PanelNotificaciones
             this.PanelNotificaciones.HorizontalScroll.Enabled = false;
             this.PanelNotificaciones.HorizontalScroll.Visible = false;
             this.PanelNotificaciones.AutoScroll = true;
-            this.PanelNotificaciones.Dock = DockStyle.Fill;
-            this.PanelNotificaciones.Location = new System.Drawing.Point(0, 0);
-            this.PanelNotificaciones.Name = "PanelNotificaciones";
-            this.PanelNotificaciones.Size = new System.Drawing.Size(800, 450);
-            this.PanelNotificaciones.TabIndex = 0;
-
-            this.Controls.Add(this.PanelNotificaciones);
 
             // Notificaciones Form
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

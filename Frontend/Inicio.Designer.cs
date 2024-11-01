@@ -35,6 +35,7 @@ namespace Frontend
             this.PanelPostear = new System.Windows.Forms.Panel();
             this.PanelComentarios = new System.Windows.Forms.Panel();
             this.PanelNotificaciones = new System.Windows.Forms.Panel();
+            this.panelBusqueda = new System.Windows.Forms.Panel();
             this.PictureBoxSalir = new System.Windows.Forms.PictureBox();
             this.PanelSuperior = new System.Windows.Forms.Panel();
             this.pbxBuscar = new System.Windows.Forms.PictureBox();
@@ -44,7 +45,6 @@ namespace Frontend
             this.PictureBoxNotificaciones = new System.Windows.Forms.PictureBox();
             this.PictureBoxCrear = new System.Windows.Forms.PictureBox();
             this.PictureBoxComunidad = new System.Windows.Forms.PictureBox();
-            this.panelBusqueda = new System.Windows.Forms.Panel();
             this.PanelPosts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxSalir)).BeginInit();
             this.PanelSuperior.SuspendLayout();
@@ -95,12 +95,19 @@ namespace Frontend
             this.PanelNotificaciones.AutoScroll = true;
             this.PanelNotificaciones.BackColor = System.Drawing.SystemColors.ControlDark;
             this.PanelNotificaciones.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PanelNotificaciones.Location = new System.Drawing.Point(596, 56);
+            this.PanelNotificaciones.Location = new System.Drawing.Point(815, 56);
             this.PanelNotificaciones.MaximumSize = new System.Drawing.Size(600, 419);
             this.PanelNotificaciones.Name = "PanelNotificaciones";
-            this.PanelNotificaciones.Size = new System.Drawing.Size(600, 419);
+            this.PanelNotificaciones.Size = new System.Drawing.Size(380, 419);
             this.PanelNotificaciones.TabIndex = 0;
             this.PanelNotificaciones.Visible = false;
+            // 
+            // panelBusqueda
+            // 
+            this.panelBusqueda.Location = new System.Drawing.Point(160, 56);
+            this.panelBusqueda.Name = "panelBusqueda";
+            this.panelBusqueda.Size = new System.Drawing.Size(1012, 342);
+            this.panelBusqueda.TabIndex = 0;
             // 
             // PictureBoxSalir
             // 
@@ -227,13 +234,6 @@ namespace Frontend
             this.PictureBoxComunidad.TabIndex = 2;
             this.PictureBoxComunidad.TabStop = false;
             this.PictureBoxComunidad.Click += new System.EventHandler(this.PictureBoxComunidad_Click);
-            // 
-            // panelBusqueda
-            // 
-            this.panelBusqueda.Location = new System.Drawing.Point(160, 56);
-            this.panelBusqueda.Name = "panelBusqueda";
-            this.panelBusqueda.Size = new System.Drawing.Size(1012, 342);
-            this.panelBusqueda.TabIndex = 0;
             // 
             // Inicio
             // 

@@ -86,6 +86,7 @@ namespace Frontend
 
         private void PictureBoxNotificaciones_Click(object sender, EventArgs e)
         {
+            PictureBoxNotificaciones.Image = Frontend.Properties.Resources.campana;
             this.PanelNotificaciones.AutoScroll = true;
             if (!PanelNotificaciones.Visible)
             {
@@ -96,10 +97,20 @@ namespace Frontend
                 notis.BackColor = Color.LightGray;
                 notis.Dock = DockStyle.Fill;
                 PanelNotificaciones.Controls.Add(notis);
+                PanelNotificaciones.BringToFront();
+                PanelNotificaciones.Parent = this;
+                notis.NuevasNotificaciones += Notis_NuevasNotificaciones;
+                
+                notis.Show();
             } else {
                 PanelNotificaciones.Visible = false; // Quitar el panel de notificaciones
             }
            
+        }
+
+        private void Notis_NuevasNotificaciones(object sender, EventArgs e)
+        {
+            PictureBoxNotificaciones.Image = Frontend.Properties.Resources.campana_clara_notificacion;
         }
 
         // cargar form de posts. -Puse un fondo gris para distinguirlo    

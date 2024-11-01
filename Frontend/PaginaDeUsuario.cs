@@ -147,7 +147,7 @@ namespace Frontend
             this.Text = "Infinite Scroll Posts";
             this.ResumeLayout(false);
         }
-        public static async Task Seguir(string user, string aQuienSigue, string tipo, string token)
+        public static async Task<dynamic> Interactuar(string user, string aQuienSigue, string tipo, string token)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -157,16 +157,118 @@ namespace Frontend
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/Interactuar", content);
                     response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("ERROR AL LLAMAR A LA API"+ex.Message);
+                    return "ERROR";
+                }
+            }
+        }
+
+        public static async Task<dynamic> LoSigue(string user, string aQuienSigue, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = user, nombreDeCuenta2 = aQuienSigue, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44383/user/ConseguirInteraccion", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ERROR AL LLAMAR A LA API" + ex.Message);
+                    return "ERROR";
+                }
+            }
+        }
+        public static async Task<dynamic> EliminarInteraccion(string user, string aQuienSigue, string tipoInteraccion, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = user, nombreDeCuenta2 = aQuienSigue, tipoInteraccion= tipoInteraccion, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44383/user/EliminarInteraccion", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ERROR AL LLAMAR A LA API" + ex.Message);
+                    return "ERROR";
+                }
+            }
+        }
+        public async Task EnviarNotificacion()
+        {
+            try
+            {
+                string texto = $"{user} ha empezado a seguirte";
+                MemoryStream ms = new MemoryStream();
+                PictureBoxUsuario.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                string b64 = Convert.ToBase64String(ms.ToArray());
+                dynamic response = await AgregarNotificaciones(nombreDeCreador, texto, "seguir", b64, token);
+                MessageBox.Show("" + response);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ha ocurrido un error: " + ex.Message);
+            }
+        }
+        public static async Task<dynamic> AgregarNotificaciones(string user, string texto, string tipo, string imagen, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var payload = new
+                    {
+                        nombreDeCuenta = user,
+                        texto = texto,
+                        tipo = tipo,
+                        imagen = imagen,
+                        token = token
+                    };
+
+                    // Serializar el objeto a JSON
+                    string jsonPayload = JsonConvert.SerializeObject(payload);
+                    var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/agregarNotificaciones", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return $"Error al enviar la solicitud: {ex.Message}";
                 }
             }
         }
         private async void btnSeguir_Click(object sender, EventArgs e)
         {
-            await Seguir(user, nombreDeCreador, "seguir", token);
+            var respuesta = await LoSigue(user, nombreDeCreador, token);
+            if (Convert.ToString(respuesta).Equals("seguir"))
+            {
+                await EliminarInteraccion(user, nombreDeCreador, "seguir", token); //hacer que cambie el boton
+            }
+            else
+            {
+                await Interactuar(user, nombreDeCreador, "seguir", token);
+                await EnviarNotificacion();
+            }
         }
         public static async Task<dynamic> PublicarGrupo(string nombreVisible, string configuracion, byte[] imagen, string descripcion, string user, string token)
         {
@@ -316,9 +418,9 @@ namespace Frontend
                     var respuesta = await PublicarGrupo("-----------------------------------------", "default", data, "", user, token);
                     string[] nombreRealDelGrupo = Convert.ToString(respuesta).Split(' ');
                     var respuesta2 = await AñadirUsuarioAlGrupo(nombreRealDelGrupo[6], nombreDeCreador, "usuario", token);
-                    MessageBox.Show("" + respuesta2);
                     string imagenB64= await conseguirImagenDelUsuario(nombreDeCreador, token);
-                    var data1 = await BuscarGrupo(Convert.ToString(existe), token);
+                    dynamic existe2 = await ExisteChatPrivado(user, nombreDeCreador, token);
+                    var data1 = await BuscarGrupo(Convert.ToString(existe2), token);
                     data1.foto = imagenB64;
                     data1.nombreVisible = nombreDeCreador;
                     AbrirGrupo?.Invoke(this, new PersonalizedArgs(data1, "es chat privado"));

@@ -248,7 +248,9 @@ namespace Frontend
                     var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/agregarNotificaciones", content);
                     response.EnsureSuccessStatusCode();
-                    return response;
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
                 }
                 catch (Exception ex)
                 {
@@ -270,14 +272,7 @@ namespace Frontend
                     imagen.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
                     string b64 = Convert.ToBase64String(ms.ToArray());
                     dynamic response = await AgregarNotificaciones(creador,texto , "recibeLike", b64, token);
-                    if (response != null && response.success)
-                    {
-                        MessageBox.Show("Like enviado con éxito a " + creador);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Error al enviar la notificación.");
-                    }
+                    MessageBox.Show(""+response);
                 }
                 else
                 {

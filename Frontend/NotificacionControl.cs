@@ -55,7 +55,7 @@ namespace Frontend
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.Name = "NotificacionControl";
-            this.Size = new System.Drawing.Size(50, 10); // Tamaño ajustado
+            this.Size = new System.Drawing.Size(600, 87); 
             this.ResumeLayout(false);
             this.PerformLayout();
         }

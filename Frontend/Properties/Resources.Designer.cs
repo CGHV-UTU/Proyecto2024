@@ -543,6 +543,16 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap notificacionesNuevas {
+            get {
+                object obj = ResourceManager.GetObject("notificacionesNuevas", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap notificacionLike {
             get {
                 object obj = ResourceManager.GetObject("notificacionLike", resourceCulture);

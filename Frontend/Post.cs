@@ -102,32 +102,32 @@ namespace Frontend
 
             if (!nombreReal.Equals(""))
             {
-                if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text))
-                {
-                    MessageBox.Show("No puede realizar un post sin contenido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    DateTime fechayhoraactual = DateTime.Now;
-                    string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
-                    if (pbxImagen.Image == null)
+                    if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text))
                     {
-                        byte[] data = new byte[0];
-                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, "", "", nombreReal);
-                        MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        Creado?.Invoke(this, EventArgs.Empty);
+                        MessageBox.Show("No puede realizar un post sin contenido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     else
                     {
-                        MemoryStream ms = new MemoryStream();
-                        pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
-                        byte[] data = ms.ToArray();
-                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento);
-                        MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        Creado?.Invoke(this, EventArgs.Empty);
+                        DateTime fechayhoraactual = DateTime.Now;
+                        string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
+                        if (pbxImagen.Image == null)
+                        {
+                            byte[] data = new byte[0];
+                            await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, "", "", nombreReal);
+                            MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            Creado?.Invoke(this, EventArgs.Empty);
+                        }
+                        else
+                        {
+                            MemoryStream ms = new MemoryStream();
+                            pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
+                            byte[] data = ms.ToArray();
+                            await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento);
+                            MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            Creado?.Invoke(this, EventArgs.Empty);
+                        }
                     }
-                }
-                return;
+                    return;
             }
 
 
@@ -188,7 +188,7 @@ namespace Frontend
                         }
                         break;
                     case "grupo":
-                        if (string.IsNullOrEmpty(txtNombre.Text) || txtNombre.Text.Equals("-----------------------------------------"))
+                        if (string.IsNullOrEmpty(txtNombre.Text) || txtNombre.Text.StartsWith("-"))
                         {
                             MessageBox.Show("No puede realizar un grupo sin nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             break;

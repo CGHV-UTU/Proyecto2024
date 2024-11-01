@@ -337,6 +337,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\notificacionesNuevas.jpeg" />
     <None Include="Resources\lupa-removebg-preview1.png" />
     <None Include="Resources\lupa.jpeg" />
     <None Include="Resources\lupa-removebg-preview.png" />
