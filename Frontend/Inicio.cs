@@ -20,6 +20,7 @@ namespace Frontend
         private string token;
         private string idioma;
         private string modo;
+        private Notificaciones notis;
         public Inicio(string usuario, string token)
         {
             InitializeComponent();
@@ -32,7 +33,16 @@ namespace Frontend
             PanelNotificaciones.Visible = false;
             PanelMostrarUsuario.Visible = false;
             panelBusqueda.Visible = false;
-            cargarLaImagen(); 
+            cargarLaImagen();
+            notis = new Notificaciones(user, token);
+            notis.TopLevel = false;
+            notis.FormBorderStyle = FormBorderStyle.None;
+            notis.BackColor = Color.LightGray;
+            notis.Dock = DockStyle.Fill;
+            PanelNotificaciones.Controls.Add(notis);
+            PanelNotificaciones.BringToFront();
+            PanelNotificaciones.Parent = this;
+            notis.NuevasNotificaciones += Notis_NuevasNotificaciones;
         }
 
         private async void cargarLaImagen()
@@ -91,16 +101,6 @@ namespace Frontend
             if (!PanelNotificaciones.Visible)
             {
                 PanelNotificaciones.Visible = true;
-                Notificaciones notis = new Notificaciones(user, token);
-                notis.TopLevel = false;
-                notis.FormBorderStyle = FormBorderStyle.None;
-                notis.BackColor = Color.LightGray;
-                notis.Dock = DockStyle.Fill;
-                PanelNotificaciones.Controls.Add(notis);
-                PanelNotificaciones.BringToFront();
-                PanelNotificaciones.Parent = this;
-                notis.NuevasNotificaciones += Notis_NuevasNotificaciones;
-                
                 notis.Show();
             } else {
                 PanelNotificaciones.Visible = false; // Quitar el panel de notificaciones
@@ -428,7 +428,6 @@ namespace Frontend
             comunidad.AbrirUsuario += PostControl_AbrirPaginaUsuario;
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
-            comunidad.MensajesNuevos();
         }
         
         private void EventoComunidad_PostearEnEvento(object sender, PersonalizedArgs e)

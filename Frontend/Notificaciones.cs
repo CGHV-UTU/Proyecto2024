@@ -16,7 +16,6 @@ namespace Frontend
     {
         private string user;
         private string token;
-        private dynamic Listanotificaciones;
         public event EventHandler NuevasNotificaciones;
         public Notificaciones(string usuario, string token)
         {
@@ -26,30 +25,51 @@ namespace Frontend
             Iniciar();
             notificaciones(); // Carga todas las notificaciones
         }
-
-        public async void notificaciones(dynamic notis=null)
+        private int cantNotificaciones=0;
+        public async void notificaciones()
         {
             // Obtener las notificaciones desde la API o la fuente de datos
-            var notificaciones = await conseguirNotificaciones(user, token);
-            if (!Convert.ToString(notificaciones).Equals($"No se encontraron notificaciones para el usuario: {user}"))
+            while (true)
             {
-                PanelNotificaciones.Controls.Clear();
-                foreach (var notificacion in notificaciones)
+                var notificaciones = await conseguirNotificaciones(user, token);
+                if (!Convert.ToString(notificaciones).Equals($"No se encontraron notificaciones para el usuario: {user}"))
                 {
-                    // Crear el control de notificación o contenido y añadirlo al panel contenedor
-                    var notiControl = new NotificacionControl(notificacion);
-                    if (PanelNotificaciones.Controls.Count == 0)
+                    PanelNotificaciones.Controls.Clear();
+                    foreach (var notificacion in notificaciones)
                     {
-                        notiControl.Location = new Point(0, 0);
+                        // Crear el control de notificación o contenido y añadirlo al panel contenedor
+                        var notiControl = new NotificacionControl(notificacion);
+                        if (PanelNotificaciones.Controls.Count == 0)
+                        {
+                            notiControl.Location = new Point(0, 0);
+                        }
+                        else
+                        {
+                            var lastControl = PanelNotificaciones.Controls[PanelNotificaciones.Controls.Count - 1];
+                            notiControl.Location = new Point(0, lastControl.Bottom);
+                        }
+                        this.PanelNotificaciones.Controls.Add(notiControl);
+                    }
+                    if (cantNotificaciones == 0)
+                    {
+                        cantNotificaciones = this.PanelNotificaciones.Controls.Count;
                     }
                     else
                     {
-                        var lastControl = PanelNotificaciones.Controls[PanelNotificaciones.Controls.Count - 1];
-                        notiControl.Location = new Point(0, lastControl.Bottom);
+                        if (cantNotificaciones < this.PanelNotificaciones.Controls.Count)
+                        {
+                            NuevasNotificaciones?.Invoke(this, EventArgs.Empty);
+                        }
                     }
-                    this.PanelNotificaciones.Controls.Add(notiControl);
                 }
-                Listanotificaciones = notificaciones;
+                else
+                {
+                    cantNotificaciones = 0;
+                }
+                if (this.PanelNotificaciones.Controls.Count > this.PanelNotificaciones.Controls.Count * 2)
+                {
+
+                }
             }
         }
 
@@ -59,7 +79,7 @@ namespace Frontend
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    await Task.Delay(5000);
+                    await Task.Delay(10000);
                     var datos = new { nombreDeCuenta = usuario, token=token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("https://localhost:44383/user/ConseguirNotificaciones", content);
@@ -71,18 +91,6 @@ namespace Frontend
             catch
             {
                 return "fallido"; // Retorna un valor de error si ocurre una excepción
-            }
-        }
-        public async void notificacionesNuevas()
-        {
-            while (true)
-            {
-                var notificaciones = await conseguirNotificaciones(user, token);
-                if (notificaciones.Count > Listanotificaciones.Count)
-                {
-                    this.notificaciones(notificaciones);
-                    NuevasNotificaciones?.Invoke(this, EventArgs.Empty);
-                }
             }
         }
         private void Iniciar()

@@ -64,8 +64,18 @@ namespace Frontend
             else
             {
                 this.Controls.Remove(this.pbxImagenCompartida);
-                this.Size = new Size(473, 92);
+                if (!string.IsNullOrEmpty(Convert.ToString(MessageData.video)))
+                {
+                    txtURL.Text = Convert.ToString(MessageData.video);
+                    this.Size = new Size(473, 125);
+                }
+                else
+                {
+                    this.Controls.Remove(this.txtURL);
+                    this.Size = new Size(473, 95);
+                }
             }
+            
             string imagenB64 = await conseguirImagenDelCreador(Convert.ToString(MessageData.nombreDeCuenta), token);
             byte[] imagen2 = Convert.FromBase64String(imagenB64);
             MemoryStream ms2 = new MemoryStream(imagen2);
@@ -242,12 +252,30 @@ namespace Frontend
             this.txtURL.TabIndex = 74;
             this.txtURL.Text = "URL";
             // 
-            
+            // pbxOpciones
+            // 
+            this.pbxOpciones.Location = new System.Drawing.Point(0, 0);
+            this.pbxOpciones.Name = "pbxOpciones";
+            this.pbxOpciones.Size = new System.Drawing.Size(100, 50);
+            this.pbxOpciones.TabIndex = 0;
+            this.pbxOpciones.TabStop = false;
+            // 
+            // btnEliminar
+            // 
+            this.btnEliminar.Location = new System.Drawing.Point(0, 0);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(100, 23);
+            this.btnEliminar.TabIndex = 0;
+            // 
+            // btnEditar
+            // 
+            this.btnEditar.Location = new System.Drawing.Point(0, 0);
+            this.btnEditar.Name = "btnEditar";
+            this.btnEditar.Size = new System.Drawing.Size(100, 23);
+            this.btnEditar.TabIndex = 0;
             // 
             // MessageControl
             // 
-            
-            
             this.Controls.Add(this.txtURL);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnlOpciones);
@@ -263,6 +291,7 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.pbxOpciones)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private void pbxOpciones_Click(object sender, EventArgs e)

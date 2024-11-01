@@ -409,29 +409,33 @@ namespace Frontend
         {
             if (!user.Equals(nombreDeCreador))
             {
-                dynamic existe=await ExisteChatPrivado(user, nombreDeCreador,token);
-                if (Convert.ToString(existe).Equals("false") || Convert.ToString(existe).Equals("False"))
+                var bloqueado = await LoSigue(user, nombreDeCreador, token);
+                if (!Convert.ToString(bloqueado).Equals("bloquear"))
                 {
-                    MemoryStream ms = new MemoryStream();
-                    PictureBoxUsuario.Image.Save(ms, ImageFormat.Jpeg);
-                    byte[] data = ms.ToArray();
-                    var respuesta = await PublicarGrupo("-----------------------------------------", "default", data, "", user, token);
-                    string[] nombreRealDelGrupo = Convert.ToString(respuesta).Split(' ');
-                    var respuesta2 = await AñadirUsuarioAlGrupo(nombreRealDelGrupo[6], nombreDeCreador, "usuario", token);
-                    string imagenB64= await conseguirImagenDelUsuario(nombreDeCreador, token);
-                    dynamic existe2 = await ExisteChatPrivado(user, nombreDeCreador, token);
-                    var data1 = await BuscarGrupo(Convert.ToString(existe2), token);
-                    data1.foto = imagenB64;
-                    data1.nombreVisible = nombreDeCreador;
-                    AbrirGrupo?.Invoke(this, new PersonalizedArgs(data1, "es chat privado"));
-                }
-                else
-                {
-                    string imagenB64 = await conseguirImagenDelUsuario(nombreDeCreador, token);
-                    var data2 = await BuscarGrupo(Convert.ToString(existe), token);
-                    data2.foto = imagenB64;
-                    data2.nombreVisible = nombreDeCreador;
-                    AbrirGrupo?.Invoke(this, new PersonalizedArgs(data2, "es chat privado"));
+                    dynamic existe = await ExisteChatPrivado(user, nombreDeCreador, token);
+                    if (Convert.ToString(existe).Equals("false") || Convert.ToString(existe).Equals("False"))
+                    {
+                        MemoryStream ms = new MemoryStream();
+                        PictureBoxUsuario.Image.Save(ms, ImageFormat.Jpeg);
+                        byte[] data = ms.ToArray();
+                        var respuesta = await PublicarGrupo("-----------------------------------------", "default", data, "", user, token);
+                        string[] nombreRealDelGrupo = Convert.ToString(respuesta).Split(' ');
+                        var respuesta2 = await AñadirUsuarioAlGrupo(nombreRealDelGrupo[6], nombreDeCreador, "usuario", token);
+                        string imagenB64 = await conseguirImagenDelUsuario(nombreDeCreador, token);
+                        dynamic existe2 = await ExisteChatPrivado(user, nombreDeCreador, token);
+                        var data1 = await BuscarGrupo(Convert.ToString(existe2), token);
+                        data1.foto = imagenB64;
+                        data1.nombreVisible = nombreDeCreador;
+                        AbrirGrupo?.Invoke(this, new PersonalizedArgs(data1, "es chat privado"));
+                    }
+                    else
+                    {
+                        string imagenB64 = await conseguirImagenDelUsuario(nombreDeCreador, token);
+                        var data2 = await BuscarGrupo(Convert.ToString(existe), token);
+                        data2.foto = imagenB64;
+                        data2.nombreVisible = nombreDeCreador;
+                        AbrirGrupo?.Invoke(this, new PersonalizedArgs(data2, "es chat privado"));
+                    }
                 }
             }
         }

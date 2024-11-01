@@ -89,6 +89,7 @@ namespace Frontend
             lblEliminar.Visible = false;
             pbxFotoGrupoEditar.Visible = false;
             lblAñadir.Visible = false;
+            MensajesNuevos();
         }
         private void InitializeComponent()
         {
@@ -635,6 +636,10 @@ namespace Frontend
             if (esChatPrivado)
             {
                 this.Controls.Remove(lblMiembros);
+                this.PictureBoxConfiguraciones.Visible = true;
+                this.Controls.Remove(lblEditar);
+                this.Controls.Remove(lblAñadir);
+                lblEliminar.Text = "Bloquear";
             }
         }
 
@@ -646,6 +651,7 @@ namespace Frontend
             } else
             {
                 pnlAsociarContenido.Visible = true;
+                pnlAsociarContenido.Location= new Point(pnlAsociarContenido.Location.X, 420);
             }
         }
 
@@ -658,6 +664,7 @@ namespace Frontend
                     if (imagen.Length == 0)
                     {
                         var datos = new { texto = texto, video = video, nombreDeCuenta = user, nombreReal = nombreGrupo, fechaYHora = fechayhora, token = token };
+                        MessageBox.Show("ll");
                         var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync("https://localhost:44304/AñadirMensaje", content);
                         response.EnsureSuccessStatusCode();
@@ -716,7 +723,6 @@ namespace Frontend
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
-                    MessageBox.Show("Nuevo ciclo");
                     return data;
                 }
                 catch
@@ -748,6 +754,7 @@ namespace Frontend
         {
             try
             {
+                listaDeMiembros = await Miembros(nombreGrupo, token);
                 dynamic listaDeMensajes;
                 if (mensajes == null)
                 {
@@ -781,7 +788,6 @@ namespace Frontend
             {
                 MessageBox.Show("no hay mensaje");
             }
-            listaDeMiembros= await Miembros(nombreGrupo, token);
         }
 
         static async Task<dynamic> EditarMensaje(string texto, string idmensaje, string token)
@@ -824,7 +830,7 @@ namespace Frontend
                 DateTime fechayhoraactual = DateTime.Now;
                 string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
                 byte[] data;
-                if (pictureBox2.Image == null)
+                if (!hayImagen)
                 {
                     data = new byte[0];
                 }
@@ -833,6 +839,7 @@ namespace Frontend
                     MemoryStream ms = new MemoryStream();
                     pictureBox2.Image.Save(ms, ImageFormat.Jpeg);
                     data = ms.ToArray();
+                    pictureBox2.Image = Frontend.Properties.Resources.foto_blanca;
                 }
                 string video;
                 string texto;
@@ -846,8 +853,8 @@ namespace Frontend
                     video = "";
                 }
                 texto = txtMensajeAEnviar.Text;
-                MessageBox.Show(data.ToString());
                 var respuesta = await EnviarMensaje(fechaHoraString, texto, data, video);
+                MessageBox.Show("" + respuesta);
                 txtMensajeAEnviar.Text = "";
                 foreach (var miembros in listaDeMiembros)
                 {
@@ -913,7 +920,7 @@ namespace Frontend
                 MessageBox.Show("Ha ocurrido un error: " + ex.Message);
             }
         }
-
+        private bool hayImagen=false;
         private void pictureBox2_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -923,6 +930,7 @@ namespace Frontend
                 pictureBox2.ImageLocation = ofd.FileName;
                 pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBox2.Visible = true;
+                hayImagen = true;
             }
         }
 
@@ -1136,11 +1144,121 @@ namespace Frontend
                 }
             }
         }
+        public static async Task<dynamic> LoSigue(string user, string aQuienSigue, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = user, nombreDeCuenta2 = aQuienSigue, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44383/user/ConseguirInteraccion", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ERROR AL LLAMAR A LA API" + ex.Message);
+                    return "ERROR";
+                }
+            }
+        }
+        public static async Task<dynamic> EliminarInteraccion(string user, string aQuienSigue, string tipoInteraccion, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = user, nombreDeCuenta2 = aQuienSigue, tipoInteraccion = tipoInteraccion, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44383/user/EliminarInteraccion", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ERROR AL LLAMAR A LA API" + ex.Message);
+                    return "ERROR";
+                }
+            }
+        }
+        public static async Task<dynamic> Interactuar(string user, string aQuienSigue, string tipo, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = user, nombreDeCuenta2 = aQuienSigue, tipoInteraccion = tipo, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/Interactuar", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ERROR AL LLAMAR A LA API" + ex.Message);
+                    return "ERROR";
+                }
+            }
+        }
+        static async Task<dynamic> EliminarUsuarioDelGrupo(string nombreReal, string nombreDeCuenta, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = nombreDeCuenta, nombreReal = nombreReal, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/EliminarUsuarioDeGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
 
         private async void lblEliminar_Click(object sender, EventArgs e)
         {
-            var respuesta = await EliminarGrupo(nombreGrupo,token);
-            GrupoEliminado?.Invoke(this, EventArgs.Empty);
+            if (lblEliminar.Text.Equals("Bloquear"))
+            {
+                foreach (var miembros in listaDeMiembros)
+                {
+                    if (!Convert.ToString(miembros.nombreReal).Equals(user))
+                    {
+                        string nombreDeCreador = Convert.ToString(miembros.nombreReal);
+                        var respuesta = await LoSigue(user, nombreDeCreador, token);
+                        if (Convert.ToString(respuesta).Equals("seguir"))
+                        {
+                            await EliminarInteraccion(user, nombreDeCreador, "seguir", token); //hacer que cambie el boton
+                            await Interactuar(user, nombreDeCreador, "bloquear", token);
+
+                            GrupoEliminado?.Invoke(this, EventArgs.Empty);
+                        }
+                        else
+                        {
+                            await Interactuar(user, nombreDeCreador, "bloquear", token);
+                            await EliminarUsuarioDelGrupo(nombreGrupo, user, token);
+                            GrupoEliminado?.Invoke(this, EventArgs.Empty);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var respuesta = await EliminarGrupo(nombreGrupo, token);
+                GrupoEliminado?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         static async Task<dynamic> Modificar(string nombrereal, string nombreVisible, string configuracion, byte[] imagen, string token)
