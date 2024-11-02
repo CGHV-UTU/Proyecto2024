@@ -846,17 +846,51 @@ namespace ApiUsuarios.Controllers
                     MySqlCommand cmd = new MySqlCommand("SELECT tipoInteraccion FROM Interactua WHERE nombreDeCuenta=@nombreDeCuenta AND nombreDeCuenta2=@nombreDeCuenta2", conn);
                     cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
                     cmd.Parameters.AddWithValue("@nombreDeCuenta2", user.nombreDeCuenta2);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.HasRows && reader.Read())
+                    var result = cmd.ExecuteScalar();
+                    if (result != null)
                     {
-                        string tipoInteraccion = reader["tipoInteraccion"].ToString();
                         conn.Close();
-                        return Json(tipoInteraccion);
+                        return Json(result.ToString());
                     }
                     else
                     {
                         conn.Close();
-                        return Json("Hubo un error: no se encontró interacción para el usuario");
+                        return Json("Hubo un error" + user.nombreDeCuenta);
+                    }
+                }
+                else
+                {
+                    return Json("Token expirado");
+                }
+            }
+        }
+        [System.Web.Mvc.HttpPut]
+        [System.Web.Mvc.Route("EliminarInteraccion")]
+        public dynamic EliminarInteraccion([FromBody] usuario user)
+        {
+            if (user == null)
+            {
+                return Json("nulo");
+            }
+            else
+            {
+                if (TestToken(user.token))
+                {
+                    try
+                    {
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand("DELETE FROM Interactua WHERE nombreDeCuenta=@nombreDeCuenta AND nombreDeCuenta2=@nombreDeCuenta2 AND tipoInteraccion=@tipoInteraccion", conn);
+                        cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                        cmd.Parameters.AddWithValue("@nombreDeCuenta2", user.nombreDeCuenta2);
+                        cmd.Parameters.AddWithValue("@tipoInteraccion", user.tipoInteraccion);
+                        cmd.ExecuteScalar();
+                        conn.Close();
+                        return Json("Eliminado correcto");
+                    }
+                    catch
+                    {
+                        conn.Close();
+                        return Json("Hubo un error" + user.nombreDeCuenta);
                     }
                 }
                 else
