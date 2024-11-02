@@ -1987,5 +1987,32 @@ namespace APIPostYEventos2019.Controllers
                 return Json("Hubo un error");
             }
         }
+        [HttpPut]
+        [Route("EliminarDelEvento")]
+        public dynamic EliminarDelEvento([FromBody] EventData eventData)
+        {
+            if (TestToken(eventData.token))
+            {
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("DELETE FROM ParticipaEvento (nombreDeCuenta,idEvento) VALUES (@nombreUsuario, @idEvento)", conn);
+                    command.Parameters.AddWithValue("@nombreUsuario", eventData.user);
+                    command.Parameters.AddWithValue("@idEvento", eventData.id);
+                    command.ExecuteNonQuery();
+                    conn.Close();
+                    return Json("Saliste del evento correctamente");
+                }
+                catch (Exception)
+                {
+                    return Json("Error");
+                }
+            }
+            else
+            {
+                return Json("Token expirado");
+            }
+        }
     }
 }
