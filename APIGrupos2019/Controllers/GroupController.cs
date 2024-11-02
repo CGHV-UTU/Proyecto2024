@@ -621,6 +621,10 @@ namespace API_Grupos.Controllers
                             linkImagen = await SubirImagenAGitHub(mensajeData.imagen, "ChatImages");
                             cmd.Parameters.AddWithValue("@imagen", linkImagen);
                         }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@imagen", "");
+                        }
                         cmd.ExecuteNonQuery();
                         conn.Close();
                         return Json("Se añadio el mensaje correctamente");
@@ -946,46 +950,36 @@ namespace API_Grupos.Controllers
 
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("BuscarGrupos")]
-        public async Task<IHttpActionResult> BuscarGrupos([FromBody] Grupo grupo)
+        public async Task<dynamic> BuscarGrupos([FromBody] Grupo grupo)
         {
             try
             {
                 if (TestToken(grupo.token))
                 {
-                    using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT nombreReal, nombreVisible, foto FROM Grupos WHERE nombreVisible LIKE CONCAT('%', @nombre, '%')", conn);
+                    cmd.Parameters.AddWithValue("@nombre", grupo.nombreVisible);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    List<dynamic> lista = new List<dynamic>();
+
+                    while (reader.Read())
                     {
-                        await conn.OpenAsync();
-
-                        string query = "SELECT nombreReal, nombreVisible, foto FROM Grupos WHERE nombreVisible LIKE CONCAT('%', @nombre, '%')";
-
-                        using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                        lista.Add(new
                         {
-                            cmd.Parameters.AddWithValue("@nombre", grupo.nombreVisible);
-
-                            using (MySqlDataReader reader = (MySqlDataReader)await cmd.ExecuteReaderAsync())
-                            {
-                                List<GrupoResponse> lista = new List<GrupoResponse>();
-
-                                while (await reader.ReadAsync())
-                                {
-                                    lista.Add(new GrupoResponse
-                                    {
-                                        nombreReal = reader["nombreReal"].ToString(),
-                                        nombreVisible = reader["nombreVisible"].ToString(),
-                                        foto = await CargarImagenDeGitHub(reader["foto"].ToString())
-                                    });
-                                }
-
-                                if (lista.Count > 0)
-                                {
-                                    return Json(lista); 
-                                }
-                                else
-                                {
-                                    return Json("No se encontraron grupos cuyos nombres concuerden con los parámetros de búsqueda especificados");
-                                }
-                            }
-                        }
+                            nombreReal = reader["nombreReal"].ToString(),
+                            nombreVisible = reader["nombreVisible"].ToString(),
+                            foto = await CargarImagenDeGitHub(reader["foto"].ToString())
+                        });
+                    }
+                    conn.Close();
+                    if (lista.Count > 0)
+                    {
+                        return Json(lista);
+                    }
+                    else
+                    {
+                        return Json("No se encontraron grupos cuyos nombres concuerden con los parámetros de búsqueda especificados");
                     }
                 }
                 else
@@ -995,7 +989,7 @@ namespace API_Grupos.Controllers
             }
             catch (Exception ex)
             {
-                return Json("Hubo un error: " + ex.Message);
+                return Json("Hubo un error" + ex.Message);
             }
         }
 
@@ -1188,7 +1182,7 @@ namespace API_Grupos.Controllers
 
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("ExisteChatPrivado")]
-        public async Task<IHttpActionResult> ExisteChatPrivado([FromBody] ChatPrivado chat)
+        public dynamic ExisteChatPrivado([FromBody] ChatPrivado chat)
         {
             try
             {
@@ -1202,6 +1196,7 @@ namespace API_Grupos.Controllers
                     var result = cmd.ExecuteScalar();
                     if (result != null)
                     {
+                        conn.Close();
                         return Json(result.ToString());
                     }
                     else
