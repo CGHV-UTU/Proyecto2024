@@ -24,6 +24,7 @@ namespace Frontend
         public event EventHandler<PersonalizedArgs> ReportarPost;
         public event EventHandler<PersonalizedArgs> AbrirGrupo;
         public event EventHandler<PersonalizedArgs> ReportarUsuario;
+        public event EventHandler<PersonalizedArgs> NuevaImagen;
         public PaginaDeUsuario(string nombreCreador, string modo, string user, string token)
         {
             this.nombreDeCreador = nombreCreador;
@@ -33,6 +34,10 @@ namespace Frontend
             InitializeComponent();
             Iniciar();
             LoadPosts();
+            txtDescripcion.Visible = false;
+            txtNombre.Visible = false;
+            pbxImagenEditar.Visible = false;
+            btnConfirmar.Visible = false;
         }
         static async Task<dynamic> obtenerImagenNombreVyDescUsuario(string creador, string token)
         {
@@ -116,8 +121,7 @@ namespace Frontend
         }
 
         private async void Iniciar()
-        {
-            
+        {   
             var datos=await obtenerImagenNombreVyDescUsuario(nombreDeCreador,token);
             if (datos != null)
             {
@@ -129,7 +133,7 @@ namespace Frontend
                 Bitmap bitmap = new Bitmap(ms);
                 this.PictureBoxUsuario.Image = bitmap;
                 this.PictureBoxUsuario.SizeMode = PictureBoxSizeMode.StretchImage;
-                this.lblNombre.Text = nombreDeCreador;
+                this.lblNombre.Text = datos[0];
             }
             this.SuspendLayout();
             // panelPosts
@@ -151,7 +155,8 @@ namespace Frontend
             if (nombreDeCreador.Equals(user))
             {
                 btnSeguir.Visible = false;
-                pbxReportar.Visible = false;
+                pbxChatear.Visible = false;
+                pbxReportar.Image = Frontend.Properties.Resources.editar_removebg_preview;
             }
         }
         public static async Task<dynamic> Interactuar(string user, string aQuienSigue, string tipo, string token)
@@ -449,7 +454,81 @@ namespace Frontend
 
         private void pbxReportar_Click(object sender, EventArgs e)
         {
-            ReportarUsuario?.Invoke(this, new PersonalizedArgs(nombreDeCreador));
+            if (nombreDeCreador.Equals(user))
+            {
+                if (txtNombre.Visible==false)
+                {
+                    txtDescripcion.Visible = true;
+                    txtNombre.Visible = true;
+                    pbxImagenEditar.Visible = true;
+                    btnConfirmar.Visible = true;
+                    PictureBoxUsuario.Visible = false;
+                    pbxImagenEditar.Image = PictureBoxUsuario.Image;
+                    txtDescripcion.Text = lblDescripcion.Text;
+                    txtNombre.Text = lblNombre.Text;
+                }
+                else
+                {
+                    txtDescripcion.Visible = false;
+                    txtNombre.Visible = false;
+                    pbxImagenEditar.Visible = false;
+                    btnConfirmar.Visible = false;
+                    PictureBoxUsuario.Visible = true;
+                }
+            }
+            else
+            {
+                ReportarUsuario?.Invoke(this, new PersonalizedArgs(nombreDeCreador));
+            }      
+        }
+
+        private async void btnConfirmar_Click(object sender, EventArgs e)
+        {
+            lblDescripcion.Text = txtDescripcion.Text;
+            lblNombre.Text = txtNombre.Text;
+            PictureBoxUsuario.Image = pbxImagenEditar.Image;
+            MemoryStream ms = new MemoryStream();
+            pbxImagenEditar.Image.Save(ms, ImageFormat.Jpeg);
+            byte[] imagen = ms.ToArray();
+            await EditarUsuario(user, txtNombre.Text,imagen,txtDescripcion.Text, token);
+            txtDescripcion.Visible = false;
+            txtNombre.Visible = false;
+            pbxImagenEditar.Visible = false;
+            PictureBoxUsuario.Visible = true;
+            btnConfirmar.Visible = false;
+            NuevaImagen?.Invoke(this, new PersonalizedArgs(imagen));
+        }
+
+        static async Task<dynamic> EditarUsuario(string creador, string nombreVisible, byte[] imagen, string descripcion, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var dato = new { nombreDeCuenta = creador, nombreVisible=nombreVisible, descripcion=descripcion, foto=Convert.ToBase64String(imagen), token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/EditarUsuario", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("Error de conexión"+ex.Message);
+                    return "error";
+                }
+            }
+        }
+        private void pbxImagenEditar_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Archivos de imagen|*.png;*.jpg;*.jpeg"; //Para que sólo aparezcan fotos
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                pbxImagenEditar.ImageLocation = ofd.FileName;
+                pbxImagenEditar.SizeMode = PictureBoxSizeMode.StretchImage;
+            }
         }
     }
 }

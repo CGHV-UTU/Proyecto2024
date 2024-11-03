@@ -178,6 +178,7 @@ namespace Frontend
                         MemoryStream ms = new MemoryStream(imagen);
                         Bitmap bitmap = new Bitmap(ms);
                         this.PictureBoxImagen.Image = bitmap;
+                        redondearPictureBox(bitmap);
                         if (this.PictureBoxImagen.Image == null)
                         {
                             MessageBox.Show("Imagen nula");
@@ -201,6 +202,7 @@ namespace Frontend
                             MemoryStream ms = new MemoryStream(imagen);
                             Bitmap bitmap = new Bitmap(ms);
                             this.PictureBoxImagen.Image = bitmap;
+                            redondearPictureBox(bitmap);
                             if (this.PictureBoxImagen.Image == null)
                             {
                                 MessageBox.Show("Imagen nula");
@@ -260,6 +262,7 @@ namespace Frontend
                                 MemoryStream ms = new MemoryStream(imagen);
                                 Bitmap bitmap = new Bitmap(ms);
                                 this.PictureBoxImagen.Image = bitmap;
+                                redondearPictureBox(bitmap);
                             }
                             else
                             {
@@ -269,6 +272,7 @@ namespace Frontend
                                 MemoryStream ms = new MemoryStream(imagen);
                                 Bitmap bitmap = new Bitmap(ms);
                                 this.PictureBoxImagen.Image = bitmap;
+                                redondearPictureBox(bitmap);
                             }
                             var data = await BuscarGrupo(nombreReal, token);
                             data.foto = imagenB64;
@@ -285,6 +289,7 @@ namespace Frontend
                                 MemoryStream ms = new MemoryStream(imagen);
                                 Bitmap bitmap = new Bitmap(ms);
                                 this.PictureBoxImagen.Image = bitmap;
+                                redondearPictureBox(bitmap);
                                 if (this.PictureBoxImagen.Image == null)
                                 {
                                     MessageBox.Show("Imagen nula");
@@ -325,6 +330,7 @@ namespace Frontend
                     MemoryStream ms = new MemoryStream(imagen);
                     Bitmap bitmap = new Bitmap(ms);
                     this.PictureBoxImagen.Image = bitmap;
+                    redondearPictureBox(bitmap);
                     if (this.PictureBoxImagen.Image == null)
                     {
                         MessageBox.Show("Imagen nula");
@@ -374,8 +380,21 @@ namespace Frontend
                 }
             }
         }
+        public void redondearPictureBox(Image image)
+        {
+            if (image == null)
+            {
+                MessageBox.Show("La imagen es nula. No se puede redondear.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-        private void Iniciar()
+            System.Drawing.Drawing2D.GraphicsPath gp = new System.Drawing.Drawing2D.GraphicsPath();
+            gp.AddEllipse(0, 0, this.PictureBoxImagen.Width, this.PictureBoxImagen.Height);
+            Region rg = new Region(gp);
+            this.PictureBoxImagen.Region = rg;
+            this.PictureBoxImagen.Image = image;
+        }
+        private async void Iniciar()
         {
             this.lblNombre = new Label();
             this.PictureBoxImagen = new PictureBox();
@@ -385,7 +404,7 @@ namespace Frontend
             this.lblNombre.AutoSize = true;
             this.lblNombre.Location = new System.Drawing.Point(150, 19);
             this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(100, 24);
+            this.lblNombre.Size = new System.Drawing.Size(70, 24);
             this.lblNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
             this.lblNombre.TabIndex = 0;
 
@@ -433,6 +452,23 @@ namespace Frontend
                 this.pbxUnirse.Visible = true;
                 this.pbxUnirse.Click += pbxUnirse_Click;
                 this.Controls.Add(this.pbxUnirse);
+            }
+            if (!string.IsNullOrEmpty(nombreReal) && datosDelUsuario!=null && busqueda)
+            {
+                var rol = await RolEnElGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreDeCuenta), token);
+                if (!Convert.ToString(rol).Equals("Solicitante") && !Convert.ToString(rol).Equals("creador") && !Convert.ToString(rol).Equals("usuario") && !Convert.ToString(rol).Equals("admin"))
+                {
+                    this.pbxUnirse = new PictureBox();
+                    this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                    this.pbxUnirse.Name = "pbxUnirse";
+                    this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
+                    this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
+                    this.pbxUnirse.Image = Properties.Resources.aceptar;
+                    this.pbxUnirse.Cursor = Cursors.Hand;
+                    this.pbxUnirse.Visible = true;
+                    this.pbxUnirse.Click += pbxUnirse_Click;
+                    this.Controls.Add(this.pbxUnirse);
+                }
             }
         }
 
@@ -535,46 +571,54 @@ namespace Frontend
             {
                 if (idevento == 0)
                 {
-                    if (Convert.ToString(datosDelUsuario.rol).Equals("solicitante"))
+                    if (!string.IsNullOrEmpty(nombreReal) && datosDelUsuario != null && busqueda)
                     {
-                        await EliminarUsuarioDelGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
-                        var respuesta = await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), "usuario", token);
-                        MessageBox.Show("" + respuesta);
+                        await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreDeCuenta), "usuario", token);
+                        pbxUnirse.Visible = false;
                     }
                     else
                     {
-                        if (!this.Controls.Contains(this.lblEliminar))
+                        if (Convert.ToString(datosDelUsuario.rol).Equals("solicitante"))
                         {
-                            this.lblEliminar = new Label();
-                            this.lblDarOQuitarAdmin = new Label();
-                            // Eliminar
-                            this.lblEliminar.AutoSize = true;
-                            this.lblEliminar.Location = new System.Drawing.Point(200, 15);
-                            this.lblEliminar.Name = "lblEliminar";
-                            this.lblEliminar.Size = new System.Drawing.Size(100, 24);
-                            this.lblEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-                            this.lblEliminar.TabIndex = 0;
-                            this.lblEliminar.Text = "Eliminar";
-                            this.lblEliminar.Click += lblEliminar_Click;
-
-                            // DarOQuitarAdmin
-                            this.lblDarOQuitarAdmin.AutoSize = true;
-                            this.lblDarOQuitarAdmin.Location = new System.Drawing.Point(200, lblEliminar.Bottom + 10);
-                            this.lblDarOQuitarAdmin.Name = "lblDarOQuitarAdmin";
-                            this.lblDarOQuitarAdmin.Size = new System.Drawing.Size(100, 24);
-                            this.lblDarOQuitarAdmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-                            this.lblDarOQuitarAdmin.TabIndex = 0;
-                            this.lblDarOQuitarAdmin.Text = "Dar admin";
-                            this.lblDarOQuitarAdmin.Click += lblDarOQuitarAdmin_Click;
-                            this.Controls.Add(lblEliminar);
-                            this.Controls.Add(lblDarOQuitarAdmin);
+                            await EliminarUsuarioDelGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
+                            var respuesta = await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), "usuario", token);
+                            MessageBox.Show("" + respuesta);
                         }
                         else
                         {
-                            this.Controls.Remove(this.lblEliminar);
-                            this.Controls.Remove(this.lblDarOQuitarAdmin);
+                            if (!this.Controls.Contains(this.lblEliminar))
+                            {
+                                this.lblEliminar = new Label();
+                                this.lblDarOQuitarAdmin = new Label();
+                                // Eliminar
+                                this.lblEliminar.AutoSize = true;
+                                this.lblEliminar.Location = new System.Drawing.Point(200, 15);
+                                this.lblEliminar.Name = "lblEliminar";
+                                this.lblEliminar.Size = new System.Drawing.Size(100, 24);
+                                this.lblEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+                                this.lblEliminar.TabIndex = 0;
+                                this.lblEliminar.Text = "Eliminar";
+                                this.lblEliminar.Click += lblEliminar_Click;
+
+                                // DarOQuitarAdmin
+                                this.lblDarOQuitarAdmin.AutoSize = true;
+                                this.lblDarOQuitarAdmin.Location = new System.Drawing.Point(200, lblEliminar.Bottom + 10);
+                                this.lblDarOQuitarAdmin.Name = "lblDarOQuitarAdmin";
+                                this.lblDarOQuitarAdmin.Size = new System.Drawing.Size(100, 24);
+                                this.lblDarOQuitarAdmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+                                this.lblDarOQuitarAdmin.TabIndex = 0;
+                                this.lblDarOQuitarAdmin.Text = "Dar admin";
+                                this.lblDarOQuitarAdmin.Click += lblDarOQuitarAdmin_Click;
+                                this.Controls.Add(lblEliminar);
+                                this.Controls.Add(lblDarOQuitarAdmin);
+                            }
+                            else
+                            {
+                                this.Controls.Remove(this.lblEliminar);
+                                this.Controls.Remove(this.lblDarOQuitarAdmin);
+                            }
                         }
-                    }
+                    }   
                 }
                 else
                 {

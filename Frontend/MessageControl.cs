@@ -340,6 +340,4 @@ namespace Frontend
             EditarMensaje?.Invoke(this, new PersonalizedArgs(idMensaje));
         }
     }
-
-      
-    }
+}

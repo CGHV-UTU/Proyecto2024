@@ -171,6 +171,7 @@ namespace Frontend
             paginaDeUsuario.AbrirComentarios += PostControl_AbrirComentarios;
             paginaDeUsuario.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
             paginaDeUsuario.ReportarUsuario += PaginaDeUsuario_ReportarUsuario;
+            paginaDeUsuario.NuevaImagen += PaginaDeUsuario_NuevaImagen;
             PanelMostrarUsuario.Controls.Add(paginaDeUsuario);
             paginaDeUsuario.Show();
         }
@@ -474,8 +475,26 @@ namespace Frontend
             comunidad.AbrirComentarios += PostControl_AbrirComentarios;
             comunidad.ReportarPost += PostControl_ReportarPost;
             comunidad.ReportarGrupo += Comunidad_ReportarGrupo;
+            comunidad.BuscarUsuarios += Comunidad_BuscarUsuarios;
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
+        }
+
+        private void Comunidad_BuscarUsuarios(object sender, PersonalizedArgs e)
+        {
+            panelBusqueda.Visible = true;
+            PanelMostrarUsuario.Parent = this;
+            PanelMostrarUsuario.Location = PanelPosts.Location;
+            Busqueda busqueda = new Busqueda(user, token, Convert.ToString(e.arg));
+            busqueda.TopLevel = false;
+            busqueda.FormBorderStyle = FormBorderStyle.None;
+            busqueda.BackColor = Color.LightGray;
+            busqueda.Dock = DockStyle.Fill;
+            busqueda.AbrirUsuario += PostControl_AbrirPaginaUsuario;
+            busqueda.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
+            panelBusqueda.BackColor = Color.LightGray;
+            panelBusqueda.Controls.Add(busqueda);
+            busqueda.Show();
         }
 
         private void Comunidad_ReportarGrupo(object sender, PersonalizedArgs e)
@@ -501,29 +520,22 @@ namespace Frontend
         }
         private void pbxBuscar_Click(object sender, EventArgs e)
         {
-
             if (panelBusqueda.Visible == false)
             {
-                if (panelBusqueda.Controls.Count == 0)
-                {
-                    panelBusqueda.Visible = true;
-                    PanelMostrarUsuario.Parent = this;
-                    PanelMostrarUsuario.Location = PanelPosts.Location;
-                    Busqueda busqueda = new Busqueda(user,token);
-                    busqueda.TopLevel = false;
-                    busqueda.FormBorderStyle = FormBorderStyle.None;
-                    busqueda.BackColor = Color.LightGray;
-                    busqueda.Dock = DockStyle.Fill;
-                    busqueda.AbrirUsuario += PostControl_AbrirPaginaUsuario;
-                    busqueda.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
-                    panelBusqueda.BackColor = Color.LightGray;
-                    panelBusqueda.Controls.Add(busqueda);
-                    busqueda.Show();
-                }
-                else
-                {
-                    panelBusqueda.Visible = true;
-                }
+                panelBusqueda.Controls.Clear();
+                panelBusqueda.Visible = true;
+                PanelMostrarUsuario.Parent = this;
+                PanelMostrarUsuario.Location = PanelPosts.Location;
+                Busqueda busqueda = new Busqueda(user, token);
+                busqueda.TopLevel = false;
+                busqueda.FormBorderStyle = FormBorderStyle.None;
+                busqueda.BackColor = Color.LightGray;
+                busqueda.Dock = DockStyle.Fill;
+                busqueda.AbrirUsuario += PostControl_AbrirPaginaUsuario;
+                busqueda.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
+                panelBusqueda.BackColor = Color.LightGray;
+                panelBusqueda.Controls.Add(busqueda);
+                busqueda.Show();
             }
             else
             {
@@ -548,8 +560,16 @@ namespace Frontend
             paginaDeUsuario.ReportarPost += PostControl_ReportarPost;
             paginaDeUsuario.AbrirComentarios += PostControl_AbrirComentarios;
             paginaDeUsuario.ReportarUsuario += PaginaDeUsuario_ReportarUsuario;
+            paginaDeUsuario.NuevaImagen += PaginaDeUsuario_NuevaImagen;
             PanelMostrarUsuario.Controls.Add(paginaDeUsuario);
             paginaDeUsuario.Show();
+        }
+
+        private void PaginaDeUsuario_NuevaImagen(object sender, PersonalizedArgs e)
+        {
+            MemoryStream ms = new MemoryStream(e.arg);
+            Bitmap bm = new Bitmap(ms);
+            PictureBoxUsuario.Image = bm;
         }
     }
 }

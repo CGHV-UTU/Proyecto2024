@@ -16,18 +16,28 @@ namespace Frontend
     {
         private string token;
         private string user;
+        private string nombreGrupo;
         public event EventHandler<PersonalizedArgs> AbrirUsuario;
         public event EventHandler<PersonalizedArgs> AbrirEvento;
-        public Busqueda(string user,string token)
+        public Busqueda(string user,string token, string nombreGrupo="")
         {
             this.token = token;
             this.user = user;
+            this.nombreGrupo = nombreGrupo;
             InitializeComponent();
             this.pnlOpciones.Visible = false;
             this.Size= new Size(1012, 342);
             pnlUsuario.Click += new EventHandler(pnlUsuario_Click);
             pnlGrupo.Click += new EventHandler(pnlGrupo_Click);
             pnlEvento.Click += new EventHandler(pnlEvento_Click);
+            if (!string.IsNullOrEmpty(nombreGrupo))
+            {
+                this.Controls.Remove(pnlOpciones);
+                tipoDeBusqueda = "usuarios";
+                btnOpciones.Image = Frontend.Properties.Resources.User;
+                pnlMostrar.Controls.Clear();
+                pnlOpciones.Visible = false;
+            }
         }
         static async Task<dynamic> BuscarUsuarios(string usuario, string token)
         {
@@ -93,16 +103,19 @@ namespace Frontend
 
         private void btnOpciones_Click(object sender, EventArgs e)
         {
-            if (this.pnlOpciones.Visible == false)
+            if (string.IsNullOrEmpty(nombreGrupo))
             {
-                this.pnlOpciones.Visible = true;
-                this.pnlOpciones.Size = new Size(223, 183);
-                this.pnlOpciones.Location = new Point(19, 77);
-                this.pnlOpciones.Parent = this;
-            }
-            else
-            {
-                this.pnlOpciones.Visible = false;
+                if (this.pnlOpciones.Visible == false)
+                {
+                    this.pnlOpciones.Visible = true;
+                    this.pnlOpciones.Size = new Size(223, 183);
+                    this.pnlOpciones.Location = new Point(19, 77);
+                    this.pnlOpciones.Parent = this;
+                }
+                else
+                {
+                    this.pnlOpciones.Visible = false;
+                }
             }
         }
 
@@ -118,21 +131,42 @@ namespace Frontend
                     }
                     else
                     {
-                        pnlMostrar.Controls.Clear();
-                        foreach (dynamic usuario in respuesta)
+                        if (string.IsNullOrEmpty(nombreGrupo))
                         {
-                            var usercontrol = new Grupo_EventoParaListar("", token, "", 0, usuario, true);
-                            usercontrol.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
-                            if (pnlMostrar.Controls.Count > 0)
+                            pnlMostrar.Controls.Clear();
+                            foreach (dynamic usuario in respuesta)
                             {
-                                var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];
-                                usercontrol.Location = new Point(0, lastControl.Bottom);
+                                var usercontrol = new Grupo_EventoParaListar("", token, "", 0, usuario, true);
+                                usercontrol.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
+                                if (pnlMostrar.Controls.Count > 0)
+                                {
+                                    var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];
+                                    usercontrol.Location = new Point(0, lastControl.Bottom);
+                                }
+                                else
+                                {
+                                    usercontrol.Location = new Point(0, 52);
+                                }
+                                pnlMostrar.Controls.Add(usercontrol);
                             }
-                            else
+                        }
+                        else
+                        {
+                            foreach (dynamic usuario in respuesta)
                             {
-                                usercontrol.Location = new Point(0, 52);
+                                var usercontrol = new Grupo_EventoParaListar("", token, nombreGrupo, 0, usuario, true);
+                                usercontrol.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
+                                if (pnlMostrar.Controls.Count > 0)
+                                {
+                                    var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];
+                                    usercontrol.Location = new Point(0, lastControl.Bottom);
+                                }
+                                else
+                                {
+                                    usercontrol.Location = new Point(0, 52);
+                                }
+                                pnlMostrar.Controls.Add(usercontrol);
                             }
-                            pnlMostrar.Controls.Add(usercontrol);
                         }
                     }
                     break;
@@ -146,21 +180,21 @@ namespace Frontend
                         }
                         else
                         {
-                            pnlMostrar.Controls.Clear();
-                            foreach (dynamic grupo in respuesta2)
-                            {
-                                var groupcontrol = new Grupo_EventoParaListar(user, token, Convert.ToString(grupo.nombreReal), 0, null, true);
-                                if (pnlMostrar.Controls.Count > 0)
+                                pnlMostrar.Controls.Clear();
+                                foreach (dynamic grupo in respuesta2)
                                 {
-                                    var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];
-                                    groupcontrol.Location = new Point(0, lastControl.Bottom);
+                                    var groupcontrol = new Grupo_EventoParaListar(user, token, Convert.ToString(grupo.nombreReal), 0, null, true);
+                                    if (pnlMostrar.Controls.Count > 0)
+                                    {
+                                        var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];
+                                        groupcontrol.Location = new Point(0, lastControl.Bottom);
+                                    }
+                                    else
+                                    {
+                                        groupcontrol.Location = new Point(0, 52);
+                                    }
+                                    pnlMostrar.Controls.Add(groupcontrol);
                                 }
-                                else
-                                {
-                                    groupcontrol.Location = new Point(0, 52);
-                                }
-                                pnlMostrar.Controls.Add(groupcontrol);
-                            }
                         }
                     }
                     break;

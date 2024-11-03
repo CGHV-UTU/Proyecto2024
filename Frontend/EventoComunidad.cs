@@ -68,6 +68,7 @@ namespace Frontend
             lblCancelar.Visible = false;
             pbxImagenEditar.Visible = false;
             pbxSeleccionarImagen.Visible = false;
+            lblAdministradores.Visible = false;
         }
         
         private async void CompararCreador()
@@ -85,7 +86,7 @@ namespace Frontend
                 {
                     btnSeguir.Visible = false;
                     btnCrear.Visible = false;
-                    lblAdministradores.Visible = false;
+                    this.Controls.Remove(lblAdministradores);
                 }
                 else
                 {
@@ -550,11 +551,13 @@ namespace Frontend
             {
                 lblEditar.Visible = true;
                 lblEliminar.Visible = true;
+                lblAdministradores.Visible = true;
             }
             else
             {
                 lblEditar.Visible = false;
                 lblEliminar.Visible = false;
+                lblAdministradores.Visible = false;
             }
         }
 
@@ -735,22 +738,24 @@ namespace Frontend
         private async void lblAdministradores_Click(object sender, EventArgs e)
         {
             panelPosts.Controls.Clear();
-            panelPosts.Parent = this;
-            panelPosts.Location = new Point(13, 113);
+            panelPosts.Location = new Point(12, 228);
             var listaDeMiembros = await Miembros(idEvento, token);
             foreach (var elemento in listaDeMiembros)
             {
-                var groupControl = new Grupo_EventoParaListar(user, token, idEvento: int.Parse(idEvento), usuariobuscar: elemento);
-                if (panelPosts.Controls.Count > 0)
+                if (!Convert.ToString(elemento.nombreDeCuenta).Equals(user))
                 {
-                    var lastControl = panelPosts.Controls[panelPosts.Controls.Count - 1];
-                    groupControl.Location = new Point(0, lastControl.Bottom);
+                    var groupControl = new Grupo_EventoParaListar(user, token, idEvento: int.Parse(idEvento), usuariobuscar: elemento);
+                    if (panelPosts.Controls.Count > 0)
+                    {
+                        var lastControl = panelPosts.Controls[panelPosts.Controls.Count - 1];
+                        groupControl.Location = new Point(0, lastControl.Bottom);
+                    }
+                    else
+                    {
+                        groupControl.Location = new Point(100, 0);
+                    }
+                    panelPosts.Controls.Add(groupControl);
                 }
-                else
-                {
-                    groupControl.Location = new Point(0, 52);
-                }
-                panelPosts.Controls.Add(groupControl);
             }
         }
     }

@@ -64,12 +64,14 @@ namespace Frontend
         private Label lblCancelar;
         private PictureBox pbxConfirmarCambios;
         private Label lblAñadir;
+        private PictureBox pbxBuscar;
         private string idUltimoMensaje;
         public event EventHandler GrupoEliminado;
         public event EventHandler<PersonalizedArgs> AbrirUsuario;
         public event EventHandler<PersonalizedArgs> ReportarPost;
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarGrupo;
+        public event EventHandler<PersonalizedArgs> BuscarUsuarios;
         public GruposComunidad(dynamic groupData, string user, string token, bool esChatPrivado=false)
         {
             InitializeComponent();
@@ -80,7 +82,7 @@ namespace Frontend
             this.esChatPrivado = esChatPrivado;
             if (esChatPrivado)
             {
-                pbxCrearPostGrupo.Visible = false;
+                this.Controls.Remove(pbxCrearPostGrupo);
             }
             AplicarDatos(groupData);
             pnlPostsGrupo.Visible = false;
@@ -96,6 +98,7 @@ namespace Frontend
             lblEliminar.Visible = false;
             pbxFotoGrupoEditar.Visible = false;
             lblAñadir.Visible = false;
+            pbxBuscar.Visible = false;
             MensajesNuevos();
         }
         private void InitializeComponent()
@@ -122,6 +125,7 @@ namespace Frontend
             this.lblAsociarVideo = new System.Windows.Forms.Label();
             this.pbxAsociarVideo = new System.Windows.Forms.PictureBox();
             this.pnlGruposComunidad = new System.Windows.Forms.Panel();
+            this.pbxBuscar = new System.Windows.Forms.PictureBox();
             this.lblAñadir = new System.Windows.Forms.Label();
             this.lblCancelar = new System.Windows.Forms.Label();
             this.pbxConfirmarCambios = new System.Windows.Forms.PictureBox();
@@ -149,6 +153,7 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxAsociarVideo)).BeginInit();
             this.pnlGruposComunidad.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxBuscar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxConfirmarCambios)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxSeleccionarImagen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupoEditar)).BeginInit();
@@ -371,6 +376,7 @@ namespace Frontend
             // pnlGruposComunidad
             // 
             this.pnlGruposComunidad.AutoScroll = true;
+            this.pnlGruposComunidad.Controls.Add(this.pbxBuscar);
             this.pnlGruposComunidad.Controls.Add(this.lblAñadir);
             this.pnlGruposComunidad.Controls.Add(this.lblCancelar);
             this.pnlGruposComunidad.Controls.Add(this.pbxConfirmarCambios);
@@ -395,6 +401,17 @@ namespace Frontend
             this.pnlGruposComunidad.Name = "pnlGruposComunidad";
             this.pnlGruposComunidad.Size = new System.Drawing.Size(996, 717);
             this.pnlGruposComunidad.TabIndex = 47;
+            // 
+            // pbxBuscar
+            // 
+            this.pbxBuscar.Image = global::Frontend.Properties.Resources.lupa_removebg_preview;
+            this.pbxBuscar.Location = new System.Drawing.Point(615, 53);
+            this.pbxBuscar.Name = "pbxBuscar";
+            this.pbxBuscar.Size = new System.Drawing.Size(50, 50);
+            this.pbxBuscar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbxBuscar.TabIndex = 90;
+            this.pbxBuscar.TabStop = false;
+            this.pbxBuscar.Click += new System.EventHandler(this.pbxBuscar_Click);
             // 
             // lblAñadir
             // 
@@ -589,6 +606,7 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.pbxAsociarVideo)).EndInit();
             this.pnlGruposComunidad.ResumeLayout(false);
             this.pnlGruposComunidad.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxBuscar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxConfirmarCambios)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxSeleccionarImagen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupoEditar)).EndInit();
@@ -951,6 +969,7 @@ namespace Frontend
 
         private void lblChat_Click(object sender, EventArgs e)
         {
+            pbxBuscar.Visible = false;
             pnlPostsGrupo.Visible = false;
             pnlChat.Visible = true;
             panel1.Visible = true;
@@ -978,6 +997,7 @@ namespace Frontend
         }
         private async void lblPostsGrupo_Click(object sender, EventArgs e)
         {
+            pbxBuscar.Visible = false;
             if (pnlCrear.Visible == true)
             {
                 pnlCrear.Visible = false;
@@ -1056,11 +1076,15 @@ namespace Frontend
             if (lblEditar.Visible == false)
             {
                 lblEditar.Visible = true;
-                if (rol.Equals("creador"))
+                lblEliminar.Visible = true;
+                if (rol.Equals("admin") || rol.Equals("creador"))
                 {
-                    lblEliminar.Visible = true;
+                    lblAñadir.Visible = true;
                 }
-                lblAñadir.Visible = true;
+                if (esChatPrivado)
+                {
+                    lblAñadir.Visible = true;
+                }
             }
             else
             {
@@ -1092,6 +1116,7 @@ namespace Frontend
 
         private async void lblMiembros_Click(object sender, EventArgs e)
         {
+            pbxBuscar.Visible = false;
             if (pnlCrear.Visible == true)
             {
                 pnlCrear.Visible = false;
@@ -1354,13 +1379,12 @@ namespace Frontend
 
         private void pbxSeleccionarImagen_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog())
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Archivos de imagen|*.png;*.jpg;*.jpeg"; //Para que sólo aparezcan fotos
+            if (ofd.ShowDialog() == DialogResult.OK)
             {
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    pbxFotoGrupoEditar.Image = Image.FromFile(ofd.FileName);
-                    pbxFotoGrupoEditar.SizeMode = PictureBoxSizeMode.StretchImage;
-                }
+                pbxFotoGrupoEditar.ImageLocation = ofd.FileName;
+                pbxFotoGrupoEditar.SizeMode = PictureBoxSizeMode.StretchImage;
             }
         }
 
@@ -1368,6 +1392,10 @@ namespace Frontend
         {
             if (lblAñadir.Text.Equals("Añadir Usuarios"))
             {
+                if (!pbxBuscar.Visible)
+                {
+                    pbxBuscar.Visible = true;
+                }
                 if (pnlCrear.Visible == true)
                 {
                     pnlCrear.Visible = false;
@@ -1417,7 +1445,6 @@ namespace Frontend
                         {
                             await EliminarInteraccion(user, nombreDeCreador, "seguir", token); //hacer que cambie el boton
                             await Interactuar(user, nombreDeCreador, "bloquear", token);
-
                             GrupoEliminado?.Invoke(this, EventArgs.Empty);
                         }
                         else
@@ -1429,6 +1456,11 @@ namespace Frontend
                     }
                 }
             }
+        }
+
+        private void pbxBuscar_Click(object sender, EventArgs e)
+        {
+            BuscarUsuarios?.Invoke(this, new PersonalizedArgs(nombreGrupo));
         }
     }
 }

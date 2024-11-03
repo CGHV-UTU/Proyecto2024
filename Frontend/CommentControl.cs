@@ -186,6 +186,7 @@ namespace Frontend
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);
             this.PictureBoxUsuario.Image = bitmap;
+            redondearPictureBox(bitmap);
             string[] fecha = data[2].Split(' ');
             this.lblFechaYhora.Text = fecha[0];
             var Like = await dioLike(user, idcomentario, lblNombre.Text, token);
@@ -194,7 +195,20 @@ namespace Frontend
                 HandleLikeClick();
             }
         }
+        public void redondearPictureBox(Image image)
+        {
+            if (image == null)
+            {
+                MessageBox.Show("La imagen es nula. No se puede redondear.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
+            System.Drawing.Drawing2D.GraphicsPath gp = new System.Drawing.Drawing2D.GraphicsPath();
+            gp.AddEllipse(0, 0, this.PictureBoxUsuario.Width, this.PictureBoxUsuario.Height);
+            Region rg = new Region(gp);
+            this.PictureBoxUsuario.Region = rg;
+            this.PictureBoxUsuario.Image = image;
+        }
         private bool isImage1 = true;
 
         private async void PictureBoxLike_Click(object sender, EventArgs e)

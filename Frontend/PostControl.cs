@@ -886,13 +886,12 @@ namespace Frontend
 
         private void btnSeleccionarImagen_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog())
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Archivos de imagen|*.png;*.jpg;*.jpeg"; //Para que sólo aparezcan fotos
+            if (ofd.ShowDialog() == DialogResult.OK)
             {
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    imagenEditar.Image = Image.FromFile(ofd.FileName);
-                    imagenEditar.SizeMode = PictureBoxSizeMode.StretchImage;
-                }
+                imagenEditar.ImageLocation = ofd.FileName;
+                imagenEditar.SizeMode = PictureBoxSizeMode.StretchImage;
             }
         }
 

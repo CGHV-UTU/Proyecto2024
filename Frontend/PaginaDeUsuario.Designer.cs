@@ -36,10 +36,16 @@ namespace Frontend
             this.btnSeguir = new System.Windows.Forms.PictureBox();
             this.pbxChatear = new System.Windows.Forms.PictureBox();
             this.pbxReportar = new System.Windows.Forms.PictureBox();
+            this.txtNombre = new System.Windows.Forms.TextBox();
+            this.txtDescripcion = new System.Windows.Forms.TextBox();
+            this.btnConfirmar = new System.Windows.Forms.PictureBox();
+            this.pbxImagenEditar = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxChatear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxReportar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnConfirmar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxImagenEditar)).BeginInit();
             this.SuspendLayout();
             // 
             // PictureBoxUsuario
@@ -112,11 +118,52 @@ namespace Frontend
             this.pbxReportar.TabStop = false;
             this.pbxReportar.Click += new System.EventHandler(this.pbxReportar_Click);
             // 
+            // txtNombre
+            // 
+            this.txtNombre.Location = new System.Drawing.Point(159, 22);
+            this.txtNombre.Name = "txtNombre";
+            this.txtNombre.Size = new System.Drawing.Size(100, 20);
+            this.txtNombre.TabIndex = 55;
+            // 
+            // txtDescripcion
+            // 
+            this.txtDescripcion.Location = new System.Drawing.Point(159, 55);
+            this.txtDescripcion.Name = "txtDescripcion";
+            this.txtDescripcion.Size = new System.Drawing.Size(757, 20);
+            this.txtDescripcion.TabIndex = 56;
+            // 
+            // btnConfirmar
+            // 
+            this.btnConfirmar.Image = global::Frontend.Properties.Resources.aceptar;
+            this.btnConfirmar.Location = new System.Drawing.Point(473, 1);
+            this.btnConfirmar.Name = "btnConfirmar";
+            this.btnConfirmar.Size = new System.Drawing.Size(50, 50);
+            this.btnConfirmar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btnConfirmar.TabIndex = 57;
+            this.btnConfirmar.TabStop = false;
+            this.btnConfirmar.Click += new System.EventHandler(this.btnConfirmar_Click);
+            // 
+            // pbxImagenEditar
+            // 
+            this.pbxImagenEditar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxImagenEditar.Image = global::Frontend.Properties.Resources.User;
+            this.pbxImagenEditar.Location = new System.Drawing.Point(12, 8);
+            this.pbxImagenEditar.Name = "pbxImagenEditar";
+            this.pbxImagenEditar.Size = new System.Drawing.Size(120, 120);
+            this.pbxImagenEditar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxImagenEditar.TabIndex = 58;
+            this.pbxImagenEditar.TabStop = false;
+            this.pbxImagenEditar.Click += new System.EventHandler(this.pbxImagenEditar_Click);
+            // 
             // PaginaDeUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(996, 574);
+            this.Controls.Add(this.pbxImagenEditar);
+            this.Controls.Add(this.btnConfirmar);
+            this.Controls.Add(this.txtDescripcion);
+            this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.pbxReportar);
             this.Controls.Add(this.pbxChatear);
             this.Controls.Add(this.btnSeguir);
@@ -130,6 +177,8 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxChatear)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxReportar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnConfirmar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxImagenEditar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -144,5 +193,9 @@ namespace Frontend
         private System.Windows.Forms.PictureBox btnSeguir;
         private System.Windows.Forms.PictureBox pbxChatear;
         private System.Windows.Forms.PictureBox pbxReportar;
+        private System.Windows.Forms.TextBox txtNombre;
+        private System.Windows.Forms.TextBox txtDescripcion;
+        private System.Windows.Forms.PictureBox btnConfirmar;
+        private System.Windows.Forms.PictureBox pbxImagenEditar;
     }
 }
