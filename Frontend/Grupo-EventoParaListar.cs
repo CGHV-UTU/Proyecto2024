@@ -359,6 +359,19 @@ namespace Frontend
                         this.Controls.Add(this.pbxUnirse);
                     }
                 }
+                if (idevento != 0)
+                {
+                    this.pbxUnirse = new PictureBox();
+                    this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                    this.pbxUnirse.Name = "pbxUnirse";
+                    this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
+                    this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
+                    this.pbxUnirse.Image = Frontend.Properties.Resources.aceptar;
+                    this.pbxUnirse.Cursor = Cursors.Hand;
+                    this.pbxUnirse.Visible = true;
+                    this.pbxUnirse.Click += pbxUnirse_Click;
+                    this.Controls.Add(this.pbxUnirse);
+                }
             }
         }
 
@@ -520,45 +533,100 @@ namespace Frontend
             }
             else
             {
-                if (Convert.ToString(datosDelUsuario.rol).Equals("solicitante"))
+                if (idevento == 0)
                 {
-                    await EliminarUsuarioDelGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
-                    var respuesta = await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal),"usuario" ,token);
-                    MessageBox.Show(""+respuesta);
-                }
-                else
-                {
-                    if (!this.Controls.Contains(this.lblEliminar))
+                    if (Convert.ToString(datosDelUsuario.rol).Equals("solicitante"))
                     {
-                        this.lblEliminar = new Label();
-                        this.lblDarOQuitarAdmin = new Label();
-                        // Eliminar
-                        this.lblEliminar.AutoSize = true;
-                        this.lblEliminar.Location = new System.Drawing.Point(200, 15);
-                        this.lblEliminar.Name = "lblEliminar";
-                        this.lblEliminar.Size = new System.Drawing.Size(100, 24);
-                        this.lblEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-                        this.lblEliminar.TabIndex = 0;
-                        this.lblEliminar.Text = "Eliminar";
-                        this.lblEliminar.Click += lblEliminar_Click;
-
-                        // DarOQuitarAdmin
-                        this.lblDarOQuitarAdmin.AutoSize = true;
-                        this.lblDarOQuitarAdmin.Location = new System.Drawing.Point(200, lblEliminar.Bottom + 10);
-                        this.lblDarOQuitarAdmin.Name = "lblDarOQuitarAdmin";
-                        this.lblDarOQuitarAdmin.Size = new System.Drawing.Size(100, 24);
-                        this.lblDarOQuitarAdmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-                        this.lblDarOQuitarAdmin.TabIndex = 0;
-                        this.lblDarOQuitarAdmin.Text = "Dar admin";
-                        this.lblDarOQuitarAdmin.Click += lblDarOQuitarAdmin_Click;
-                        this.Controls.Add(lblEliminar);
-                        this.Controls.Add(lblDarOQuitarAdmin);
+                        await EliminarUsuarioDelGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
+                        var respuesta = await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), "usuario", token);
+                        MessageBox.Show("" + respuesta);
                     }
                     else
                     {
-                        this.Controls.Remove(this.lblEliminar);
-                        this.Controls.Remove(this.lblDarOQuitarAdmin);
+                        if (!this.Controls.Contains(this.lblEliminar))
+                        {
+                            this.lblEliminar = new Label();
+                            this.lblDarOQuitarAdmin = new Label();
+                            // Eliminar
+                            this.lblEliminar.AutoSize = true;
+                            this.lblEliminar.Location = new System.Drawing.Point(200, 15);
+                            this.lblEliminar.Name = "lblEliminar";
+                            this.lblEliminar.Size = new System.Drawing.Size(100, 24);
+                            this.lblEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+                            this.lblEliminar.TabIndex = 0;
+                            this.lblEliminar.Text = "Eliminar";
+                            this.lblEliminar.Click += lblEliminar_Click;
+
+                            // DarOQuitarAdmin
+                            this.lblDarOQuitarAdmin.AutoSize = true;
+                            this.lblDarOQuitarAdmin.Location = new System.Drawing.Point(200, lblEliminar.Bottom + 10);
+                            this.lblDarOQuitarAdmin.Name = "lblDarOQuitarAdmin";
+                            this.lblDarOQuitarAdmin.Size = new System.Drawing.Size(100, 24);
+                            this.lblDarOQuitarAdmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+                            this.lblDarOQuitarAdmin.TabIndex = 0;
+                            this.lblDarOQuitarAdmin.Text = "Dar admin";
+                            this.lblDarOQuitarAdmin.Click += lblDarOQuitarAdmin_Click;
+                            this.Controls.Add(lblEliminar);
+                            this.Controls.Add(lblDarOQuitarAdmin);
+                        }
+                        else
+                        {
+                            this.Controls.Remove(this.lblEliminar);
+                            this.Controls.Remove(this.lblDarOQuitarAdmin);
+                        }
                     }
+                }
+                else
+                {
+                    string rol = await RolDelEvento(Convert.ToString(idevento), user, token);
+                    if (rol.Equals("Seguidor"))
+                    {
+                        await DarRolEvento(Convert.ToString(idevento), Convert.ToString(datosDelUsuario.nombreDeCuenta),"admin",token);
+                    }
+                    else
+                    {
+                        await DarRolEvento(Convert.ToString(idevento), Convert.ToString(datosDelUsuario.nombreDeCuenta), "Seguidor", token);
+                    }
+                }
+            }
+        }
+        static async Task<dynamic> RolDelEvento(string idevento, string usuario, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var dato = new { id = idevento, user = usuario, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/RolDelEvento", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        static async Task<dynamic> DarRolEvento(string idevento, string usuario, string rol, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var dato = new { id = idevento, user = usuario, rol = rol, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/DarRolEvento", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
                 }
             }
         }

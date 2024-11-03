@@ -17,13 +17,20 @@ namespace Frontend
         private string idpost;
         private string idcomentario;
         private string usuario;
+        private string idEvento;
         private string token;
-        public ReportarPost(string idpost, string user, string token, string idcomentario="")
+        private string nombreReal;
+        private string usuarioAReportar;
+        public event EventHandler CerrarVentana;
+        public ReportarPost(string idpost, string user, string token, string idcomentario="", string idEvento="", string nombreRealGrupo="", string usuarioAReportar="")
         {
             this.idpost = idpost;
             this.idcomentario = idcomentario;
             this.usuario = user;
             this.token = token;
+            this.idEvento = idEvento;
+            this.nombreReal = nombreRealGrupo;
+            this.usuarioAReportar = usuarioAReportar;
             InitializeComponent();
             this.BackColor = Color.LightGray;
         }
@@ -111,10 +118,71 @@ namespace Frontend
                 }
             }
         }
+        public static async Task<string> ReportaEvento(string usuario, string id, string tipo, string descripcion, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = usuario, idEvento=id, tipo = tipo, descripcion = descripcion, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/Reportar", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return "Falla";
+                }
+            }
+        }
+
+        public static async Task<string> ReportaGrupo(string usuario, string id, string tipo, string descripcion, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = usuario, nombreGrupo = id, tipo = tipo, descripcion = descripcion, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/Reportar", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return "Falla";
+                }
+            }
+        }
+        public static async Task<string> ReportaUsuario(string usuario, string usuarioAReportar, string tipo, string descripcion, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { nombreDeCuenta = usuario, cuentaReporteUsuario= usuarioAReportar, tipo = tipo, descripcion = descripcion, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44383/user/Reportar", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return "Falla";
+                }
+            }
+        }
 
         private async void pictureBox1_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(idcomentario))
+            if (!string.IsNullOrEmpty(idpost) && string.IsNullOrEmpty(idcomentario))
             {
                 string creadorPost = await obtenerCreador(int.Parse(idpost), token);
                 if (!string.IsNullOrEmpty(cbxRazon.Text))
@@ -125,9 +193,10 @@ namespace Frontend
                 else
                 {
                     MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 }
             }
-            else
+            if (!string.IsNullOrEmpty(idEvento) && !string.IsNullOrEmpty(idcomentario))
             {
                 if (!string.IsNullOrEmpty(cbxRazon.Text))
                 {
@@ -139,7 +208,44 @@ namespace Frontend
                 {
                     MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+            if (!string.IsNullOrEmpty(idEvento))
+            {
+                if (!string.IsNullOrEmpty(cbxRazon.Text))
+                {
+                    var respuesta = await ReportaEvento(usuario, idEvento, cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
+                    MessageBox.Show(respuesta);
                 }
+                else
+                {
+                    MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            if (!string.IsNullOrEmpty(nombreReal))
+            {
+                if (!string.IsNullOrEmpty(cbxRazon.Text))
+                {
+                    var respuesta = await ReportaGrupo(usuario, nombreReal, cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
+                    MessageBox.Show(respuesta);
+                }
+                else
+                {
+                    MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            if (!string.IsNullOrEmpty(usuarioAReportar))
+            {
+                if (!string.IsNullOrEmpty(cbxRazon.Text))
+                {
+                    var respuesta = await ReportaUsuario(usuario, usuarioAReportar, cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
+                    MessageBox.Show(respuesta);
+                }
+                else
+                {
+                    MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            CerrarVentana?.Invoke(this, EventArgs.Empty);
         }
     }
 }

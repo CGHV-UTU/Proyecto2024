@@ -66,13 +66,13 @@ namespace Frontend
                 {
                     cantNotificaciones = 0;
                 }
-                if (this.PanelNotificaciones.Controls.Count > this.PanelNotificaciones.Controls.Count * 2)
-                {
-
-                }
             }
         }
 
+        public void setearCantidadDeNotificaciones()
+        {
+            cantNotificaciones = this.PanelNotificaciones.Controls.Count;
+        }
         public static async Task<dynamic> conseguirNotificaciones(string usuario, string token)
         {
             try

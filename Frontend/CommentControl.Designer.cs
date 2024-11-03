@@ -169,6 +169,7 @@ namespace Frontend
             this.PictureBoxUsuario.TabIndex = 23;
             this.PictureBoxUsuario.TabStop = false;
             this.PictureBoxUsuario.Visible = false;
+            this.PictureBoxUsuario.Click += new System.EventHandler(this.PictureBoxUsuario_Click);
             // 
             // CommentControl
             // 

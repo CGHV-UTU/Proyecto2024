@@ -20,6 +20,7 @@ namespace Frontend
         private int idcomentario;
         private string token;
         public event EventHandler<PersonalizedArgs> ReportarComentario;
+        public event EventHandler<PersonalizedArgs> AbrirPaginaDelUsuario;
         public CommentControl(string modo,string idpost, int idcomentario,string user, string token)
         {
             this.idpost = idpost;
@@ -264,6 +265,7 @@ namespace Frontend
             this.PictureBoxUsuario.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxUsuario.SizeMode = PictureBoxSizeMode.StretchImage;
             this.PictureBoxUsuario.Image = Properties.Resources.User;
+            this.PictureBoxUsuario.Click += PictureBoxUsuario_Click;
             this.Cursor = Cursors.Hand;
 
             // PictureBoxLike
@@ -423,6 +425,11 @@ namespace Frontend
             {
                 await Modificar(Convert.ToString(idcomentario), this.txtBoxEditar.Text, token);
             }
+        }
+
+        private void PictureBoxUsuario_Click(object sender, EventArgs e)
+        {
+            AbrirPaginaDelUsuario?.Invoke(this, new PersonalizedArgs(lblNombre.Text));
         }
     }
 }

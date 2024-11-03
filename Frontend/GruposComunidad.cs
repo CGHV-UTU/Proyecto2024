@@ -67,6 +67,9 @@ namespace Frontend
         private string idUltimoMensaje;
         public event EventHandler GrupoEliminado;
         public event EventHandler<PersonalizedArgs> AbrirUsuario;
+        public event EventHandler<PersonalizedArgs> ReportarPost;
+        public event EventHandler<PersonalizedArgs> AbrirComentarios;
+        public event EventHandler<PersonalizedArgs> ReportarGrupo;
         public GruposComunidad(dynamic groupData, string user, string token, bool esChatPrivado=false)
         {
             InitializeComponent();
@@ -75,6 +78,10 @@ namespace Frontend
             this.nombreGrupo = groupData.nombreReal;
             this.pnlAsociarContenido.Visible = false;
             this.esChatPrivado = esChatPrivado;
+            if (esChatPrivado)
+            {
+                pbxCrearPostGrupo.Visible = false;
+            }
             AplicarDatos(groupData);
             pnlPostsGrupo.Visible = false;
             pnlChat.Visible = true;
@@ -615,13 +622,22 @@ namespace Frontend
         {
             var respuesta = await RolEnElGrupo(nombreGrupo, user, token);
             rol = Convert.ToString(respuesta);
-            if (rol.Equals("admin") || rol.Equals("creador"))
+            if (!rol.Equals("admin") && !rol.Equals("creador"))
             {
-                PictureBoxConfiguraciones.Visible = true;
+                this.lblEliminar.Text = "Salir";
+                this.lblEditar.Text = "Reportar";
+                if (esChatPrivado)
+                {
+                    lblAñadir.Text = "Bloquear";
+                }
+                else
+                {
+                    this.Controls.Remove(lblAñadir);
+                }
             }
-            else
+            if (rol.Equals("admin"))
             {
-                PictureBoxConfiguraciones.Visible = false;
+                this.lblEliminar.Text = "Salir";
             }
         }
 
@@ -637,8 +653,8 @@ namespace Frontend
             {
                 this.Controls.Remove(lblMiembros);
                 this.PictureBoxConfiguraciones.Visible = true;
-                this.Controls.Remove(lblEditar);
-                this.Controls.Remove(lblAñadir);
+                this.lblAñadir.Text = "Salir";
+                this.lblEditar.Text = "Reportar";
                 lblEliminar.Text = "Bloquear";
             }
         }
@@ -845,8 +861,7 @@ namespace Frontend
                 string texto;
                 if (txtURL.Text.Contains("https://youtu.be/"))
                 {
-                    video = txtMensajeAEnviar.Text;
-
+                    video = txtURL.Text;
                 }
                 else
                 {
@@ -984,6 +999,8 @@ namespace Frontend
                 {
                     int idpost = Convert.ToInt32(posts.Rows[i]["idPost"]);
                     var postControl = new PostControl(idpost, "Claro", user, token); //donde dice claro hay que poner el modo luego
+                    postControl.AbrirComentarios += PostControl_AbrirComentarios;
+                    postControl.ReportarPost += PostControl_ReportarPost;
                     await postControl.aplicarDatos();
                     // Calcula la ubicación Y acumulada
                     int currentYPosition = 0;
@@ -1001,7 +1018,14 @@ namespace Frontend
                 }
             }
         }
-
+        private void PostControl_AbrirComentarios(object sender, PersonalizedArgs e)
+        {
+            AbrirComentarios?.Invoke(this, new PersonalizedArgs(e.arg));
+        }
+        private void PostControl_ReportarPost(object sender, PersonalizedArgs e)
+        {
+            ReportarPost?.Invoke(this, new PersonalizedArgs(e.arg));
+        }
         private void pbxCrearPostGrupo_Click(object sender, EventArgs e)
         {
             pnlCrear.Visible = true;
@@ -1111,17 +1135,24 @@ namespace Frontend
         }
         private void lblEditar_Click(object sender, EventArgs e)
         {
-            pbxSeleccionarImagen.Visible = true;
-            pbxFotoGrupoEditar.Visible = true;
-            txtNombre.Visible = true;
-            lblName.Visible = false;
-            lblMiembros.Visible = false;
-            txtNombre.Text = lblName.Text;
-            pbxConfirmarCambios.Visible = true;
-            lblCancelar.Visible = true;
-            pbxFotoGrupoEditar.Image = pbxFotoGrupo.Image;
-            lblEditar.Visible = false;
-            lblEliminar.Visible = false;
+            if (lblEditando.Text.Equals("Editar"))
+            {
+                pbxSeleccionarImagen.Visible = true;
+                pbxFotoGrupoEditar.Visible = true;
+                txtNombre.Visible = true;
+                lblName.Visible = false;
+                lblMiembros.Visible = false;
+                txtNombre.Text = lblName.Text;
+                pbxConfirmarCambios.Visible = true;
+                lblCancelar.Visible = true;
+                pbxFotoGrupoEditar.Image = pbxFotoGrupo.Image;
+                lblEditar.Visible = false;
+                lblEliminar.Visible = false;
+            }
+            else
+            {
+                ReportarGrupo?.Invoke(this, new PersonalizedArgs(Convert.ToString(nombreGrupo)));
+            }
         }
         static async Task<dynamic> EliminarGrupo(string nombreReal, string token)
         {
@@ -1230,33 +1261,38 @@ namespace Frontend
 
         private async void lblEliminar_Click(object sender, EventArgs e)
         {
-            if (lblEliminar.Text.Equals("Bloquear"))
+            if (lblEliminar.Text.Equals("Eliminar"))
             {
-                foreach (var miembros in listaDeMiembros)
-                {
-                    if (!Convert.ToString(miembros.nombreReal).Equals(user))
-                    {
-                        string nombreDeCreador = Convert.ToString(miembros.nombreReal);
-                        var respuesta = await LoSigue(user, nombreDeCreador, token);
-                        if (Convert.ToString(respuesta).Equals("seguir"))
-                        {
-                            await EliminarInteraccion(user, nombreDeCreador, "seguir", token); //hacer que cambie el boton
-                            await Interactuar(user, nombreDeCreador, "bloquear", token);
-
-                            GrupoEliminado?.Invoke(this, EventArgs.Empty);
-                        }
-                        else
-                        {
-                            await Interactuar(user, nombreDeCreador, "bloquear", token);
-                            await EliminarUsuarioDelGrupo(nombreGrupo, user, token);
-                            GrupoEliminado?.Invoke(this, EventArgs.Empty);
-                        }
-                    }
-                }
+                var respuesta = await EliminarGrupo(nombreGrupo, token);
+                GrupoEliminado?.Invoke(this, EventArgs.Empty);
             }
             else
             {
-                var respuesta = await EliminarGrupo(nombreGrupo, token);
+                await EliminarUsuarioDelGrupo(nombreGrupo, user, token);
+                var listaDeMiembros= await Miembros(nombreGrupo, token);
+                pnlPostsGrupo.Controls.Clear();
+                foreach(var miembro in listaDeMiembros)
+                {
+                    if (!Convert.ToString(miembro.rol).Equals("solicitante"))
+                    {
+                        var groupControl = new Grupo_EventoParaListar(user, token, nombreRealGrupo: nombreGrupo, usuariobuscar: miembro);
+                        groupControl.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
+                        if (pnlPostsGrupo.Controls.Count > 0)
+                        {
+                            var lastControl = pnlPostsGrupo.Controls[pnlPostsGrupo.Controls.Count - 1];
+                            groupControl.Location = new Point(0, lastControl.Bottom);
+                        }
+                        else
+                        {
+                            groupControl.Location = new Point(0, 52);
+                        }
+                        pnlPostsGrupo.Controls.Add(groupControl);
+                    }
+                }
+                if (pnlPostsGrupo.Controls.Count==0)
+                {
+                    await EliminarGrupo(nombreGrupo, token);
+                }
                 GrupoEliminado?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -1330,39 +1366,66 @@ namespace Frontend
 
         private async void lblAñadir_Click(object sender, EventArgs e)
         {
-            if (pnlCrear.Visible == true)
+            if (lblAñadir.Text.Equals("Añadir Usuarios"))
             {
-                pnlCrear.Visible = false;
-                pnlCrear.Controls.Clear();
-            }
-            pnlPostsGrupo.Controls.Clear();
-            pnlPostsGrupo.Parent = this;
-            pnlPostsGrupo.Location = new Point(13, 113);
-            pnlChat.Visible = false;
-            pnlPostsGrupo.Visible = true;
-            pnlPostsGrupo.BringToFront();
-            pbxCrearPostGrupo.Visible = true;
-            pnlAsociarContenido.Visible = false;
-            panel1.Visible = false;
-            if (listaDeMiembros != null)
-            {
-                listaDeMiembros = await Miembros(nombreGrupo, token);
-                foreach (var elemento in listaDeMiembros)
+                if (pnlCrear.Visible == true)
                 {
-                    if (Convert.ToString(elemento.rol).Equals("solicitante"))
+                    pnlCrear.Visible = false;
+                    pnlCrear.Controls.Clear();
+                }
+                pnlPostsGrupo.Controls.Clear();
+                pnlPostsGrupo.Parent = this;
+                pnlPostsGrupo.Location = new Point(13, 113);
+                pnlChat.Visible = false;
+                pnlPostsGrupo.Visible = true;
+                pnlPostsGrupo.BringToFront();
+                pbxCrearPostGrupo.Visible = true;
+                pnlAsociarContenido.Visible = false;
+                panel1.Visible = false;
+                if (listaDeMiembros != null)
+                {
+                    listaDeMiembros = await Miembros(nombreGrupo, token);
+                    foreach (var elemento in listaDeMiembros)
                     {
-                        var groupControl = new Grupo_EventoParaListar(user, token, nombreRealGrupo: nombreGrupo,usuariobuscar: elemento);
-                        groupControl.AbrirUsuario +=Grupo_EventoParaListar_AbrirUsuario;
-                        if (pnlPostsGrupo.Controls.Count > 0)
+                        if (Convert.ToString(elemento.rol).Equals("solicitante"))
                         {
-                            var lastControl = pnlPostsGrupo.Controls[pnlPostsGrupo.Controls.Count - 1];
-                            groupControl.Location = new Point(0, lastControl.Bottom);
+                            var groupControl = new Grupo_EventoParaListar(user, token, nombreRealGrupo: nombreGrupo, usuariobuscar: elemento);
+                            groupControl.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
+                            if (pnlPostsGrupo.Controls.Count > 0)
+                            {
+                                var lastControl = pnlPostsGrupo.Controls[pnlPostsGrupo.Controls.Count - 1];
+                                groupControl.Location = new Point(0, lastControl.Bottom);
+                            }
+                            else
+                            {
+                                groupControl.Location = new Point(0, 52);
+                            }
+                            pnlPostsGrupo.Controls.Add(groupControl);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (var miembros in listaDeMiembros)
+                {
+                    if (!Convert.ToString(miembros.nombreReal).Equals(user))
+                    {
+                        string nombreDeCreador = Convert.ToString(miembros.nombreReal);
+                        var respuesta = await LoSigue(user, nombreDeCreador, token);
+                        if (Convert.ToString(respuesta).Equals("seguir"))
+                        {
+                            await EliminarInteraccion(user, nombreDeCreador, "seguir", token); //hacer que cambie el boton
+                            await Interactuar(user, nombreDeCreador, "bloquear", token);
+
+                            GrupoEliminado?.Invoke(this, EventArgs.Empty);
                         }
                         else
                         {
-                            groupControl.Location = new Point(0, 52);
+                            await Interactuar(user, nombreDeCreador, "bloquear", token);
+                            await EliminarUsuarioDelGrupo(nombreGrupo, user, token);
+                            GrupoEliminado?.Invoke(this, EventArgs.Empty);
                         }
-                        pnlPostsGrupo.Controls.Add(groupControl);
                     }
                 }
             }

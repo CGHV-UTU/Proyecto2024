@@ -22,6 +22,7 @@ namespace Frontend
         private string user;
         private string token;
         public event EventHandler<PersonalizedArgs> ReportarComentario;
+        public event EventHandler<PersonalizedArgs> AbrirPaginaDelUsuario;
         public Comentarios(string modo,string idpost, string user, string token)
         {
             this.modo = modo;
@@ -70,9 +71,14 @@ namespace Frontend
                     var lastControl = PanelComentarios.Controls[PanelComentarios.Controls.Count - 1];
                     commentControl.Location = new Point(margin, lastControl.Bottom);
                     commentControl.ReportarComentario += CommentControl_ReportarComentario;
+                    commentControl.AbrirPaginaDelUsuario += CommentControl_AbrirPaginaUsuario;
                     PanelComentarios.Controls.Add(commentControl);
                 }
             }
+        }
+        private void CommentControl_AbrirPaginaUsuario(object sender, PersonalizedArgs e)
+        {
+            AbrirPaginaDelUsuario?.Invoke(this, new PersonalizedArgs(e.arg));
         }
         private void CommentControl_ReportarComentario(object sender, PersonalizedArgs e)
         {

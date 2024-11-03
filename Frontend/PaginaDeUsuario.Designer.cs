@@ -35,9 +35,11 @@ namespace Frontend
             this.panelPosts = new System.Windows.Forms.Panel();
             this.btnSeguir = new System.Windows.Forms.PictureBox();
             this.pbxChatear = new System.Windows.Forms.PictureBox();
+            this.pbxReportar = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxChatear)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxReportar)).BeginInit();
             this.SuspendLayout();
             // 
             // PictureBoxUsuario
@@ -99,11 +101,23 @@ namespace Frontend
             this.pbxChatear.TabStop = false;
             this.pbxChatear.Click += new System.EventHandler(this.pbxChatear_Click);
             // 
+            // pbxReportar
+            // 
+            this.pbxReportar.Image = global::Frontend.Properties.Resources.reportar;
+            this.pbxReportar.Location = new System.Drawing.Point(934, 12);
+            this.pbxReportar.Name = "pbxReportar";
+            this.pbxReportar.Size = new System.Drawing.Size(50, 50);
+            this.pbxReportar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxReportar.TabIndex = 54;
+            this.pbxReportar.TabStop = false;
+            this.pbxReportar.Click += new System.EventHandler(this.pbxReportar_Click);
+            // 
             // PaginaDeUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(996, 574);
+            this.Controls.Add(this.pbxReportar);
             this.Controls.Add(this.pbxChatear);
             this.Controls.Add(this.btnSeguir);
             this.Controls.Add(this.panelPosts);
@@ -115,6 +129,7 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxChatear)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxReportar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -128,5 +143,6 @@ namespace Frontend
         private System.Windows.Forms.Panel panelPosts;
         private System.Windows.Forms.PictureBox btnSeguir;
         private System.Windows.Forms.PictureBox pbxChatear;
+        private System.Windows.Forms.PictureBox pbxReportar;
     }
 }

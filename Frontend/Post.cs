@@ -122,7 +122,7 @@ namespace Frontend
                             MemoryStream ms = new MemoryStream();
                             pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                             byte[] data = ms.ToArray();
-                            await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento);
+                            await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token,"","",nombreReal);
                             MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             Creado?.Invoke(this, EventArgs.Empty);
                         }
@@ -285,7 +285,7 @@ namespace Frontend
                     }
                     else
                     {
-                        var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user, fechayhora = fechaHora, idEvento = idevento, token = token , categoria = categoria };
+                        var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user, fechayhora = fechaHora, idEvento = idevento, token = token , categoria = categoria, nombreReal = nombreReal };
                         var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
                         response.EnsureSuccessStatusCode();

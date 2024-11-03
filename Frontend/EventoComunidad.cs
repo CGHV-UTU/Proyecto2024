@@ -40,11 +40,13 @@ namespace Frontend
         private PictureBox pbxImagenEditar;
         private Label label1;
         private Label label2;
+        private Label lblAdministradores;
         private string modo;
         public event EventHandler<PersonalizedArgs> PostearEnEvento;
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarPost;
         public event EventHandler<PersonalizedArgs> EventoEliminado;
+        public event EventHandler<PersonalizedArgs> ReportarEvento;
         public EventoComunidad(dynamic EventData,string user, string token, string modo)
         {
             InitializeComponent();
@@ -70,21 +72,47 @@ namespace Frontend
         
         private async void CompararCreador()
         {
-            string creador = await ConseguirCreador(idEvento,user,token);
-            if (!creador.Equals(user))
+            string rol = await RolDelEvento(idEvento,user,token);
+            if (rol.Equals("creador"))
             {
-                pbxEditar.Visible = false;
+                btnSeguir.Visible = false;
+            }
+            else
+            {
+                lblEditar.Text = "Reportar";
+                lblEliminar.Text = "Salir";
+                if (rol.Equals("Seguidor"))
+                {
+                    btnSeguir.Visible = false;
+                    btnCrear.Visible = false;
+                    lblAdministradores.Visible = false;
+                }
+                else
+                {
+                    if (rol.Equals("admin"))
+                    {
+                        btnSeguir.Visible = false;
+                        btnCrear.Visible = true;
+                    }
+                    else
+                    {
+                        btnSeguir.Visible = true;
+                        btnCrear.Visible = false;
+                        lblAdministradores.Visible = false;
+                    }
+                }
             }
         }
-        static async Task<dynamic> ConseguirCreador(string idevento, string usuario, string token)
+
+        static async Task<dynamic> RolDelEvento(string idevento, string usuario, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var dato = new { id = idevento, user=usuario, token = token };
+                    var dato = new { id = idevento, user = usuario, token = token };
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/CreadorDelEvento", content);
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/RolDelEvento", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
@@ -120,6 +148,7 @@ namespace Frontend
             this.pbxImagenEditar = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.lblAdministradores = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUbicacion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
@@ -360,9 +389,21 @@ namespace Frontend
             this.label2.TabIndex = 64;
             this.label2.Text = "Finaliza";
             // 
+            // lblAdministradores
+            // 
+            this.lblAdministradores.AutoSize = true;
+            this.lblAdministradores.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAdministradores.Location = new System.Drawing.Point(780, 55);
+            this.lblAdministradores.Name = "lblAdministradores";
+            this.lblAdministradores.Size = new System.Drawing.Size(124, 20);
+            this.lblAdministradores.TabIndex = 65;
+            this.lblAdministradores.Text = "Administradores";
+            this.lblAdministradores.Click += new System.EventHandler(this.lblAdministradores_Click);
+            // 
             // EventoComunidad
             // 
             this.ClientSize = new System.Drawing.Size(996, 574);
+            this.Controls.Add(this.lblAdministradores);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pbxImagenEditar);
@@ -434,6 +475,7 @@ namespace Frontend
         private async void btnSeguir_Click(object sender, EventArgs e)
         {
             await Seguir(user, idEvento, "Seguidor", token);
+            btnSeguir.Visible = false;
         }
 
         private void btnCrear_Click(object sender, EventArgs e)
@@ -518,22 +560,29 @@ namespace Frontend
 
         private void lblEditar_Click(object sender, EventArgs e)
         {
-            txtNombre.Visible = true;
-            txtDesc.Visible = true;
-            txtUbicacion.Visible = true;
-            dtpFechaInicio.Enabled = true;
-            dtpFechaFinal.Enabled = true;
-            pbxConfirmarCambios.Visible = true;
-            txtNombre.Text = lblNombre.Text;
-            txtDesc.Text = lblDescripcion.Text;
-            txtUbicacion.Text = lblUbicacion.Text;
-            lblCancelar.Visible = true;
-            pbxImagenEditar.Visible = true;
-            pbxImagenEditar.Image = pbxImagen.Image;
-            pbxSeleccionarImagen.Visible = true;
-            lblNombre.Visible = false;
-            lblDescripcion.Visible = false;
-            lblUbicacion.Visible = false;
+            if (lblEditar.Text.Equals("Editar"))
+            {
+                txtNombre.Visible = true;
+                txtDesc.Visible = true;
+                txtUbicacion.Visible = true;
+                dtpFechaInicio.Enabled = true;
+                dtpFechaFinal.Enabled = true;
+                pbxConfirmarCambios.Visible = true;
+                txtNombre.Text = lblNombre.Text;
+                txtDesc.Text = lblDescripcion.Text;
+                txtUbicacion.Text = lblUbicacion.Text;
+                lblCancelar.Visible = true;
+                pbxImagenEditar.Visible = true;
+                pbxImagenEditar.Image = pbxImagen.Image;
+                pbxSeleccionarImagen.Visible = true;
+                lblNombre.Visible = false;
+                lblDescripcion.Visible = false;
+                lblUbicacion.Visible = false;
+            }
+            else
+            {
+                ReportarEvento?.Invoke(this, new PersonalizedArgs(Convert.ToString(idEvento)));
+            }
         }
 
         static async Task<dynamic> EliminarEvento(string id, string token)
@@ -557,11 +606,36 @@ namespace Frontend
                 }
             }
         }
+        public static async Task Salir(string user, string idevento, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { user = user, id = idevento, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/EliminarDelEvento", content);
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ERROR AL LLAMAR A LA API");
+                }
+            }
+        }
         private async void lblEliminar_Click(object sender, EventArgs e)
         {
-            var resultado = await EliminarEvento(idEvento, token);
-            MessageBox.Show(""+resultado);
-            EventoEliminado?.Invoke(this, new PersonalizedArgs("Eliminado"));
+            if (lblEliminar.Text.Equals("Eliminar"))
+            {
+                var resultado = await EliminarEvento(idEvento, token);
+                MessageBox.Show("" + resultado);
+                EventoEliminado?.Invoke(this, new PersonalizedArgs("Eliminado"));
+            }
+            else
+            {
+                await Salir(user, idEvento, token);
+                EventoEliminado?.Invoke(this, new PersonalizedArgs("Eliminado"));
+            }
         }
 
         static async Task<dynamic> Modificar(string id, string titulo, string fechaYhoraInicio, string fechaYhoraFinal, byte[] imagen, string ubicacion, string descripcion, string token)
@@ -636,6 +710,48 @@ namespace Frontend
             lblNombre.Visible = true;
             lblDescripcion.Visible = true;
             lblUbicacion.Visible = true;
+        }
+        static async Task<dynamic> Miembros(string idevento, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { id = idevento, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/ObtenerParticipantesDelEvento", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        private async void lblAdministradores_Click(object sender, EventArgs e)
+        {
+            panelPosts.Controls.Clear();
+            panelPosts.Parent = this;
+            panelPosts.Location = new Point(13, 113);
+            var listaDeMiembros = await Miembros(idEvento, token);
+            foreach (var elemento in listaDeMiembros)
+            {
+                var groupControl = new Grupo_EventoParaListar(user, token, idEvento: int.Parse(idEvento), usuariobuscar: elemento);
+                if (panelPosts.Controls.Count > 0)
+                {
+                    var lastControl = panelPosts.Controls[panelPosts.Controls.Count - 1];
+                    groupControl.Location = new Point(0, lastControl.Bottom);
+                }
+                else
+                {
+                    groupControl.Location = new Point(0, 52);
+                }
+                panelPosts.Controls.Add(groupControl);
+            }
         }
     }
 }

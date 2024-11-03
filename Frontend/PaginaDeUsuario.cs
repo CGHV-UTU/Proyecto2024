@@ -23,6 +23,7 @@ namespace Frontend
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarPost;
         public event EventHandler<PersonalizedArgs> AbrirGrupo;
+        public event EventHandler<PersonalizedArgs> ReportarUsuario;
         public PaginaDeUsuario(string nombreCreador, string modo, string user, string token)
         {
             this.nombreDeCreador = nombreCreador;
@@ -146,6 +147,12 @@ namespace Frontend
             this.Name = "Form1";
             this.Text = "Infinite Scroll Posts";
             this.ResumeLayout(false);
+
+            if (nombreDeCreador.Equals(user))
+            {
+                btnSeguir.Visible = false;
+                pbxReportar.Visible = false;
+            }
         }
         public static async Task<dynamic> Interactuar(string user, string aQuienSigue, string tipo, string token)
         {
@@ -438,6 +445,11 @@ namespace Frontend
                     }
                 }
             }
+        }
+
+        private void pbxReportar_Click(object sender, EventArgs e)
+        {
+            ReportarUsuario?.Invoke(this, new PersonalizedArgs(nombreDeCreador));
         }
     }
 }

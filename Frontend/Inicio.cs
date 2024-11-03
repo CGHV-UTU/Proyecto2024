@@ -101,6 +101,7 @@ namespace Frontend
             if (!PanelNotificaciones.Visible)
             {
                 PanelNotificaciones.Visible = true;
+                notis.setearCantidadDeNotificaciones();
                 notis.Show();
             } else {
                 PanelNotificaciones.Visible = false; // Quitar el panel de notificaciones
@@ -169,8 +170,32 @@ namespace Frontend
             paginaDeUsuario.ReportarPost += PostControl_ReportarPost;
             paginaDeUsuario.AbrirComentarios += PostControl_AbrirComentarios;
             paginaDeUsuario.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
+            paginaDeUsuario.ReportarUsuario += PaginaDeUsuario_ReportarUsuario;
             PanelMostrarUsuario.Controls.Add(paginaDeUsuario);
             paginaDeUsuario.Show();
+        }
+
+        private void PaginaDeUsuario_ReportarUsuario(object sender, PersonalizedArgs e)
+        {
+            PanelComentarios.Visible = false;
+            PanelPostear.Controls.Clear();
+            PanelPostear.Visible = true;
+            PanelPostear.Parent = this;
+            PanelPosts.Visible = false;
+            ReportarPost post = new ReportarPost("", user, token,usuarioAReportar:Convert.ToString(e.arg));
+            post.TopLevel = false;
+            post.FormBorderStyle = FormBorderStyle.None;
+            post.BackColor = Color.LightGray;
+            post.Dock = DockStyle.Fill;
+            post.CerrarVentana += Reporte_CerrarVentana;
+            PanelPostear.Controls.Add(post);
+            post.Show();
+        }
+
+        private void Reporte_CerrarVentana(object sender, EventArgs e)
+        {
+            PanelPostear.Controls.Clear();
+            PanelPostear.Visible = false;
         }
 
         private void PostControl_Compartir(object sender, PersonalizedArgs e)
@@ -202,7 +227,8 @@ namespace Frontend
             post.FormBorderStyle = FormBorderStyle.None;
             post.BackColor = Color.LightGray;
             post.Dock = DockStyle.Fill;
-           // post.BackColor = Color.FromArgb(34, 67, 220);
+            post.CerrarVentana += Reporte_CerrarVentana;
+            // post.BackColor = Color.FromArgb(34, 67, 220);
             PanelPostear.Controls.Add(post);
             post.Show();
         }
@@ -216,6 +242,7 @@ namespace Frontend
             comentario.BackColor = Color.LightGray;
             comentario.Dock = DockStyle.Fill;
             comentario.ReportarComentario += CommentControl_ReportarComentario;
+            comentario.AbrirPaginaDelUsuario += PostControl_AbrirPaginaUsuario;
             PanelComentarios.Controls.Add(comentario);
             comentario.Show();
         }
@@ -371,8 +398,6 @@ namespace Frontend
             comunidad.BackColor = Color.LightGray;
             comunidad.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
-            //comunidad.BackColor = Color.FromArgb(34, 67, 220);
-            //comunidad.ReportarPost += PostControl_ReportarPost;
             comunidad.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
             comunidad.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
             PanelMostrarUsuario.Controls.Add(comunidad);
@@ -395,9 +420,29 @@ namespace Frontend
             //comunidad.BackColor = Color.FromArgb(34, 67, 220);
             comunidad.PostearEnEvento += EventoComunidad_PostearEnEvento;
             comunidad.EventoEliminado += PictureboxLogo_Click;
+            comunidad.ReportarEvento += Comunidad_ReportarEvento;
+            comunidad.AbrirComentarios += PostControl_AbrirComentarios;
+            comunidad.ReportarPost += PostControl_ReportarPost;
             //comunidad.AbrirEvento += PostControl_AbrirComentarios;
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
+        }
+
+        private void Comunidad_ReportarEvento(object sender, PersonalizedArgs e)
+        {
+            PanelComentarios.Visible = false;
+            PanelPostear.Controls.Clear();
+            PanelPostear.Visible = true;
+            PanelPostear.Parent = this;
+            PanelPosts.Visible = false;
+            ReportarPost post = new ReportarPost("", user, token,idEvento:Convert.ToString(e.arg));
+            post.TopLevel = false;
+            post.FormBorderStyle = FormBorderStyle.None;
+            post.BackColor = Color.LightGray;
+            post.Dock = DockStyle.Fill;
+            post.CerrarVentana += Reporte_CerrarVentana;
+            PanelPostear.Controls.Add(post);
+            post.Show();
         }
 
         private void Grupo_EventoParaListar_AbrirGrupo(object sender, PersonalizedArgs e)
@@ -426,10 +471,30 @@ namespace Frontend
             comunidad.TieneConfiguraciones();
             comunidad.GrupoEliminado += PictureboxLogo_Click;
             comunidad.AbrirUsuario += PostControl_AbrirPaginaUsuario;
+            comunidad.AbrirComentarios += PostControl_AbrirComentarios;
+            comunidad.ReportarPost += PostControl_ReportarPost;
+            comunidad.ReportarGrupo += Comunidad_ReportarGrupo;
             PanelMostrarUsuario.Controls.Add(comunidad);
             comunidad.Show();
         }
-        
+
+        private void Comunidad_ReportarGrupo(object sender, PersonalizedArgs e)
+        {
+            PanelComentarios.Visible = false;
+            PanelPostear.Controls.Clear();
+            PanelPostear.Visible = true;
+            PanelPostear.Parent = this;
+            PanelPosts.Visible = false;
+            ReportarPost post = new ReportarPost("", user, token, nombreRealGrupo: Convert.ToString(e.arg));
+            post.TopLevel = false;
+            post.FormBorderStyle = FormBorderStyle.None;
+            post.BackColor = Color.LightGray;
+            post.Dock = DockStyle.Fill;
+            post.CerrarVentana += Reporte_CerrarVentana;
+            PanelPostear.Controls.Add(post);
+            post.Show();
+        }
+
         private void EventoComunidad_PostearEnEvento(object sender, PersonalizedArgs e)
         {
             VerPost(e.arg);
@@ -482,6 +547,7 @@ namespace Frontend
             PanelMostrarUsuario.BackColor = Color.LightGray;
             paginaDeUsuario.ReportarPost += PostControl_ReportarPost;
             paginaDeUsuario.AbrirComentarios += PostControl_AbrirComentarios;
+            paginaDeUsuario.ReportarUsuario += PaginaDeUsuario_ReportarUsuario;
             PanelMostrarUsuario.Controls.Add(paginaDeUsuario);
             paginaDeUsuario.Show();
         }
