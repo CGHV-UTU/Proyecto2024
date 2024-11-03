@@ -659,7 +659,7 @@ namespace Frontend
             }
         }
 
-        private void AplicarDatos(dynamic groupData)
+        private async void AplicarDatos(dynamic groupData)
         {
             this.lblName.Text = groupData.nombreVisible;
             byte[] imagen = Convert.FromBase64String(Convert.ToString(groupData.foto));
@@ -674,6 +674,11 @@ namespace Frontend
                 this.lblAñadir.Text = "Salir";
                 this.lblEditar.Text = "Reportar";
                 lblEliminar.Text = "Bloquear";
+                var respuesta = await LoSigue(lblName.Text, user, token);
+                if (Convert.ToString(respuesta).Equals("bloquear"))
+                {
+                    GrupoEliminado?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
 
@@ -1450,7 +1455,6 @@ namespace Frontend
                         else
                         {
                             await Interactuar(user, nombreDeCreador, "bloquear", token);
-                            await EliminarUsuarioDelGrupo(nombreGrupo, user, token);
                             GrupoEliminado?.Invoke(this, EventArgs.Empty);
                         }
                     }

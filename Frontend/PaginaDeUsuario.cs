@@ -157,6 +157,7 @@ namespace Frontend
                 btnSeguir.Visible = false;
                 pbxChatear.Visible = false;
                 pbxReportar.Image = Frontend.Properties.Resources.editar_removebg_preview;
+                this.Controls.Remove(pbxBloquear);
             }
         }
         public static async Task<dynamic> Interactuar(string user, string aQuienSigue, string tipo, string token)
@@ -422,7 +423,8 @@ namespace Frontend
             if (!user.Equals(nombreDeCreador))
             {
                 var bloqueado = await LoSigue(user, nombreDeCreador, token);
-                if (!Convert.ToString(bloqueado).Equals("bloquear"))
+                var bloqueadoAlreves = await LoSigue(nombreDeCreador, user, token);
+                if (!Convert.ToString(bloqueado).Equals("bloquear") && !Convert.ToString(bloqueadoAlreves).Equals("bloquear"))
                 {
                     dynamic existe = await ExisteChatPrivado(user, nombreDeCreador, token);
                     if (Convert.ToString(existe).Equals("false") || Convert.ToString(existe).Equals("False"))
@@ -528,6 +530,33 @@ namespace Frontend
             {
                 pbxImagenEditar.ImageLocation = ofd.FileName;
                 pbxImagenEditar.SizeMode = PictureBoxSizeMode.StretchImage;
+            }
+        }
+
+        private async void pbxBloquear_Click(object sender, EventArgs e)
+        {
+            var respuesta = await LoSigue(user, nombreDeCreador, token);
+            if (Convert.ToString(respuesta).Equals("seguir"))
+            {
+                await EliminarInteraccion(user, nombreDeCreador, "seguir", token); //hacer que cambie el boton
+                await Interactuar(user, nombreDeCreador, "bloquear", token);
+                btnSeguir.Visible = false;
+                pbxChatear.Visible = false;
+            }
+            else
+            {
+                if (Convert.ToString(respuesta).Equals("bloquear"))
+                {
+                    await EliminarInteraccion(user, nombreDeCreador, "bloquear", token);
+                    btnSeguir.Visible = true;
+                    pbxChatear.Visible = true;
+                }
+                else
+                {
+                    await Interactuar(user, nombreDeCreador, "bloquear", token);
+                    btnSeguir.Visible = false;
+                    pbxChatear.Visible = false;
+                }
             }
         }
     }
