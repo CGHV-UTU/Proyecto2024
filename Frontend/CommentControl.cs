@@ -19,12 +19,14 @@ namespace Frontend
         private string user;
         private int idcomentario;
         private string token;
+        private dynamic commentData;
         public event EventHandler<PersonalizedArgs> ReportarComentario;
         public event EventHandler<PersonalizedArgs> AbrirPaginaDelUsuario;
-        public CommentControl(string modo,string idpost, int idcomentario,string user, string token)
+        public CommentControl(string modo,string idpost, dynamic commentData,string user, string token)
         {
             this.idpost = idpost;
-            this.idcomentario = idcomentario;
+            this.commentData = commentData;
+            this.idcomentario = int.Parse(Convert.ToString(commentData.id));
             this.user = user;
             this.token = token;
             InitializeComponent();
@@ -165,10 +167,9 @@ namespace Frontend
 
         private async void aplicarDatos()
         {
-            var data = await BuscarComentario(idcomentario,token);
-            lblNombre.Text = data[0];
-            txtBox.Text = data[1];
-            if (lblNombre.Text.Equals(user))
+            lblNombre.Text = Convert.ToString(commentData.nombreVisible);
+            txtBox.Text = Convert.ToString(commentData.texto);
+            if (Convert.ToString(commentData.nombreDeCuenta).Equals(user))
             {
                 //editar
                 this.PictureBoxMasOpciones = new PictureBox();
@@ -181,13 +182,13 @@ namespace Frontend
                 this.PictureBoxMasOpciones.Cursor = Cursors.Hand;
                 this.Controls.Add(this.PictureBoxMasOpciones);
             }
-            string imagenB64 = await conseguirImagenDelCreador(lblNombre.Text, token);
+            string imagenB64 = Convert.ToString(commentData.foto);
             byte[] imagen = Convert.FromBase64String(imagenB64);
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);
             this.PictureBoxUsuario.Image = bitmap;
             redondearPictureBox(bitmap);
-            string[] fecha = data[2].Split(' ');
+            string[] fecha = Convert.ToString(commentData.fechaYhora).Split(' ');
             this.lblFechaYhora.Text = fecha[0];
             var Like = await dioLike(user, idcomentario, lblNombre.Text, token);
             if (Like)

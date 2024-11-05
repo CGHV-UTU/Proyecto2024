@@ -72,14 +72,17 @@ namespace Frontend
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarGrupo;
         public event EventHandler<PersonalizedArgs> BuscarUsuarios;
+        private dynamic grupo;
         public GruposComunidad(dynamic groupData, string user, string token, bool esChatPrivado=false)
         {
             InitializeComponent();
             this.user = user;
             this.token = token;
-            this.nombreGrupo = groupData.nombreReal;
+            this.nombreGrupo = Convert.ToString(groupData.nombreReal);
+            rol = Convert.ToString(groupData.rol);
             this.pnlAsociarContenido.Visible = false;
             this.esChatPrivado = esChatPrivado;
+            this.grupo = groupData;
             if (esChatPrivado)
             {
                 this.Controls.Remove(pbxCrearPostGrupo);
@@ -638,8 +641,6 @@ namespace Frontend
         private string rol;
         public async void TieneConfiguraciones()
         {
-            var respuesta = await RolEnElGrupo(nombreGrupo, user, token);
-            rol = Convert.ToString(respuesta);
             if (!rol.Equals("admin") && !rol.Equals("creador"))
             {
                 this.lblEliminar.Text = "Salir";
@@ -991,7 +992,7 @@ namespace Frontend
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44304/ConseguirPostsDeGrupo", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject<DataTable>(responseBody);
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
                     return data;
                 }
                 catch
@@ -1017,13 +1018,12 @@ namespace Frontend
             pbxCrearPostGrupo.Visible = true;
             pnlAsociarContenido.Visible = false;
             panel1.Visible = false;
-            DataTable posts = await ConseguirPosts(nombreGrupo, token);
-            if (posts != null)
+            var posts = await ConseguirPosts(nombreGrupo, token);
+            if (posts != null && !Convert.ToString(posts).Equals("Hubo un error"))
             {
-                for (int i = posts.Rows.Count - 1; i >= 0; i--)
+                foreach(var post in posts)
                 {
-                    int idpost = Convert.ToInt32(posts.Rows[i]["idPost"]);
-                    var postControl = new PostControl(idpost, "Claro", user, token); //donde dice claro hay que poner el modo luego
+                    var postControl = new PostControl(post, "Claro", user, token); //donde dice claro hay que poner el modo luego
                     postControl.AbrirComentarios += PostControl_AbrirComentarios;
                     postControl.ReportarPost += PostControl_ReportarPost;
                     await postControl.aplicarDatos();
@@ -1143,7 +1143,7 @@ namespace Frontend
                 {
                     if (!Convert.ToString(elemento.rol).Equals("solicitante"))
                     {
-                        var groupControl = new Grupo_EventoParaListar(user, token, nombreRealGrupo: nombreGrupo, usuariobuscar: elemento);
+                        var groupControl = new Grupo_EventoParaListar(user, token, grupo, usuariobuscar: elemento);
                         groupControl.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
                         if (pnlPostsGrupo.Controls.Count > 0)
                         {
@@ -1305,7 +1305,7 @@ namespace Frontend
                 {
                     if (!Convert.ToString(miembro.rol).Equals("solicitante"))
                     {
-                        var groupControl = new Grupo_EventoParaListar(user, token, nombreRealGrupo: nombreGrupo, usuariobuscar: miembro);
+                        var groupControl = new Grupo_EventoParaListar(user, token, grupo, usuariobuscar: miembro);
                         groupControl.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
                         if (pnlPostsGrupo.Controls.Count > 0)
                         {
@@ -1422,7 +1422,7 @@ namespace Frontend
                     {
                         if (Convert.ToString(elemento.rol).Equals("solicitante"))
                         {
-                            var groupControl = new Grupo_EventoParaListar(user, token, nombreRealGrupo: nombreGrupo, usuariobuscar: elemento);
+                            var groupControl = new Grupo_EventoParaListar(user, token, grupo, usuariobuscar: elemento);
                             groupControl.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
                             if (pnlPostsGrupo.Controls.Count > 0)
                             {

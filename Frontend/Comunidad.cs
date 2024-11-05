@@ -19,7 +19,7 @@ namespace Frontend
         private string token;
         private bool eventosCargados = false;
         private string idpost;
-        private DataTable eventos;
+        private dynamic eventos;
         public event EventHandler<PersonalizedArgs> AbrirEvento;
         public event EventHandler<PersonalizedArgs> AbrirGrupo;
         public Comunidad(string modo, string user, string token, string idpost="")
@@ -68,7 +68,7 @@ namespace Frontend
             }
         }
 
-        static async Task<DataTable> Eventos(string usuario, string token)
+        static async Task<dynamic> Eventos(string usuario, string token)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -79,7 +79,7 @@ namespace Frontend
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/eventoParticipa", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject<DataTable>(responseBody);
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
                     return data;
                 }
                 catch
@@ -113,13 +113,12 @@ namespace Frontend
         private async void CargarEventos()
         {  
             eventos = await Eventos(user, token);
-            if (eventos != null)
+            if (eventos != null && !Convert.ToString(eventos).Equals("Error"))
             {
                 //PanelGrupos.Controls.Clear();
-                for (int i = 0; i < eventos.Rows.Count; i++)
+                foreach(var evento in eventos)
                 {
-                    int idevento = Convert.ToInt32(eventos.Rows[i]["idEvento"]);
-                    var eventControl = new Grupo_EventoParaListar(user, token, "",idevento);
+                    var eventControl = new Grupo_EventoParaListar(user, token, evento:evento);
                     eventControl.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
                     // probando, antes iba debajo del else
                     if (panelEventos.Controls.Count > 0)
@@ -173,22 +172,18 @@ namespace Frontend
                 {
                     foreach (var elemento in lista)
                     {
-                        var rol = await RolEnElGrupo(Convert.ToString(elemento.nombreReal), user, token);
-                        if (!Convert.ToString(rol).Equals("solicitante"))
+                        var groupcontrol = new Grupo_EventoParaListar(user, token, elemento);
+                        groupcontrol.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
+                        if (PanelGrupos.Controls.Count > 0)
                         {
-                            var groupcontrol = new Grupo_EventoParaListar(user, token, Convert.ToString(elemento.nombreReal), 0);
-                            groupcontrol.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
-                            if (PanelGrupos.Controls.Count > 0)
-                            {
-                                var lastControl = PanelGrupos.Controls[PanelGrupos.Controls.Count - 1];
-                                groupcontrol.Location = new Point(0, lastControl.Bottom);
-                            }
-                            else
-                            {
-                                groupcontrol.Location = new Point(0, 52);
-                            }
-                            PanelGrupos.Controls.Add(groupcontrol);
+                            var lastControl = PanelGrupos.Controls[PanelGrupos.Controls.Count - 1];
+                            groupcontrol.Location = new Point(0, lastControl.Bottom);
                         }
+                        else
+                        {
+                            groupcontrol.Location = new Point(0, 52);
+                        }
+                        PanelGrupos.Controls.Add(groupcontrol);
                     }
                 }
                 else
@@ -197,7 +192,7 @@ namespace Frontend
                     PanelGrupos.Controls.Clear();
                     foreach (var elemento in lista)
                     {
-                        var eventControl = new Grupo_EventoParaListar(user, token, Convert.ToString(elemento.nombreReal), 0, idpost:idpost);
+                        var eventControl = new Grupo_EventoParaListar(user, token, elemento, idpost:idpost);
                         if (PanelGrupos.Controls.Count > 0)
                         {
                             var lastControl = PanelGrupos.Controls[PanelGrupos.Controls.Count - 1];

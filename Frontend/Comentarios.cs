@@ -14,8 +14,6 @@ namespace Frontend
 {
     public partial class Comentarios : Form
     {
-        private int currentPage = 0;
-        private const int commentsPerPage = 10;
         private const int margin = 10; // margen para los comentarios
         private string modo;
         private string idpost;
@@ -33,7 +31,7 @@ namespace Frontend
             CreadorComentarios comentario = new CreadorComentarios(user,idpost, token);
             comentario.Location = new Point(margin, 0);
             PanelComentarios.Controls.Add(comentario);
-            LoadComments(currentPage);
+            LoadComments();
         }
 
         static async Task<dynamic> ConseguirComentarios(string id, string token)
@@ -47,7 +45,7 @@ namespace Frontend
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/seleccionarTodosLosComentarios",content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject<DataTable>(responseBody);
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
                     return data;
                 }
                 catch
@@ -58,15 +56,14 @@ namespace Frontend
         }
 
 
-        private async void LoadComments(int page)
+        private async void LoadComments()
         {
-            DataTable comentarios=await ConseguirComentarios(idpost, token);
-            if (comentarios != null)
+            var comentarios=await ConseguirComentarios(idpost, token);
+            if (comentarios != null && !Convert.ToString(comentarios).Equals("Error al cargar Datagrid"))
             {
-                for (int i = 0; i < comentarios.Rows.Count; i++)
+                foreach(var comentario in comentarios)
                 {
-                    int idcomentario = Convert.ToInt32(comentarios.Rows[i]["id"]);
-                    var commentControl = new CommentControl(modo, idpost, idcomentario,user, token);
+                    var commentControl = new CommentControl(modo, idpost, comentario,user, token);
                     commentControl.Size = new Size(465 + margin * 2, 171 + margin * 2);
                     var lastControl = PanelComentarios.Controls[PanelComentarios.Controls.Count - 1];
                     commentControl.Location = new Point(margin, lastControl.Bottom);

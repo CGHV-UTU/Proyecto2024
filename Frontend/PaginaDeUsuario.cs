@@ -71,7 +71,7 @@ namespace Frontend
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/seleccionarTodosLosPostDelUsuario",content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject<DataTable>(responseBody);
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
                     return data;
                 }
                 catch
@@ -83,13 +83,12 @@ namespace Frontend
         
         private async void LoadPosts()
         {
-            DataTable posts = await ConseguirPosts(nombreDeCreador, token);
-            if (posts != null)
+            var posts = await ConseguirPosts(nombreDeCreador, token);
+            if (posts != null && !Convert.ToString(posts).Equals("Error al cargar Datagrid"))
             {
-                for (int i = posts.Rows.Count-1; i >= 0 ; i--)
+                foreach (var post in posts)
                 {
-                    int idpost = Convert.ToInt32(posts.Rows[i]["idPost"]);
-                    var postControl = new PostControl(idpost, modo, user, token);
+                    var postControl = new PostControl(post, modo, user, token);
                     postControl.AbrirComentarios += PostControl_AbrirComentarios;
                     postControl.ReportarPost += PostControl_ReportarPost;
                     await postControl.aplicarDatos();

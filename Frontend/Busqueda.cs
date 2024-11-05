@@ -136,7 +136,7 @@ namespace Frontend
                             pnlMostrar.Controls.Clear();
                             foreach (dynamic usuario in respuesta)
                             {
-                                var usercontrol = new Grupo_EventoParaListar("", token, "", 0, usuario, true);
+                                var usercontrol = new Grupo_EventoParaListar(user, token, usuariobuscar: usuario, busqueda:true);
                                 usercontrol.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
                                 if (pnlMostrar.Controls.Count > 0)
                                 {
@@ -154,7 +154,7 @@ namespace Frontend
                         {
                             foreach (dynamic usuario in respuesta)
                             {
-                                var usercontrol = new Grupo_EventoParaListar("", token, nombreGrupo, 0, usuario, true);
+                                var usercontrol = new Grupo_EventoParaListar(user, token, usuariobuscar: usuario, busqueda: true, nombreGrupo: nombreGrupo);
                                 usercontrol.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
                                 if (pnlMostrar.Controls.Count > 0)
                                 {
@@ -183,7 +183,7 @@ namespace Frontend
                                 pnlMostrar.Controls.Clear();
                                 foreach (dynamic grupo in respuesta2)
                                 {
-                                    var groupcontrol = new Grupo_EventoParaListar(user, token, Convert.ToString(grupo.nombreReal), 0, null, true);
+                                var groupcontrol = new Grupo_EventoParaListar(user, token, grupo, busqueda:true);
                                     if (pnlMostrar.Controls.Count > 0)
                                     {
                                         var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];
@@ -209,7 +209,7 @@ namespace Frontend
                         pnlMostrar.Controls.Clear();
                         foreach (dynamic evento in respuesta3)
                         {
-                            var eventControl = new Grupo_EventoParaListar("", token, "", int.Parse(Convert.ToString(evento.idEvento)), null, true);
+                            var eventControl = new Grupo_EventoParaListar("", token, evento: evento, busqueda:true) ;
                             eventControl.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
                             if (pnlMostrar.Controls.Count > 0)
                             {

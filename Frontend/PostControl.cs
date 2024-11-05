@@ -25,14 +25,17 @@ namespace Frontend
         public event EventHandler RecargarFeed;
         private string modo;
         private int idpost;
+        private dynamic postData;
         public string tipo;
         private string user;
         private string creador;
         private string token;
-        public PostControl(int idpost, string modo, string user, string token)
+        public PostControl(dynamic postData, string modo, string user, string token)
         {
             this.modo = modo;
-            this.idpost = idpost;
+            this.postData = postData;
+            this.idpost = int.Parse(Convert.ToString(postData.idPost));
+            this.creador = Convert.ToString(postData.nombreDeCuenta);
             this.user = user;
             this.token = token;
         }
@@ -54,47 +57,38 @@ namespace Frontend
         {
             try
             {
-                var data = await Buscar(idpost, token);
-                string creador = await obtenerCreador(idpost, token);
-                this.creador = creador;
-                if(data == null)
+                if (string.IsNullOrEmpty(Convert.ToString(postData.imagen)))
                 {
-                    MessageBox.Show(data.ToString());
-                    MessageBox.Show("Error. No se encontraron posts");
-                    return;
-                }
-                if (string.IsNullOrEmpty(data[2]))
-                {
-                    if (string.IsNullOrEmpty(data[1]))
+                    if (string.IsNullOrEmpty(Convert.ToString(postData.video)))
                     {
                         this.tipo = "textOnly";
                         iniciar("textOnly");
-                        txtDescripcion.Text = data[0];
+                        txtDescripcion.Text = Convert.ToString(postData.texto);
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(data[0]))
+                        if (string.IsNullOrEmpty(Convert.ToString(postData.texto)))
                         {
                             this.tipo = "urlOnly";
                             iniciar("urlOnly");
-                            txtUrl.Text = data[1];
+                            txtUrl.Text = Convert.ToString(postData.video);
                         }
                         else
                         {
                             this.tipo = "textAndUrl";
                             iniciar("textAndUrl");
-                            txtDescripcion.Text = data[0];
-                            txtUrl.Text = data[1];
+                            txtDescripcion.Text = Convert.ToString(postData.texto);
+                            txtUrl.Text = Convert.ToString(postData.video);
                         }
                     }
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(data[0]))
+                    if (string.IsNullOrEmpty(Convert.ToString(postData.texto)))
                     {
                         this.tipo = "imageOnly";
                         iniciar("imageOnly");
-                        byte[] imagen = Convert.FromBase64String(data[2]);
+                        byte[] imagen = Convert.FromBase64String(Convert.ToString(postData.imagen));
                         MemoryStream ms = new MemoryStream(imagen);
                         Bitmap bitmap = new Bitmap(ms);
                         this.imagen.Image = bitmap;
@@ -104,8 +98,8 @@ namespace Frontend
                     {
                         this.tipo = "textAndImage";
                         iniciar("textAndImage");
-                        txtDescripcion.Text = data[0];
-                        byte[] imagen = Convert.FromBase64String(data[2]);
+                        txtDescripcion.Text = Convert.ToString(postData.texto);
+                        byte[] imagen = Convert.FromBase64String(Convert.ToString(postData.imagen));
                         MemoryStream ms = new MemoryStream(imagen);
                         Bitmap bitmap = new Bitmap(ms);
                         this.imagen.Image = bitmap;
@@ -117,116 +111,21 @@ namespace Frontend
                 {
                     HandleLikeClick();
                 }
-                this.lblNombre.Text = creador;
-                string[] fecha = data[3].Split(' ');
+                this.lblNombre.Text = Convert.ToString(postData.nombreVisible);
+                string[] fecha = Convert.ToString(postData.fechaYhora).Split(' ');
                 this.lblFechaYhora.Text = fecha[0];
-                string imagenB64 = await conseguirImagenDelCreador(creador, token);
+                string imagenB64 = Convert.ToString(postData.fotoUsuario);
                 byte[] imagen2 = Convert.FromBase64String(imagenB64);
                 MemoryStream ms2 = new MemoryStream(imagen2);
                 Bitmap bitmap2 = new Bitmap(ms2);
                 this.PictureBoxUsuarioPost.Image = bitmap2;
                 redondearPictureBox(bitmap2);
-                var likes = await conseguirNumeroDeLikes(Convert.ToString(idpost),token);
-                if (Convert.ToString(likes).Equals("0") || Convert.ToString(likes).Equals("ERROR"))
-                {
-                    this.lblLikes.Visible = false;
-                }
-                else
-                {
-                    this.lblLikes.Visible = true;
-                    this.lblLikes.Text = Convert.ToString(likes);
-                }
             }
             catch (Exception)
             {
                 MessageBox.Show("No se han encontrado posts");
             }
             
-        }
-
-        static async Task<string> conseguirImagenDelCreador(string creador, string token)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    var dato = new { nombreDeCuenta = creador, token=token};
-                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/obtenerImagenUsuario", content);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic imagen = JsonConvert.DeserializeObject(responseBody);
-                    return imagen;
-                }
-                catch
-                {
-                    MessageBox.Show("Error de conexión");
-                    return "error";
-                }
-            }
-        } 
-
-        static async Task<string[]> Buscar(int id, string token)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    var dato = new { id=id , token = token };
-                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/postPorId",content);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de nin}guna manera, tengo que hallar alguna forma de pasar los datos
-                    return new string[] { data.text, data.link, data.image, data.fechayhora };
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-        }
-
-        public static async Task<string> obtenerCreador(int idpost, string token)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    var dato = new { id=idpost, token= token };
-                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirCreador",content);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody); 
-                    return data;
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-        }
-
-        static async Task<dynamic> conseguirNumeroDeLikes(string idpost, string token)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    var datos = new { id = idpost, token = token };
-                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirNumeroDeLikes", content);
-                    response.EnsureSuccessStatusCode();
-                    var responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody);
-                    return data;
-                }
-                catch (Exception ex)
-                {
-                    return "ERROR";
-                }
-            }
         }
         public static async Task<dynamic> AgregarNotificaciones(string user, string texto, string tipo, string imagen, string token)
         {
@@ -263,7 +162,6 @@ namespace Frontend
         {
             try
             {
-                dynamic creador = await obtenerCreador(idpost, token);
                 if (creador != null)
                 {
                     string texto = $"{user} le ha dado like a tu publicación";
@@ -399,7 +297,6 @@ namespace Frontend
         private bool isImage1 = true;
         private async void PictureBoxLike_Click(object sender, EventArgs e)
         {
-            string creador = await obtenerCreador(idpost, token);
             if (!user.Equals(creador))
             {
                 if (!isImage1)
@@ -684,7 +581,6 @@ namespace Frontend
             }
             this.ResumeLayout(false);
             this.PerformLayout();
-            string creador = await obtenerCreador(idpost, token);
             if (creador.Equals(user))
             {
                 this.PictureBoxEditar.Visible = true;

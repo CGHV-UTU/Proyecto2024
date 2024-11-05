@@ -42,6 +42,7 @@ namespace Frontend
         private Label label2;
         private Label lblAdministradores;
         private string modo;
+        private dynamic evento;
         public event EventHandler<PersonalizedArgs> PostearEnEvento;
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarPost;
@@ -52,8 +53,9 @@ namespace Frontend
             InitializeComponent();
             this.token = token;
             this.user = user;
-            this.idEvento = Convert.ToString(EventData.id);
+            this.idEvento = Convert.ToString(EventData.idEvento);
             this.modo = modo;
+            evento = EventData;
             AplicarDatos(EventData);
             LoadPosts();
             CompararCreador();
@@ -495,7 +497,7 @@ namespace Frontend
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/seleccionarTodosLosPostDelEvento", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject<DataTable>(responseBody);
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
                     return data;
                 }
                 catch
@@ -507,13 +509,12 @@ namespace Frontend
 
         private async void LoadPosts()
         {
-            DataTable posts = await ConseguirPosts(idEvento, token);
-            if (posts != null)
+            var posts = await ConseguirPosts(idEvento, token);
+            if (posts != null && !Convert.ToString(posts).Equals("Error al cargar Datagrid"))
             {
-                for (int i = posts.Rows.Count - 1; i >= 0; i--)
+                foreach(var post in posts)
                 {
-                    int idpost = Convert.ToInt32(posts.Rows[i]["idPost"]);
-                    var postControl = new PostControl(idpost, modo, user, token);
+                    var postControl = new PostControl(post, modo, user, token);
                     postControl.AbrirComentarios += PostControl_AbrirComentarios;
                     postControl.ReportarPost += PostControl_ReportarPost;
                     await postControl.aplicarDatos();
@@ -744,7 +745,7 @@ namespace Frontend
             {
                 if (!Convert.ToString(elemento.nombreDeCuenta).Equals(user))
                 {
-                    var groupControl = new Grupo_EventoParaListar(user, token, idEvento: int.Parse(idEvento), usuariobuscar: elemento);
+                    var groupControl = new Grupo_EventoParaListar(user, token, evento, usuariobuscar: elemento);
                     if (panelPosts.Controls.Count > 0)
                     {
                         var lastControl = panelPosts.Controls[panelPosts.Controls.Count - 1];

@@ -18,10 +18,11 @@ namespace Frontend
         public event EventHandler<PersonalizedArgs> ReportarPost;
         public event EventHandler<PersonalizedArgs> AbrirPaginaUsuario;
         public event EventHandler<PersonalizedArgs> Compartir;
-        private int currentPage = 0;
+        private int currentPage = 1;
         private string modo;
         private string user;
         private string token;
+        private int postsCargados;
         public Posts(string modo,string user, string token)
         {
             this.modo = modo;
@@ -29,42 +30,20 @@ namespace Frontend
             this.token = token;
             Iniciar();
             LoadPosts(currentPage);
-            panel1.Scroll += PanelPosts_Scroll;
         }
 
-        static async Task<bool> Existe(int id, string token)
+        static async Task<dynamic> ConseguirPostsPublicos(int id1, int id2,string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    var dato = new { id=id , token = token };
+                    var dato = new {id=id1, idEvento=id2, token = token };
                     var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/existePost", content);
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/conseguir40PostMasPopulares", content);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject<bool>(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de ninguna manera, tengo que hallar alguna forma de pasar los datos
-                    return data;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-        }
-
-        static async Task<dynamic> ConseguirPostsPublicos(string token)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    var dato = new {token = token };
-                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/seleccionarTodosLosPostPublicos", content);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject<DataTable>(responseBody);
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
                     return data;
                 }
                 catch
@@ -74,32 +53,9 @@ namespace Frontend
             }
         }
 
-        static async Task<string> CuantosPost(string token)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    var dato = new { token = token };
-                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/ultimoPost", content);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody); //sigo sin poder pasar esto a lo que quiero, no me deja acceder a la info del json de ninguna manera, tengo que hallar alguna forma de pasar los datos
-                    Console.WriteLine("Respuesta http: " + response);
-                    Console.WriteLine("Respuesta body: " + responseBody);
-                    Console.WriteLine("data: " + data);
-                    return data;
-                }
-                catch
-                {
-                    return "0";
-                }
-            }
-        }
         private void PanelPosts_Scroll(object sender, ScrollEventArgs e)
         {
-            if (panel1.VerticalScroll.Value + panel1.ClientSize.Height >= panel1.VerticalScroll.Maximum)
+            if (this.panel1.VerticalScroll.Value >= this.panel1.VerticalScroll.Maximum-2000)
             {
                 currentPage++;
                 LoadPosts(currentPage);
@@ -108,37 +64,35 @@ namespace Frontend
 
         private async void LoadPosts(int page)
         {
-            DataTable postPublicos = await ConseguirPostsPublicos(token);
-            
-            if (postPublicos == null)
+            var postPublicos = await ConseguirPostsPublicos(40 * page - 40, 40*page,token);
+            if (postPublicos == null || Convert.ToString(postPublicos).Equals("no se encuentra"))
             {
                 MessageBox.Show("No se encontraron posts");
                 return;
             }
-
             // carga de posts
-            for (int i = postPublicos.Rows.Count; i > 0; i--)
+            foreach(var post in postPublicos)
             {
-                    var postControl = new PostControl(Convert.ToInt32(postPublicos.Rows[i-1]["idPost"]), modo, user, token);
-                    postControl.AbrirComentarios += PostControl_AbrirComentarios;
-                    postControl.ReportarPost += PostControl_ReportarPost;
-                    postControl.RecargarFeed += PostControl_RecargarFeed;
-                    postControl.AbrirPaginaUsuario += PostControl_AbrirPaginaUsuario;
+                var postControl = new PostControl(post, modo, user, token);
+                postControl.AbrirComentarios += PostControl_AbrirComentarios;
+                postControl.ReportarPost += PostControl_ReportarPost;
+                postControl.RecargarFeed += PostControl_RecargarFeed;
+                postControl.AbrirPaginaUsuario += PostControl_AbrirPaginaUsuario;
                 postControl.Compartir += PostControl_Compartir;
-                    await postControl.aplicarDatos();
-                    // Calcula la ubicación Y acumulada
-                    int currentYPosition = 0;
-                    if (panel1.Controls.Count > 0)
+                await postControl.aplicarDatos();
+                // Calcula la ubicación Y acumulada
+                int currentYPosition = 0;
+                if (panel1.Controls.Count > 0)
+                {
+                    var lastControl = panel1.Controls[panel1.Controls.Count - 1];
+                    if (postControl.tipo.Equals("imageOnly") || postControl.tipo.Equals("textAndImage"))
                     {
-                        var lastControl = panel1.Controls[panel1.Controls.Count - 1];
-                        if (postControl.tipo.Equals("imageOnly") || postControl.tipo.Equals("textAndImage"))
-                        {
-                            await Task.Delay(300);
-                        }
-                        currentYPosition = lastControl.Bottom;  // La posición inferior del último control agregado
+                        await Task.Delay(300);
                     }
-                    postControl.Location = new Point(0, currentYPosition);
-                    panel1.Controls.Add(postControl);
+                    currentYPosition = lastControl.Bottom;  // La posición inferior del último control agregado
+                }
+                postControl.Location = new Point(0, currentYPosition);
+                panel1.Controls.Add(postControl);
             }
         }
         private void PostControl_RecargarFeed(object sender, EventArgs e)
@@ -173,8 +127,9 @@ namespace Frontend
             this.panel1.AutoScroll = true;
             this.panel1.Dock = DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panelPosts";
+            this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(800, 450);
+            this.panel1.Scroll += PanelPosts_Scroll;
             this.panel1.TabIndex = 0;
 
             // Form1
