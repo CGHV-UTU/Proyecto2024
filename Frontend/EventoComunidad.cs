@@ -73,9 +73,9 @@ namespace Frontend
             lblAdministradores.Visible = false;
         }
         
-        private async void CompararCreador()
+        private void CompararCreador()
         {
-            string rol = await RolDelEvento(idEvento,user,token);
+            string rol = Convert.ToString(evento.rol);
             if (rol.Equals("creador"))
             {
                 btnSeguir.Visible = false;
@@ -450,7 +450,7 @@ namespace Frontend
             dtpFechaInicio.Text = EventData.fechaYhora_Inicio;
             dtpFechaFinal.Text = EventData.fechaYhora_Final;
             lblUbicacion.Text = EventData.ubicacion;
-            MessageBox.Show(Convert.ToString(EventData.id));
+            idEvento = Convert.ToString(EventData.idEvento);
             //Creo que está bien?? 
             byte[] imagen = Convert.FromBase64String(Convert.ToString(EventData.foto));
             MemoryStream ms = new MemoryStream(imagen);
@@ -458,20 +458,23 @@ namespace Frontend
             this.pbxImagen.Image = bitmap;
         }
         // lo de acá aún no hay forma de probarlo, recien cuando esté el menú de búsqueda se va a poder
-        public static async Task Seguir(string user, string idevento, string rol, string token)
+        public static async Task<dynamic> Seguir(string user, string idevento, string rol, string token)
         {
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                        var datos = new { user = user, id= idevento, rol=rol, token = token };
-                        var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                        HttpResponseMessage response = await client.PostAsync("https://localhost:44340/participarDelEvento", content);
-                        response.EnsureSuccessStatusCode();
+                    var datos = new { user = user, id = idevento, rol = rol, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("https://localhost:44340/participarDelEvento", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("ERROR AL LLAMAR A LA API");
+                    return "ERROR AL LLAMAR A LA API";
                 }
             }
         }
@@ -530,7 +533,6 @@ namespace Frontend
                         currentYPosition = lastControl.Bottom;  // La posición inferior del último control agregado
                     }
                     postControl.Location = new Point(0, currentYPosition);
-                    MessageBox.Show(""+postControl.Location);
                     panelPosts.Controls.Add(postControl);
                 }
             }
@@ -745,7 +747,7 @@ namespace Frontend
             {
                 if (!Convert.ToString(elemento.nombreDeCuenta).Equals(user))
                 {
-                    var groupControl = new Grupo_EventoParaListar(user, token, evento, usuariobuscar: elemento);
+                    var groupControl = new Grupo_EventoParaListar(user, token, idevento:int.Parse(idEvento), usuariobuscar: elemento);
                     if (panelPosts.Controls.Count > 0)
                     {
                         var lastControl = panelPosts.Controls[panelPosts.Controls.Count - 1];

@@ -29,21 +29,25 @@ namespace Frontend
         public event EventHandler<PersonalizedArgs> AbrirEvento;
         public event EventHandler<PersonalizedArgs> AbrirGrupo;
         public event EventHandler<PersonalizedArgs> AbrirUsuario;
-        public Grupo_EventoParaListar(string usuario, string token, dynamic grupo=null, dynamic evento=null, dynamic usuariobuscar = null, bool busqueda = false, string idpost="",string nombreGrupo="")
+        public Grupo_EventoParaListar(string usuario, string token, dynamic grupo=null, dynamic evento=null, dynamic usuariobuscar = null, bool busqueda = false, string idpost="",string nombreGrupo="", int idevento=0)
         {
             if (grupo!=null)
             {
                 this.nombreReal = Convert.ToString(grupo.nombreReal);
                 this.grupo = grupo;
             }
+            else
+            {
+                this.nombreReal = nombreGrupo;
+            }
             if (evento != null)
             {
                 this.idevento = int.Parse(Convert.ToString(evento.idEvento));
                 this.evento = evento;
             }
-            if (!string.IsNullOrEmpty(nombreGrupo))
+            else
             {
-                this.nombreReal = nombreGrupo;
+                this.idevento = idevento;
             }
             this.token = token;
             this.user = usuario;
@@ -639,7 +643,8 @@ namespace Frontend
                 }
                 else
                 {
-                    string rol = await RolDelEvento(Convert.ToString(idevento), user, token);
+                    string rol = await RolDelEvento(Convert.ToString(idevento), Convert.ToString(datosDelUsuario.nombreDeCuenta), token);
+                    MessageBox.Show("" + rol);
                     if (rol.Equals("Seguidor"))
                     {
                         await DarRolEvento(Convert.ToString(idevento), Convert.ToString(datosDelUsuario.nombreDeCuenta),"admin",token);
