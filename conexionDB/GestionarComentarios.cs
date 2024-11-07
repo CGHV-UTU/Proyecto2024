@@ -15,10 +15,8 @@ namespace BackofficeDeAdministracion
     public partial class GestionarComentarios : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-        private string admin;
-        public GestionarComentarios(string usuario)
+        public GestionarComentarios()
         {
-            admin = usuario;
             InitializeComponent();
             CargarTabla();
             this.ActiveControl = txtID;
@@ -86,8 +84,8 @@ namespace BackofficeDeAdministracion
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
         }
 
-        // Buscar Comentario
-        private async void btnBuscar_Click(object sender, EventArgs e)
+        // Boton para buscar Comentario
+        private void btnBuscar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtID.Text))
             {
@@ -100,10 +98,7 @@ namespace BackofficeDeAdministracion
                 int id = int.Parse(txtID.Text);
                 if (BuscarComentario(id))
                 {
-                    foreach (Control control in this.Controls)
-                    {
-                        control.Visible = true;
-                    }
+                    Controls.OfType<Control>().ToList().ForEach(c => c.Visible = true);
                 }
                 else
                 {
@@ -136,7 +131,6 @@ namespace BackofficeDeAdministracion
                     conn.Close();
                     return true; // Comentario encontrado
                 }
-
                 conn.Close();
                 return false; // Comentario no encontrado
             }
@@ -158,7 +152,7 @@ namespace BackofficeDeAdministracion
             }
             catch (Exception)
             {
-                MessageBox.Show("No seleccionó una fila", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Ocurrio un error", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
             }
         }
@@ -181,7 +175,7 @@ namespace BackofficeDeAdministracion
 
             //Registro en logs
             string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
-            string mensaje = $"{DateTime.Now}: {admin} ha eliminado el comentario de id {id}";
+            string mensaje = $"{DateTime.Now}: {Principal.admin} ha eliminado el comentario de id {id}";
             using (StreamWriter writer = new StreamWriter(path, true))
             {
                 writer.WriteLine(mensaje);

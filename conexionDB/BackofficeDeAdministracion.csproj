@@ -114,6 +114,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CargarImagen.cs" />
     <Compile Include="GestionarComentarios.cs">
       <SubType>Form</SubType>
     </Compile>

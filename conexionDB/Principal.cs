@@ -112,7 +112,7 @@ namespace BackofficeDeAdministracion
         {
             PanelVista.Controls.Clear();
             Type form = Type.GetType(nombreForm);
-            Form formInstance = (Form)Activator.CreateInstance(form, lblUsuarioBackoffice.Text);
+            Form formInstance = (Form)Activator.CreateInstance(form);
             formInstance.TopLevel = false;
             formInstance.FormBorderStyle = FormBorderStyle.None;
             //Comprobar modo de color del programa

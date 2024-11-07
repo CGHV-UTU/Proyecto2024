@@ -17,39 +17,28 @@ namespace BackofficeDeAdministracion
     public partial class GestionarGrupos : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-        private string admin;
-        public GestionarGrupos(string usuario)
+        public GestionarGrupos()
         {
-            admin = usuario;
             InitializeComponent();
             CargarTabla();
-            InicializarTablaGrupos();
             dataGridView1.CellMouseDown += dataGridView1_CellMouseDown;
             dataGridView1.MouseClick += dataGridView1_MouseClick;
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             dataGridView1.ClearSelection();
 
         }
+
+        //Evitar cualquier seleccion en el datagrid
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            dataGridView1.ClearSelection(); // Evita la selección con el mouse
+            dataGridView1.ClearSelection();
         }
-
-        // Evitar la selección cuando se hace clic en cualquier lugar del DataGridView
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
-            dataGridView1.ClearSelection(); // Limpia la selección
+            dataGridView1.ClearSelection();
         }
-
-        // Evitar que cualquier selección se mantenga
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            dataGridView1.ClearSelection(); // Siempre limpia la selección si algo intenta seleccionarse
-        }
-
-        private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
-        {
-            // Cancela cualquier selección cuando se hace clic en el DataGridView
             dataGridView1.ClearSelection();
         }
 
@@ -68,6 +57,7 @@ namespace BackofficeDeAdministracion
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
                     dataGridView1.DataSource = dataTable;
+                    EsteticaTabla();
                 }
                 catch (Exception ex)
                 {
@@ -75,10 +65,9 @@ namespace BackofficeDeAdministracion
                 }
             }
         }
-        private void InicializarTablaGrupos()
+        private void EsteticaTabla()
         {
             DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle();
-            columnHeaderStyle.BackColor = Color.Beige;
             columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
             dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;
             dataGridView1.Columns["nombreReal"].Width = 140;
@@ -87,97 +76,90 @@ namespace BackofficeDeAdministracion
             dataGridView1.Columns["nombreVisible"].HeaderText = "Nombre Visible";
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
         }
-        private async Task<string> CargarImagenDeGitHub(string urlImagen)
-        {
-            using (var client = new HttpClient())
-            {
-                string token = "11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                var response = await client.GetAsync(urlImagen);
-                if (response.IsSuccessStatusCode)
-                {
-                    byte[] imagenBytes = await response.Content.ReadAsByteArrayAsync();
-                    return Convert.ToBase64String(imagenBytes);
-                }
-                else
-                {
-                    throw new Exception("No se pudo descargar la imagen desde GitHub.");
-                }
+        // Buscar grupo
+        private async void btnBuscar_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtID.Text))
+            {
+                MessageBox.Show("Debe ingresar un nombre de grupo", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            string nombre = txtID.Text;
+            bool encontrado = await BuscarGrupo(nombre);
+
+            if (!encontrado)
+            {
+                MessageBox.Show("No se encontró el grupo especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
-        private async void btnBuscar_Click(object sender, EventArgs e)
+        // Buscar grupo en la base de datos
+        private async Task<bool> BuscarGrupo(string nombre)
         {
-            if (!string.IsNullOrEmpty(txtID.Text))
+            try
             {
-                try
+                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
                 {
-                    Boolean encontrado = false;
-                    string nombre = txtID.Text;
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    await conn.OpenAsync();
+                    MySqlCommand command = new MySqlCommand("SELECT nombreReal, nombreVisible, foto, descripcion FROM Grupos WHERE nombreReal=@nombreReal", conn);
+                    command.Parameters.AddWithValue("@nombreReal", nombre);
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == nombre)
+                        if (await reader.ReadAsync())
                         {
-                            conn.Open();
-                            MySqlCommand command = new MySqlCommand("SELECT nombreReal, nombreVisible, foto, descripcion FROM Grupos WHERE nombreReal=@nombreReal", conn);
-                            command.Parameters.AddWithValue("@nombreReal", nombre);
-                            MySqlDataReader reader = command.ExecuteReader();
-                            if (reader.Read())
+                            lblNombreDeGrupo.Text = reader["nombreReal"].ToString();
+                            lblNombreVisible.Text = reader["nombreVisible"].ToString();
+                            txtDescripcionDeGrupo.Text = reader["descripcion"].ToString();
+
+                            try
                             {
-                                lblNombreDeGrupo.Text = reader["nombreReal"].ToString();
-                                lblNombreVisible.Text = reader["nombreVisible"].ToString();
-                                txtDescripcionDeGrupo.Text = reader["descripcion"].ToString();
-
-                                try
-                                {
-                                    string imagen = await CargarImagenDeGitHub(reader["foto"].ToString());
-                                    Controls.OfType<Control>().ToList().ForEach(c => c.Visible = true);
-                                    if (!string.IsNullOrEmpty(imagen))
-                                    {
-                                        pictureBox1.Show();
-                                        byte[] imagenBytes = Convert.FromBase64String(imagen);
-                                        using (MemoryStream ms = new MemoryStream(imagenBytes))
-                                        {
-                                            Bitmap bitmap = new Bitmap(ms);
-                                            pictureBox1.Image = bitmap;
-                                            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        pictureBox1.Hide();
-                                    }
-                                }
-                                catch
-                                {
-
-                                }
-                                
+                                string imagenUrl = reader["foto"].ToString();
+                                await CargarYMostrarImagen(imagenUrl);
                             }
-                            conn.Close();
-                            dataGridView1.ClearSelection();
-                            row.Selected = true;
-                            encontrado = true;
-                            return;
+                            catch (Exception)
+                            {
+                                pictureBox1.Hide();
+                            }
+
+                            // Mostrar controles
+                            Controls.OfType<Control>().ToList().ForEach(c => c.Visible = true);
+                            return true; // Grupo encontrado
                         }
                     }
-                    if (!encontrado)
-                    {
-                        MessageBox.Show("No se encontró el grupo especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    }
                 }
-                catch (Exception)
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error al buscar el grupo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return false; // Grupo no encontrado
+        }
+
+        // Cargar imagen
+        private async Task CargarYMostrarImagen(string urlImagen)
+        {
+            string imagenBase64 = await CargarImagen.CargarImagenDeGitHub(urlImagen);
+            if (!string.IsNullOrEmpty(imagenBase64))
+            {
+                byte[] imagenBytes = Convert.FromBase64String(imagenBase64);
+                using (MemoryStream ms = new MemoryStream(imagenBytes))
                 {
-                    MessageBox.Show("No se encontró el grupo especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    Bitmap bitmap = new Bitmap(ms);
+                    pictureBox1.Image = bitmap;
+                    pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                    pictureBox1.Show();
                 }
             }
             else
             {
-                MessageBox.Show("Debe ingresar un nombre de grupo", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                pictureBox1.Hide();
             }
         }
 
+        //Eliiminar Grupo
         private void btnEliminar(object sender, EventArgs e)
         {
             try
@@ -186,7 +168,6 @@ namespace BackofficeDeAdministracion
                 string Nombre = lblNombreDeGrupo.Text;
                 EliminarGrupo(Nombre);
                 CargarTabla();
-                InicializarTablaGrupos();
             }
             catch (Exception)
             {
@@ -194,6 +175,8 @@ namespace BackofficeDeAdministracion
 
             }
         }
+
+        //Eliminar informacion de la base de datos
         private void EliminarGrupo(string Nombre)
         {
             conn.Open();
@@ -206,7 +189,7 @@ namespace BackofficeDeAdministracion
             conn.Close();
             MessageBox.Show("Información eliminada con éxito.");
             string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
-            string mensaje = $"{DateTime.Now}: {admin} ha eliminado el grupo {Nombre}";
+            string mensaje = $"{DateTime.Now}: {Principal.admin} ha eliminado el grupo {Nombre}";
             using (StreamWriter writer = new StreamWriter(path, true))
             {
                 writer.WriteLine(mensaje);
