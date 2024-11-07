@@ -17,8 +17,10 @@ namespace BackofficeDeAdministracion
     public partial class GestionarPosts : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-        public GestionarPosts()
+        private string admin;
+        public GestionarPosts(string usuario)
         {
+            admin = usuario;
             InitializeComponent();        
             CargarTabla();
             InicializarTablaPosts();
@@ -29,6 +31,26 @@ namespace BackofficeDeAdministracion
             dataGridView1.ClearSelection();
         }
 
+
+        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Evita la selección con el mouse
+        }
+        // Evitar la selección cuando se hace clic en cualquier lugar del DataGridView
+        private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Limpia la selección
+        }
+        // Evitar que cualquier selección se mantenga
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            dataGridView1.ClearSelection(); // Siempre limpia la selección si algo intenta seleccionarse
+        }
+        private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Cancela cualquier selección cuando se hace clic en el DataGridView
+            dataGridView1.ClearSelection();
+        }
         private void CargarTabla()
         {
             string connectionString = "server = localhost; database = infini; uid = root; ";
@@ -50,28 +72,7 @@ namespace BackofficeDeAdministracion
                 }
             }
         }
-        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            dataGridView1.ClearSelection(); // Evita la selección con el mouse
-        }
 
-        // Evitar la selección cuando se hace clic en cualquier lugar del DataGridView
-        private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
-        {
-            dataGridView1.ClearSelection(); // Limpia la selección
-        }
-
-        // Evitar que cualquier selección se mantenga
-        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
-        {
-            dataGridView1.ClearSelection(); // Siempre limpia la selección si algo intenta seleccionarse
-        }
-
-        private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
-        {
-            // Cancela cualquier selección cuando se hace clic en el DataGridView
-            dataGridView1.ClearSelection();
-        }
         //Cargar tabla
         private void InicializarTablaPosts()
         {
@@ -85,20 +86,21 @@ namespace BackofficeDeAdministracion
             dataGridView1.Columns["cantidadLikes"].HeaderText = "likes";
             dataGridView1.Columns["idPost"].Width = 51;
             dataGridView1.Columns["idPost"].HeaderText = "id";
-            dataGridView1.Columns["texto"].Width = 151;
+            dataGridView1.Columns["texto"].Width = 191;
             dataGridView1.Columns["categoria"].Width = 93;
             dataGridView1.Columns["video"].Width = 85;
             dataGridView1.Columns["comentarios"].Width = 75;
             dataGridView1.Columns["comentarios"].HeaderText = "Coment";
         }
 
+
+        //Para visualizar las imagenes de nuestra aplicacion
         private async Task<string> CargarImagenDeGitHub(string urlImagen)
         {
             using (var client = new HttpClient())
             {
-                string token = "11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
+                string token = "no";
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
                 var response = await client.GetAsync(urlImagen);
                 if (response.IsSuccessStatusCode)
                 {
@@ -115,76 +117,74 @@ namespace BackofficeDeAdministracion
         //Buscar post
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(txtID.Text))
+            if (string.IsNullOrEmpty(txtID.Text))
             {
-                try
+                MessageBox.Show("Debe ingresar una id", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            try
+            {
+                Boolean encontrado = false;
+                int id = int.Parse(txtID.Text);
+                foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
-                    Boolean encontrado = false;
-                    int id = int.Parse(txtID.Text);
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    if (row.Cells[0].Value != null && int.Parse(row.Cells[0].Value.ToString()) == id)
                     {
-                        if (row.Cells[0].Value != null && int.Parse(row.Cells[0].Value.ToString()) == id)
+                        conn.Open();
+                        MySqlCommand command = new MySqlCommand("SELECT texto, imagen, video, categoria FROM Posts WHERE idPost=@id", conn);
+                        command.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
+                        MySqlDataReader reader = command.ExecuteReader();
+                        if (reader.Read())
                         {
-                            conn.Open();
-                            MySqlCommand command = new MySqlCommand("SELECT texto, imagen, video, categoria FROM Posts WHERE idPost=@id", conn);
-                            command.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
-                            MySqlDataReader reader = command.ExecuteReader();
-                            if (reader.Read())
+                            txtTexto.Text = reader["texto"].ToString();
+                            try
                             {
-                                txtTexto.Text = reader["texto"].ToString();
-                                try
+                                Controls.OfType<Control>().ToList().ForEach(c => c.Visible = true);
+                                string imagen = await CargarImagenDeGitHub(reader["imagen"].ToString());
+                                if (!string.IsNullOrEmpty(imagen))
                                 {
-
-                                    string imagen = await CargarImagenDeGitHub(reader["imagen"].ToString());
-                                    if (!string.IsNullOrEmpty(imagen))
+                                    pictureBox1.Show();
+                                    byte[] imagenBytes = Convert.FromBase64String(imagen);
+                                    using (MemoryStream ms = new MemoryStream(imagenBytes))
                                     {
-                                        pictureBox1.Show();
-                                        byte[] imagenBytes = Convert.FromBase64String(imagen);
-                                        using (MemoryStream ms = new MemoryStream(imagenBytes))
-                                        {
-                                            Bitmap bitmap = new Bitmap(ms);
-                                            pictureBox1.Image = bitmap;
-                                            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        pictureBox1.Hide();
+                                        Bitmap bitmap = new Bitmap(ms);
+                                        pictureBox1.Image = bitmap;
+                                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
                                     }
                                 }
-                                catch
+                                else
                                 {
-
-                                }
+                                    pictureBox1.Hide();
+                                }                               
                             }
-                            reader.Close();
-                            MySqlCommand commandLikes = new MySqlCommand("SELECT COUNT(*) AS cantidadLikes FROM DaLike WHERE idPost=@id", conn);
-                            commandLikes.Parameters.AddWithValue("@id", id);
-                            MySqlDataReader readerLikes = commandLikes.ExecuteReader();
-                            if (readerLikes.Read())
+                            catch
                             {
-                                lblLikesDePost.Text = readerLikes["cantidadLikes"].ToString();
+
                             }
-                            readerLikes.Close();
-                            conn.Close();
-                            row.Selected = true;
-                            encontrado = true;
-                            return;
                         }
-                    }
-                    if (!encontrado)
-                    {
-                        MessageBox.Show("No se encontró el post especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        reader.Close();
+                        MySqlCommand commandLikes = new MySqlCommand("SELECT COUNT(*) AS cantidadLikes FROM DaLike WHERE idPost=@id", conn);
+                        commandLikes.Parameters.AddWithValue("@id", id);
+                        MySqlDataReader readerLikes = commandLikes.ExecuteReader();
+                        if (readerLikes.Read())
+                        {
+                            lblLikesDePost.Text = readerLikes["cantidadLikes"].ToString();
+                        }
+                        readerLikes.Close();
+                        conn.Close();
+                        row.Selected = true;
+                        encontrado = true;
+                        return;
                     }
                 }
-                catch (Exception)
+                if (!encontrado)
                 {
                     MessageBox.Show("No se encontró el post especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
-            else
+            catch (Exception)
             {
-                MessageBox.Show("Debe ingresar una id", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("No se encontró el post especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -221,9 +221,7 @@ namespace BackofficeDeAdministracion
                     MessageBox.Show("El ID ingresado no es válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-
                 bool encontrado = false;
-
                 try
                 {
                     conn.Open();
@@ -279,15 +277,11 @@ namespace BackofficeDeAdministracion
         }
 
 
-
-
-        //Borro la fila del datagrid y registro su id
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             try
-            {
-                var filaSeleccionada = dataGridView1.CurrentRow;
-                string id = txtID.Text;
+            {            
+                string id = txtID.Text; 
                 EliminarPost(id);
                 CargarTabla();
                 InicializarTablaPosts();
@@ -295,7 +289,6 @@ namespace BackofficeDeAdministracion
             catch (Exception)
             {
                 MessageBox.Show("No seleccionó una fila", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
             }
         }
         private void EliminarPost(string id)
@@ -326,7 +319,12 @@ namespace BackofficeDeAdministracion
             command6.ExecuteNonQuery();
             conn.Close();
             MessageBox.Show("Información eliminada con éxito.");
-
+            string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+            string mensaje = $"{DateTime.Now}: {admin} ha eliminado el post de id: {id}";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                writer.WriteLine(mensaje);
+            }
         }
         //Para limitar la escritura de los txt a solo numeros
         private void txtID_KeyPress(object sender, KeyPressEventArgs e)

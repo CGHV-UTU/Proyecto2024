@@ -53,63 +53,72 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(468, 191);
+            this.pictureBox1.Location = new System.Drawing.Point(547, 207);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(196, 145);
             this.pictureBox1.TabIndex = 39;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Visible = false;
             // 
             // txtURL
             // 
             this.txtURL.Cursor = System.Windows.Forms.Cursors.No;
-            this.txtURL.Location = new System.Drawing.Point(95, 307);
+            this.txtURL.Location = new System.Drawing.Point(159, 326);
             this.txtURL.MaxLength = 3227;
             this.txtURL.Multiline = true;
             this.txtURL.Name = "txtURL";
             this.txtURL.ReadOnly = true;
             this.txtURL.Size = new System.Drawing.Size(266, 21);
             this.txtURL.TabIndex = 38;
+            this.txtURL.Visible = false;
             // 
             // txtTexto
             // 
             this.txtTexto.Cursor = System.Windows.Forms.Cursors.No;
-            this.txtTexto.Location = new System.Drawing.Point(95, 191);
+            this.txtTexto.Location = new System.Drawing.Point(159, 210);
             this.txtTexto.MaxLength = 100;
             this.txtTexto.Multiline = true;
             this.txtTexto.Name = "txtTexto";
             this.txtTexto.ReadOnly = true;
             this.txtTexto.Size = new System.Drawing.Size(266, 65);
             this.txtTexto.TabIndex = 37;
+            this.txtTexto.Visible = false;
             // 
             // lblUrl
             // 
             this.lblUrl.AutoSize = true;
+            this.lblUrl.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblUrl.ForeColor = System.Drawing.Color.White;
-            this.lblUrl.Location = new System.Drawing.Point(15, 307);
+            this.lblUrl.Location = new System.Drawing.Point(28, 323);
             this.lblUrl.Name = "lblUrl";
-            this.lblUrl.Size = new System.Drawing.Size(73, 13);
+            this.lblUrl.Size = new System.Drawing.Size(86, 17);
             this.lblUrl.TabIndex = 35;
             this.lblUrl.Text = "URL de video";
+            this.lblUrl.Visible = false;
             // 
             // lblImagen
             // 
             this.lblImagen.AutoSize = true;
+            this.lblImagen.Font = new System.Drawing.Font("Leelawadee UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblImagen.ForeColor = System.Drawing.Color.White;
-            this.lblImagen.Location = new System.Drawing.Point(389, 194);
+            this.lblImagen.Location = new System.Drawing.Point(468, 210);
             this.lblImagen.Name = "lblImagen";
-            this.lblImagen.Size = new System.Drawing.Size(42, 13);
+            this.lblImagen.Size = new System.Drawing.Size(51, 17);
             this.lblImagen.TabIndex = 34;
             this.lblImagen.Text = "Imagen";
+            this.lblImagen.Visible = false;
             // 
             // lblTexto
             // 
             this.lblTexto.AutoSize = true;
+            this.lblTexto.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblTexto.ForeColor = System.Drawing.Color.White;
-            this.lblTexto.Location = new System.Drawing.Point(20, 194);
+            this.lblTexto.Location = new System.Drawing.Point(28, 210);
             this.lblTexto.Name = "lblTexto";
-            this.lblTexto.Size = new System.Drawing.Size(34, 13);
+            this.lblTexto.Size = new System.Drawing.Size(40, 17);
             this.lblTexto.TabIndex = 33;
             this.lblTexto.Text = "Texto";
+            this.lblTexto.Visible = false;
             // 
             // dataGridView1
             // 
@@ -131,46 +140,55 @@
             // lblEstadoDeComentarios
             // 
             this.lblEstadoDeComentarios.AutoSize = true;
+            this.lblEstadoDeComentarios.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblEstadoDeComentarios.ForeColor = System.Drawing.Color.White;
-            this.lblEstadoDeComentarios.Location = new System.Drawing.Point(20, 354);
+            this.lblEstadoDeComentarios.Location = new System.Drawing.Point(28, 366);
             this.lblEstadoDeComentarios.Name = "lblEstadoDeComentarios";
-            this.lblEstadoDeComentarios.Size = new System.Drawing.Size(131, 13);
+            this.lblEstadoDeComentarios.Size = new System.Drawing.Size(164, 17);
             this.lblEstadoDeComentarios.TabIndex = 41;
             this.lblEstadoDeComentarios.Text = "Estado de los comentarios";
+            this.lblEstadoDeComentarios.Visible = false;
             // 
             // btnComentarios
             // 
             this.btnComentarios.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
             this.btnComentarios.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnComentarios.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.btnComentarios.ForeColor = System.Drawing.Color.White;
-            this.btnComentarios.Location = new System.Drawing.Point(160, 349);
+            this.btnComentarios.Location = new System.Drawing.Point(224, 361);
             this.btnComentarios.Name = "btnComentarios";
-            this.btnComentarios.Size = new System.Drawing.Size(201, 23);
+            this.btnComentarios.Size = new System.Drawing.Size(201, 27);
             this.btnComentarios.TabIndex = 42;
             this.btnComentarios.Text = "Desactivar";
+            this.btnComentarios.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnComentarios.UseVisualStyleBackColor = false;
+            this.btnComentarios.Visible = false;
             this.btnComentarios.Click += new System.EventHandler(this.btnComentarios_Click);
             // 
             // lblLikes
             // 
             this.lblLikes.AutoSize = true;
+            this.lblLikes.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblLikes.ForeColor = System.Drawing.Color.White;
-            this.lblLikes.Location = new System.Drawing.Point(389, 353);
+            this.lblLikes.Location = new System.Drawing.Point(468, 371);
             this.lblLikes.Name = "lblLikes";
-            this.lblLikes.Size = new System.Drawing.Size(32, 13);
+            this.lblLikes.Size = new System.Drawing.Size(36, 17);
             this.lblLikes.TabIndex = 52;
             this.lblLikes.Text = "Likes";
+            this.lblLikes.Visible = false;
             // 
             // btnBuscar
             // 
             this.btnBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
             this.btnBuscar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBuscar.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.btnBuscar.ForeColor = System.Drawing.Color.White;
             this.btnBuscar.Location = new System.Drawing.Point(12, 79);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(216, 23);
+            this.btnBuscar.Size = new System.Drawing.Size(216, 27);
             this.btnBuscar.TabIndex = 61;
             this.btnBuscar.Text = "🔎 Buscar ";
+            this.btnBuscar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnBuscar.UseVisualStyleBackColor = false;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
@@ -178,22 +196,25 @@
             // 
             this.btnEliminar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
             this.btnEliminar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEliminar.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.btnEliminar.ForeColor = System.Drawing.Color.White;
-            this.btnEliminar.Location = new System.Drawing.Point(12, 124);
+            this.btnEliminar.Location = new System.Drawing.Point(12, 117);
             this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(216, 23);
+            this.btnEliminar.Size = new System.Drawing.Size(216, 27);
             this.btnEliminar.TabIndex = 60;
             this.btnEliminar.Text = "❌Eliminar ";
+            this.btnEliminar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnEliminar.UseVisualStyleBackColor = false;
             this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             // 
             // lblIdPost
             // 
             this.lblIdPost.AutoSize = true;
+            this.lblIdPost.Font = new System.Drawing.Font("Leelawadee UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblIdPost.ForeColor = System.Drawing.Color.White;
             this.lblIdPost.Location = new System.Drawing.Point(12, 40);
             this.lblIdPost.Name = "lblIdPost";
-            this.lblIdPost.Size = new System.Drawing.Size(61, 13);
+            this.lblIdPost.Size = new System.Drawing.Size(66, 13);
             this.lblIdPost.TabIndex = 59;
             this.lblIdPost.Text = "ID del post:";
             // 
@@ -208,57 +229,66 @@
             // txtCategorias
             // 
             this.txtCategorias.Cursor = System.Windows.Forms.Cursors.No;
-            this.txtCategorias.Location = new System.Drawing.Point(95, 262);
+            this.txtCategorias.Location = new System.Drawing.Point(159, 281);
             this.txtCategorias.MaxLength = 100;
             this.txtCategorias.Multiline = true;
             this.txtCategorias.Name = "txtCategorias";
             this.txtCategorias.ReadOnly = true;
             this.txtCategorias.Size = new System.Drawing.Size(266, 28);
             this.txtCategorias.TabIndex = 63;
+            this.txtCategorias.Visible = false;
             // 
             // lblCategorias
             // 
             this.lblCategorias.AutoSize = true;
+            this.lblCategorias.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblCategorias.ForeColor = System.Drawing.Color.White;
-            this.lblCategorias.Location = new System.Drawing.Point(20, 265);
+            this.lblCategorias.Location = new System.Drawing.Point(28, 281);
             this.lblCategorias.Name = "lblCategorias";
-            this.lblCategorias.Size = new System.Drawing.Size(59, 13);
+            this.lblCategorias.Size = new System.Drawing.Size(71, 17);
             this.lblCategorias.TabIndex = 62;
             this.lblCategorias.Text = "Categorías";
+            this.lblCategorias.Visible = false;
             // 
             // btnModificar
             // 
             this.btnModificar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
             this.btnModificar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnModificar.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.btnModificar.ForeColor = System.Drawing.Color.White;
-            this.btnModificar.Location = new System.Drawing.Point(13, 378);
+            this.btnModificar.Location = new System.Drawing.Point(13, 406);
             this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(811, 23);
+            this.btnModificar.Size = new System.Drawing.Size(811, 27);
             this.btnModificar.TabIndex = 65;
-            this.btnModificar.Text = "♻️ Modificar";
+            this.btnModificar.Text = "♻️ Actualizar";
+            this.btnModificar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnModificar.UseVisualStyleBackColor = false;
             this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
             // 
             // lblLikesDePost
             // 
             this.lblLikesDePost.AutoSize = true;
+            this.lblLikesDePost.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblLikesDePost.ForeColor = System.Drawing.Color.White;
-            this.lblLikesDePost.Location = new System.Drawing.Point(544, 353);
+            this.lblLikesDePost.Location = new System.Drawing.Point(657, 371);
             this.lblLikesDePost.Name = "lblLikesDePost";
-            this.lblLikesDePost.Size = new System.Drawing.Size(13, 13);
+            this.lblLikesDePost.Size = new System.Drawing.Size(15, 17);
             this.lblLikesDePost.TabIndex = 67;
             this.lblLikesDePost.Text = "0";
+            this.lblLikesDePost.Visible = false;
             // 
             // lblNumeroDeLikes
             // 
             this.lblNumeroDeLikes.AutoSize = true;
             this.lblNumeroDeLikes.CausesValidation = false;
+            this.lblNumeroDeLikes.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblNumeroDeLikes.ForeColor = System.Drawing.Color.White;
-            this.lblNumeroDeLikes.Location = new System.Drawing.Point(452, 353);
+            this.lblNumeroDeLikes.Location = new System.Drawing.Point(544, 371);
             this.lblNumeroDeLikes.Name = "lblNumeroDeLikes";
-            this.lblNumeroDeLikes.Size = new System.Drawing.Size(86, 13);
+            this.lblNumeroDeLikes.Size = new System.Drawing.Size(107, 17);
             this.lblNumeroDeLikes.TabIndex = 68;
             this.lblNumeroDeLikes.Text = "Número de likes:";
+            this.lblNumeroDeLikes.Visible = false;
             // 
             // GestionarPosts
             // 

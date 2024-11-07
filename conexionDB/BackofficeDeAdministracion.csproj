@@ -144,6 +144,12 @@
     <Compile Include="GestionarGrupos.Designer.cs">
       <DependentUpon>GestionarGrupos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Log.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Log.Designer.cs">
+      <DependentUpon>Log.cs</DependentUpon>
+    </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -163,6 +169,18 @@
     </Compile>
     <Compile Include="ReporteComentario.Designer.cs">
       <DependentUpon>ReporteComentario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ReporteEvento.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReporteEvento.Designer.cs">
+      <DependentUpon>ReporteEvento.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ReporteGrupo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReporteGrupo.Designer.cs">
+      <DependentUpon>ReporteGrupo.cs</DependentUpon>
     </Compile>
     <Compile Include="ReportePost.cs">
       <SubType>Form</SubType>
@@ -191,6 +209,9 @@
     <EmbeddedResource Include="GestionarGrupos.resx">
       <DependentUpon>GestionarGrupos.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Log.resx">
+      <DependentUpon>Log.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
@@ -209,6 +230,12 @@
     </Compile>
     <EmbeddedResource Include="ReporteComentario.resx">
       <DependentUpon>ReporteComentario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReporteEvento.resx">
+      <DependentUpon>ReporteEvento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReporteGrupo.resx">
+      <DependentUpon>ReporteGrupo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ReportePost.resx">
       <DependentUpon>ReportePost.cs</DependentUpon>

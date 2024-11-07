@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,8 +15,10 @@ namespace BackofficeDeAdministracion
     public partial class ReportePost : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-        public ReportePost()
+        private string admin;
+        public ReportePost(string usuario)
         {
+            admin = usuario;
             InitializeComponent();
             cargarTabla();
             inicializarTablaPosts();
@@ -84,15 +87,7 @@ namespace BackofficeDeAdministracion
                                 lblDescripcionReporte.Text = reader["descripcion"].ToString();
                                 lblTipo.Text = reader["tipo"].ToString();
                                 lblIdPost.Text = reader["idPost"].ToString();
-                                lblNombre.Show();
-                                lblCuenta.Show();
-                                label2.Show();
-                                lblIdPost.Show();
-                                label1.Show();
-                                lblTipo.Show();
-                                lblNombre.Show();
-                                lblDescripcionReporte.Show();
-                                lblDescripcion.Show();
+                                Controls.OfType<Control>().ToList().ForEach(c => c.Visible = true);
                             }
                             conn.Close();
                             dataGridView1.ClearSelection();
@@ -117,60 +112,55 @@ namespace BackofficeDeAdministracion
             }
         }
 
-        //Borro la fila del datagrid y registro su id
+        //Eliminar Post
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             try
             {
-                string id = lblIdPost.Text;
-                GuardarId(id);
+                string id = txtID.Text;
+                EliminarPost(id);
+                cargarTabla();
+                inicializarTablaPosts();
             }
             catch (Exception)
             {
                 MessageBox.Show("No seleccionó una fila", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
             }
         }
-        //Guardo la id de los post borrados del datagrid para luego eliminarlos definitivamente
-        List<string> eliminarDatos = new List<string>();
-        private void GuardarId(string id)
-        {
-            eliminarDatos.Add(id);
-        }
-
-        private void btnGuardar_Click(object sender, EventArgs e)
+        private void EliminarPost(string id)
         {
             conn.Open();
-            foreach (string id in eliminarDatos)
-            {
-                MySqlCommand command = new MySqlCommand("DELETE FROM Reportes WHERE idPost=@Id;", conn);
-                MySqlCommand command8 = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", conn);
-                MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", conn);
-                MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost = @Id", conn);
-                MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost = @Id", conn);
-                MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost = @Id", conn);
-                MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost = @Id", conn);
-                MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=(SELECT id FROM Comentarios WHERE idPost=@id)", conn);
-                command.Parameters.AddWithValue("@Id", id);
-                command8.Parameters.AddWithValue("@Id", id);
-                command2.Parameters.AddWithValue("@Id", id);
-                command3.Parameters.AddWithValue("@Id", id);
-                command4.Parameters.AddWithValue("@Id", id);
-                command5.Parameters.AddWithValue("@Id", id);
-                command6.Parameters.AddWithValue("@Id", id);
-                command7.Parameters.AddWithValue("@Id", id);
-                command7.ExecuteNonQuery();
-                command.ExecuteNonQuery();
-                command2.ExecuteNonQuery();
-                command3.ExecuteNonQuery();
-                command4.ExecuteNonQuery();
-                command5.ExecuteNonQuery();
-                command6.ExecuteNonQuery();
-            }
-            eliminarDatos.Clear();
+            MySqlCommand command = new MySqlCommand("DELETE FROM Reportes WHERE idPost=@Id;", conn);
+            MySqlCommand command8 = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", conn);
+            MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", conn);
+            MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost = @Id", conn);
+            MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost = @Id", conn);
+            MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost = @Id", conn);
+            MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost = @Id", conn);
+            MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=(SELECT id FROM Comentarios WHERE idPost=@id)", conn);
+            command.Parameters.AddWithValue("@Id", id);
+            command8.Parameters.AddWithValue("@Id", id);
+            command2.Parameters.AddWithValue("@Id", id);
+            command3.Parameters.AddWithValue("@Id", id);
+            command4.Parameters.AddWithValue("@Id", id);
+            command5.Parameters.AddWithValue("@Id", id);
+            command6.Parameters.AddWithValue("@Id", id);
+            command7.Parameters.AddWithValue("@Id", id);
+            command7.ExecuteNonQuery();
+            command.ExecuteNonQuery();
+            command2.ExecuteNonQuery();
+            command3.ExecuteNonQuery();
+            command4.ExecuteNonQuery();
+            command5.ExecuteNonQuery();
+            command6.ExecuteNonQuery();
             conn.Close();
-            MessageBox.Show("Información guardada con éxito");
-            this.Close();
+            MessageBox.Show("Información eliminada con éxito.");
+            string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+            string mensaje = $"{DateTime.Now}: {admin} ha eliminado el post de id: {id}";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                writer.WriteLine(mensaje);
+            }
         }
     }
 }

@@ -17,8 +17,10 @@ namespace BackofficeDeAdministracion
     public partial class GestionarGrupos : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-        public GestionarGrupos()
+        private string admin;
+        public GestionarGrupos(string usuario)
         {
+            admin = usuario;
             InitializeComponent();
             CargarTabla();
             InicializarTablaGrupos();
@@ -130,6 +132,7 @@ namespace BackofficeDeAdministracion
                                 try
                                 {
                                     string imagen = await CargarImagenDeGitHub(reader["foto"].ToString());
+                                    Controls.OfType<Control>().ToList().ForEach(c => c.Visible = true);
                                     if (!string.IsNullOrEmpty(imagen))
                                     {
                                         pictureBox1.Show();
@@ -150,12 +153,7 @@ namespace BackofficeDeAdministracion
                                 {
 
                                 }
-                                lblNombre.Show();
-                                lblNombreVisible.Show();
-                                lblNomVisible.Show();
-                                txtDescripcionDeGrupo.Show();
-                                lblDesc.Show();
-                                lblFoto.Show();
+                                
                             }
                             conn.Close();
                             dataGridView1.ClearSelection();
@@ -207,7 +205,12 @@ namespace BackofficeDeAdministracion
             cmd.ExecuteNonQuery();
             conn.Close();
             MessageBox.Show("Información eliminada con éxito.");
-
+            string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+            string mensaje = $"{DateTime.Now}: {admin} ha eliminado el grupo {Nombre}";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                writer.WriteLine(mensaje);
+            }
         }
 
     }

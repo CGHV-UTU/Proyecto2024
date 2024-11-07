@@ -14,8 +14,10 @@ namespace BackofficeDeAdministracion
     public partial class ReporteUsuario : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-        public ReporteUsuario()
+        private string admin;
+        public ReporteUsuario(string usuario)
         {
+            admin = usuario;
             InitializeComponent();
             cargarTabla();
             inicializarTablaUsuarios();
@@ -54,8 +56,11 @@ namespace BackofficeDeAdministracion
             columnHeaderStyle.BackColor = Color.Beige;
             columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
             dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;
-            dataGridView1.Columns["numeroDeReporte"].Width = 80;
+            dataGridView1.Columns["numeroDeReporte"].Width = 100;
+            dataGridView1.Columns["tipo"].Width = 100;
             dataGridView1.Columns["cuentaReporteUsuario"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridView1.Columns["cuentaReporteUsuario"].HeaderText = "Usuario";
+            dataGridView1.Columns["numeroDeReporte"].HeaderText = "Reporte";
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
         }
 

@@ -14,11 +14,10 @@ using System.Windows.Forms;
 
 namespace BackofficeDeAdministracion
 {
-   
-    public partial class GestionarEventos : Form
+    public partial class ReporteEvento : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-        public GestionarEventos(string usuario)
+        public ReporteEvento(string user)
         {
             InitializeComponent();
             CargarTabla();
@@ -28,7 +27,6 @@ namespace BackofficeDeAdministracion
             dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             dataGridView1.ClearSelection();
         }
-
 
         //Limitar la escritura de txtID a solo numeros
         private void txtID_KeyPress(object sender, KeyPressEventArgs e)
@@ -44,7 +42,7 @@ namespace BackofficeDeAdministracion
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             dataGridView1.ClearSelection();
-        }       
+        }
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
             dataGridView1.ClearSelection();
@@ -54,7 +52,32 @@ namespace BackofficeDeAdministracion
             dataGridView1.ClearSelection();
         }
 
-        //Cargar lista de Eventos
+        // Conseguir imagenes de github
+        private async Task<string> CargarImagenDeGitHub(string urlImagen)
+        {
+            using (var client = new HttpClient())
+            {
+                string token = "no";
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await client.GetAsync(urlImagen);
+                if (response.IsSuccessStatusCode)
+                {
+                    byte[] imagenBytes = await response.Content.ReadAsByteArrayAsync();
+                    return Convert.ToBase64String(imagenBytes);
+                }
+                else
+                {
+                    throw new Exception("No se pudo descargar la imagen desde GitHub.");
+                }
+            }
+        }
+
+        // -------------------
+        // Gestion de Reportes
+        // -------------------
+
+        //Cargar lista de Reportes
         private void CargarTabla()
         {
             // vuelvo a abrir una conexion porque la principal esta en uso y genera errores
@@ -64,7 +87,7 @@ namespace BackofficeDeAdministracion
                 try
                 {
                     conn.Open();
-                    string query = "SELECT idEvento, titulo, ubicacion, descripcion FROM Eventos";
+                    string query = "SELECT numeroDeReporte, idEvento, tipo, descripcion FROM Reportes";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     DataTable dataTable = new DataTable();
@@ -85,32 +108,15 @@ namespace BackofficeDeAdministracion
             DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle();
             columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
             dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;
-            dataGridView1.Columns["idEvento"].Width = 45;
-            dataGridView1.Columns["idEvento"].HeaderText = "id";
+            dataGridView1.Columns["numeroDeReporte"].Width = 70;
+            dataGridView1.Columns["numeroDeReporte"].HeaderText = "Reporte";
             dataGridView1.Columns["descripcion"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
         }
 
-        // Conseguir imagenes de github
-        private async Task<string> CargarImagenDeGitHub(string urlImagen)
-        {
-            using (var client = new HttpClient())
-            {
-                string token = "no"; 
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-                var response = await client.GetAsync(urlImagen);
-                if (response.IsSuccessStatusCode)
-                {
-                    byte[] imagenBytes = await response.Content.ReadAsByteArrayAsync();
-                    return Convert.ToBase64String(imagenBytes);
-                }
-                else
-                {
-                    throw new Exception("No se pudo descargar la imagen desde GitHub.");
-                }
-            }
-        }
+        // ------------------
+        // Gestion de Eventos
+        // ------------------
 
         // Buscar Evento
         private async void btnBuscar_Click(object sender, EventArgs e)
@@ -223,11 +229,11 @@ namespace BackofficeDeAdministracion
             command1.ExecuteNonQuery();
             conn.Close();
             string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
-            string mensaje = $"{DateTime.Now}: {Principal.admin} ha eliminado el evento de id {id}";
+            string mensaje = $"{DateTime.Now}: {Principal.admin} ha eliminado el evento de id por un reporte {id}";
             using (StreamWriter writer = new StreamWriter(path, true))
             {
                 writer.WriteLine(mensaje);
             }
-        } 
+        }
     }
 }

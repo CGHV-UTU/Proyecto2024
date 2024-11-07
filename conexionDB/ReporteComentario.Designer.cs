@@ -48,28 +48,32 @@ namespace BackofficeDeAdministracion
             // 
             // btnGuardar
             // 
-            this.btnGuardar.ForeColor = System.Drawing.Color.Black;
+            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.btnGuardar.ForeColor = System.Drawing.Color.White;
             this.btnGuardar.Location = new System.Drawing.Point(17, 407);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(811, 23);
             this.btnGuardar.TabIndex = 132;
             this.btnGuardar.Text = "💾 Guardar y Salir";
             this.btnGuardar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.UseVisualStyleBackColor = false;
             // 
             // btnEliminar
             // 
-            this.btnEliminar.Location = new System.Drawing.Point(17, 378);
+            this.btnEliminar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.btnEliminar.ForeColor = System.Drawing.Color.White;
+            this.btnEliminar.Location = new System.Drawing.Point(12, 141);
             this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(811, 23);
+            this.btnEliminar.Size = new System.Drawing.Size(216, 23);
             this.btnEliminar.TabIndex = 131;
             this.btnEliminar.Text = "❌Eliminar ";
-            this.btnEliminar.UseVisualStyleBackColor = true;
+            this.btnEliminar.UseVisualStyleBackColor = false;
             // 
             // lblDescripcionReporte
             // 
             this.lblDescripcionReporte.AutoSize = true;
-            this.lblDescripcionReporte.Location = new System.Drawing.Point(99, 295);
+            this.lblDescripcionReporte.ForeColor = System.Drawing.Color.White;
+            this.lblDescripcionReporte.Location = new System.Drawing.Point(117, 320);
             this.lblDescripcionReporte.Name = "lblDescripcionReporte";
             this.lblDescripcionReporte.Size = new System.Drawing.Size(44, 13);
             this.lblDescripcionReporte.TabIndex = 130;
@@ -79,7 +83,8 @@ namespace BackofficeDeAdministracion
             // lblDescripcion
             // 
             this.lblDescripcion.AutoSize = true;
-            this.lblDescripcion.Location = new System.Drawing.Point(14, 295);
+            this.lblDescripcion.ForeColor = System.Drawing.Color.White;
+            this.lblDescripcion.Location = new System.Drawing.Point(32, 320);
             this.lblDescripcion.Name = "lblDescripcion";
             this.lblDescripcion.Size = new System.Drawing.Size(66, 13);
             this.lblDescripcion.TabIndex = 129;
@@ -89,7 +94,8 @@ namespace BackofficeDeAdministracion
             // lblNombreDeCuenta
             // 
             this.lblNombreDeCuenta.AutoSize = true;
-            this.lblNombreDeCuenta.Location = new System.Drawing.Point(115, 295);
+            this.lblNombreDeCuenta.ForeColor = System.Drawing.Color.White;
+            this.lblNombreDeCuenta.Location = new System.Drawing.Point(133, 320);
             this.lblNombreDeCuenta.Name = "lblNombreDeCuenta";
             this.lblNombreDeCuenta.Size = new System.Drawing.Size(0, 13);
             this.lblNombreDeCuenta.TabIndex = 128;
@@ -97,7 +103,8 @@ namespace BackofficeDeAdministracion
             // lblNombre
             // 
             this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(14, 196);
+            this.lblNombre.ForeColor = System.Drawing.Color.White;
+            this.lblNombre.Location = new System.Drawing.Point(32, 221);
             this.lblNombre.Name = "lblNombre";
             this.lblNombre.Size = new System.Drawing.Size(98, 13);
             this.lblNombre.TabIndex = 127;
@@ -120,17 +127,20 @@ namespace BackofficeDeAdministracion
             // 
             // btnBuscar
             // 
+            this.btnBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.btnBuscar.ForeColor = System.Drawing.Color.White;
             this.btnBuscar.Location = new System.Drawing.Point(11, 96);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(216, 23);
             this.btnBuscar.TabIndex = 124;
             this.btnBuscar.Text = "🔎 Buscar ";
-            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.UseVisualStyleBackColor = false;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // lblNom
             // 
             this.lblNom.AutoSize = true;
+            this.lblNom.ForeColor = System.Drawing.Color.White;
             this.lblNom.Location = new System.Drawing.Point(14, 56);
             this.lblNom.Name = "lblNom";
             this.lblNom.Size = new System.Drawing.Size(75, 13);
@@ -147,7 +157,8 @@ namespace BackofficeDeAdministracion
             // lblTipo
             // 
             this.lblTipo.AutoSize = true;
-            this.lblTipo.Location = new System.Drawing.Point(58, 243);
+            this.lblTipo.ForeColor = System.Drawing.Color.White;
+            this.lblTipo.Location = new System.Drawing.Point(76, 268);
             this.lblTipo.Name = "lblTipo";
             this.lblTipo.Size = new System.Drawing.Size(22, 13);
             this.lblTipo.TabIndex = 133;
@@ -156,7 +167,8 @@ namespace BackofficeDeAdministracion
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 243);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(32, 268);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(28, 13);
             this.label1.TabIndex = 134;
@@ -165,7 +177,8 @@ namespace BackofficeDeAdministracion
             // Comentario
             // 
             this.Comentario.AutoSize = true;
-            this.Comentario.Location = new System.Drawing.Point(296, 196);
+            this.Comentario.ForeColor = System.Drawing.Color.White;
+            this.Comentario.Location = new System.Drawing.Point(360, 218);
             this.Comentario.Name = "Comentario";
             this.Comentario.Size = new System.Drawing.Size(63, 13);
             this.Comentario.TabIndex = 135;
@@ -174,7 +187,8 @@ namespace BackofficeDeAdministracion
             // 
             // txtComentario
             // 
-            this.txtComentario.Location = new System.Drawing.Point(365, 196);
+            this.txtComentario.Cursor = System.Windows.Forms.Cursors.No;
+            this.txtComentario.Location = new System.Drawing.Point(429, 218);
             this.txtComentario.Multiline = true;
             this.txtComentario.Name = "txtComentario";
             this.txtComentario.ReadOnly = true;
@@ -186,6 +200,7 @@ namespace BackofficeDeAdministracion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(836, 441);
             this.Controls.Add(this.txtComentario);
             this.Controls.Add(this.Comentario);

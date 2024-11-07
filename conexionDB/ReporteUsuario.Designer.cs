@@ -51,7 +51,8 @@ namespace BackofficeDeAdministracion
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(475, 239);
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(603, 293);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(117, 13);
             this.label4.TabIndex = 109;
@@ -61,7 +62,7 @@ namespace BackofficeDeAdministracion
             // 
             this.dtpHora.CustomFormat = "HH:mm";
             this.dtpHora.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpHora.Location = new System.Drawing.Point(532, 269);
+            this.dtpHora.Location = new System.Drawing.Point(659, 345);
             this.dtpHora.Name = "dtpHora";
             this.dtpHora.Size = new System.Drawing.Size(131, 20);
             this.dtpHora.TabIndex = 108;
@@ -69,37 +70,43 @@ namespace BackofficeDeAdministracion
             // dtpFecha
             // 
             this.dtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFecha.Location = new System.Drawing.Point(394, 269);
+            this.dtpFecha.Location = new System.Drawing.Point(521, 345);
             this.dtpFecha.Name = "dtpFecha";
             this.dtpFecha.Size = new System.Drawing.Size(131, 20);
             this.dtpFecha.TabIndex = 107;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(543, 346);
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.button3.ForeColor = System.Drawing.Color.White;
+            this.button3.Location = new System.Drawing.Point(670, 246);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(120, 23);
             this.button3.TabIndex = 106;
             this.button3.Text = "Desbanear";
-            this.button3.UseVisualStyleBackColor = true;
+            this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.btnDesbanear);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(686, 266);
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.Location = new System.Drawing.Point(589, 371);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(120, 23);
             this.button2.TabIndex = 105;
             this.button2.Text = "Baneo Temporal";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.btnBaneoTemporal);
             // 
             // lblDescripcionReporte
             // 
             this.lblDescripcionReporte.AutoSize = true;
+            this.lblDescripcionReporte.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
+            this.lblDescripcionReporte.ForeColor = System.Drawing.Color.White;
             this.lblDescripcionReporte.Location = new System.Drawing.Point(134, 351);
             this.lblDescripcionReporte.Name = "lblDescripcionReporte";
-            this.lblDescripcionReporte.Size = new System.Drawing.Size(21, 13);
+            this.lblDescripcionReporte.Size = new System.Drawing.Size(26, 17);
             this.lblDescripcionReporte.TabIndex = 104;
             this.lblDescripcionReporte.Text = "No";
             this.lblDescripcionReporte.Visible = false;
@@ -107,37 +114,45 @@ namespace BackofficeDeAdministracion
             // lblDescripcion
             // 
             this.lblDescripcion.AutoSize = true;
+            this.lblDescripcion.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
+            this.lblDescripcion.ForeColor = System.Drawing.Color.White;
             this.lblDescripcion.Location = new System.Drawing.Point(13, 351);
             this.lblDescripcion.Name = "lblDescripcion";
-            this.lblDescripcion.Size = new System.Drawing.Size(66, 13);
+            this.lblDescripcion.Size = new System.Drawing.Size(79, 17);
             this.lblDescripcion.TabIndex = 103;
             this.lblDescripcion.Text = "Descripcion:";
             this.lblDescripcion.Visible = false;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(394, 346);
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(521, 246);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(120, 23);
             this.button1.TabIndex = 102;
             this.button1.Text = "Baneo Permanente";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.btnBaneoPermanente);
             // 
             // lblNombreDeCuenta
             // 
             this.lblNombreDeCuenta.AutoSize = true;
+            this.lblNombreDeCuenta.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
+            this.lblNombreDeCuenta.ForeColor = System.Drawing.Color.White;
             this.lblNombreDeCuenta.Location = new System.Drawing.Point(134, 237);
             this.lblNombreDeCuenta.Name = "lblNombreDeCuenta";
-            this.lblNombreDeCuenta.Size = new System.Drawing.Size(0, 13);
+            this.lblNombreDeCuenta.Size = new System.Drawing.Size(0, 17);
             this.lblNombreDeCuenta.TabIndex = 97;
             // 
             // lblNombre
             // 
             this.lblNombre.AutoSize = true;
+            this.lblNombre.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
+            this.lblNombre.ForeColor = System.Drawing.Color.White;
             this.lblNombre.Location = new System.Drawing.Point(19, 237);
             this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(98, 13);
+            this.lblNombre.Size = new System.Drawing.Size(121, 17);
             this.lblNombre.TabIndex = 94;
             this.lblNombre.Text = "Nombre de cuenta:";
             this.lblNombre.Visible = false;
@@ -151,6 +166,7 @@ namespace BackofficeDeAdministracion
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(567, 194);
@@ -158,17 +174,20 @@ namespace BackofficeDeAdministracion
             // 
             // btnBuscar
             // 
+            this.btnBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.btnBuscar.ForeColor = System.Drawing.Color.White;
             this.btnBuscar.Location = new System.Drawing.Point(13, 95);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(216, 23);
             this.btnBuscar.TabIndex = 91;
             this.btnBuscar.Text = "🔎 Buscar ";
-            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.UseVisualStyleBackColor = false;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // lblNom
             // 
             this.lblNom.AutoSize = true;
+            this.lblNom.ForeColor = System.Drawing.Color.White;
             this.lblNom.Location = new System.Drawing.Point(16, 55);
             this.lblNom.Name = "lblNom";
             this.lblNom.Size = new System.Drawing.Size(75, 13);
@@ -185,9 +204,11 @@ namespace BackofficeDeAdministracion
             // lblT
             // 
             this.lblT.AutoSize = true;
+            this.lblT.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
+            this.lblT.ForeColor = System.Drawing.Color.White;
             this.lblT.Location = new System.Drawing.Point(19, 292);
             this.lblT.Name = "lblT";
-            this.lblT.Size = new System.Drawing.Size(28, 13);
+            this.lblT.Size = new System.Drawing.Size(34, 17);
             this.lblT.TabIndex = 110;
             this.lblT.Text = "Tipo";
             this.lblT.Visible = false;
@@ -195,9 +216,11 @@ namespace BackofficeDeAdministracion
             // lblTipo
             // 
             this.lblTipo.AutoSize = true;
+            this.lblTipo.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
+            this.lblTipo.ForeColor = System.Drawing.Color.White;
             this.lblTipo.Location = new System.Drawing.Point(134, 292);
             this.lblTipo.Name = "lblTipo";
-            this.lblTipo.Size = new System.Drawing.Size(85, 13);
+            this.lblTipo.Size = new System.Drawing.Size(103, 17);
             this.lblTipo.TabIndex = 111;
             this.lblTipo.Text = "No Especificado";
             this.lblTipo.Visible = false;
@@ -206,6 +229,7 @@ namespace BackofficeDeAdministracion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(836, 441);
             this.Controls.Add(this.lblTipo);
             this.Controls.Add(this.lblT);

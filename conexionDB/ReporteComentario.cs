@@ -14,8 +14,10 @@ namespace BackofficeDeAdministracion
     public partial class ReporteComentario : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-        public ReporteComentario()
+        private string admin;
+        public ReporteComentario(string usuario)
         {
+            admin = usuario;
             InitializeComponent();
             cargarTabla();
             inicializarTablaPosts();

@@ -17,8 +17,10 @@ namespace BackofficeDeAdministracion
     public partial class GestionarUsuarios : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-        public GestionarUsuarios()
+        private string admin;
+        public GestionarUsuarios(string usuario)
         {
+            admin = usuario;
             InitializeComponent();
             cargarTabla();
             inicializarTablaUsuarios();
@@ -60,13 +62,15 @@ namespace BackofficeDeAdministracion
             columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
             dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;     
             dataGridView1.Columns["nombreDeCuenta"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridView1.Columns["nombreVisible"].Width = 160;
+            dataGridView1.Columns["email"].Width = 160;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
         }
         private async Task<string> CargarImagenDeGitHub(string urlImagen)
         {
             using (var client = new HttpClient())
             {
-                string token = "11BKZVKOQ0DjsNNMCl27pG_bWGpU4CD8HpcEIQooMyAsLtedjVMN7kzcrz1WrYLmA9NOKBAL3W9WQKb76D"; // Token para repositorio privado. Cambiar por el token real
+                string token = "token";
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var response = await client.GetAsync(urlImagen);
@@ -214,6 +218,12 @@ namespace BackofficeDeAdministracion
                     {
                         MessageBox.Show("Se ha baneado al usuario correctamente.");
                         cargarTabla();
+                        string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+                        string mensaje = $"{DateTime.Now}: {admin} ha baneado permanentemente al usuario {lblNombreDeCuenta.Text}";
+                        using (StreamWriter writer = new StreamWriter(path, true))
+                        {
+                            writer.WriteLine(mensaje);
+                        }
                     }
                     else
                     {
@@ -251,6 +261,12 @@ namespace BackofficeDeAdministracion
                         {
                             MessageBox.Show("Se ha baneado temporalmente al usuario.");
                             cargarTabla();
+                            string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+                            string mensaje = $"{DateTime.Now}: {admin} ha baneado temporalmente al usuario {lblNombreDeCuenta.Text}";
+                            using (StreamWriter writer = new StreamWriter(path, true))
+                            {
+                                writer.WriteLine(mensaje);
+                            }
                         }
                         else
                         {
@@ -292,6 +308,12 @@ namespace BackofficeDeAdministracion
                             {
                                 MessageBox.Show("Se ha desbaneado al usuario.");
                                 cargarTabla();
+                                string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+                                string mensaje = $"{DateTime.Now}: {admin} ha desbaneado al usuario {lblNombreDeCuenta.Text}";
+                                using (StreamWriter writer = new StreamWriter(path, true))
+                                {
+                                    writer.WriteLine(mensaje);
+                                }
                             }
                             else
                             {
