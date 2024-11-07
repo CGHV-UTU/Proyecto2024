@@ -264,40 +264,40 @@ namespace ApiUsuarios.Controllers
             }
         }
 
-            [System.Web.Mvc.HttpPut]
-            [System.Web.Mvc.Route("obtenerImagenUsuario")]
-            public async Task<dynamic> obtenerImagenUsuario([FromBody] usuario user)
+        [System.Web.Mvc.HttpPut]
+        [System.Web.Mvc.Route("obtenerImagenUsuario")]
+        public async Task<dynamic> obtenerImagenUsuario([FromBody] usuario user)
+        {
+            try
             {
-                try
+                if (TestToken(user.token))
                 {
-                    if (TestToken(user.token))
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT foto FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                    command.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                    MySqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
                     {
-                        conn.Open();
-                        MySqlCommand command = new MySqlCommand("SELECT foto FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
-                        command.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
-                        MySqlDataReader reader = command.ExecuteReader();
-                        if (reader.Read())
-                        {
-                            string foto = await CargarImagenDeGitHub(reader["foto"].ToString());
-                            conn.Close();
-                            return Json(foto, JsonRequestBehavior.AllowGet);
-                        }
-                        else
-                        {
-                            conn.Close();
-                            return Json("no se encuentra " + user.nombreDeCuenta, JsonRequestBehavior.AllowGet);
-                        }
+                        string foto = await CargarImagenDeGitHub(reader["foto"].ToString());
+                        conn.Close();
+                        return Json(foto, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        return Json("Token expirado");
+                        conn.Close();
+                        return Json("no se encuentra " + user.nombreDeCuenta, JsonRequestBehavior.AllowGet);
                     }
                 }
-                catch
+                else
                 {
-                    return Json("no se encuentra " + user.nombreDeCuenta, JsonRequestBehavior.AllowGet);
+                    return Json("Token expirado");
                 }
             }
+            catch
+            {
+                return Json("no se encuentra " + user.nombreDeCuenta, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         [System.Web.Mvc.HttpPut]
         [System.Web.Mvc.Route("obtenerImagenNombreVyDescUsuario")]
@@ -451,6 +451,50 @@ namespace ApiUsuarios.Controllers
 
         }
 
+        [System.Web.Mvc.HttpPut]
+        [System.Web.Mvc.Route("EditarUsuario")]
+        public async Task<dynamic> EditarUsuario([FromBody] usuario user)
+        {
+            try
+            {
+                if (TestToken(user.token))
+                {
+                    using (conn)
+                    {
+                        string linkImagen = null;
+
+                        conn.Open();
+                        if (!string.IsNullOrEmpty(user.foto))
+                        {
+                            linkImagen = await SubirImagenAGitHub(user.foto);
+                        }
+                        else
+                        {
+                            linkImagen = "";
+                        }
+                        using (MySqlCommand cmd = new MySqlCommand("UPDATE Usuarios SET nombreVisible=@nombreVisible, descripcion=@Descripcion, foto=@Foto WHERE nombreDeCuenta=@NombreDeCuenta", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@NombreDeCuenta", user.nombreDeCuenta);
+                            cmd.Parameters.AddWithValue("@NombreVisible", user.nombreVisible);
+                            cmd.Parameters.AddWithValue("@Descripcion", user.descripcion ?? string.Empty);
+                            cmd.Parameters.AddWithValue("@Foto", linkImagen);
+                            cmd.ExecuteNonQuery();
+                        }
+                        conn.Close();
+                        return Json(new { mensaje = "Guardado correcto" });
+                    }
+                }
+                else
+                {
+                    return Json("Token expirado");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { mensaje = "Guardado incorrecto: error en el servidor", error = ex.Message });
+            }
+        }
+
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("CambiarConfiguracion")]
         public async Task<dynamic> CambiarConfiguracion([FromBody] usuario user)
@@ -555,8 +599,6 @@ namespace ApiUsuarios.Controllers
                 return Json("Token expirado");
             }
         }
-
-
 
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("ActualizarNotificaciones")]
@@ -793,6 +835,7 @@ namespace ApiUsuarios.Controllers
                 return Json("Error: " + ex.Message);
             }
         }
+
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("Interactuar")]
         public dynamic Interactuar([FromBody] usuario user)
@@ -814,14 +857,13 @@ namespace ApiUsuarios.Controllers
                         cmd.Parameters.AddWithValue("@tipo", user.tipoInteraccion);
                         cmd.ExecuteNonQuery();
                         conn.Close();
-                        return Json("Seguido con Exito");
+                        return Json("Seguido con éxito");
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         conn.Close();
-                        return Json("Hubo un error: " + ex.Message);
+                        return Json("Hubo un error" + user.nombreDeCuenta);
                     }
-
                 }
                 else
                 {
@@ -864,6 +906,7 @@ namespace ApiUsuarios.Controllers
                 }
             }
         }
+
         [System.Web.Mvc.HttpPut]
         [System.Web.Mvc.Route("EliminarInteraccion")]
         public dynamic EliminarInteraccion([FromBody] usuario user)
@@ -899,7 +942,6 @@ namespace ApiUsuarios.Controllers
                 }
             }
         }
-
 
     }
 

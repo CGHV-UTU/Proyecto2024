@@ -720,6 +720,99 @@ namespace Testing
             Assert.AreEqual("bloquear", conseguirInteraccionResultData, "El tipo de interacción no coincide.");
         }
 
+        [TestMethod]
+        public void TestMethod17()
+        {
+            // Arrange
+            var authController = new ApiUsuarios.Controllers.AuthController();
+            var login = new ApiUsuarios.Controllers.AuthController.formaLogin
+            {
+                User = "nombre",
+                Pass = "contraseña"
+            };
+
+            var tokenResult = authController.Token(login) as JsonResult;
+            Assert.IsNotNull(tokenResult, "El resultado del token no debería ser nulo.");
+            var tokenString = tokenResult.Data?.ToString();
+            Assert.IsNotNull(tokenString, "El token no debería ser nulo.");
+
+            var isTokenValidResult = authController.TestToken(new ApiUsuarios.Controllers.AuthController.TipoToken { token = tokenString }) as JsonResult;
+            Assert.IsNotNull(isTokenValidResult, "Resultado de validación del token no debería ser nulo.");
+            Assert.IsTrue(isTokenValidResult.Data is bool isTokenValid && isTokenValid, "El token debería ser válido.");
+
+            var controller = new ApiUsuarios.Controllers.UserController();
+            var usuario = new ApiUsuarios.Controllers.UserController.usuario
+            {
+                nombreDeCuenta = "nombre",
+                nombreDeCuenta2 = "usuarioReportar",
+                tipoInteraccion = "bloquear",
+                token = tokenString
+            };
+
+            var eliminarInteraccionResult = controller.EliminarInteraccion(usuario) as JsonResult;
+
+            Assert.IsNotNull(eliminarInteraccionResult, "Se esperaba un JsonResult.");
+            string eliminarInteraccionData = eliminarInteraccionResult.Data as string;
+            Assert.IsNotNull(eliminarInteraccionData, "El Data en JsonResult no es del tipo esperado.");
+            Assert.AreEqual("Eliminado correcto", eliminarInteraccionData, "El resultado de eliminación no es correcto.");
+        }
+
+        [TestMethod]
+        public async Task TestMethod18()
+        {
+            var authController = new ApiUsuarios.Controllers.AuthController();
+            var login = new ApiUsuarios.Controllers.AuthController.formaLogin
+            {
+                User = "nombre",
+                Pass = "contraseña"
+            };
+
+            var tokenResult = authController.Token(login) as JsonResult;
+            Assert.IsNotNull(tokenResult, "El resultado del token no debería ser nulo.");
+            var tokenString = tokenResult.Data?.ToString();
+            Assert.IsNotNull(tokenString, "El token no debería ser nulo.");
+
+            var isTokenValidResult = authController.TestToken(new ApiUsuarios.Controllers.AuthController.TipoToken { token = tokenString }) as JsonResult;
+            Assert.IsNotNull(isTokenValidResult, "Resultado de validación del token no debería ser nulo.");
+            Assert.IsTrue(isTokenValidResult.Data is bool isTokenValid && isTokenValid, "El token debería ser válido.");
+
+            var userController = new ApiUsuarios.Controllers.UserController();
+            string projectDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName;
+            string imagePath = Path.Combine(projectDirectory, "Testing", "Imagen.jpg");
+
+            byte[] imageBytes = File.ReadAllBytes(imagePath);
+            string base64Image = Convert.ToBase64String(imageBytes);
+
+            ApiUsuarios.Controllers.UserController.usuario testUser = new ApiUsuarios.Controllers.UserController.usuario
+            {
+                nombreDeCuenta = "nombre",
+                nombreVisible = "Nombre Modificado2",
+                descripcion = "Descripción modificada",
+                foto = base64Image,
+                token = tokenString
+            };
+
+            var result = await userController.EditarUsuario(testUser);
+            var jsonResult = result as JsonResult;
+
+            Assert.IsNotNull(jsonResult, "Se esperaba un JsonResult.");
+            string jsonString = JsonConvert.SerializeObject(jsonResult.Data, Formatting.Indented);
+            Console.WriteLine("Response JSON:");
+            Console.WriteLine(jsonString);
+
+            try
+            {
+                dynamic data = JsonConvert.DeserializeObject<dynamic>(jsonString);
+                Assert.AreEqual("Guardado correcto", (string)data.mensaje, "La modificación no se completó correctamente.");
+            }
+            catch (JsonReaderException)
+            {
+                Assert.Fail("El contenido devuelto no es un JSON válido.");
+            }
+        }
+
+
+
 
 
 
