@@ -79,6 +79,19 @@ namespace API_Grupos.Controllers
             public string token { get; set; }
         }
 
+        private string crearNombreGrupo()
+        {
+            string nombre = "";
+            string caracteres = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
+            Random rnd = new Random();
+            for (int i = 0; i < 8; i++)
+            {
+
+                nombre += caracteres[rnd.Next(0, 61)];
+            }
+            return nombre;
+        }
+
 
         public string connectionString = "Server=localhost; database=infini; uID=root; pwd=;";
 
@@ -466,7 +479,15 @@ namespace API_Grupos.Controllers
                                 string texto = reader["texto"].ToString();
                                 string fechaYHora = reader["fechaYHora"].ToString();
                                 string video = reader["video"].ToString();
-                                string imagen = await CargarImagenDeGitHub(reader["imagen"].ToString());
+                                string imagen;
+                                if (!string.IsNullOrEmpty(reader["imagen"].ToString()))
+                                {
+                                    imagen = await CargarImagenDeGitHub(reader["imagen"].ToString());
+                                }
+                                else
+                                {
+                                    imagen = "";
+                                }
 
                                 var mensaje = new Mensajes
                                 {
@@ -498,7 +519,42 @@ namespace API_Grupos.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return Json("OcurriÃ³ un error al intentar obtener los mensajes del grupo.");
+                    return Json("Ocurrio un error al intentar obtener los mensajes del grupo." + ex);
+                }
+            }
+            else
+            {
+                return Json("Token expirado");
+            }
+        }
+
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("UltimoMensajeDelGrupo")]
+        public dynamic UltimoMensajeDelGrupo([FromBody] Mensajes groupData)
+        {
+            if (TestToken(groupData.token))
+            {
+                try
+                {
+                    using (MySqlConnection conn = new MySqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand(@"SELECT idMensaje FROM Mensajes WHERE nombreReal = @nombreReal ORDER BY idMensaje DESC LIMIT 1", conn);
+                        cmd.Parameters.AddWithValue("@nombreReal", groupData.nombreReal);
+                        MySqlDataReader reader = cmd.ExecuteReader();
+                        if (reader.Read())
+                        {
+                            return Json(reader["idMensaje"].ToString());
+                        }
+                        else
+                        {
+                            return Json("no hay mensajes");
+                        }
+                    }
+                }
+                catch
+                {
+                    return Json("hubo un error");
                 }
             }
             else
@@ -649,12 +705,6 @@ namespace API_Grupos.Controllers
             if (TestToken(mensajeData.token))
             {
                 string linkImagen = null;
-                Console.WriteLine($"nombreReal: {mensajeData.nombreReal}");
-                Console.WriteLine($"nombreDeCuenta: {mensajeData.nombreDeCuenta}");
-                Console.WriteLine($"fechaYHora: {mensajeData.fechaYHora}");
-                Console.WriteLine($"texto: {mensajeData.texto}");
-                Console.WriteLine($"imagen: {mensajeData.imagen}");
-
                 if (string.IsNullOrEmpty(mensajeData.idMensaje))
                 {
                     return Json("Datos insuficientes");
@@ -672,7 +722,8 @@ namespace API_Grupos.Controllers
                             cmd.ExecuteNonQuery();
                             conn.Close();
                             return Json("Se actualizó el mensaje correctamente");
-                        }else
+                        }
+                    else
                     if (!string.IsNullOrEmpty(mensajeData.texto) && !string.IsNullOrEmpty(mensajeData.video))
                         using (MySqlConnection conn = new MySqlConnection(connectionString))
                         {
@@ -686,7 +737,8 @@ namespace API_Grupos.Controllers
                             cmd.ExecuteNonQuery();
                             conn.Close();
                             return Json("Se actualizó el mensaje correctamente");
-                        }else
+                        }
+                    else
                     if (!string.IsNullOrEmpty(mensajeData.texto))
                         using (MySqlConnection conn = new MySqlConnection(connectionString))
                         {
@@ -697,7 +749,8 @@ namespace API_Grupos.Controllers
                             cmd.ExecuteNonQuery();
                             conn.Close();
                             return Json("Se actualizó el mensaje correctamente");
-                        }else
+                        }
+                    else
                     if (!string.IsNullOrEmpty(mensajeData.imagen))
                         using (MySqlConnection conn = new MySqlConnection(connectionString))
                         {
@@ -708,7 +761,8 @@ namespace API_Grupos.Controllers
                             cmd.ExecuteNonQuery();
                             conn.Close();
                             return Json("Se actualizó el mensaje correctamente");
-                        }else
+                        }
+                    else
                     if (!string.IsNullOrEmpty(mensajeData.video))
                         using (MySqlConnection conn = new MySqlConnection(connectionString))
                         {
@@ -765,7 +819,7 @@ namespace API_Grupos.Controllers
                 return Json("Token expirado");
             }
         }
-        
+
 
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("ObtenerGruposPorUsuario")]
@@ -782,14 +836,10 @@ namespace API_Grupos.Controllers
                         conn.Open();
 
                         MySqlCommand cmd = new MySqlCommand(@"
-                SELECT g.nombreReal, g.nombreVisible, g.configuracion, g.descripcion, g.foto
-                FROM Grupos g
-                JOIN Participa ug ON g.nombreReal = ug.nombreReal
-                WHERE ug.nombreDeCuenta = @nombreDeCuenta", conn);
+                SELECT g.nombreReal, g.nombreVisible, g.configuracion, g.descripcion, g.foto, p.rol FROM Grupos g JOIN Participa p ON g.nombreReal = p.nombreReal LEFT JOIN (SELECT nombreReal, MAX(fechaYHora) AS ultimaFecha FROM Mensajes GROUP BY nombreReal) m ON g.nombreReal = m.nombreReal WHERE p.nombreDeCuenta = @nombreDeCuenta AND p.rol != 'solicitante' ORDER BY m.ultimaFecha DESC", conn);
 
                         cmd.Parameters.AddWithValue("@nombreDeCuenta", groupData.nombreDeCuenta);
                         MySqlDataReader reader = cmd.ExecuteReader();
-
                         while (reader.Read())
                         {
                             GrupoResponse grupo = new GrupoResponse
@@ -798,6 +848,7 @@ namespace API_Grupos.Controllers
                                 nombreVisible = reader["nombreVisible"].ToString(),
                                 configuracion = reader["configuracion"].ToString(),
                                 descripcion = reader["descripcion"].ToString(),
+                                rol = reader["rol"].ToString(),
                                 foto = await CargarImagenDeGitHub(reader["foto"].ToString())
                             };
                             grupos.Add(grupo);
@@ -818,7 +869,7 @@ namespace API_Grupos.Controllers
                 return Json("Token expirado");
             }
         }
-        
+
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("AgregarUsuarioAGrupo")]
         public async Task<IHttpActionResult> AgregarUsuarioAGrupo([FromBody] Grupo groupData)
@@ -839,7 +890,6 @@ namespace API_Grupos.Controllers
                             await cmd.ExecuteNonQueryAsync();
                         }
                     }
-
                     return Json("Usuario agregado al grupo");
                 }
                 catch (Exception ex)
@@ -852,7 +902,6 @@ namespace API_Grupos.Controllers
                 return Json("Token expirado");
             }
         }
-
 
         [System.Web.Http.HttpPost]
         [System.Web.Http.Route("EnviarSolicitudParaUnirseAlGrupo")]
@@ -870,7 +919,7 @@ namespace API_Grupos.Controllers
                         {
                             cmd.Parameters.AddWithValue("@nombreUsuario", groupData.nombreDeCuenta);
                             cmd.Parameters.AddWithValue("@nombreGrupo", groupData.nombreReal);
-                            cmd.Parameters.AddWithValue("@rol", "solicitante");
+                            cmd.Parameters.AddWithValue("@rol", groupData.rol);
                             await cmd.ExecuteNonQueryAsync();
                         }
                     }
@@ -935,19 +984,6 @@ namespace API_Grupos.Controllers
             }
         }
 
-        private string crearNombreGrupo()
-        {
-            string nombre = "";
-            string caracteres = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
-            Random rnd = new Random();
-            for (int i = 0; i < 8; i++)
-            {
-
-                nombre += caracteres[rnd.Next(0, 61)];
-            }
-            return nombre;
-        }
-
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("BuscarGrupos")]
         public async Task<dynamic> BuscarGrupos([FromBody] Grupo grupo)
@@ -995,7 +1031,7 @@ namespace API_Grupos.Controllers
 
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("ConseguirPostsDeGrupo")]
-        public dynamic ConseguirPostsDeGrupo([FromBody] Grupo grupo)
+        public async Task<dynamic> ConseguirPostsDeGrupo([FromBody] Grupo grupo)
         {
             try
             {
@@ -1003,13 +1039,44 @@ namespace API_Grupos.Controllers
                 {
                     MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                     conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT idPost FROM PostGrupo WHERE nombreReal=@nombre", conn);
-                    cmd.Parameters.AddWithValue("@nombre", grupo.nombreReal);
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
+                    MySqlCommand cmd = new MySqlCommand("SELECT p.idPost, p.texto, p.imagen, p.video, p.fechaYhora, u.foto, u.nombreVisible, p.nombreDeCuenta FROM PostGrupo pg JOIN Posts p ON pg.idPost = p.idPost AND pg.nombreDeCuenta = p.nombreDeCuenta JOIN Usuarios u ON p.nombreDeCuenta = u.nombreDeCuenta WHERE pg.nombreReal = @nombreReal ORDER BY p.idPost DESC", conn);
+                    cmd.Parameters.AddWithValue("@nombreReal", grupo.nombreReal);
+                    List<dynamic> posts = new List<dynamic>();
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        if (!string.IsNullOrEmpty(reader["imagen"].ToString()))
+                        {
+                            var posteo = new
+                            {
+                                idPost = reader["idPost"].ToString(),
+                                nombreDeCuenta = reader["nombreDeCuenta"].ToString(),
+                                nombreVisible = reader["nombreVisible"].ToString(),
+                                texto = reader["texto"].ToString(),
+                                video = reader["video"].ToString(),
+                                fechaYhora = reader["fechaYhora"].ToString(),
+                                imagen = await CargarImagenDeGitHub(reader["imagen"].ToString()),
+                                fotoUsuario = await CargarImagenDeGitHub(reader["foto"].ToString()),
+                            };
+                            posts.Add(posteo);
+                        }
+                        else
+                        {
+                            var posteo = new
+                            {
+                                idPost = reader["idPost"].ToString(),
+                                nombreDeCuenta = reader["nombreDeCuenta"].ToString(),
+                                nombreVisible = reader["nombreVisible"].ToString(),
+                                texto = reader["texto"].ToString(),
+                                video = reader["video"].ToString(),
+                                fechaYhora = reader["fechaYhora"].ToString(),
+                                fotoUsuario = await CargarImagenDeGitHub(reader["foto"].ToString()),
+                            };
+                            posts.Add(posteo);
+                        }
+                    }
                     conn.Close();
-                    return Json(dataTable);
+                    return Json(posts);
                 }
                 else
                 {
@@ -1021,6 +1088,7 @@ namespace API_Grupos.Controllers
                 return Json("Hubo un error");
             }
         }
+
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("ParticipaDelGrupo")]
         public dynamic ParticipaDelGrupo([FromBody] Grupo grupo)
@@ -1090,6 +1158,7 @@ namespace API_Grupos.Controllers
                 return Json("Hubo un error" + ex.Message);
             }
         }
+
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("ObtenerUsuariosDelGrupo")]
         public async Task<IHttpActionResult> ObtenerUsuariosDelGrupo([FromBody] Grupo groupData)
@@ -1142,7 +1211,7 @@ namespace API_Grupos.Controllers
 
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("EsChatPrivado")]
-        public async Task<IHttpActionResult> EsChatPrivado([FromBody] Grupo grupo)
+        public dynamic EsChatPrivado([FromBody] Grupo grupo)
         {
             try
             {
@@ -1155,12 +1224,8 @@ namespace API_Grupos.Controllers
                     MySqlDataReader reader = cmd.ExecuteReader();
                     if (reader.Read())
                     {
-                        var datos = new ChatPrivado
-                        {
-                            nombreDeCuenta1 = reader["usuario1"].ToString(),
-                            nombreDeCuenta2 = reader["usuario2"].ToString(),
-                            nombreReal = reader["grupo"].ToString() 
-                        };
+                        var datos = new ChatPrivado { nombreDeCuenta1 = reader["usuario1"].ToString(), nombreDeCuenta2 = reader["usuario2"].ToString() };
+                        conn.Close();
                         return Json(datos);
                     }
                     else
@@ -1215,10 +1280,5 @@ namespace API_Grupos.Controllers
                 return Json(ex.Message);
             }
         }
-
-
-
-
-
     }
 }
