@@ -17,19 +17,40 @@ namespace Frontend
         private string token;
         private string user;
         private string nombreGrupo;
+        private string modo;
         public event EventHandler<PersonalizedArgs> AbrirUsuario;
         public event EventHandler<PersonalizedArgs> AbrirEvento;
-        public Busqueda(string user,string token, string nombreGrupo="")
+        public Busqueda(string user,string token, string nombreGrupo="", string modo="")
         {
             this.token = token;
             this.user = user;
             this.nombreGrupo = nombreGrupo;
+            this.modo = modo;
             InitializeComponent();
             this.pnlOpciones.Visible = false;
             this.Size= new Size(1012, 342);
             pnlUsuario.Click += new EventHandler(pnlUsuario_Click);
             pnlGrupo.Click += new EventHandler(pnlGrupo_Click);
             pnlEvento.Click += new EventHandler(pnlEvento_Click);
+            if (modo.Equals("Oscuro"))
+            {
+                this.BackColor= Color.FromArgb(45, 45, 45);
+                pnlEvento.BackColor= Color.FromArgb(50, 50, 50);
+                pnlGrupo.BackColor = Color.FromArgb(50, 50, 50);
+                pnlUsuario.BackColor = Color.FromArgb(50, 50, 50);
+                pnlOpciones.BackColor = Color.FromArgb(40, 40, 40);
+                pnlMostrar.BackColor= Color.FromArgb(50, 50, 50);
+                label1.ForeColor = Color.White;
+                label2.ForeColor = Color.White;
+                label3.ForeColor = Color.White;
+                pictureBox3.Image = Frontend.Properties.Resources.User_negro;
+                pictureBox4.Image = Frontend.Properties.Resources.Comunidad_Claro;
+                pictureBox5.Image = Frontend.Properties.Resources.eventosBlanco;
+                btnOpciones.Image = Frontend.Properties.Resources.mas_opciones_claro_relleno;
+                btnBuscar.Image = Frontend.Properties.Resources.lupaBlanca;
+                txtBusqueda.ForeColor = Color.White;
+                txtBusqueda.BackColor= Color.FromArgb(50, 50, 50);
+            }
             if (!string.IsNullOrEmpty(nombreGrupo))
             {
                 this.Controls.Remove(pnlOpciones);
@@ -136,7 +157,7 @@ namespace Frontend
                             pnlMostrar.Controls.Clear();
                             foreach (dynamic usuario in respuesta)
                             {
-                                var usercontrol = new Grupo_EventoParaListar(user, token, usuariobuscar: usuario, busqueda:true);
+                                var usercontrol = new Grupo_EventoParaListar(user, token, usuariobuscar: usuario, busqueda:true, modo:modo);
                                 usercontrol.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
                                 if (pnlMostrar.Controls.Count > 0)
                                 {
@@ -183,7 +204,7 @@ namespace Frontend
                                 pnlMostrar.Controls.Clear();
                                 foreach (dynamic grupo in respuesta2)
                                 {
-                                var groupcontrol = new Grupo_EventoParaListar(user, token, grupo, busqueda:true);
+                                var groupcontrol = new Grupo_EventoParaListar(user, token, grupo, busqueda:true,modo:modo);
                                     if (pnlMostrar.Controls.Count > 0)
                                     {
                                         var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];
@@ -209,7 +230,7 @@ namespace Frontend
                         pnlMostrar.Controls.Clear();
                         foreach (dynamic evento in respuesta3)
                         {
-                            var eventControl = new Grupo_EventoParaListar("", token, evento: evento, busqueda:true) ;
+                            var eventControl = new Grupo_EventoParaListar("", token, evento: evento, busqueda: true, modo:modo) ;
                             eventControl.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
                             if (pnlMostrar.Controls.Count > 0)
                             {
@@ -238,21 +259,42 @@ namespace Frontend
         private void pnlUsuario_Click(object sender, EventArgs e)
         {
             tipoDeBusqueda = "usuarios";
-            btnOpciones.Image = Frontend.Properties.Resources.User;
+            if (modo.Equals("Oscuro"))
+            {
+                btnOpciones.Image = Frontend.Properties.Resources.User_negro;
+            }
+            else
+            {
+                btnOpciones.Image = Frontend.Properties.Resources.User;
+            }
             pnlMostrar.Controls.Clear();
             pnlOpciones.Visible = false;
         }
         private void pnlGrupo_Click(object sender, EventArgs e)
         {
             tipoDeBusqueda = "grupos";
-            btnOpciones.Image = Frontend.Properties.Resources.Comunidad;
+            if (modo.Equals("Oscuro"))
+            {
+                btnOpciones.Image = Frontend.Properties.Resources.Comunidad_Claro;
+            }
+            else
+            {
+                btnOpciones.Image = Frontend.Properties.Resources.Comunidad;
+            }
             pnlMostrar.Controls.Clear();
             pnlOpciones.Visible = false;
         }
         private void pnlEvento_Click(object sender, EventArgs e)
         {
             tipoDeBusqueda = "eventos";
-            btnOpciones.Image = Frontend.Properties.Resources.eventos_removebg_preview;
+            if (modo.Equals("Oscuro"))
+            {
+                btnOpciones.Image = Frontend.Properties.Resources.eventosBlanco;
+            }
+            else
+            {
+                btnOpciones.Image = Frontend.Properties.Resources.eventos_removebg_preview;
+            }
             pnlMostrar.Controls.Clear();
             pnlOpciones.Visible = false;
         }

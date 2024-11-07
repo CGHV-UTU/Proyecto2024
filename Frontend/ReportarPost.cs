@@ -21,8 +21,9 @@ namespace Frontend
         private string token;
         private string nombreReal;
         private string usuarioAReportar;
+        private string modo;
         public event EventHandler CerrarVentana;
-        public ReportarPost(string idpost, string user, string token, string idcomentario="", string idEvento="", string nombreRealGrupo="", string usuarioAReportar="")
+        public ReportarPost(string idpost, string user, string token,string modo, string idcomentario="", string idEvento="", string nombreRealGrupo="", string usuarioAReportar="")
         {
             this.idpost = idpost;
             this.idcomentario = idcomentario;
@@ -31,8 +32,19 @@ namespace Frontend
             this.idEvento = idEvento;
             this.nombreReal = nombreRealGrupo;
             this.usuarioAReportar = usuarioAReportar;
+            this.modo = modo;
             InitializeComponent();
             this.BackColor = Color.LightGray;
+            if (modo.Equals("Oscuro"))
+            {
+                lblRazon.ForeColor = Color.White;
+                lblDescripcion.ForeColor = Color.White;
+                txtDescripcion.ForeColor = Color.White;
+                txtDescripcion.BackColor = Color.FromArgb(50, 50, 50);
+                cbxRazon.ForeColor = Color.White;
+                cbxRazon.BackColor = Color.FromArgb(50, 50, 50);
+                this.BackColor = Color.FromArgb(40, 40, 40);
+            }
         }
 
         public static async Task<string> obtenerCreador(int id, string token)

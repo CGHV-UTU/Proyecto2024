@@ -17,12 +17,18 @@ namespace Frontend
         private string idpost;
         private string user;
         private string token;
-        public CreadorComentarios(string nombreCuenta, string idpost, string token)
+        private string modo;
+        public CreadorComentarios(string nombreCuenta, string idpost, string token, string modo)
         {
             this.idpost = idpost;
             this.token = token;
+            this.modo = modo;
             user = nombreCuenta;
             InitializeComponent();
+            if (modo.Equals("Oscuro"))
+            {
+                this.BackColor = Color.FromArgb(40, 40, 40);
+            }
         }
         static async Task Publicar(string NombreDeCuenta, string IdPost, string nombreCreador, string texto, string fechayhora, string token)
         {

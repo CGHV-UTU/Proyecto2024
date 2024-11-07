@@ -164,8 +164,8 @@ namespace Frontend
                         }
                         break;
                     case "evento":
-                        if (string.IsNullOrEmpty(txtNombre.Text) || dtpFechaFinal.Value < DateTime.Now)
-                        {
+                        if (string.IsNullOrEmpty(txtNombre.Text) || dtpFechaFinal.Value < DateTime.Now || dtpFechaFinal.Value<= dtpFechaInicio.Value)
+                    {
                             MessageBox.Show("No puede realizar un evento sin título o fecha", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             break;
                         }

@@ -37,21 +37,30 @@ namespace Frontend
             this.label3 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.lblOlvidarContraseña = new System.Windows.Forms.Label();
+            this.btnIniciarSesion = new System.Windows.Forms.PictureBox();
+            this.btnRegistrar = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pcbxVerContraseña = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.btnIniciarSesion = new System.Windows.Forms.PictureBox();
-            this.btnRegistrar = new System.Windows.Forms.PictureBox();
             pcbxLogo = new System.Windows.Forms.PictureBox();
-            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(pcbxLogo)).BeginInit();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnIniciarSesion)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnRegistrar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcbxVerContraseña)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnIniciarSesion)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnRegistrar)).BeginInit();
             this.SuspendLayout();
+            // 
+            // pcbxLogo
+            // 
+            pcbxLogo.Image = global::Frontend.Properties.Resources.Logo_Infini;
+            pcbxLogo.Location = new System.Drawing.Point(145, 5);
+            pcbxLogo.Name = "pcbxLogo";
+            pcbxLogo.Size = new System.Drawing.Size(218, 146);
+            pcbxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            pcbxLogo.TabIndex = 63;
+            pcbxLogo.TabStop = false;
             // 
             // panel1
             // 
@@ -112,7 +121,6 @@ namespace Frontend
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Controls.Add(this.lblOlvidarContraseña);
             this.panel3.Controls.Add(this.label3);
             this.panel3.Controls.Add(this.btnIniciarSesion);
             this.panel3.Controls.Add(this.btnRegistrar);
@@ -121,28 +129,29 @@ namespace Frontend
             this.panel3.Size = new System.Drawing.Size(460, 428);
             this.panel3.TabIndex = 62;
             // 
-            // lblOlvidarContraseña
+            // btnIniciarSesion
             // 
-            this.lblOlvidarContraseña.AutoSize = true;
-            this.lblOlvidarContraseña.BackColor = System.Drawing.Color.White;
-            this.lblOlvidarContraseña.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblOlvidarContraseña.ForeColor = System.Drawing.Color.RoyalBlue;
-            this.lblOlvidarContraseña.Location = new System.Drawing.Point(58, 176);
-            this.lblOlvidarContraseña.Name = "lblOlvidarContraseña";
-            this.lblOlvidarContraseña.Size = new System.Drawing.Size(179, 18);
-            this.lblOlvidarContraseña.TabIndex = 59;
-            this.lblOlvidarContraseña.Text = "¿Olvidaste tu contraseña?";
-            this.lblOlvidarContraseña.Click += new System.EventHandler(this.lblOlvidarContraseña_Click);
+            this.btnIniciarSesion.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnIniciarSesion.Image = global::Frontend.Properties.Resources.IniciarSesion;
+            this.btnIniciarSesion.Location = new System.Drawing.Point(156, 213);
+            this.btnIniciarSesion.Name = "btnIniciarSesion";
+            this.btnIniciarSesion.Size = new System.Drawing.Size(148, 54);
+            this.btnIniciarSesion.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnIniciarSesion.TabIndex = 57;
+            this.btnIniciarSesion.TabStop = false;
+            this.btnIniciarSesion.Click += new System.EventHandler(this.btnIniciarSesion_Click_1);
             // 
-            // pcbxLogo
+            // btnRegistrar
             // 
-            pcbxLogo.Image = global::Frontend.Properties.Resources.Logo_Infini;
-            pcbxLogo.Location = new System.Drawing.Point(145, 5);
-            pcbxLogo.Name = "pcbxLogo";
-            pcbxLogo.Size = new System.Drawing.Size(218, 146);
-            pcbxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            pcbxLogo.TabIndex = 63;
-            pcbxLogo.TabStop = false;
+            this.btnRegistrar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRegistrar.Image = global::Frontend.Properties.Resources.Registrarse1;
+            this.btnRegistrar.Location = new System.Drawing.Point(156, 308);
+            this.btnRegistrar.Name = "btnRegistrar";
+            this.btnRegistrar.Size = new System.Drawing.Size(148, 54);
+            this.btnRegistrar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnRegistrar.TabIndex = 58;
+            this.btnRegistrar.TabStop = false;
+            this.btnRegistrar.Click += new System.EventHandler(this.btnRegistrar_Click);
             // 
             // pictureBox3
             // 
@@ -175,30 +184,6 @@ namespace Frontend
             this.pictureBox2.TabIndex = 56;
             this.pictureBox2.TabStop = false;
             // 
-            // btnIniciarSesion
-            // 
-            this.btnIniciarSesion.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnIniciarSesion.Image = global::Frontend.Properties.Resources.IniciarSesion;
-            this.btnIniciarSesion.Location = new System.Drawing.Point(156, 213);
-            this.btnIniciarSesion.Name = "btnIniciarSesion";
-            this.btnIniciarSesion.Size = new System.Drawing.Size(148, 54);
-            this.btnIniciarSesion.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.btnIniciarSesion.TabIndex = 57;
-            this.btnIniciarSesion.TabStop = false;
-            this.btnIniciarSesion.Click += new System.EventHandler(this.btnIniciarSesion_Click_1);
-            // 
-            // btnRegistrar
-            // 
-            this.btnRegistrar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRegistrar.Image = global::Frontend.Properties.Resources.Registrarse1;
-            this.btnRegistrar.Location = new System.Drawing.Point(156, 308);
-            this.btnRegistrar.Name = "btnRegistrar";
-            this.btnRegistrar.Size = new System.Drawing.Size(148, 54);
-            this.btnRegistrar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.btnRegistrar.TabIndex = 58;
-            this.btnRegistrar.TabStop = false;
-            this.btnRegistrar.Click += new System.EventHandler(this.btnRegistrar_Click);
-            // 
             // IniciarSesion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -221,14 +206,14 @@ namespace Frontend
             this.Name = "IniciarSesion";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Iniciar sesión";
+            ((System.ComponentModel.ISupportInitialize)(pcbxLogo)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(pcbxLogo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnIniciarSesion)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnRegistrar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pcbxVerContraseña)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnIniciarSesion)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnRegistrar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -246,6 +231,5 @@ namespace Frontend
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label lblOlvidarContraseña;
     }
 }

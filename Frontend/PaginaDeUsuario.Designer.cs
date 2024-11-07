@@ -41,6 +41,7 @@ namespace Frontend
             this.btnConfirmar = new System.Windows.Forms.PictureBox();
             this.pbxImagenEditar = new System.Windows.Forms.PictureBox();
             this.pbxBloquear = new System.Windows.Forms.PictureBox();
+            this.lblSiguiendo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxChatear)).BeginInit();
@@ -90,7 +91,7 @@ namespace Frontend
             // btnSeguir
             // 
             this.btnSeguir.Image = global::Frontend.Properties.Resources.seguir_removebg_preview;
-            this.btnSeguir.Location = new System.Drawing.Point(138, 87);
+            this.btnSeguir.Location = new System.Drawing.Point(138, 91);
             this.btnSeguir.Name = "btnSeguir";
             this.btnSeguir.Size = new System.Drawing.Size(188, 41);
             this.btnSeguir.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -168,11 +169,24 @@ namespace Frontend
             this.pbxBloquear.TabStop = false;
             this.pbxBloquear.Click += new System.EventHandler(this.pbxBloquear_Click);
             // 
+            // lblSiguiendo
+            // 
+            this.lblSiguiendo.AutoSize = true;
+            this.lblSiguiendo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSiguiendo.Location = new System.Drawing.Point(167, 108);
+            this.lblSiguiendo.Name = "lblSiguiendo";
+            this.lblSiguiendo.Size = new System.Drawing.Size(80, 20);
+            this.lblSiguiendo.TabIndex = 60;
+            this.lblSiguiendo.Text = "Siguiendo";
+            this.lblSiguiendo.Click += new System.EventHandler(this.lblSiguiendo_Click);
+            // 
             // PaginaDeUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(996, 574);
+            this.Controls.Add(this.btnSeguir);
+            this.Controls.Add(this.lblSiguiendo);
             this.Controls.Add(this.pbxBloquear);
             this.Controls.Add(this.pbxImagenEditar);
             this.Controls.Add(this.btnConfirmar);
@@ -180,7 +194,6 @@ namespace Frontend
             this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.pbxReportar);
             this.Controls.Add(this.pbxChatear);
-            this.Controls.Add(this.btnSeguir);
             this.Controls.Add(this.panelPosts);
             this.Controls.Add(this.lblDescripcion);
             this.Controls.Add(this.lblNombre);
@@ -213,5 +226,6 @@ namespace Frontend
         private System.Windows.Forms.PictureBox btnConfirmar;
         private System.Windows.Forms.PictureBox pbxImagenEditar;
         private System.Windows.Forms.PictureBox pbxBloquear;
+        private System.Windows.Forms.Label lblSiguiendo;
     }
 }

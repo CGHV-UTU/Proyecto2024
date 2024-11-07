@@ -113,7 +113,7 @@ namespace Frontend
             // 
             this.PictureBoxSalir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PictureBoxSalir.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PictureBoxSalir.Image = global::Frontend.Properties.Resources.salir;
+            this.PictureBoxSalir.Image = global::Frontend.Properties.Resources.salirBlanco;
             this.PictureBoxSalir.Location = new System.Drawing.Point(1146, 59);
             this.PictureBoxSalir.Name = "PictureBoxSalir";
             this.PictureBoxSalir.Size = new System.Drawing.Size(50, 50);

@@ -34,7 +34,7 @@ namespace Frontend
             PanelMostrarUsuario.Visible = false;
             panelBusqueda.Visible = false;
             cargarLaImagen();
-            notis = new Notificaciones(user, token);
+            notis = new Notificaciones(user, token, "Claro");
             notis.TopLevel = false;
             notis.FormBorderStyle = FormBorderStyle.None;
             notis.BackColor = Color.LightGray;
@@ -43,6 +43,8 @@ namespace Frontend
             PanelNotificaciones.BringToFront();
             PanelNotificaciones.Parent = this;
             notis.NuevasNotificaciones += Notis_NuevasNotificaciones;
+            this.MinimumSize = new Size(1280, 720);
+            this.MaximumSize= new Size(1920, 1080);
         }
 
         private async void cargarLaImagen()
@@ -96,7 +98,17 @@ namespace Frontend
 
         private void PictureBoxNotificaciones_Click(object sender, EventArgs e)
         {
-            PictureBoxNotificaciones.Image = Frontend.Properties.Resources.campana;
+            if (modo.Equals("Oscuro"))
+            {
+                notis.BackColor = Color.FromArgb(40, 40, 40);
+                notis.modo="Oscuro";
+                notis.aplicarModoOscuro();
+            }
+            if (idioma.Equals("English"))
+            {
+                notis.idioma="English";
+            }
+            PictureBoxNotificaciones.Image = Frontend.Properties.Resources.campana_clara_removebg_preview;
             this.PanelNotificaciones.AutoScroll = true;
             if (!PanelNotificaciones.Visible)
             {
@@ -126,7 +138,7 @@ namespace Frontend
             {
                 BackColor = Color.FromArgb(20, 20, 20);
                 post.BackColor = Color.FromArgb(40, 40, 40);
-               
+                PictureBoxSalir.Image = Frontend.Properties.Resources.salirBlanco;
             }
             else
             {
@@ -183,10 +195,9 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            ReportarPost post = new ReportarPost("", user, token,usuarioAReportar:Convert.ToString(e.arg));
+            ReportarPost post = new ReportarPost("", user, token,modo,usuarioAReportar:Convert.ToString(e.arg));
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
-            post.BackColor = Color.LightGray;
             post.Dock = DockStyle.Fill;
             post.CerrarVentana += Reporte_CerrarVentana;
             PanelPostear.Controls.Add(post);
@@ -209,7 +220,6 @@ namespace Frontend
             Comunidad comunidad = new Comunidad(modo, user, token, Convert.ToString(e.arg));
             comunidad.TopLevel = false;
             comunidad.FormBorderStyle = FormBorderStyle.None;
-            comunidad.BackColor = Color.LightGray;
             comunidad.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
             PanelMostrarUsuario.Controls.Add(comunidad);
@@ -223,24 +233,30 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            ReportarPost post = new ReportarPost(idpost, user, token, idcomentario);
+            ReportarPost post = new ReportarPost(idpost, user, token, modo,idcomentario:idcomentario);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
-            post.BackColor = Color.LightGray;
             post.Dock = DockStyle.Fill;
             post.CerrarVentana += Reporte_CerrarVentana;
             // post.BackColor = Color.FromArgb(34, 67, 220);
             PanelPostear.Controls.Add(post);
             post.Show();
         }
-        private async void VerComentarios(string idpost)
+        private void VerComentarios(string idpost)
         {
-            string config = await conseguirConfig(user, token);
-            string[] configure = config.Split(';');
-            Comentarios comentario = new Comentarios(configure[0],idpost,user, token);
+            PanelComentarios.Controls.Clear();
+            Comentarios comentario = new Comentarios(modo,idpost,user, token);
             comentario.TopLevel = false;
             comentario.FormBorderStyle = FormBorderStyle.None;
-            comentario.BackColor = Color.LightGray;
+            if (modo.Equals("Oscuro")) 
+            {
+                comentario.BackColor = Color.FromArgb(40, 40, 40);
+                PanelComentarios.BackColor = Color.FromArgb(40, 40, 40);
+            }
+            else
+            {
+                comentario.BackColor = Color.LightGray;
+            }
             comentario.Dock = DockStyle.Fill;
             comentario.ReportarComentario += CommentControl_ReportarComentario;
             comentario.AbrirPaginaDelUsuario += PostControl_AbrirPaginaUsuario;
@@ -308,10 +324,9 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            Configuracion config = new Configuracion(user, token);
+            Configuracion config = new Configuracion(user, token,modo);
             config.TopLevel = false;
             config.FormBorderStyle = FormBorderStyle.None;
-            config.BackColor = Color.LightGray;
             config.Dock = DockStyle.Fill;
             config.CambiarModo += CambiarModo;
             PanelPostear.Controls.Add(config);
@@ -396,7 +411,6 @@ namespace Frontend
             Comunidad comunidad = new Comunidad(modo, user, token);
             comunidad.TopLevel = false;
             comunidad.FormBorderStyle = FormBorderStyle.None;
-            comunidad.BackColor = Color.LightGray;
             comunidad.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
             comunidad.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
@@ -415,7 +429,6 @@ namespace Frontend
             EventoComunidad comunidad = new EventoComunidad(e.arg, user, token, modo);
             comunidad.TopLevel = false;
             comunidad.FormBorderStyle = FormBorderStyle.None;
-            comunidad.BackColor = Color.LightGray;
             comunidad.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
             //comunidad.BackColor = Color.FromArgb(34, 67, 220);
@@ -436,10 +449,9 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            ReportarPost post = new ReportarPost("", user, token,idEvento:Convert.ToString(e.arg));
+            ReportarPost post = new ReportarPost("", user, token, modo,idEvento: Convert.ToString(e.arg));
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
-            post.BackColor = Color.LightGray;
             post.Dock = DockStyle.Fill;
             post.CerrarVentana += Reporte_CerrarVentana;
             PanelPostear.Controls.Add(post);
@@ -463,10 +475,9 @@ namespace Frontend
             {
                 esChatPrivado = false;
             }
-            GruposComunidad comunidad = new GruposComunidad(e.arg, user, token,esChatPrivado);
+            GruposComunidad comunidad = new GruposComunidad(e.arg, user, token,esChatPrivado, modo:modo);
             comunidad.TopLevel = false;
             comunidad.FormBorderStyle = FormBorderStyle.None;
-            comunidad.BackColor = Color.LightGray;
             comunidad.Dock = DockStyle.Fill;
             PanelMostrarUsuario.BackColor = Color.LightGray;
             comunidad.TieneConfiguraciones();
@@ -485,14 +496,21 @@ namespace Frontend
             panelBusqueda.Visible = true;
             PanelMostrarUsuario.Parent = this;
             PanelMostrarUsuario.Location = PanelPosts.Location;
-            Busqueda busqueda = new Busqueda(user, token, Convert.ToString(e.arg));
+            Busqueda busqueda = new Busqueda(user, token, Convert.ToString(e.arg),modo:modo);
             busqueda.TopLevel = false;
             busqueda.FormBorderStyle = FormBorderStyle.None;
-            busqueda.BackColor = Color.LightGray;
             busqueda.Dock = DockStyle.Fill;
             busqueda.AbrirUsuario += PostControl_AbrirPaginaUsuario;
             busqueda.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
-            panelBusqueda.BackColor = Color.LightGray;
+            if (modo.Equals("Oscuro"))
+            {
+                panelBusqueda.BackColor = Color.FromArgb(40, 40, 40);
+            }
+            else
+            {
+                panelBusqueda.BackColor = Color.LightGray;
+            }
+            
             panelBusqueda.Controls.Add(busqueda);
             busqueda.Show();
         }
@@ -504,10 +522,9 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            ReportarPost post = new ReportarPost("", user, token, nombreRealGrupo: Convert.ToString(e.arg));
+            ReportarPost post = new ReportarPost("", user, token, modo, nombreRealGrupo: Convert.ToString(e.arg));
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
-            post.BackColor = Color.LightGray;
             post.Dock = DockStyle.Fill;
             post.CerrarVentana += Reporte_CerrarVentana;
             PanelPostear.Controls.Add(post);
@@ -526,14 +543,20 @@ namespace Frontend
                 panelBusqueda.Visible = true;
                 PanelMostrarUsuario.Parent = this;
                 PanelMostrarUsuario.Location = PanelPosts.Location;
-                Busqueda busqueda = new Busqueda(user, token);
+                Busqueda busqueda = new Busqueda(user, token,modo:modo);
                 busqueda.TopLevel = false;
                 busqueda.FormBorderStyle = FormBorderStyle.None;
-                busqueda.BackColor = Color.LightGray;
                 busqueda.Dock = DockStyle.Fill;
                 busqueda.AbrirUsuario += PostControl_AbrirPaginaUsuario;
                 busqueda.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
-                panelBusqueda.BackColor = Color.LightGray;
+                if (modo.Equals("Oscuro"))
+                {
+                    panelBusqueda.BackColor = Color.FromArgb(45, 45, 45);
+                }
+                else
+                {
+                    panelBusqueda.BackColor = Color.LightGray;
+                }
                 panelBusqueda.Controls.Add(busqueda);
                 busqueda.Show();
             }

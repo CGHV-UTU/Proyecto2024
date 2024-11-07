@@ -313,7 +313,7 @@ namespace Frontend
             }
         }
 
-        private async Task HandleLikeClick()
+        private void HandleLikeClick()
         {
             if (modo.Equals("Oscuro"))
             {
@@ -564,6 +564,11 @@ namespace Frontend
                 this.txtUrl.ForeColor = Color.White;
                 this.txtDescripcion.ForeColor = Color.White;
                 this.lblNombre.ForeColor = Color.White;
+                this.lblFechaYhora.ForeColor = Color.White;
+                if (this.creador.Equals(user))
+                {
+                    this.PictureBoxEditar.Image = Frontend.Properties.Resources.editarClaro;
+                }
             }
             else
             {
@@ -602,6 +607,10 @@ namespace Frontend
                 this.btnReportar.Click += btnReportar_Click;
                 this.btnReportar.Text = "Reportar";
                 this.btnReportar.BringToFront();
+                if (modo.Equals("Oscuro"))
+                {
+                    btnReportar.ForeColor = Color.White;
+                }
                 this.Controls.Add(this.btnReportar);
                 if (this.creador.Equals(user))
                 {
@@ -613,6 +622,10 @@ namespace Frontend
                     this.btnEliminar.Click += btnEliminar_Click;
                     this.btnEliminar.BringToFront();
                     this.btnEliminar.Text = "Eliminar";
+                    if (modo.Equals("Oscuro"))
+                    {
+                        btnEliminar.ForeColor = Color.White;
+                    }
                     this.Controls.Add(this.btnEliminar);
                 }
                 opciones = true;
@@ -662,6 +675,10 @@ namespace Frontend
                         this.btnSeleccionarImagen.Image = Frontend.Properties.Resources.Foto;
                         this.btnSeleccionarImagen.Click += btnSeleccionarImagen_Click;
                         this.btnSeleccionarImagen.SizeMode = PictureBoxSizeMode.StretchImage;
+                        if (modo.Equals("Oscuro"))
+                        {
+                            this.btnSeleccionarImagen.Image = Frontend.Properties.Resources.Foto_negra;
+                        }
                         this.Controls.Add(this.btnSeleccionarImagen);
 
                         this.btnConfirmarCambios.Location = new Point(350, imagen.Bottom + 10);

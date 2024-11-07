@@ -61,7 +61,7 @@ namespace Frontend
             this.cbxIdioma.FormattingEnabled = true;
             this.cbxIdioma.Items.AddRange(new object[] {
             "Español",
-            "Inglés"});
+            "English"});
             this.cbxIdioma.Location = new System.Drawing.Point(159, 131);
             this.cbxIdioma.Name = "cbxIdioma";
             this.cbxIdioma.Size = new System.Drawing.Size(121, 21);

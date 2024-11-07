@@ -31,8 +31,8 @@ namespace Frontend
         {
             this.txtDescripcion = new System.Windows.Forms.TextBox();
             this.cbxRazon = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblRazon = new System.Windows.Forms.Label();
+            this.lblDescripcion = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -65,23 +65,23 @@ namespace Frontend
             this.cbxRazon.Size = new System.Drawing.Size(121, 21);
             this.cbxRazon.TabIndex = 1;
             // 
-            // label1
+            // lblRazon
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 44);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Razón";
+            this.lblRazon.AutoSize = true;
+            this.lblRazon.Location = new System.Drawing.Point(13, 44);
+            this.lblRazon.Name = "lblRazon";
+            this.lblRazon.Size = new System.Drawing.Size(38, 13);
+            this.lblRazon.TabIndex = 2;
+            this.lblRazon.Text = "Razón";
             // 
-            // label2
+            // lblDescripcion
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 88);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Descripción";
+            this.lblDescripcion.AutoSize = true;
+            this.lblDescripcion.Location = new System.Drawing.Point(9, 88);
+            this.lblDescripcion.Name = "lblDescripcion";
+            this.lblDescripcion.Size = new System.Drawing.Size(63, 13);
+            this.lblDescripcion.TabIndex = 3;
+            this.lblDescripcion.Text = "Descripción";
             // 
             // pictureBox1
             // 
@@ -101,8 +101,8 @@ namespace Frontend
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(400, 376);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblDescripcion);
+            this.Controls.Add(this.lblRazon);
             this.Controls.Add(this.cbxRazon);
             this.Controls.Add(this.txtDescripcion);
             this.Name = "ReportarPost";
@@ -117,8 +117,8 @@ namespace Frontend
 
         private System.Windows.Forms.TextBox txtDescripcion;
         private System.Windows.Forms.ComboBox cbxRazon;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblRazon;
+        private System.Windows.Forms.Label lblDescripcion;
         private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

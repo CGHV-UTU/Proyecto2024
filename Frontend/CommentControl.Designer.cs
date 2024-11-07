@@ -135,7 +135,7 @@ namespace Frontend
             // PictureBoxReportar
             // 
             this.PictureBoxReportar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.PictureBoxReportar.Image = global::Frontend.Properties.Resources.reportar;
+            this.PictureBoxReportar.Image = global::Frontend.Properties.Resources.reportarBlanco;
             this.PictureBoxReportar.Location = new System.Drawing.Point(410, 109);
             this.PictureBoxReportar.Name = "PictureBoxReportar";
             this.PictureBoxReportar.Size = new System.Drawing.Size(50, 50);

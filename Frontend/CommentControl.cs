@@ -20,6 +20,7 @@ namespace Frontend
         private int idcomentario;
         private string token;
         private dynamic commentData;
+        private string modo;
         public event EventHandler<PersonalizedArgs> ReportarComentario;
         public event EventHandler<PersonalizedArgs> AbrirPaginaDelUsuario;
         public CommentControl(string modo,string idpost, dynamic commentData,string user, string token)
@@ -29,52 +30,12 @@ namespace Frontend
             this.idcomentario = int.Parse(Convert.ToString(commentData.id));
             this.user = user;
             this.token = token;
+            this.modo = modo;
             InitializeComponent();
             Iniciar();
             txtBox.ReadOnly = true;
             AjustarTamaño();
             aplicarDatos();
-        }
-        static async Task<string[]> BuscarComentario(int id, string token)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    var datos = new { id=id, token=token};
-                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/conseguirComentario",content);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody);
-                    return new string[] { data.NombreDeCuenta, data.texto, data.fechayhora };
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-        }
-        static async Task<string> conseguirImagenDelCreador(string creador, string token)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    var dato = new { nombreDeCuenta = creador, token=token};
-                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44383/user/obtenerImagenUsuario", content);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic imagen = JsonConvert.DeserializeObject(responseBody);
-                    return imagen;
-                }
-                catch
-                {
-                    MessageBox.Show("Error de conexión");
-                    return "error";
-                }
-            }
         }
         static async Task<string> darLike(string NombreDeCuenta, int Id, string nombreCreador, string token)
         {
@@ -139,27 +100,6 @@ namespace Frontend
             }
         }
 
-        public static async Task<string> obtenerCreador(int id, string token)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    var dato = new { id = id, token=token};
-                    var content = new StringContent(JsonConvert.SerializeObject(dato), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync("https://localhost:44340/conseguirCreador", content);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseBody);
-                    return data;
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-        }
-
         private void AjustarTamaño()
         {
             txtBox.Size = new Size(this.Width - 70, this.Height - 65);
@@ -190,6 +130,20 @@ namespace Frontend
             redondearPictureBox(bitmap);
             string[] fecha = Convert.ToString(commentData.fechaYhora).Split(' ');
             this.lblFechaYhora.Text = fecha[0];
+            if (modo.Equals("Oscuro"))
+            {
+                this.BackColor = Color.FromArgb(40, 40, 40);
+                this.lblNombre.ForeColor = Color.White;
+                this.lblFechaYhora.ForeColor = Color.White;
+                this.txtBox.BackColor = Color.FromArgb(40, 40, 40);
+                this.txtBox.ForeColor = Color.White;
+                if (Convert.ToString(commentData.nombreDeCuenta).Equals(user))
+                {
+                    this.PictureBoxMasOpciones.Image = Frontend.Properties.Resources.mas_opciones_claro_relleno;
+                }
+                this.PictureBoxReportar.Image = Frontend.Properties.Resources.reportarBlanco;
+                this.PictureBoxLike.Image = Frontend.Properties.Resources.like_claro;
+            }
             var Like = await dioLike(user, idcomentario, lblNombre.Text, token);
             if (Like)
             {
@@ -214,7 +168,7 @@ namespace Frontend
 
         private async void PictureBoxLike_Click(object sender, EventArgs e)
         {
-            if (!user.Equals(lblNombre.Text))
+            if (!user.Equals(Convert.ToString(commentData.nombreDeCuenta)))
             {
                 if (!isImage1)
                 {
@@ -223,7 +177,6 @@ namespace Frontend
                 else
                 {
                     string respuesta = await darLike(user, idcomentario, lblNombre.Text, token);
-                    MessageBox.Show(respuesta);
                 }
                 HandleLikeClick();
             }
@@ -231,15 +184,31 @@ namespace Frontend
 
         private async Task HandleLikeClick()
         {
-            if (isImage1)
+            if (modo.Equals("Oscuro"))
             {
-                PictureBoxLike.Image = Properties.Resources.Like_Relleno;
-                isImage1 = false;
+                if (isImage1)
+                {
+                    PictureBoxLike.Image = Properties.Resources.like_claro_relleno;
+                    isImage1 = false;
+                }
+                else
+                {
+                    PictureBoxLike.Image = Properties.Resources.like_claro;
+                    isImage1 = true;
+                }
             }
             else
             {
-                PictureBoxLike.Image = Properties.Resources.like_infini;
-                isImage1 = true;
+                if (isImage1)
+                {
+                    PictureBoxLike.Image = Properties.Resources.Like_Relleno;
+                    isImage1 = false;
+                }
+                else
+                {
+                    PictureBoxLike.Image = Properties.Resources.like_infini;
+                    isImage1 = true;
+                }
             }
         }
 
@@ -335,7 +304,6 @@ namespace Frontend
                 this.btnEditar.Click += btnEditar_Click;
                 this.btnEditar.Text = "Editar";
                 this.btnEditar.BringToFront();
-                this.Controls.Add(this.btnEditar);
 
                 this.btnEliminar = new Label();
                 this.btnEliminar.Location = new System.Drawing.Point(360, 25);
@@ -345,6 +313,12 @@ namespace Frontend
                 this.btnEliminar.Click += btnEliminar_Click;
                 this.btnEliminar.Text = "Eliminar";
                 this.btnEliminar.BringToFront();
+                if (modo.Equals("Oscuro"))
+                {
+                    this.btnEditar.ForeColor = Color.White;
+                    this.btnEliminar.ForeColor = Color.White;
+                }
+                this.Controls.Add(this.btnEditar);
                 this.Controls.Add(this.btnEliminar);
                 opciones = true;
             }

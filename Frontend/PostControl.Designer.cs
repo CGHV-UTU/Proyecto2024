@@ -32,33 +32,33 @@ namespace Frontend
             this.lblNombre = new System.Windows.Forms.Label();
             this.txtDescripcion = new System.Windows.Forms.Label();
             this.txtUrl = new System.Windows.Forms.Label();
+            this.txtDescripcionEditar = new System.Windows.Forms.TextBox();
+            this.txtUrlEditar = new System.Windows.Forms.TextBox();
+            this.btnEliminar = new System.Windows.Forms.Label();
+            this.btnReportar = new System.Windows.Forms.Label();
+            this.lblFechaYhora = new System.Windows.Forms.Label();
+            this.lblLikes = new System.Windows.Forms.Label();
+            this.pnlGrupos = new System.Windows.Forms.Panel();
+            this.btnSeleccionarImagen = new System.Windows.Forms.PictureBox();
+            this.btnConfirmarCambios = new System.Windows.Forms.PictureBox();
             this.PictureBoxEditar = new System.Windows.Forms.PictureBox();
             this.PictureBoxOpcionesPost = new System.Windows.Forms.PictureBox();
             this.PictureBoxCompartir = new System.Windows.Forms.PictureBox();
             this.PictureBoxComentarios = new System.Windows.Forms.PictureBox();
             this.PictureBoxLike = new System.Windows.Forms.PictureBox();
             this.PictureBoxUsuarioPost = new System.Windows.Forms.PictureBox();
-            this.imagen = new System.Windows.Forms.PictureBox();
-            this.txtDescripcionEditar = new System.Windows.Forms.TextBox();
-            this.txtUrlEditar = new System.Windows.Forms.TextBox();
-            this.btnConfirmarCambios = new System.Windows.Forms.PictureBox();
-            this.btnSeleccionarImagen = new System.Windows.Forms.PictureBox();
             this.imagenEditar = new System.Windows.Forms.PictureBox();
-            this.btnEliminar = new System.Windows.Forms.Label();
-            this.btnReportar = new System.Windows.Forms.Label();
-            this.lblFechaYhora = new System.Windows.Forms.Label();
-            this.lblLikes = new System.Windows.Forms.Label();
-            this.pnlGrupos = new System.Windows.Forms.Panel();
+            this.imagen = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.btnSeleccionarImagen)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnConfirmarCambios)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxEditar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOpcionesPost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCompartir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxComentarios)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxLike)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuarioPost)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.imagen)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnConfirmarCambios)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnSeleccionarImagen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imagenEditar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imagen)).BeginInit();
             this.SuspendLayout();
             // 
             // lblNombre
@@ -87,6 +87,91 @@ namespace Frontend
             this.txtUrl.Size = new System.Drawing.Size(44, 13);
             this.txtUrl.TabIndex = 32;
             this.txtUrl.Text = "Nombre";
+            // 
+            // txtDescripcionEditar
+            // 
+            this.txtDescripcionEditar.Location = new System.Drawing.Point(194, 74);
+            this.txtDescripcionEditar.Name = "txtDescripcionEditar";
+            this.txtDescripcionEditar.Size = new System.Drawing.Size(520, 20);
+            this.txtDescripcionEditar.TabIndex = 34;
+            // 
+            // txtUrlEditar
+            // 
+            this.txtUrlEditar.Location = new System.Drawing.Point(199, 13);
+            this.txtUrlEditar.Name = "txtUrlEditar";
+            this.txtUrlEditar.Size = new System.Drawing.Size(520, 20);
+            this.txtUrlEditar.TabIndex = 35;
+            // 
+            // btnEliminar
+            // 
+            this.btnEliminar.AutoSize = true;
+            this.btnEliminar.Location = new System.Drawing.Point(666, 453);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(43, 13);
+            this.btnEliminar.TabIndex = 41;
+            this.btnEliminar.Text = "Eliminar";
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+            // 
+            // btnReportar
+            // 
+            this.btnReportar.AutoSize = true;
+            this.btnReportar.Location = new System.Drawing.Point(666, 475);
+            this.btnReportar.Name = "btnReportar";
+            this.btnReportar.Size = new System.Drawing.Size(48, 13);
+            this.btnReportar.TabIndex = 41;
+            this.btnReportar.Text = "Reportar";
+            this.btnReportar.Click += new System.EventHandler(this.btnReportar_Click);
+            // 
+            // lblFechaYhora
+            // 
+            this.lblFechaYhora.AutoSize = true;
+            this.lblFechaYhora.Location = new System.Drawing.Point(291, 50);
+            this.lblFechaYhora.Name = "lblFechaYhora";
+            this.lblFechaYhora.Size = new System.Drawing.Size(34, 13);
+            this.lblFechaYhora.TabIndex = 42;
+            this.lblFechaYhora.Text = "fecha";
+            // 
+            // lblLikes
+            // 
+            this.lblLikes.AutoSize = true;
+            this.lblLikes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLikes.Location = new System.Drawing.Point(133, 511);
+            this.lblLikes.Name = "lblLikes";
+            this.lblLikes.Size = new System.Drawing.Size(40, 20);
+            this.lblLikes.TabIndex = 43;
+            this.lblLikes.Text = "likes";
+            // 
+            // pnlGrupos
+            // 
+            this.pnlGrupos.Location = new System.Drawing.Point(236, 138);
+            this.pnlGrupos.Name = "pnlGrupos";
+            this.pnlGrupos.Size = new System.Drawing.Size(45, 33);
+            this.pnlGrupos.TabIndex = 44;
+            // 
+            // btnSeleccionarImagen
+            // 
+            this.btnSeleccionarImagen.Image = global::Frontend.Properties.Resources.Foto;
+            this.btnSeleccionarImagen.Location = new System.Drawing.Point(179, 494);
+            this.btnSeleccionarImagen.Name = "btnSeleccionarImagen";
+            this.btnSeleccionarImagen.Size = new System.Drawing.Size(61, 50);
+            this.btnSeleccionarImagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btnSeleccionarImagen.TabIndex = 38;
+            this.btnSeleccionarImagen.TabStop = false;
+            this.btnSeleccionarImagen.Click += new System.EventHandler(this.btnSeleccionarImagen_Click);
+            // 
+            // btnConfirmarCambios
+            // 
+            this.btnConfirmarCambios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnConfirmarCambios.BackColor = System.Drawing.Color.Transparent;
+            this.btnConfirmarCambios.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnConfirmarCambios.Image = global::Frontend.Properties.Resources.aceptar;
+            this.btnConfirmarCambios.Location = new System.Drawing.Point(355, 494);
+            this.btnConfirmarCambios.Name = "btnConfirmarCambios";
+            this.btnConfirmarCambios.Size = new System.Drawing.Size(50, 50);
+            this.btnConfirmarCambios.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btnConfirmarCambios.TabIndex = 37;
+            this.btnConfirmarCambios.TabStop = false;
+            this.btnConfirmarCambios.Click += new System.EventHandler(this.btnConfirmarCambios_Click);
             // 
             // PictureBoxEditar
             // 
@@ -167,55 +252,6 @@ namespace Frontend
             this.PictureBoxUsuarioPost.TabStop = false;
             this.PictureBoxUsuarioPost.Click += new System.EventHandler(this.PictureBoxUsuarioPost_Click);
             // 
-            // imagen
-            // 
-            this.imagen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.imagen.Location = new System.Drawing.Point(80, 138);
-            this.imagen.Name = "imagen";
-            this.imagen.Size = new System.Drawing.Size(634, 365);
-            this.imagen.TabIndex = 21;
-            this.imagen.TabStop = false;
-            // 
-            // txtDescripcionEditar
-            // 
-            this.txtDescripcionEditar.Location = new System.Drawing.Point(194, 74);
-            this.txtDescripcionEditar.Name = "txtDescripcionEditar";
-            this.txtDescripcionEditar.Size = new System.Drawing.Size(520, 20);
-            this.txtDescripcionEditar.TabIndex = 34;
-            // 
-            // txtUrlEditar
-            // 
-            this.txtUrlEditar.Location = new System.Drawing.Point(199, 13);
-            this.txtUrlEditar.Name = "txtUrlEditar";
-            this.txtUrlEditar.Size = new System.Drawing.Size(520, 20);
-            this.txtUrlEditar.TabIndex = 35;
-            // 
-            // btnConfirmarCambios
-            // 
-            this.btnConfirmarCambios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnConfirmarCambios.BackColor = System.Drawing.Color.Transparent;
-            this.btnConfirmarCambios.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnConfirmarCambios.Image = global::Frontend.Properties.Resources.aceptar;
-            this.btnConfirmarCambios.Location = new System.Drawing.Point(355, 494);
-            this.btnConfirmarCambios.Name = "btnConfirmarCambios";
-            this.btnConfirmarCambios.Size = new System.Drawing.Size(50, 50);
-            this.btnConfirmarCambios.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.btnConfirmarCambios.TabIndex = 37;
-            this.btnConfirmarCambios.TabStop = false;
-            this.btnConfirmarCambios.Click += new System.EventHandler(this.btnConfirmarCambios_Click);
-            // 
-            // btnSeleccionarImagen
-            // 
-            this.btnSeleccionarImagen.Image = global::Frontend.Properties.Resources.Foto;
-            this.btnSeleccionarImagen.Location = new System.Drawing.Point(179, 494);
-            this.btnSeleccionarImagen.Name = "btnSeleccionarImagen";
-            this.btnSeleccionarImagen.Size = new System.Drawing.Size(61, 50);
-            this.btnSeleccionarImagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.btnSeleccionarImagen.TabIndex = 38;
-            this.btnSeleccionarImagen.TabStop = false;
-            this.btnSeleccionarImagen.Click += new System.EventHandler(this.btnSeleccionarImagen_Click);
-            // 
             // imagenEditar
             // 
             this.imagenEditar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -226,51 +262,15 @@ namespace Frontend
             this.imagenEditar.TabIndex = 39;
             this.imagenEditar.TabStop = false;
             // 
-            // btnEliminar
+            // imagen
             // 
-            this.btnEliminar.AutoSize = true;
-            this.btnEliminar.Location = new System.Drawing.Point(666, 453);
-            this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(43, 13);
-            this.btnEliminar.TabIndex = 41;
-            this.btnEliminar.Text = "Eliminar";
-            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
-            // 
-            // btnReportar
-            // 
-            this.btnReportar.AutoSize = true;
-            this.btnReportar.Location = new System.Drawing.Point(666, 475);
-            this.btnReportar.Name = "btnReportar";
-            this.btnReportar.Size = new System.Drawing.Size(48, 13);
-            this.btnReportar.TabIndex = 41;
-            this.btnReportar.Text = "Reportar";
-            this.btnReportar.Click += new System.EventHandler(this.btnReportar_Click);
-            // 
-            // lblFechaYhora
-            // 
-            this.lblFechaYhora.AutoSize = true;
-            this.lblFechaYhora.Location = new System.Drawing.Point(291, 50);
-            this.lblFechaYhora.Name = "lblFechaYhora";
-            this.lblFechaYhora.Size = new System.Drawing.Size(34, 13);
-            this.lblFechaYhora.TabIndex = 42;
-            this.lblFechaYhora.Text = "fecha";
-            // 
-            // lblLikes
-            // 
-            this.lblLikes.AutoSize = true;
-            this.lblLikes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLikes.Location = new System.Drawing.Point(133, 511);
-            this.lblLikes.Name = "lblLikes";
-            this.lblLikes.Size = new System.Drawing.Size(40, 20);
-            this.lblLikes.TabIndex = 43;
-            this.lblLikes.Text = "likes";
-            // 
-            // pnlGrupos
-            // 
-            this.pnlGrupos.Location = new System.Drawing.Point(236, 138);
-            this.pnlGrupos.Name = "pnlGrupos";
-            this.pnlGrupos.Size = new System.Drawing.Size(45, 33);
-            this.pnlGrupos.TabIndex = 44;
+            this.imagen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.imagen.Location = new System.Drawing.Point(80, 138);
+            this.imagen.Name = "imagen";
+            this.imagen.Size = new System.Drawing.Size(634, 365);
+            this.imagen.TabIndex = 21;
+            this.imagen.TabStop = false;
             // 
             // PostControl
             // 
@@ -298,16 +298,16 @@ namespace Frontend
             this.Controls.Add(this.imagen);
             this.Name = "PostControl";
             this.Size = new System.Drawing.Size(787, 578);
+            ((System.ComponentModel.ISupportInitialize)(this.btnSeleccionarImagen)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnConfirmarCambios)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxEditar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOpcionesPost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxCompartir)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxComentarios)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxLike)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuarioPost)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.imagen)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnConfirmarCambios)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnSeleccionarImagen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imagenEditar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imagen)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

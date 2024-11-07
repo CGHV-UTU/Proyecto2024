@@ -81,10 +81,10 @@ namespace Frontend
             // 
             // PictureBoxEventos
             // 
-            this.PictureBoxEventos.Image = global::Frontend.Properties.Resources.eventos_removebg_preview;
+            this.PictureBoxEventos.Image = global::Frontend.Properties.Resources.eventosBlanco;
             this.PictureBoxEventos.Location = new System.Drawing.Point(592, 1);
             this.PictureBoxEventos.Name = "PictureBoxEventos";
-            this.PictureBoxEventos.Size = new System.Drawing.Size(100, 73);
+            this.PictureBoxEventos.Size = new System.Drawing.Size(100, 64);
             this.PictureBoxEventos.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PictureBoxEventos.TabIndex = 6;
             this.PictureBoxEventos.TabStop = false;
@@ -92,10 +92,10 @@ namespace Frontend
             // 
             // PictureBoxGrupos
             // 
-            this.PictureBoxGrupos.Image = global::Frontend.Properties.Resources.grupos_removebg_preview;
+            this.PictureBoxGrupos.Image = global::Frontend.Properties.Resources.gruposBlanco;
             this.PictureBoxGrupos.Location = new System.Drawing.Point(338, 1);
             this.PictureBoxGrupos.Name = "PictureBoxGrupos";
-            this.PictureBoxGrupos.Size = new System.Drawing.Size(100, 73);
+            this.PictureBoxGrupos.Size = new System.Drawing.Size(100, 64);
             this.PictureBoxGrupos.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PictureBoxGrupos.TabIndex = 5;
             this.PictureBoxGrupos.TabStop = false;

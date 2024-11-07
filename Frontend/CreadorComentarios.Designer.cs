@@ -37,7 +37,7 @@ namespace Frontend
             // pictureBox1
             // 
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Image = global::Frontend.Properties.Resources.Page_1_removebg_preview;
+            this.pictureBox1.Image = global::Frontend.Properties.Resources.Comentar;
             this.pictureBox1.Location = new System.Drawing.Point(169, 138);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(155, 50);

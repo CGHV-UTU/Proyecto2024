@@ -20,6 +20,7 @@ namespace Frontend
         private string modo;
         private string user;
         private string token;
+        private string interaccion;
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarPost;
         public event EventHandler<PersonalizedArgs> AbrirGrupo;
@@ -150,13 +151,37 @@ namespace Frontend
             this.Name = "Form1";
             this.Text = "Infinite Scroll Posts";
             this.ResumeLayout(false);
-
+            if (modo.Equals("Oscuro"))
+            {
+                this.BackColor = Color.FromArgb(40, 40, 40);
+                lblNombre.ForeColor = Color.White;
+                lblDescripcion.ForeColor = Color.White;
+                lblSiguiendo.ForeColor = Color.White;
+                pbxBloquear.Image = Frontend.Properties.Resources.salirBlanco;
+                pbxReportar.Image = Frontend.Properties.Resources.reportarBlanco;
+                pbxChatear.Image = Frontend.Properties.Resources.Comunidad_Claro;
+                panelPosts.BackColor= Color.FromArgb(50, 50, 50);
+            }
             if (nombreDeCreador.Equals(user))
             {
                 btnSeguir.Visible = false;
                 pbxChatear.Visible = false;
                 pbxReportar.Image = Frontend.Properties.Resources.editar_removebg_preview;
+                if (modo.Equals("Oscuro"))
+                {
+                    pbxReportar.Image = Frontend.Properties.Resources.editarClaro;
+                }
                 this.Controls.Remove(pbxBloquear);
+            }
+            else
+            {
+                var respuesta = await LoSigue(user, nombreDeCreador, token);
+                if (Convert.ToString(respuesta).Equals("seguir"))
+                {
+                    interaccion = "seguir";
+                    lblSiguiendo.Visible = true;
+                    btnSeguir.Visible = false;
+                }
             }
         }
         public static async Task<dynamic> Interactuar(string user, string aQuienSigue, string tipo, string token)
@@ -271,16 +296,11 @@ namespace Frontend
         }
         private async void btnSeguir_Click(object sender, EventArgs e)
         {
-            var respuesta = await LoSigue(user, nombreDeCreador, token);
-            if (Convert.ToString(respuesta).Equals("seguir"))
-            {
-                await EliminarInteraccion(user, nombreDeCreador, "seguir", token); //hacer que cambie el boton
-            }
-            else
-            {
-                await Interactuar(user, nombreDeCreador, "seguir", token);
-                await EnviarNotificacion();
-            }
+            await Interactuar(user, nombreDeCreador, "seguir", token);
+            await EnviarNotificacion();
+            interaccion = "seguir";
+            btnSeguir.Visible = false;
+            lblSiguiendo.Visible = true;
         }
         public static async Task<dynamic> PublicarGrupo(string nombreVisible, string configuracion, byte[] imagen, string descripcion, string user, string token)
         {
@@ -467,6 +487,7 @@ namespace Frontend
                     pbxImagenEditar.Image = PictureBoxUsuario.Image;
                     txtDescripcion.Text = lblDescripcion.Text;
                     txtNombre.Text = lblNombre.Text;
+
                 }
                 else
                 {
@@ -534,29 +555,39 @@ namespace Frontend
 
         private async void pbxBloquear_Click(object sender, EventArgs e)
         {
-            var respuesta = await LoSigue(user, nombreDeCreador, token);
-            if (Convert.ToString(respuesta).Equals("seguir"))
+            if (interaccion.Equals("seguir"))
             {
                 await EliminarInteraccion(user, nombreDeCreador, "seguir", token); //hacer que cambie el boton
                 await Interactuar(user, nombreDeCreador, "bloquear", token);
                 btnSeguir.Visible = false;
                 pbxChatear.Visible = false;
+                interaccion = "bloquear";
             }
             else
             {
-                if (Convert.ToString(respuesta).Equals("bloquear"))
+                if (interaccion.Equals("bloquear"))
                 {
                     await EliminarInteraccion(user, nombreDeCreador, "bloquear", token);
                     btnSeguir.Visible = true;
                     pbxChatear.Visible = true;
+                    interaccion = "";
                 }
                 else
                 {
                     await Interactuar(user, nombreDeCreador, "bloquear", token);
                     btnSeguir.Visible = false;
                     pbxChatear.Visible = false;
+                    interaccion = "bloquear";
                 }
             }
+        }
+
+        private async void lblSiguiendo_Click(object sender, EventArgs e)
+        {
+            await EliminarInteraccion(user, nombreDeCreador, "seguir", token); //hacer que cambie el boton
+            interaccion = "";
+            btnSeguir.Visible = true;
+            lblSiguiendo.Visible = false;
         }
     }
 }

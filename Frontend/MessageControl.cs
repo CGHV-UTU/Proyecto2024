@@ -21,6 +21,7 @@ namespace Frontend
         private string token;
         private string user;
         private string creador;
+        private string modo;
         private Label lblNombreDeCuenta;
         private TextBox txtMensaje;
         private PictureBox pbxFotoUsuario;
@@ -35,12 +36,13 @@ namespace Frontend
         public event EventHandler<PersonalizedArgs> EditarMensaje;
         public event EventHandler<PersonalizedArgs> MensajeEliminado;
 
-        public MessageControl(dynamic MessageData, string user, string token)
+        public MessageControl(dynamic MessageData, string user, string token, string modo)
         {
             InitializeComponent();
             txtMensaje.ReadOnly = true;
             this.token = token;
             this.user = user;
+            this.modo = modo;
             this.creador = Convert.ToString(MessageData.nombreDeCuenta);
             this.idMensaje = Convert.ToString(MessageData.idMensaje);
             btnEditar.Visible = false;
@@ -60,6 +62,14 @@ namespace Frontend
                 MemoryStream ms = new MemoryStream(imagen);
                 Bitmap bitmap = new Bitmap(ms);
                 this.pbxImagenCompartida.Image = bitmap;
+                if (string.IsNullOrEmpty(Convert.ToString(MessageData.video)))
+                {
+                    txtURL.Visible = false;
+                }
+                if (string.IsNullOrEmpty(Convert.ToString(MessageData.texto)))
+                {
+                    txtMensaje.Visible = false;
+                }
             }
             else
             {
@@ -71,7 +81,7 @@ namespace Frontend
                 }
                 else
                 {
-                    this.Controls.Remove(this.txtURL);
+                    txtURL.Visible = false;
                     this.Size = new Size(473, 95);
                 }
             }
@@ -113,9 +123,24 @@ namespace Frontend
                 this.btnEditar.TabIndex = 77;
                 this.btnEditar.Text = "Editar";
                 this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
+                if (modo.Equals("Oscuro"))
+                {
+                    this.btnEditar.ForeColor = Color.White;
+                    this.btnEliminar.ForeColor = Color.White;
+                    this.pbxOpciones.Image = Frontend.Properties.Resources.mas_opciones_claro_relleno;
+                }
                 this.Controls.Add(this.btnEditar);
                 this.Controls.Add(this.btnEliminar);
                 this.Controls.Add(this.pbxOpciones);
+            }
+            if (modo.Equals("Oscuro"))
+            {
+                lblNombreDeCuenta.ForeColor = Color.White;
+                lblFechaYHora.ForeColor = Color.White;
+                txtMensaje.ForeColor = Color.White;
+                txtMensaje.BackColor= Color.FromArgb(50, 50, 50);
+                txtURL.ForeColor = Color.White;
+                txtURL.BackColor= Color.FromArgb(50, 50, 50);
             }
         }
         static async Task<string> conseguirImagenDelCreador(string creador, string token)
@@ -338,6 +363,14 @@ namespace Frontend
         private void btnEditar_Click(object sender, EventArgs e)
         {
             EditarMensaje?.Invoke(this, new PersonalizedArgs(idMensaje));
+        }
+
+        public void modificarMensaje(int id, string texto)
+        {
+            if (id==int.Parse(idMensaje))
+            {
+                this.txtMensaje.Text = texto;
+            }
         }
     }
 }

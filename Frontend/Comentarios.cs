@@ -28,10 +28,14 @@ namespace Frontend
             this.user = user;
             this.token = token;
             Iniciar();
-            CreadorComentarios comentario = new CreadorComentarios(user,idpost, token);
+            CreadorComentarios comentario = new CreadorComentarios(user,idpost, token, modo);
             comentario.Location = new Point(margin, 0);
             PanelComentarios.Controls.Add(comentario);
             LoadComments();
+            if (modo.Equals("Oscuro"))
+            {
+                this.PanelComentarios.BackColor = Color.FromArgb(40, 40, 40);
+            }
         }
 
         static async Task<dynamic> ConseguirComentarios(string id, string token)

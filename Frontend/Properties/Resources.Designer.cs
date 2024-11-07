@@ -153,6 +153,16 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Comentar {
+            get {
+                object obj = ResourceManager.GetObject("Comentar", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap comentario {
             get {
                 object obj = ResourceManager.GetObject("comentario", resourceCulture);
@@ -313,6 +323,16 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap editarClaro {
+            get {
+                object obj = ResourceManager.GetObject("editarClaro", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap eventos_removebg_preview {
             get {
                 object obj = ResourceManager.GetObject("eventos-removebg-preview", resourceCulture);
@@ -336,6 +356,26 @@ namespace Frontend.Properties {
         internal static System.Drawing.Bitmap eventos_seleccionado_removebg_preview1 {
             get {
                 object obj = ResourceManager.GetObject("eventos_seleccionado-removebg-preview1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap eventos_seleccionadoBlanco {
+            get {
+                object obj = ResourceManager.GetObject("eventos_seleccionadoBlanco", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap eventosBlanco {
+            get {
+                object obj = ResourceManager.GetObject("eventosBlanco", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -383,6 +423,16 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Foto_negra {
+            get {
+                object obj = ResourceManager.GetObject("Foto_negra", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap grupos_removebg_preview {
             get {
                 object obj = ResourceManager.GetObject("grupos-removebg-preview", resourceCulture);
@@ -416,6 +466,26 @@ namespace Frontend.Properties {
         internal static System.Drawing.Bitmap grupos_seleccionar_removebg_preview1 {
             get {
                 object obj = ResourceManager.GetObject("grupos_seleccionar-removebg-preview1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap grupos_seleccionarBlanco {
+            get {
+                object obj = ResourceManager.GetObject("grupos_seleccionarBlanco", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap gruposBlanco {
+            get {
+                object obj = ResourceManager.GetObject("gruposBlanco", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -516,6 +586,16 @@ namespace Frontend.Properties {
         internal static System.Drawing.Bitmap lupa_removebg_preview1 {
             get {
                 object obj = ResourceManager.GetObject("lupa-removebg-preview1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap lupaBlanca {
+            get {
+                object obj = ResourceManager.GetObject("lupaBlanca", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -633,6 +713,16 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap reportarBlanco {
+            get {
+                object obj = ResourceManager.GetObject("reportarBlanco", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap reportarbtn_removebg_preview {
             get {
                 object obj = ResourceManager.GetObject("reportarbtn-removebg-preview", resourceCulture);
@@ -646,6 +736,16 @@ namespace Frontend.Properties {
         internal static System.Drawing.Bitmap salir {
             get {
                 object obj = ResourceManager.GetObject("salir", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap salirBlanco {
+            get {
+                object obj = ResourceManager.GetObject("salirBlanco", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -26,10 +26,11 @@ namespace Frontend
         private string idpost;
         private dynamic grupo;
         private dynamic evento;
+        private string modo;
         public event EventHandler<PersonalizedArgs> AbrirEvento;
         public event EventHandler<PersonalizedArgs> AbrirGrupo;
         public event EventHandler<PersonalizedArgs> AbrirUsuario;
-        public Grupo_EventoParaListar(string usuario, string token, dynamic grupo=null, dynamic evento=null, dynamic usuariobuscar = null, bool busqueda = false, string idpost="",string nombreGrupo="", int idevento=0)
+        public Grupo_EventoParaListar(string usuario, string token, dynamic grupo=null, dynamic evento=null, dynamic usuariobuscar = null, bool busqueda = false, string idpost="",string nombreGrupo="", int idevento=0, string modo="Claro")
         {
             if (grupo!=null)
             {
@@ -54,6 +55,7 @@ namespace Frontend
             this.datosDelUsuario = usuariobuscar;
             this.idpost = idpost;
             this.busqueda = busqueda;
+            this.modo = modo;
             InitializeComponent();
             Iniciar();
             AplicarDatos();
@@ -471,24 +473,50 @@ namespace Frontend
                 this.pbxUnirse.Cursor = Cursors.Hand;
                 this.pbxUnirse.Visible = true;
                 this.pbxUnirse.Click += pbxUnirse_Click;
+                if (modo.Equals("Oscuro"))
+                {
+                    this.pbxUnirse.Image = Properties.Resources.compartir_claro;
+                }
                 this.Controls.Add(this.pbxUnirse);
             }
             if (!string.IsNullOrEmpty(nombreReal) && datosDelUsuario!=null && busqueda)
             {
-                var rol = await RolEnElGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreDeCuenta), token);
-                if (!Convert.ToString(rol).Equals("Solicitante") && !Convert.ToString(rol).Equals("creador") && !Convert.ToString(rol).Equals("usuario") && !Convert.ToString(rol).Equals("admin"))
+                this.pbxUnirse = new PictureBox();
+                this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                this.pbxUnirse.Name = "pbxUnirse";
+                this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
+                this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
+                this.pbxUnirse.Image = Properties.Resources.aceptar;
+                this.pbxUnirse.Cursor = Cursors.Hand;
+                this.pbxUnirse.Visible = true;
+                this.pbxUnirse.Click += pbxUnirse_Click;
+                this.Controls.Add(this.pbxUnirse);
+            }
+
+            if(datosDelUsuario==null && string.IsNullOrEmpty(idpost) && busqueda)
+            {
+                var rol = await RolEnElGrupo(nombreReal, user, token);
+                if (!Convert.ToString(rol).Equals("solicitante") && !Convert.ToString(rol).Equals("creador") && !Convert.ToString(rol).Equals("usuario") && !Convert.ToString(rol).Equals("admin"))
                 {
                     this.pbxUnirse = new PictureBox();
                     this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
                     this.pbxUnirse.Name = "pbxUnirse";
                     this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
                     this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
-                    this.pbxUnirse.Image = Properties.Resources.aceptar;
+                    this.pbxUnirse.Image = Properties.Resources.crearPost_removebg_preview;
                     this.pbxUnirse.Cursor = Cursors.Hand;
                     this.pbxUnirse.Visible = true;
                     this.pbxUnirse.Click += pbxUnirse_Click;
+                    if (modo.Equals("Oscuro"))
+                    {
+                        this.pbxUnirse.Image = Properties.Resources.crear_claro;
+                    }
                     this.Controls.Add(this.pbxUnirse);
                 }
+            }
+            if (modo.Equals("Oscuro"))
+            {
+                lblNombre.ForeColor = Color.White;
             }
         }
 
@@ -580,12 +608,12 @@ namespace Frontend
                 if (!string.IsNullOrEmpty(this.idpost))
                 {
                     string respuesta = await CompartirPost(user, idpost, nombreReal, token);
-                    MessageBox.Show(respuesta);
+                    this.Controls.Remove(pbxUnirse);
                 }
                 else
                 {
                     dynamic respuesta = await UnirseAlGrupo(nombreReal, user, token);
-                    MessageBox.Show("" + respuesta);
+                    this.Controls.Remove(pbxUnirse);
                 }
             }
             else
@@ -595,7 +623,7 @@ namespace Frontend
                     if (!string.IsNullOrEmpty(nombreReal) && datosDelUsuario != null && busqueda)
                     {
                         await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreDeCuenta), "usuario", token);
-                        this.pbxUnirse.Visible = false;
+                        this.Controls.Remove(pbxUnirse);
                     }
                     else
                     {
@@ -604,6 +632,7 @@ namespace Frontend
                             await EliminarUsuarioDelGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
                             var respuesta = await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), "usuario", token);
                             MessageBox.Show("" + respuesta);
+                            this.Controls.Remove(pbxUnirse);
                         }
                         else
                         {
@@ -630,6 +659,11 @@ namespace Frontend
                                 this.lblDarOQuitarAdmin.TabIndex = 0;
                                 this.lblDarOQuitarAdmin.Text = "Dar admin";
                                 this.lblDarOQuitarAdmin.Click += lblDarOQuitarAdmin_Click;
+                                if (modo.Equals("Oscuro"))
+                                {
+                                    lblEliminar.ForeColor = Color.White;
+                                    lblDarOQuitarAdmin.ForeColor = Color.White;
+                                }
                                 this.Controls.Add(lblEliminar);
                                 this.Controls.Add(lblDarOQuitarAdmin);
                             }
@@ -644,14 +678,22 @@ namespace Frontend
                 else
                 {
                     string rol = await RolDelEvento(Convert.ToString(idevento), Convert.ToString(datosDelUsuario.nombreDeCuenta), token);
-                    MessageBox.Show("" + rol);
                     if (rol.Equals("Seguidor"))
                     {
                         await DarRolEvento(Convert.ToString(idevento), Convert.ToString(datosDelUsuario.nombreDeCuenta),"admin",token);
+                        if (modo.Equals("Oscuro"))
+                        {
+                            this.pbxUnirse.Image = Frontend.Properties.Resources.salirBlanco;
+                        }
+                        else
+                        {
+                            this.pbxUnirse.Image = Frontend.Properties.Resources.salir;
+                        }
                     }
                     else
                     {
                         await DarRolEvento(Convert.ToString(idevento), Convert.ToString(datosDelUsuario.nombreDeCuenta), "Seguidor", token);
+                        this.pbxUnirse.Image = Frontend.Properties.Resources.aceptar;
                     }
                 }
             }

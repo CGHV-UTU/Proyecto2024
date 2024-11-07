@@ -37,6 +37,14 @@ namespace Frontend
             PanelGrupos.Visible = true;
             panelEventos.Visible = false;
             PanelGrupos.Parent = this;
+            if (modo.Equals("Oscuro"))
+            {
+                this.BackColor = Color.FromArgb(40, 40, 40);
+                this.PanelGrupos.BackColor = Color.FromArgb(50, 50, 50);
+                this.panelEventos.BackColor = Color.FromArgb(50, 50, 50);
+                this.PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_seleccionarBlanco;
+                this.PictureBoxEventos.Image = Frontend.Properties.Resources.eventosBlanco;
+            }
             CargarGrupos();
         }
 
@@ -118,7 +126,7 @@ namespace Frontend
                 //PanelGrupos.Controls.Clear();
                 foreach(var evento in eventos)
                 {
-                    var eventControl = new Grupo_EventoParaListar(user, token, evento:evento);
+                    var eventControl = new Grupo_EventoParaListar(user, token, evento:evento, modo: modo);
                     eventControl.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
                     // probando, antes iba debajo del else
                     if (panelEventos.Controls.Count > 0)
@@ -172,7 +180,7 @@ namespace Frontend
                 {
                     foreach (var elemento in lista)
                     {
-                        var groupcontrol = new Grupo_EventoParaListar(user, token, elemento);
+                        var groupcontrol = new Grupo_EventoParaListar(user, token, elemento, modo:modo);
                         groupcontrol.AbrirGrupo += Grupo_EventoParaListar_AbrirGrupo;
                         if (PanelGrupos.Controls.Count > 0)
                         {
@@ -192,7 +200,7 @@ namespace Frontend
                     PanelGrupos.Controls.Clear();
                     foreach (var elemento in lista)
                     {
-                        var eventControl = new Grupo_EventoParaListar(user, token, elemento, idpost:idpost);
+                        var eventControl = new Grupo_EventoParaListar(user, token, elemento, idpost:idpost, modo: modo);
                         if (PanelGrupos.Controls.Count > 0)
                         {
                             var lastControl = PanelGrupos.Controls[PanelGrupos.Controls.Count - 1];
@@ -217,14 +225,22 @@ namespace Frontend
 
         private void PictureBoxGrupos_Click(object sender, EventArgs e)
         {
-            PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_removebg_preview;
-            PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_seleccionar_removebg_preview__1_;
+            if (modo.Equals("Oscuro"))
+            {
+                PictureBoxEventos.Image = Frontend.Properties.Resources.eventosBlanco;
+                PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_seleccionarBlanco;
+            }
+            else
+            {
+                PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_removebg_preview;
+                PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_seleccionar_removebg_preview__1_;
+            }
             pictureBox5.Visible = true;
             pictureBox6.Visible = false;
             PanelGrupos.Visible = true;
             panelEventos.Visible = false;
             PanelGrupos.Parent = this;
-            if (PanelGrupos.Controls.Count>1)
+            if (PanelGrupos.Controls.Count<1)
             {
                 CargarGrupos();
             }
@@ -232,8 +248,16 @@ namespace Frontend
 
         private void PictureBoxEventos_Click(object sender, EventArgs e)
         {
-            PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_seleccionado_removebg_preview1;
-            PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_removebg_preview;
+            if (modo.Equals("Oscuro"))
+            {
+                PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_seleccionadoBlanco;
+                PictureBoxGrupos.Image = Frontend.Properties.Resources.gruposBlanco;
+            }
+            else
+            {
+                PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_removebg_preview;
+                PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_seleccionar_removebg_preview__1_;
+            }
             pictureBox5.Visible = false;
             pictureBox6.Visible = true;
             PanelGrupos.Visible = false;

@@ -29,6 +29,7 @@ namespace Frontend
             this.user = user;
             this.token = token;
             Iniciar();
+            panel1.Visible = false;
             LoadPosts(currentPage);
         }
 
@@ -64,14 +65,23 @@ namespace Frontend
 
         private async void LoadPosts(int page)
         {
+            progressBar1.Maximum = 100;
+            progressBar1.Value = 1;
             var postPublicos = await ConseguirPostsPublicos(40 * page - 40, 40*page,token);
             if (postPublicos == null || Convert.ToString(postPublicos).Equals("no se encuentra"))
             {
                 MessageBox.Show("No se encontraron posts");
                 return;
             }
-            // carga de posts
+            int count = 0;
             foreach(var post in postPublicos)
+            {
+                count++;
+            }
+            progressBar1.Maximum = count;
+            progressBar1.Value = 0;
+            // carga de posts
+            foreach (var post in postPublicos)
             {
                 var postControl = new PostControl(post, modo, user, token);
                 postControl.AbrirComentarios += PostControl_AbrirComentarios;
@@ -93,7 +103,11 @@ namespace Frontend
                 }
                 postControl.Location = new Point(0, currentYPosition);
                 panel1.Controls.Add(postControl);
+                progressBar1.Value += 1;
+                Application.DoEvents();
             }
+            this.progressBar1.Visible = false;
+            this.panel1.Visible = true;
         }
         private void PostControl_RecargarFeed(object sender, EventArgs e)
         {
@@ -121,6 +135,7 @@ namespace Frontend
         private void Iniciar()
         {
             this.panel1 = new Panel();
+            this.progressBar1 = new ProgressBar();
             this.SuspendLayout();
 
             // panelPosts
@@ -131,6 +146,11 @@ namespace Frontend
             this.panel1.Size = new System.Drawing.Size(800, 450);
             this.panel1.Scroll += PanelPosts_Scroll;
             this.panel1.TabIndex = 0;
+
+            this.progressBar1.Location = new Point(250, 219);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new Size(516, 23);
+            this.progressBar1.Parent=this;
 
             // Form1
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

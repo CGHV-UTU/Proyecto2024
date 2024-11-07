@@ -337,6 +337,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\lupaBlanca.png" />
+    <None Include="Resources\salirBlanco.png" />
+    <None Include="Resources\reportarBlanco.png" />
     <None Include="Resources\notificacionesNuevas.jpeg" />
     <None Include="Resources\lupa-removebg-preview1.png" />
     <None Include="Resources\lupa.jpeg" />
@@ -396,6 +399,13 @@
     <None Include="Resources\eventos_seleccionado-removebg-preview1.png" />
     <None Include="Resources\Comunidad.png" />
     <None Include="Resources\Comunidad Claro.png" />
+    <None Include="Resources\editarClaro.png" />
+    <None Include="Resources\Foto_negra1.png" />
+    <None Include="Resources\Comentar.png" />
+    <None Include="Resources\grupos_seleccionarBlanco.png" />
+    <None Include="Resources\gruposBlanco.png" />
+    <None Include="Resources\eventos_seleccionadoBlanco.png" />
+    <None Include="Resources\eventosBlanco.png" />
     <Content Include="Resources\IconoInfini.ico" />
     <None Include="Resources\Logo_Infini_Completo.jpeg" />
     <None Include="Resources\salir.png" />

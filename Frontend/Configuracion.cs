@@ -16,12 +16,25 @@ namespace Frontend
     {
         public static string usuario;
         private string token;
-        public Configuracion(string user, string token)
+        public Configuracion(string user, string token,string modo)
         {
             InitializeComponent();
             usuario = user;
             this.token = token;
-            this.BackColor = Color.LightGray;
+            if (!modo.Equals("Oscuro"))
+            {
+                this.BackColor = Color.LightGray;
+            }
+            else
+            {
+                this.BackColor = Color.FromArgb(40, 40, 40);
+                label1.ForeColor = Color.White;
+                label2.ForeColor = Color.White;
+                cbxIdioma.ForeColor = Color.White;
+                cbxModo.ForeColor = Color.White;
+                cbxIdioma.BackColor= Color.FromArgb(50, 50, 50);
+                cbxModo.BackColor= Color.FromArgb(50, 50, 50);
+            }
         }
         public event EventHandler<ConfiguraEventArgs> CambiarModo;
         

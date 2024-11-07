@@ -42,6 +42,8 @@ namespace Frontend
         private Label label2;
         private Label lblAdministradores;
         private string modo;
+        private Label lblFechaInicio;
+        private Label lblFechaFinal;
         private dynamic evento;
         public event EventHandler<PersonalizedArgs> PostearEnEvento;
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
@@ -71,6 +73,26 @@ namespace Frontend
             pbxImagenEditar.Visible = false;
             pbxSeleccionarImagen.Visible = false;
             lblAdministradores.Visible = false;
+            if (modo.Equals("Oscuro"))
+            {
+                lblNombre.ForeColor = Color.White;
+                lblDescripcion.ForeColor = Color.White;
+                lblUbicacion.ForeColor = Color.White;
+                lblCancelar.ForeColor = Color.White;
+                label1.ForeColor = Color.White;
+                label2.ForeColor = Color.White;
+                lblFechaInicio.ForeColor = Color.White;
+                lblFechaFinal.ForeColor = Color.White;
+                lblEditar.ForeColor = Color.White;
+                lblEliminar.ForeColor = Color.White;
+                lblCancelar.ForeColor = Color.White;
+                pbxSeleccionarImagen.Image = Frontend.Properties.Resources.Foto_negra;
+                btnUbicacion.Image = Frontend.Properties.Resources.buscar_claro;
+                btnCrear.Image = Frontend.Properties.Resources.crear_claro;
+                pbxEditar.Image = Frontend.Properties.Resources.mas_opciones_claro_relleno;
+                panelPosts.BackColor= Color.FromArgb(50, 50, 50);
+                this.BackColor= Color.FromArgb(40, 40, 40);
+            }
         }
         
         private void CompararCreador()
@@ -79,6 +101,10 @@ namespace Frontend
             if (rol.Equals("creador"))
             {
                 btnSeguir.Visible = false;
+                if (modo.Equals("Oscuro"))
+                {
+                    lblAdministradores.ForeColor = Color.White;
+                }
             }
             else
             {
@@ -96,6 +122,10 @@ namespace Frontend
                     {
                         btnSeguir.Visible = false;
                         btnCrear.Visible = true;
+                        if (modo.Equals("Oscuro"))
+                        {
+                            lblAdministradores.ForeColor = Color.White;
+                        }
                     }
                     else
                     {
@@ -152,6 +182,8 @@ namespace Frontend
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblAdministradores = new System.Windows.Forms.Label();
+            this.lblFechaInicio = new System.Windows.Forms.Label();
+            this.lblFechaFinal = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUbicacion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
@@ -403,9 +435,31 @@ namespace Frontend
             this.lblAdministradores.Text = "Administradores";
             this.lblAdministradores.Click += new System.EventHandler(this.lblAdministradores_Click);
             // 
+            // lblFechaInicio
+            // 
+            this.lblFechaInicio.AutoSize = true;
+            this.lblFechaInicio.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFechaInicio.Location = new System.Drawing.Point(756, 108);
+            this.lblFechaInicio.Name = "lblFechaInicio";
+            this.lblFechaInicio.Size = new System.Drawing.Size(51, 20);
+            this.lblFechaInicio.TabIndex = 66;
+            this.lblFechaInicio.Text = "label3";
+            // 
+            // lblFechaFinal
+            // 
+            this.lblFechaFinal.AutoSize = true;
+            this.lblFechaFinal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFechaFinal.Location = new System.Drawing.Point(756, 134);
+            this.lblFechaFinal.Name = "lblFechaFinal";
+            this.lblFechaFinal.Size = new System.Drawing.Size(51, 20);
+            this.lblFechaFinal.TabIndex = 67;
+            this.lblFechaFinal.Text = "label4";
+            // 
             // EventoComunidad
             // 
             this.ClientSize = new System.Drawing.Size(996, 574);
+            this.Controls.Add(this.lblFechaFinal);
+            this.Controls.Add(this.lblFechaInicio);
             this.Controls.Add(this.lblAdministradores);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -447,8 +501,8 @@ namespace Frontend
         {
             lblNombre.Text = EventData.titulo;
             lblDescripcion.Text = EventData.descripcion;
-            dtpFechaInicio.Text = EventData.fechaYhora_Inicio;
-            dtpFechaFinal.Text = EventData.fechaYhora_Final;
+            lblFechaInicio.Text = EventData.fechaYhora_Inicio;
+            lblFechaFinal.Text = EventData.fechaYhora_Final;
             lblUbicacion.Text = EventData.ubicacion;
             idEvento = Convert.ToString(EventData.idEvento);
             //Creo que está bien?? 
@@ -456,6 +510,8 @@ namespace Frontend
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);
             this.pbxImagen.Image = bitmap;
+            dtpFechaInicio.Visible = false;
+            dtpFechaFinal.Visible = false;
         }
         // lo de acá aún no hay forma de probarlo, recien cuando esté el menú de búsqueda se va a poder
         public static async Task<dynamic> Seguir(string user, string idevento, string rol, string token)
@@ -566,11 +622,16 @@ namespace Frontend
 
         private void lblEditar_Click(object sender, EventArgs e)
         {
+            lblEditar.Visible = false;
+            lblAdministradores.Visible = false;
+            lblEliminar.Visible = false;
             if (lblEditar.Text.Equals("Editar"))
             {
                 txtNombre.Visible = true;
                 txtDesc.Visible = true;
                 txtUbicacion.Visible = true;
+                dtpFechaInicio.Text = lblFechaInicio.Text;
+                dtpFechaFinal.Text = lblFechaFinal.Text;
                 dtpFechaInicio.Enabled = true;
                 dtpFechaFinal.Enabled = true;
                 pbxConfirmarCambios.Visible = true;
@@ -584,6 +645,8 @@ namespace Frontend
                 lblNombre.Visible = false;
                 lblDescripcion.Visible = false;
                 lblUbicacion.Visible = false;
+                lblFechaFinal.Visible = false;
+                lblFechaInicio.Visible = false;
             }
             else
             {
@@ -631,6 +694,9 @@ namespace Frontend
         }
         private async void lblEliminar_Click(object sender, EventArgs e)
         {
+            lblEditar.Visible = false;
+            lblAdministradores.Visible = false;
+            lblEliminar.Visible = false;
             if (lblEliminar.Text.Equals("Eliminar"))
             {
                 var resultado = await EliminarEvento(idEvento, token);
@@ -688,6 +754,12 @@ namespace Frontend
             lblNombre.Visible = true;
             lblDescripcion.Visible = true;
             lblUbicacion.Visible = true;
+            lblFechaInicio.Text = dtpFechaInicio.Text;
+            lblFechaFinal.Text = dtpFechaFinal.Text;
+            lblFechaInicio.Visible = true;
+            lblFechaFinal.Visible = true;
+            dtpFechaInicio.Visible = false;
+            dtpFechaFinal.Visible = false;
         }
 
         private void pbxSeleccionarImagen_Click(object sender, EventArgs e)
@@ -740,6 +812,9 @@ namespace Frontend
 
         private async void lblAdministradores_Click(object sender, EventArgs e)
         {
+            lblEditar.Visible = false;
+            lblAdministradores.Visible = false;
+            lblEliminar.Visible = false;
             panelPosts.Controls.Clear();
             panelPosts.Location = new Point(12, 228);
             var listaDeMiembros = await Miembros(idEvento, token);

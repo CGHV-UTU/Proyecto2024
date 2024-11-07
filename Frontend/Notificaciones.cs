@@ -16,15 +16,19 @@ namespace Frontend
     {
         private string user;
         private string token;
+        public string modo;
+        public string idioma;
         public event EventHandler NuevasNotificaciones;
-        public Notificaciones(string usuario, string token)
+        public Notificaciones(string usuario, string token, string modo)
         {
             InitializeComponent();
             this.user = usuario;
             this.token = token;
+            this.modo = modo;
             Iniciar();
             notificaciones(); // Carga todas las notificaciones
         }
+
         private int cantNotificaciones=0;
         public async void notificaciones()
         {
@@ -50,6 +54,7 @@ namespace Frontend
                         }
                         this.PanelNotificaciones.Controls.Add(notiControl);
                     }
+                    aplicarModoOscuro();
                     if (cantNotificaciones == 0)
                     {
                         cantNotificaciones = this.PanelNotificaciones.Controls.Count;
@@ -69,6 +74,13 @@ namespace Frontend
             }
         }
 
+        public void aplicarModoOscuro()
+        {
+            foreach(NotificacionControl noti in PanelNotificaciones.Controls)
+            {
+                noti.aplicarModoOscuro();
+            }
+        }
         public void setearCantidadDeNotificaciones()
         {
             cantNotificaciones = this.PanelNotificaciones.Controls.Count;

@@ -32,23 +32,23 @@ namespace Frontend
             this.txtBusqueda = new System.Windows.Forms.TextBox();
             this.pnlOpciones = new System.Windows.Forms.Panel();
             this.pnlEvento = new System.Windows.Forms.Panel();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.pnlGrupo = new System.Windows.Forms.Panel();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.pnlUsuario = new System.Windows.Forms.Panel();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.pnlMostrar = new System.Windows.Forms.Panel();
+            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.btnOpciones = new System.Windows.Forms.PictureBox();
             this.btnBuscar = new System.Windows.Forms.PictureBox();
-            this.pnlMostrar = new System.Windows.Forms.Panel();
             this.pnlOpciones.SuspendLayout();
             this.pnlEvento.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             this.pnlGrupo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.pnlUsuario.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnOpciones)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnBuscar)).BeginInit();
@@ -81,16 +81,6 @@ namespace Frontend
             this.pnlEvento.Size = new System.Drawing.Size(215, 58);
             this.pnlEvento.TabIndex = 9;
             // 
-            // pictureBox5
-            // 
-            this.pictureBox5.Image = global::Frontend.Properties.Resources.lupa_removebg_preview;
-            this.pictureBox5.Location = new System.Drawing.Point(3, 5);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox5.TabIndex = 6;
-            this.pictureBox5.TabStop = false;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -108,16 +98,6 @@ namespace Frontend
             this.pnlGrupo.Name = "pnlGrupo";
             this.pnlGrupo.Size = new System.Drawing.Size(215, 58);
             this.pnlGrupo.TabIndex = 9;
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.Image = global::Frontend.Properties.Resources.Comunidad;
-            this.pictureBox4.Location = new System.Drawing.Point(3, 5);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox4.TabIndex = 5;
-            this.pictureBox4.TabStop = false;
             // 
             // label2
             // 
@@ -137,6 +117,42 @@ namespace Frontend
             this.pnlUsuario.Size = new System.Drawing.Size(215, 58);
             this.pnlUsuario.TabIndex = 8;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(83, 24);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Usuario";
+            // 
+            // pnlMostrar
+            // 
+            this.pnlMostrar.Location = new System.Drawing.Point(19, 77);
+            this.pnlMostrar.Name = "pnlMostrar";
+            this.pnlMostrar.Size = new System.Drawing.Size(869, 214);
+            this.pnlMostrar.TabIndex = 4;
+            // 
+            // pictureBox5
+            // 
+            this.pictureBox5.Image = global::Frontend.Properties.Resources.eventos_removebg_preview;
+            this.pictureBox5.Location = new System.Drawing.Point(3, 5);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(50, 50);
+            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox5.TabIndex = 6;
+            this.pictureBox5.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Image = global::Frontend.Properties.Resources.Comunidad;
+            this.pictureBox4.Location = new System.Drawing.Point(3, 5);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(50, 50);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox4.TabIndex = 5;
+            this.pictureBox4.TabStop = false;
+            // 
             // pictureBox3
             // 
             this.pictureBox3.BackgroundImage = global::Frontend.Properties.Resources.lupa_removebg_preview;
@@ -147,15 +163,6 @@ namespace Frontend
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox3.TabIndex = 4;
             this.pictureBox3.TabStop = false;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(83, 24);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Usuario";
             // 
             // btnOpciones
             // 
@@ -180,13 +187,6 @@ namespace Frontend
             this.btnBuscar.TabStop = false;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
-            // pnlMostrar
-            // 
-            this.pnlMostrar.Location = new System.Drawing.Point(19, 77);
-            this.pnlMostrar.Name = "pnlMostrar";
-            this.pnlMostrar.Size = new System.Drawing.Size(869, 214);
-            this.pnlMostrar.TabIndex = 4;
-            // 
             // Busqueda
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -202,12 +202,12 @@ namespace Frontend
             this.pnlOpciones.ResumeLayout(false);
             this.pnlEvento.ResumeLayout(false);
             this.pnlEvento.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             this.pnlGrupo.ResumeLayout(false);
             this.pnlGrupo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.pnlUsuario.ResumeLayout(false);
             this.pnlUsuario.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnOpciones)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnBuscar)).EndInit();

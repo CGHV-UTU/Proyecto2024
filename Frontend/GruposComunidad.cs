@@ -52,6 +52,7 @@ namespace Frontend
         private string user;
         private TextBox txtURL;
         private string token;
+        private string modo;
         private bool esChatPrivado;
         private Label lblName;
         private Label lblEditando;
@@ -66,6 +67,7 @@ namespace Frontend
         private Label lblAñadir;
         private PictureBox pbxBuscar;
         private string idUltimoMensaje;
+        private ProgressBar progressBar1;
         public event EventHandler GrupoEliminado;
         public event EventHandler<PersonalizedArgs> AbrirUsuario;
         public event EventHandler<PersonalizedArgs> ReportarPost;
@@ -73,7 +75,7 @@ namespace Frontend
         public event EventHandler<PersonalizedArgs> ReportarGrupo;
         public event EventHandler<PersonalizedArgs> BuscarUsuarios;
         private dynamic grupo;
-        public GruposComunidad(dynamic groupData, string user, string token, bool esChatPrivado=false)
+        public GruposComunidad(dynamic groupData, string user, string token, bool esChatPrivado=false, string modo="Claro")
         {
             InitializeComponent();
             this.user = user;
@@ -83,13 +85,12 @@ namespace Frontend
             this.pnlAsociarContenido.Visible = false;
             this.esChatPrivado = esChatPrivado;
             this.grupo = groupData;
+            this.modo = modo;
             if (esChatPrivado)
             {
                 this.Controls.Remove(pbxCrearPostGrupo);
             }
             AplicarDatos(groupData);
-            pnlPostsGrupo.Visible = false;
-            pnlChat.Visible = true;
             AñadirMensajes();
             lblEditando.Visible = false;
             pnlCrear.Visible = false;
@@ -102,6 +103,30 @@ namespace Frontend
             pbxFotoGrupoEditar.Visible = false;
             lblAñadir.Visible = false;
             pbxBuscar.Visible = false;
+            if (modo.Equals("Oscuro"))
+            {
+                lblName.ForeColor = Color.White;
+                if (!esChatPrivado)
+                {
+                    lblMiembros.ForeColor = Color.White;
+                }
+                lblChat.ForeColor = Color.White;
+                lblPostsGrupo.ForeColor = Color.White;
+                lblCancelar.ForeColor = Color.White;
+                lblEditar.ForeColor = Color.White;
+                lblEliminar.ForeColor = Color.White;
+                lblAñadir.ForeColor = Color.White;
+                PictureBoxConfiguraciones.Image = Frontend.Properties.Resources.mas_opciones_claro_relleno;
+                pbxSeleccionarImagen.Image = Frontend.Properties.Resources.Foto_negra;
+                pbxCrearPostGrupo.Image = Frontend.Properties.Resources.crear_claro;
+                pbxBuscar.Image = Frontend.Properties.Resources.buscar_claro;
+                this.BackColor= Color.FromArgb(40, 40, 40);
+                pnlAsociarContenido.BackColor= Color.FromArgb(50, 50, 50);
+                pnlChat.BackColor = Color.FromArgb(50, 50, 50);
+                pnlCrear.BackColor = Color.FromArgb(50, 50, 50);
+                pnlGruposComunidad.BackColor = Color.FromArgb(50, 50, 50);
+                pnlPostsGrupo.BackColor = Color.FromArgb(50, 50, 50);
+            }
             MensajesNuevos();
         }
         private void InitializeComponent()
@@ -146,6 +171,7 @@ namespace Frontend
             this.pnlChat = new System.Windows.Forms.Panel();
             this.txtURL = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEnviar)).BeginInit();
@@ -160,6 +186,7 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.pbxConfirmarCambios)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxSeleccionarImagen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupoEditar)).BeginInit();
+            this.pnlPostsGrupo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -510,6 +537,7 @@ namespace Frontend
             // 
             this.pnlPostsGrupo.AutoScroll = true;
             this.pnlPostsGrupo.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.pnlPostsGrupo.Controls.Add(this.progressBar1);
             this.pnlPostsGrupo.Location = new System.Drawing.Point(12, 110);
             this.pnlPostsGrupo.Name = "pnlPostsGrupo";
             this.pnlPostsGrupo.Size = new System.Drawing.Size(971, 499);
@@ -585,6 +613,13 @@ namespace Frontend
             this.panel2.Size = new System.Drawing.Size(971, 3);
             this.panel2.TabIndex = 76;
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(210, 193);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(560, 23);
+            this.progressBar1.TabIndex = 0;
+            // 
             // GruposComunidad
             // 
             this.ClientSize = new System.Drawing.Size(996, 717);
@@ -613,6 +648,7 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.pbxConfirmarCambios)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxSeleccionarImagen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupoEditar)).EndInit();
+            this.pnlPostsGrupo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbxFotoGrupo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -704,7 +740,6 @@ namespace Frontend
                     if (imagen.Length == 0)
                     {
                         var datos = new { texto = texto, video = video, nombreDeCuenta = user, nombreReal = nombreGrupo, fechaYHora = fechayhora, token = token };
-                        MessageBox.Show("ll");
                         var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync("https://localhost:44304/AñadirMensaje", content);
                         response.EnsureSuccessStatusCode();
@@ -754,7 +789,6 @@ namespace Frontend
         {
             using (HttpClient client = new HttpClient())
             {
-                await Task.Delay(5000);
                 try
                 {
                     var datos = new { nombreReal = nombreGrupo, idMensaje=idUltimoMensaje, token = token };
@@ -771,26 +805,55 @@ namespace Frontend
                 }
             }
         }
+        private async Task<dynamic> ultimomensaje()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                await Task.Delay(1000);
+                try
+                {
+                    var datos = new { nombreReal = nombreGrupo, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44304/UltimoMensajeDelGrupo", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
 
         public async void MensajesNuevos()
         {
             while (true)
             {
-                var salida = await ObtenerMensajesNuevos();
-                try
+                await Task.Delay(100);
+                if (progressBar1.Value==progressBar1.Maximum)
                 {
-                    if (!Convert.ToString(salida).Equals("No se encontraron Mensajes para el grupo especificado") && !Convert.ToString(salida).Equals("Ocurrió un error al intentar obtener los mensajes del grupo.") && !Convert.ToString(salida).Equals("Token expirado"))
+                    var ultimoMsg = await ultimomensaje();
+                    if (int.Parse(Convert.ToString(ultimoMsg)) > int.Parse(idUltimoMensaje))
                     {
-                        AñadirMensajes(salida);
+                        var salida = await ObtenerMensajesNuevos();
+                        try
+                        {
+                            if (!Convert.ToString(salida).Equals("No se encontraron Mensajes para el grupo especificado") && !Convert.ToString(salida).Equals("Ocurrió un error al intentar obtener los mensajes del grupo.") && !Convert.ToString(salida).Equals("Token expirado"))
+                            {
+                                await AñadirMensajes(salida);
+                            }
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show("ERROR"+ ex.Message);
+                        }
                     }
-                }
-                catch
-                {
-                    MessageBox.Show("ERROR");
                 }
             }
         }
-        private async void AñadirMensajes(dynamic mensajes = null)
+        private async Task AñadirMensajes(dynamic mensajes = null)
         {
             try
             {
@@ -805,9 +868,16 @@ namespace Frontend
                 {
                     listaDeMensajes = mensajes;
                 }
+                int count = 0;
                 foreach (var mensaje in listaDeMensajes)
                 {
-                    MessageControl messageControl = new MessageControl(mensaje, user,token);
+                    count++;
+                }
+                this.progressBar1.Maximum = count;
+                this.progressBar1.Value = 0;
+                foreach (var mensaje in listaDeMensajes)
+                {
+                    MessageControl messageControl = new MessageControl(mensaje, user,token, modo);
                     messageControl.EditarMensaje += MessageControl_EditarMensaje;
                     messageControl.MensajeEliminado+= MessageControl_RefrescarMensajes;
                     await messageControl.aplicarDatos(mensaje);
@@ -822,11 +892,15 @@ namespace Frontend
                     }
                     pnlChat.Controls.Add(messageControl);
                     idUltimoMensaje = Convert.ToString(mensaje.idMensaje);
+                    this.progressBar1.Value += 1;
                 }
+                this.progressBar1.Visible = false;
+                pnlPostsGrupo.Visible = false;
+                pnlChat.Visible = true;
             }
             catch
             {
-                MessageBox.Show("no hay mensaje");
+                
             }
         }
 
@@ -907,9 +981,12 @@ namespace Frontend
             {
                 string texto = txtMensajeAEnviar.Text;
                 var respuesta = await EditarMensaje(texto, idMensajeAModificar, token);
-                MessageBox.Show("" + respuesta);
-                pnlChat.Controls.Clear();
-                AñadirMensajes();
+                foreach (MessageControl control in pnlChat.Controls)
+                {
+                    control.modificarMensaje(int.Parse(idMensajeAModificar), txtMensajeAEnviar.Text);
+                }
+                lblEditando.Visible = false;
+                txtMensajeAEnviar.Text = "";
             }
         }
         public static async Task<dynamic> AgregarNotificaciones(string user, string texto, string tipo, string imagen, string token)
@@ -1023,7 +1100,7 @@ namespace Frontend
             {
                 foreach(var post in posts)
                 {
-                    var postControl = new PostControl(post, "Claro", user, token); //donde dice claro hay que poner el modo luego
+                    var postControl = new PostControl(post, modo, user, token); //donde dice claro hay que poner el modo luego
                     postControl.AbrirComentarios += PostControl_AbrirComentarios;
                     postControl.ReportarPost += PostControl_ReportarPost;
                     await postControl.aplicarDatos();

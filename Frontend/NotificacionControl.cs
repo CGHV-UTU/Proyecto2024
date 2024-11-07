@@ -13,7 +13,8 @@ namespace Frontend
 {
     public partial class NotificacionControl : UserControl
     {
-
+        private string modo;
+        private string idioma;
         public NotificacionControl(dynamic notificacion)
         {
             InitializeComponent();
@@ -23,6 +24,7 @@ namespace Frontend
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);
             PictureBoxNotificacion.Image = bitmap;
+            this.idioma = idioma;
         }
 
 
@@ -58,6 +60,12 @@ namespace Frontend
             this.Size = new System.Drawing.Size(600, 87); 
             this.ResumeLayout(false);
             this.PerformLayout();
+        }
+
+        public void aplicarModoOscuro()
+        {
+            lblNoti.ForeColor = Color.White;
+            this.BackColor = Color.FromArgb(40, 40, 40);
         }
     }
 }
