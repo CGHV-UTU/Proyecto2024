@@ -35,14 +35,15 @@ namespace Frontend
         private Panel panel1;
         public event EventHandler<PersonalizedArgs> EditarMensaje;
         public event EventHandler<PersonalizedArgs> MensajeEliminado;
-
-        public MessageControl(dynamic MessageData, string user, string token, string modo)
+        private string idioma;
+        public MessageControl(dynamic MessageData, string user, string token, string modo, string idioma)
         {
             InitializeComponent();
             txtMensaje.ReadOnly = true;
             this.token = token;
             this.user = user;
             this.modo = modo;
+            this.idioma = idioma;
             this.creador = Convert.ToString(MessageData.nombreDeCuenta);
             this.idMensaje = Convert.ToString(MessageData.idMensaje);
             btnEditar.Visible = false;
@@ -128,6 +129,11 @@ namespace Frontend
                     this.btnEditar.ForeColor = Color.White;
                     this.btnEliminar.ForeColor = Color.White;
                     this.pbxOpciones.Image = Frontend.Properties.Resources.mas_opciones_claro_relleno;
+                }
+                if (idioma.Equals("English"))
+                {
+                    btnEliminar.Text = "Delete";
+                    btnEditar.Text = "Edit";
                 }
                 this.Controls.Add(this.btnEditar);
                 this.Controls.Add(this.btnEliminar);
@@ -217,7 +223,6 @@ namespace Frontend
             this.txtMensaje.Name = "txtMensaje";
             this.txtMensaje.Size = new System.Drawing.Size(381, 60);
             this.txtMensaje.TabIndex = 1;
-            this.txtMensaje.Text = "Inserte su texto";
             // 
             // lblFechaYHora
             // 

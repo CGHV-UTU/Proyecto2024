@@ -22,12 +22,14 @@ namespace Frontend
         private string modo;
         private string user;
         private string token;
+        private string idioma;
         private int postsCargados;
-        public Posts(string modo,string user, string token)
+        public Posts(string modo,string user, string token, string idioma)
         {
             this.modo = modo;
             this.user = user;
             this.token = token;
+            this.idioma = idioma;
             Iniciar();
             panel1.Visible = false;
             LoadPosts(currentPage);
@@ -83,7 +85,7 @@ namespace Frontend
             // carga de posts
             foreach (var post in postPublicos)
             {
-                var postControl = new PostControl(post, modo, user, token);
+                var postControl = new PostControl(post, modo, user, token, idioma);
                 postControl.AbrirComentarios += PostControl_AbrirComentarios;
                 postControl.ReportarPost += PostControl_ReportarPost;
                 postControl.RecargarFeed += PostControl_RecargarFeed;

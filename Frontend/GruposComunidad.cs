@@ -75,7 +75,8 @@ namespace Frontend
         public event EventHandler<PersonalizedArgs> ReportarGrupo;
         public event EventHandler<PersonalizedArgs> BuscarUsuarios;
         private dynamic grupo;
-        public GruposComunidad(dynamic groupData, string user, string token, bool esChatPrivado=false, string modo="Claro")
+        private string idioma;
+        public GruposComunidad(dynamic groupData, string user, string token, bool esChatPrivado=false, string modo="Claro", string idioma="Español")
         {
             InitializeComponent();
             this.user = user;
@@ -86,6 +87,7 @@ namespace Frontend
             this.esChatPrivado = esChatPrivado;
             this.grupo = groupData;
             this.modo = modo;
+            this.idioma = idioma;
             if (esChatPrivado)
             {
                 this.Controls.Remove(pbxCrearPostGrupo);
@@ -126,6 +128,20 @@ namespace Frontend
                 pnlCrear.BackColor = Color.FromArgb(50, 50, 50);
                 pnlGruposComunidad.BackColor = Color.FromArgb(50, 50, 50);
                 pnlPostsGrupo.BackColor = Color.FromArgb(50, 50, 50);
+            }
+            if (idioma.Equals("English"))
+            {
+                lblCancelar.Text = "Cancel";
+                lblEliminar.Text = "Delete";
+                lblEditar.Text = "Edit";
+                lblAñadir.Text = "Add Users";
+                lblAsociarVideo.Text = "Video";
+                lblAsociarImagen.Text = "Image";
+                lblEditando.Text = "Editing";
+                if (!esChatPrivado)
+                {
+                    lblMiembros.Text = "Members";
+                }
             }
             MensajesNuevos();
         }
@@ -877,7 +893,7 @@ namespace Frontend
                 this.progressBar1.Value = 0;
                 foreach (var mensaje in listaDeMensajes)
                 {
-                    MessageControl messageControl = new MessageControl(mensaje, user,token, modo);
+                    MessageControl messageControl = new MessageControl(mensaje, user,token, modo, idioma);
                     messageControl.EditarMensaje += MessageControl_EditarMensaje;
                     messageControl.MensajeEliminado+= MessageControl_RefrescarMensajes;
                     await messageControl.aplicarDatos(mensaje);
@@ -1100,10 +1116,11 @@ namespace Frontend
             {
                 foreach(var post in posts)
                 {
-                    var postControl = new PostControl(post, modo, user, token); //donde dice claro hay que poner el modo luego
+                    var postControl = new PostControl(post, modo, user, token,idioma); //donde dice claro hay que poner el modo luego
                     postControl.AbrirComentarios += PostControl_AbrirComentarios;
                     postControl.ReportarPost += PostControl_ReportarPost;
                     await postControl.aplicarDatos();
+                    postControl.quitarLike();
                     // Calcula la ubicación Y acumulada
                     int currentYPosition = 0;
                     if (pnlPostsGrupo.Controls.Count > 0)
@@ -1132,7 +1149,7 @@ namespace Frontend
         {
             pnlCrear.Visible = true;
             pnlCrear.Height = 692;
-            Post crearPostGrupo = new Post(user, token, "", nombreGrupo);
+            Post crearPostGrupo = new Post(user, token, "", nombreGrupo, idioma:idioma, modo:modo);
             crearPostGrupo.TopLevel = false;
             crearPostGrupo.FormBorderStyle = FormBorderStyle.None;
             crearPostGrupo.Creado += lblPostsGrupo_Click;
@@ -1242,7 +1259,7 @@ namespace Frontend
         }
         private void lblEditar_Click(object sender, EventArgs e)
         {
-            if (lblEditando.Text.Equals("Editar"))
+            if (lblEditar.Text.Equals("Editar") || lblEditar.Text.Equals("Edit"))
             {
                 pbxSeleccionarImagen.Visible = true;
                 pbxFotoGrupoEditar.Visible = true;
@@ -1368,7 +1385,7 @@ namespace Frontend
 
         private async void lblEliminar_Click(object sender, EventArgs e)
         {
-            if (lblEliminar.Text.Equals("Eliminar"))
+            if (lblEliminar.Text.Equals("Eliminar") || lblEliminar.Text.Equals("Delete"))
             {
                 var respuesta = await EliminarGrupo(nombreGrupo, token);
                 GrupoEliminado?.Invoke(this, EventArgs.Empty);
@@ -1472,7 +1489,7 @@ namespace Frontend
 
         private async void lblAñadir_Click(object sender, EventArgs e)
         {
-            if (lblAñadir.Text.Equals("Añadir Usuarios"))
+            if (lblAñadir.Text.Equals("Añadir Usuarios") || lblAñadir.Text.Equals("Add Users"))
             {
                 if (!pbxBuscar.Visible)
                 {

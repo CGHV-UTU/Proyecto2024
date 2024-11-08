@@ -21,17 +21,19 @@ namespace Frontend
         private string user;
         private string token;
         private string interaccion;
+        private string idioma;
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarPost;
         public event EventHandler<PersonalizedArgs> AbrirGrupo;
         public event EventHandler<PersonalizedArgs> ReportarUsuario;
         public event EventHandler<PersonalizedArgs> NuevaImagen;
-        public PaginaDeUsuario(string nombreCreador, string modo, string user, string token)
+        public PaginaDeUsuario(string nombreCreador, string modo, string user, string token, string idioma)
         {
             this.nombreDeCreador = nombreCreador;
             this.modo = modo;
             this.user = user;
             this.token = token;
+            this.idioma = idioma;
             InitializeComponent();
             Iniciar();
             LoadPosts();
@@ -52,7 +54,7 @@ namespace Frontend
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     dynamic data = JsonConvert.DeserializeObject(responseBody);
-                    return new string[] {data.nombreVisible, data.descripcion, data.foto };
+                    return new string[] {data.nombreVisible, data.descripcion, data.foto, data.seguidores };
                 }
                 catch
                 {
@@ -89,7 +91,7 @@ namespace Frontend
             {
                 foreach (var post in posts)
                 {
-                    var postControl = new PostControl(post, modo, user, token);
+                    var postControl = new PostControl(post, modo, user, token,idioma);
                     postControl.AbrirComentarios += PostControl_AbrirComentarios;
                     postControl.ReportarPost += PostControl_ReportarPost;
                     await postControl.aplicarDatos();
@@ -134,6 +136,14 @@ namespace Frontend
                 this.PictureBoxUsuario.Image = bitmap;
                 this.PictureBoxUsuario.SizeMode = PictureBoxSizeMode.StretchImage;
                 this.lblNombre.Text = datos[0];
+                if (int.Parse(datos[3]) > 0)
+                {
+                    this.lblSeguidores.Text = datos[3];
+                }
+                else
+                {
+                    this.lblSeguidores.Visible = false;
+                }
             }
             this.SuspendLayout();
             // panelPosts
@@ -161,6 +171,7 @@ namespace Frontend
                 pbxReportar.Image = Frontend.Properties.Resources.reportarBlanco;
                 pbxChatear.Image = Frontend.Properties.Resources.Comunidad_Claro;
                 panelPosts.BackColor= Color.FromArgb(50, 50, 50);
+                lblSeguidores.ForeColor = Color.White;
             }
             if (nombreDeCreador.Equals(user))
             {
@@ -182,6 +193,11 @@ namespace Frontend
                     lblSiguiendo.Visible = true;
                     btnSeguir.Visible = false;
                 }
+            }
+            if (idioma.Equals("English"))
+            {
+                btnSeguir.Image = Frontend.Properties.Resources.Follow_removebg_preview;
+                lblSiguiendo.Text = "Following";
             }
         }
         public static async Task<dynamic> Interactuar(string user, string aQuienSigue, string tipo, string token)

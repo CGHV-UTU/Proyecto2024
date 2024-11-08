@@ -22,8 +22,9 @@ namespace Frontend
         private string nombreReal;
         private string usuarioAReportar;
         private string modo;
+        private string idioma;
         public event EventHandler CerrarVentana;
-        public ReportarPost(string idpost, string user, string token,string modo, string idcomentario="", string idEvento="", string nombreRealGrupo="", string usuarioAReportar="")
+        public ReportarPost(string idpost, string user, string token,string modo, string idcomentario="", string idEvento="", string nombreRealGrupo="", string usuarioAReportar="", string idioma="Español")
         {
             this.idpost = idpost;
             this.idcomentario = idcomentario;
@@ -33,6 +34,7 @@ namespace Frontend
             this.nombreReal = nombreRealGrupo;
             this.usuarioAReportar = usuarioAReportar;
             this.modo = modo;
+            this.idioma = idioma;
             InitializeComponent();
             this.BackColor = Color.LightGray;
             if (modo.Equals("Oscuro"))
@@ -44,6 +46,28 @@ namespace Frontend
                 cbxRazon.ForeColor = Color.White;
                 cbxRazon.BackColor = Color.FromArgb(50, 50, 50);
                 this.BackColor = Color.FromArgb(40, 40, 40);
+            }
+            if (idioma.Equals("English"))
+            {
+                lblRazon.Text = "Reason";
+                lblDescripcion.Text = "Description";
+                pictureBox1.Image = Frontend.Properties.Resources.report;
+                List<string> opciones = new List<string>
+                {
+                    "Sexual",
+                    "Violent or repugnant",
+                    "Abusive",
+                    "Harassment or bullying",
+                    "Harmful or dangerous activities",
+                    "Misinformation",
+                    "Child abuse",
+                    "Terrorism",
+                    "Fraud",
+                    "Legal issue",
+                    "Other"
+                };
+                cbxRazon.Items.Clear();
+                cbxRazon.Items.AddRange(opciones.ToArray());
             }
         }
 
@@ -199,8 +223,54 @@ namespace Frontend
                 string creadorPost = await obtenerCreador(int.Parse(idpost), token);
                 if (!string.IsNullOrEmpty(cbxRazon.Text))
                 {
-                    var respuesta = await ReportaPost(usuario, creadorPost, int.Parse(idpost), cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
-                    MessageBox.Show(respuesta);
+                    if (idioma.Equals("English"))
+                    {
+                        string razon = cbxRazon.SelectedItem.ToString();
+                        string razonEspañol="";
+                        switch (razon)
+                        {
+                            case "Sexual":
+                                razonEspañol = "Sexual";
+                                break;
+                            case "Violent or repugnant":
+                                razonEspañol = "Violento o repugnante";
+                                break;
+                            case "Abusive":
+                                razonEspañol = "Vejatorio";
+                                break;
+                            case "Harassment or bullying":
+                                razonEspañol = "Hostigamiento o acoso";
+                                break;
+                            case "Harmful or dangerous activities":
+                                razonEspañol = "Actividades dañinas o peligrosas";
+                                break;
+                            case "Misinformation":
+                                razonEspañol = "Desinformacion";
+                                break;
+                            case "Child abuse":
+                                razonEspañol = "Maltrato infantil";
+                                break;
+                            case "Terrorism":
+                                razonEspañol = "Terrorismo";
+                                break;
+                            case "Fraud":
+                                razonEspañol = "Fraude";
+                                break;
+                            case "Legal issue":
+                                razonEspañol = "Problema legal";
+                                break;
+                            case "Other":
+                                razonEspañol = "Otros";
+                                break;
+                        }
+                        var respuesta = await ReportaPost(usuario, creadorPost, int.Parse(idpost), razonEspañol, txtDescripcion.Text, token);
+                        MessageBox.Show("Correct", "Correct", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        var respuesta = await ReportaPost(usuario, creadorPost, int.Parse(idpost), cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
+                        MessageBox.Show("Reporte correcto", "Correcto", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
                 else
                 {

@@ -107,6 +107,7 @@ namespace Frontend
             if (idioma.Equals("English"))
             {
                 notis.idioma="English";
+                notis.aplicarIngles();
             }
             PictureBoxNotificaciones.Image = Frontend.Properties.Resources.campana_clara_removebg_preview;
             this.PanelNotificaciones.AutoScroll = true;
@@ -133,7 +134,7 @@ namespace Frontend
             string[] configure = config.Split(';');    
             idioma = configure[1];
             this.modo = configure[0];
-            Posts post = new Posts(configure[0],user, token);
+            Posts post = new Posts(configure[0],user, token, idioma);
             if (configure[0].Equals("Oscuro"))
             {
                 BackColor = Color.FromArgb(20, 20, 20);
@@ -172,7 +173,7 @@ namespace Frontend
             PanelMostrarUsuario.Visible = true;
             PanelMostrarUsuario.Parent = this;
             PanelMostrarUsuario.Location = PanelPosts.Location;
-            PaginaDeUsuario paginaDeUsuario = new PaginaDeUsuario(e.arg, modo, user, token);
+            PaginaDeUsuario paginaDeUsuario = new PaginaDeUsuario(e.arg, modo, user, token,idioma);
             paginaDeUsuario.TopLevel = false;
             paginaDeUsuario.FormBorderStyle = FormBorderStyle.None;
             paginaDeUsuario.BackColor = Color.LightGray;
@@ -195,7 +196,7 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            ReportarPost post = new ReportarPost("", user, token,modo,usuarioAReportar:Convert.ToString(e.arg));
+            ReportarPost post = new ReportarPost("", user, token,modo,usuarioAReportar:Convert.ToString(e.arg), idioma:idioma);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
             post.Dock = DockStyle.Fill;
@@ -233,7 +234,7 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            ReportarPost post = new ReportarPost(idpost, user, token, modo,idcomentario:idcomentario);
+            ReportarPost post = new ReportarPost(idpost, user, token, modo,idcomentario:idcomentario, idioma:idioma);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
             post.Dock = DockStyle.Fill;
@@ -245,7 +246,7 @@ namespace Frontend
         private void VerComentarios(string idpost)
         {
             PanelComentarios.Controls.Clear();
-            Comentarios comentario = new Comentarios(modo,idpost,user, token);
+            Comentarios comentario = new Comentarios(modo,idpost,user, token, idioma);
             comentario.TopLevel = false;
             comentario.FormBorderStyle = FormBorderStyle.None;
             if (modo.Equals("Oscuro")) 
@@ -287,7 +288,7 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false; 
-            Post post = new Post(user, token, idevento);
+            Post post = new Post(user, token, idevento, idioma:idioma, modo:modo);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
             post.BackColor = Color.White;
@@ -324,7 +325,7 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            Configuracion config = new Configuracion(user, token,modo);
+            Configuracion config = new Configuracion(user, token,modo,idioma);
             config.TopLevel = false;
             config.FormBorderStyle = FormBorderStyle.None;
             config.Dock = DockStyle.Fill;
@@ -426,7 +427,7 @@ namespace Frontend
             PanelMostrarUsuario.Visible = true;
             PanelMostrarUsuario.Parent = this;
             PanelMostrarUsuario.Location = PanelPosts.Location;
-            EventoComunidad comunidad = new EventoComunidad(e.arg, user, token, modo);
+            EventoComunidad comunidad = new EventoComunidad(e.arg, user, token, modo, idioma);
             comunidad.TopLevel = false;
             comunidad.FormBorderStyle = FormBorderStyle.None;
             comunidad.Dock = DockStyle.Fill;
@@ -449,7 +450,7 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            ReportarPost post = new ReportarPost("", user, token, modo,idEvento: Convert.ToString(e.arg));
+            ReportarPost post = new ReportarPost("", user, token, modo,idEvento: Convert.ToString(e.arg), idioma: idioma);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
             post.Dock = DockStyle.Fill;
@@ -475,7 +476,7 @@ namespace Frontend
             {
                 esChatPrivado = false;
             }
-            GruposComunidad comunidad = new GruposComunidad(e.arg, user, token,esChatPrivado, modo:modo);
+            GruposComunidad comunidad = new GruposComunidad(e.arg, user, token,esChatPrivado, modo:modo, idioma:idioma);
             comunidad.TopLevel = false;
             comunidad.FormBorderStyle = FormBorderStyle.None;
             comunidad.Dock = DockStyle.Fill;
@@ -496,7 +497,7 @@ namespace Frontend
             panelBusqueda.Visible = true;
             PanelMostrarUsuario.Parent = this;
             PanelMostrarUsuario.Location = PanelPosts.Location;
-            Busqueda busqueda = new Busqueda(user, token, Convert.ToString(e.arg),modo:modo);
+            Busqueda busqueda = new Busqueda(user, token, Convert.ToString(e.arg),modo:modo, idioma:idioma);
             busqueda.TopLevel = false;
             busqueda.FormBorderStyle = FormBorderStyle.None;
             busqueda.Dock = DockStyle.Fill;
@@ -522,7 +523,7 @@ namespace Frontend
             PanelPostear.Visible = true;
             PanelPostear.Parent = this;
             PanelPosts.Visible = false;
-            ReportarPost post = new ReportarPost("", user, token, modo, nombreRealGrupo: Convert.ToString(e.arg));
+            ReportarPost post = new ReportarPost("", user, token, modo, nombreRealGrupo: Convert.ToString(e.arg), idioma:idioma);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
             post.Dock = DockStyle.Fill;
@@ -543,7 +544,7 @@ namespace Frontend
                 panelBusqueda.Visible = true;
                 PanelMostrarUsuario.Parent = this;
                 PanelMostrarUsuario.Location = PanelPosts.Location;
-                Busqueda busqueda = new Busqueda(user, token,modo:modo);
+                Busqueda busqueda = new Busqueda(user, token,modo:modo, idioma:idioma);
                 busqueda.TopLevel = false;
                 busqueda.FormBorderStyle = FormBorderStyle.None;
                 busqueda.Dock = DockStyle.Fill;
@@ -574,7 +575,7 @@ namespace Frontend
             PanelMostrarUsuario.Visible = true;
             PanelMostrarUsuario.Parent = this;
             PanelMostrarUsuario.Location = PanelPosts.Location;
-            PaginaDeUsuario paginaDeUsuario = new PaginaDeUsuario(user, modo, user, token);
+            PaginaDeUsuario paginaDeUsuario = new PaginaDeUsuario(user, modo, user, token,idioma);
             paginaDeUsuario.TopLevel = false;
             paginaDeUsuario.FormBorderStyle = FormBorderStyle.None;
             paginaDeUsuario.BackColor = Color.LightGray;

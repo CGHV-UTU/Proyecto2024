@@ -140,6 +140,11 @@ namespace Frontend
                 MessageBox.Show("Ha ocurrido un error. El nombre no puede ser igual a la contraseña", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+            if (txtUsuario.Text.Contains(' '))
+            {
+                MessageBox.Show("Ha ocurrido un error. El nombre no puede tener espacios", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
 
             if (txtContraseña.Text.Length < 8)
             {

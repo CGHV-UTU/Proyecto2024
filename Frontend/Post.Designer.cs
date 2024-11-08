@@ -48,12 +48,12 @@ namespace Frontend
             this.pnlOpcionEvento = new System.Windows.Forms.Panel();
             this.pnlOpcionGrupo = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.txtCategorias = new System.Windows.Forms.TextBox();
             this.btnUbicacion = new System.Windows.Forms.PictureBox();
             this.pbxImagen = new System.Windows.Forms.PictureBox();
             this.btnCrear = new System.Windows.Forms.PictureBox();
             this.btnVideo = new System.Windows.Forms.PictureBox();
             this.btnImagen = new System.Windows.Forms.PictureBox();
-            this.txtCategorias = new System.Windows.Forms.TextBox();
             this.pnlOpcionGrupo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnUbicacion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
@@ -254,6 +254,19 @@ namespace Frontend
             this.panel5.Size = new System.Drawing.Size(10, 10);
             this.panel5.TabIndex = 73;
             // 
+            // txtCategorias
+            // 
+            this.txtCategorias.BackColor = System.Drawing.SystemColors.Window;
+            this.txtCategorias.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCategorias.ForeColor = System.Drawing.Color.Gray;
+            this.txtCategorias.Location = new System.Drawing.Point(16, 184);
+            this.txtCategorias.Multiline = true;
+            this.txtCategorias.Name = "txtCategorias";
+            this.txtCategorias.Size = new System.Drawing.Size(216, 54);
+            this.txtCategorias.TabIndex = 76;
+            this.txtCategorias.Text = "Categorías";
+            this.txtCategorias.Enter += new System.EventHandler(this.txtCategorias_Enter);
+            // 
             // btnUbicacion
             // 
             this.btnUbicacion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -319,19 +332,6 @@ namespace Frontend
             this.btnImagen.TabIndex = 25;
             this.btnImagen.TabStop = false;
             this.btnImagen.Click += new System.EventHandler(this.btnImagen_Click);
-            // 
-            // txtCategorias
-            // 
-            this.txtCategorias.BackColor = System.Drawing.SystemColors.Window;
-            this.txtCategorias.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCategorias.ForeColor = System.Drawing.Color.Gray;
-            this.txtCategorias.Location = new System.Drawing.Point(16, 184);
-            this.txtCategorias.Multiline = true;
-            this.txtCategorias.Name = "txtCategorias";
-            this.txtCategorias.Size = new System.Drawing.Size(216, 54);
-            this.txtCategorias.TabIndex = 76;
-            this.txtCategorias.Text = "Categorías";
-            this.txtCategorias.Enter += new System.EventHandler(this.txtCategorias_Enter);
             // 
             // Post
             // 

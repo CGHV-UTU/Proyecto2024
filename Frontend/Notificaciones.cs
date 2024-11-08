@@ -81,6 +81,13 @@ namespace Frontend
                 noti.aplicarModoOscuro();
             }
         }
+        public void aplicarIngles()
+        {
+            foreach (NotificacionControl noti in PanelNotificaciones.Controls)
+            {
+                noti.aplicarIngles();
+            }
+        }
         public void setearCantidadDeNotificaciones()
         {
             cantNotificaciones = this.PanelNotificaciones.Controls.Count;

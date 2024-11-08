@@ -163,6 +163,16 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap comentarIngles_removebg_preview {
+            get {
+                object obj = ResourceManager.GetObject("comentarIngles-removebg-preview", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap comentario {
             get {
                 object obj = ResourceManager.GetObject("comentario", resourceCulture);
@@ -376,6 +386,16 @@ namespace Frontend.Properties {
         internal static System.Drawing.Bitmap eventosBlanco {
             get {
                 object obj = ResourceManager.GetObject("eventosBlanco", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Follow_removebg_preview {
+            get {
+                object obj = ResourceManager.GetObject("Follow-removebg-preview", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -703,6 +723,16 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap report {
+            get {
+                object obj = ResourceManager.GetObject("report", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap reportar {
             get {
                 object obj = ResourceManager.GetObject("reportar", resourceCulture);
@@ -783,6 +813,26 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap upload_removebg_preview {
+            get {
+                object obj = ResourceManager.GetObject("upload-removebg-preview", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap upload_removebg_preview__3_ {
+            get {
+                object obj = ResourceManager.GetObject("upload-removebg-preview (3)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap User {
             get {
                 object obj = ResourceManager.GetObject("User", resourceCulture);
@@ -836,6 +886,16 @@ namespace Frontend.Properties {
         internal static System.Drawing.Bitmap Video2222 {
             get {
                 object obj = ResourceManager.GetObject("Video2222", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap VideoClaro {
+            get {
+                object obj = ResourceManager.GetObject("VideoClaro", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

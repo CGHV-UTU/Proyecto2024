@@ -16,11 +16,13 @@ namespace Frontend
     {
         public static string usuario;
         private string token;
-        public Configuracion(string user, string token,string modo)
+        private string idioma;
+        public Configuracion(string user, string token,string modo, string idioma)
         {
             InitializeComponent();
             usuario = user;
             this.token = token;
+            this.idioma = idioma;
             if (!modo.Equals("Oscuro"))
             {
                 this.BackColor = Color.LightGray;
@@ -35,20 +37,60 @@ namespace Frontend
                 cbxIdioma.BackColor= Color.FromArgb(50, 50, 50);
                 cbxModo.BackColor= Color.FromArgb(50, 50, 50);
             }
+            if (idioma.Equals("English"))
+            {
+                label1.Text = "Mode";
+                label2.Text = "Language";
+                List<string> opciones = new List<string>
+                {
+                    "Bright",
+                    "Dark"
+                };
+                cbxModo.Items.Clear();
+                cbxModo.Items.AddRange(opciones.ToArray());
+                btnCambiar.Text = "Change Configuration";
+            }
         }
         public event EventHandler<ConfiguraEventArgs> CambiarModo;
         
         private async void btnCambiar_Click(object sender, EventArgs e)
         {
-            var resultado = await CambiarConfig(Convert.ToString(cbxModo.SelectedItem), Convert.ToString(cbxIdioma.SelectedItem), token);
-            if (resultado.Equals("Configuracion correcta"))
+            if (idioma.Equals("English"))
             {
-                MessageBox.Show("Configuración modificada con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                CambiarModo?.Invoke(this, new ConfiguraEventArgs(Convert.ToString(cbxModo.SelectedItem), Convert.ToString(cbxIdioma.SelectedItem)));
+                string modoEspañol="Claro";
+                string modo = Convert.ToString(cbxModo.SelectedItem);
+                switch (modo)
+                {
+                    case "Bright":
+                        modoEspañol = "Claro";
+                        break;
+                    case "Dark":
+                        modoEspañol = "Oscuro";
+                        break;
+                }
+                var resultado = await CambiarConfig(modoEspañol, Convert.ToString(cbxIdioma.SelectedItem), token);
+                if (resultado.Equals("Configuracion correcta"))
+                {
+                    MessageBox.Show("Configuración modificada con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CambiarModo?.Invoke(this, new ConfiguraEventArgs(Convert.ToString(cbxModo.SelectedItem), Convert.ToString(cbxIdioma.SelectedItem)));
+                }
+                else
+                {
+                    MessageBox.Show("Hubo un error en backend", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
-                MessageBox.Show("Hubo un error en backend", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                var resultado = await CambiarConfig(Convert.ToString(cbxModo.SelectedItem), Convert.ToString(cbxIdioma.SelectedItem), token);
+                if (resultado.Equals("Configuracion correcta"))
+                {
+                    MessageBox.Show("Configuración modificada con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CambiarModo?.Invoke(this, new ConfiguraEventArgs(Convert.ToString(cbxModo.SelectedItem), Convert.ToString(cbxIdioma.SelectedItem)));
+                }
+                else
+                {
+                    MessageBox.Show("Hubo un error en backend", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 

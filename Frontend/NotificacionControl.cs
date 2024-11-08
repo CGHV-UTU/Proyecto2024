@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Frontend
@@ -24,7 +18,6 @@ namespace Frontend
             MemoryStream ms = new MemoryStream(imagen);
             Bitmap bitmap = new Bitmap(ms);
             PictureBoxNotificacion.Image = bitmap;
-            this.idioma = idioma;
         }
 
 
@@ -66,6 +59,35 @@ namespace Frontend
         {
             lblNoti.ForeColor = Color.White;
             this.BackColor = Color.FromArgb(40, 40, 40);
+        }
+        public void aplicarIngles()
+        {
+            if (lblNoti.Text.Contains(" ha empezado a seguirte"))
+            {
+                string[] textoArray = lblNoti.Text.Split(' ');
+                string textoEnIngles = " started following you";
+                lblNoti.Text = textoArray[0] + textoEnIngles;
+            }
+            if (lblNoti.Text.Contains(" envió un nuevo mensaje al grupo "))
+            {
+                string textoEnIngles = " has sent a new message to the group";
+                string[] palabras = lblNoti.Text.Split(' ');
+                string primeraPalabra = palabras[0];
+                string nombreDeGrupo = "";
+                for (int i=6;i < palabras.Length-1;i++)
+                {
+                    nombreDeGrupo = nombreDeGrupo+" "+palabras[i];
+                }
+
+                lblNoti.Text = primeraPalabra + textoEnIngles + nombreDeGrupo;
+            }
+            if (lblNoti.Text.Contains("  le ha dado like a tu publicación"))
+            {
+                string textoEnIngles = " has liked your post";
+                string[] palabras = lblNoti.Text.Split(' ');
+                string primeraPalabra = palabras[0];
+                lblNoti.Text = primeraPalabra + textoEnIngles;
+            }
         }
     }
 }

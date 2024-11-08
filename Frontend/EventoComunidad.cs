@@ -45,20 +45,31 @@ namespace Frontend
         private Label lblFechaInicio;
         private Label lblFechaFinal;
         private dynamic evento;
+        private string idioma;
         public event EventHandler<PersonalizedArgs> PostearEnEvento;
         public event EventHandler<PersonalizedArgs> AbrirComentarios;
         public event EventHandler<PersonalizedArgs> ReportarPost;
         public event EventHandler<PersonalizedArgs> EventoEliminado;
         public event EventHandler<PersonalizedArgs> ReportarEvento;
-        public EventoComunidad(dynamic EventData,string user, string token, string modo)
+        public EventoComunidad(dynamic EventData,string user, string token, string modo, string idioma)
         {
             InitializeComponent();
             this.token = token;
             this.user = user;
             this.idEvento = Convert.ToString(EventData.idEvento);
             this.modo = modo;
+            this.idioma = idioma;
             evento = EventData;
             AplicarDatos(EventData);
+            if (idioma.Equals("English"))
+            {
+                lblCancelar.Text = "Cancel";
+                label1.Text = "Start";
+                label2.Text = "Finish";
+                lblEliminar.Text = "Delete";
+                lblEditar.Text = "Edit";
+                lblAdministradores.Text = "Administrators";
+            }
             LoadPosts();
             CompararCreador();
             txtNombre.Visible = false;
@@ -93,6 +104,10 @@ namespace Frontend
                 panelPosts.BackColor= Color.FromArgb(50, 50, 50);
                 this.BackColor= Color.FromArgb(40, 40, 40);
             }
+            if (idioma.Equals("English"))
+            {
+                btnSeguir.Image = Frontend.Properties.Resources.Follow_removebg_preview;
+            }
         }
         
         private void CompararCreador()
@@ -110,6 +125,11 @@ namespace Frontend
             {
                 lblEditar.Text = "Reportar";
                 lblEliminar.Text = "Salir";
+                if (idioma.Equals("English"))
+                {
+                    lblEditar.Text = "Report";
+                    lblEliminar.Text = "Exit";
+                }
                 if (rol.Equals("Seguidor"))
                 {
                     btnSeguir.Visible = false;
@@ -165,33 +185,33 @@ namespace Frontend
             this.lblDescripcion = new System.Windows.Forms.Label();
             this.lblUbicacion = new System.Windows.Forms.Label();
             this.panelPosts = new System.Windows.Forms.Panel();
-            this.btnSeguir = new System.Windows.Forms.PictureBox();
-            this.btnUbicacion = new System.Windows.Forms.PictureBox();
-            this.pbxImagen = new System.Windows.Forms.PictureBox();
-            this.btnCrear = new System.Windows.Forms.PictureBox();
-            this.pbxEditar = new System.Windows.Forms.PictureBox();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.txtDesc = new System.Windows.Forms.TextBox();
             this.txtUbicacion = new System.Windows.Forms.TextBox();
             this.lblEditar = new System.Windows.Forms.Label();
             this.lblEliminar = new System.Windows.Forms.Label();
-            this.pbxConfirmarCambios = new System.Windows.Forms.PictureBox();
-            this.pbxSeleccionarImagen = new System.Windows.Forms.PictureBox();
             this.lblCancelar = new System.Windows.Forms.Label();
-            this.pbxImagenEditar = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblAdministradores = new System.Windows.Forms.Label();
             this.lblFechaInicio = new System.Windows.Forms.Label();
             this.lblFechaFinal = new System.Windows.Forms.Label();
+            this.pbxImagenEditar = new System.Windows.Forms.PictureBox();
+            this.pbxSeleccionarImagen = new System.Windows.Forms.PictureBox();
+            this.pbxConfirmarCambios = new System.Windows.Forms.PictureBox();
+            this.pbxEditar = new System.Windows.Forms.PictureBox();
+            this.btnCrear = new System.Windows.Forms.PictureBox();
+            this.btnSeguir = new System.Windows.Forms.PictureBox();
+            this.btnUbicacion = new System.Windows.Forms.PictureBox();
+            this.pbxImagen = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxImagenEditar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSeleccionarImagen)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxConfirmarCambios)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxEditar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnCrear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUbicacion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnCrear)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxEditar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxConfirmarCambios)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxSeleccionarImagen)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxImagenEditar)).BeginInit();
             this.SuspendLayout();
             // 
             // dtpFechaInicio
@@ -252,67 +272,6 @@ namespace Frontend
             this.panelPosts.Size = new System.Drawing.Size(972, 334);
             this.panelPosts.TabIndex = 50;
             // 
-            // btnSeguir
-            // 
-            this.btnSeguir.Image = global::Frontend.Properties.Resources.seguir_removebg_preview;
-            this.btnSeguir.Location = new System.Drawing.Point(108, 70);
-            this.btnSeguir.Name = "btnSeguir";
-            this.btnSeguir.Size = new System.Drawing.Size(188, 41);
-            this.btnSeguir.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.btnSeguir.TabIndex = 51;
-            this.btnSeguir.TabStop = false;
-            this.btnSeguir.Click += new System.EventHandler(this.btnSeguir_Click);
-            // 
-            // btnUbicacion
-            // 
-            this.btnUbicacion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUbicacion.BackColor = System.Drawing.Color.Transparent;
-            this.btnUbicacion.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnUbicacion.Image = global::Frontend.Properties.Resources.buscar;
-            this.btnUbicacion.Location = new System.Drawing.Point(12, 108);
-            this.btnUbicacion.Name = "btnUbicacion";
-            this.btnUbicacion.Size = new System.Drawing.Size(50, 50);
-            this.btnUbicacion.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.btnUbicacion.TabIndex = 44;
-            this.btnUbicacion.TabStop = false;
-            // 
-            // pbxImagen
-            // 
-            this.pbxImagen.Location = new System.Drawing.Point(12, 12);
-            this.pbxImagen.Name = "pbxImagen";
-            this.pbxImagen.Size = new System.Drawing.Size(90, 90);
-            this.pbxImagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbxImagen.TabIndex = 38;
-            this.pbxImagen.TabStop = false;
-            // 
-            // btnCrear
-            // 
-            this.btnCrear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCrear.BackColor = System.Drawing.Color.Transparent;
-            this.btnCrear.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCrear.Image = global::Frontend.Properties.Resources.crear;
-            this.btnCrear.Location = new System.Drawing.Point(474, 172);
-            this.btnCrear.Name = "btnCrear";
-            this.btnCrear.Size = new System.Drawing.Size(50, 50);
-            this.btnCrear.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.btnCrear.TabIndex = 52;
-            this.btnCrear.TabStop = false;
-            this.btnCrear.Click += new System.EventHandler(this.btnCrear_Click);
-            // 
-            // pbxEditar
-            // 
-            this.pbxEditar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbxEditar.BackColor = System.Drawing.Color.Transparent;
-            this.pbxEditar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbxEditar.Image = global::Frontend.Properties.Resources.mas_opciones;
-            this.pbxEditar.Location = new System.Drawing.Point(910, 5);
-            this.pbxEditar.Name = "pbxEditar";
-            this.pbxEditar.Size = new System.Drawing.Size(50, 50);
-            this.pbxEditar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbxEditar.TabIndex = 53;
-            this.pbxEditar.TabStop = false;
-            this.pbxEditar.Click += new System.EventHandler(this.pbxEditar_Click);
-            // 
             // txtNombre
             // 
             this.txtNombre.Location = new System.Drawing.Point(159, 17);
@@ -356,34 +315,6 @@ namespace Frontend
             this.lblEliminar.Text = "Eliminar";
             this.lblEliminar.Click += new System.EventHandler(this.lblEliminar_Click);
             // 
-            // pbxConfirmarCambios
-            // 
-            this.pbxConfirmarCambios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbxConfirmarCambios.BackColor = System.Drawing.Color.Transparent;
-            this.pbxConfirmarCambios.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbxConfirmarCambios.Image = global::Frontend.Properties.Resources.aceptar;
-            this.pbxConfirmarCambios.Location = new System.Drawing.Point(474, 5);
-            this.pbxConfirmarCambios.Name = "pbxConfirmarCambios";
-            this.pbxConfirmarCambios.Size = new System.Drawing.Size(50, 50);
-            this.pbxConfirmarCambios.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbxConfirmarCambios.TabIndex = 59;
-            this.pbxConfirmarCambios.TabStop = false;
-            this.pbxConfirmarCambios.Click += new System.EventHandler(this.pbxConfirmarCambios_Click);
-            // 
-            // pbxSeleccionarImagen
-            // 
-            this.pbxSeleccionarImagen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbxSeleccionarImagen.BackColor = System.Drawing.Color.Transparent;
-            this.pbxSeleccionarImagen.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbxSeleccionarImagen.Image = global::Frontend.Properties.Resources.Foto;
-            this.pbxSeleccionarImagen.Location = new System.Drawing.Point(103, 12);
-            this.pbxSeleccionarImagen.Name = "pbxSeleccionarImagen";
-            this.pbxSeleccionarImagen.Size = new System.Drawing.Size(50, 50);
-            this.pbxSeleccionarImagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbxSeleccionarImagen.TabIndex = 60;
-            this.pbxSeleccionarImagen.TabStop = false;
-            this.pbxSeleccionarImagen.Click += new System.EventHandler(this.pbxSeleccionarImagen_Click);
-            // 
             // lblCancelar
             // 
             this.lblCancelar.AutoSize = true;
@@ -394,15 +325,6 @@ namespace Frontend
             this.lblCancelar.TabIndex = 61;
             this.lblCancelar.Text = "Cancelar";
             this.lblCancelar.Click += new System.EventHandler(this.lblCancelar_Click);
-            // 
-            // pbxImagenEditar
-            // 
-            this.pbxImagenEditar.Location = new System.Drawing.Point(12, 12);
-            this.pbxImagenEditar.Name = "pbxImagenEditar";
-            this.pbxImagenEditar.Size = new System.Drawing.Size(90, 90);
-            this.pbxImagenEditar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbxImagenEditar.TabIndex = 62;
-            this.pbxImagenEditar.TabStop = false;
             // 
             // label1
             // 
@@ -455,6 +377,104 @@ namespace Frontend
             this.lblFechaFinal.TabIndex = 67;
             this.lblFechaFinal.Text = "label4";
             // 
+            // pbxImagenEditar
+            // 
+            this.pbxImagenEditar.Location = new System.Drawing.Point(12, 12);
+            this.pbxImagenEditar.Name = "pbxImagenEditar";
+            this.pbxImagenEditar.Size = new System.Drawing.Size(90, 90);
+            this.pbxImagenEditar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxImagenEditar.TabIndex = 62;
+            this.pbxImagenEditar.TabStop = false;
+            // 
+            // pbxSeleccionarImagen
+            // 
+            this.pbxSeleccionarImagen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxSeleccionarImagen.BackColor = System.Drawing.Color.Transparent;
+            this.pbxSeleccionarImagen.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxSeleccionarImagen.Image = global::Frontend.Properties.Resources.Foto;
+            this.pbxSeleccionarImagen.Location = new System.Drawing.Point(103, 12);
+            this.pbxSeleccionarImagen.Name = "pbxSeleccionarImagen";
+            this.pbxSeleccionarImagen.Size = new System.Drawing.Size(50, 50);
+            this.pbxSeleccionarImagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxSeleccionarImagen.TabIndex = 60;
+            this.pbxSeleccionarImagen.TabStop = false;
+            this.pbxSeleccionarImagen.Click += new System.EventHandler(this.pbxSeleccionarImagen_Click);
+            // 
+            // pbxConfirmarCambios
+            // 
+            this.pbxConfirmarCambios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxConfirmarCambios.BackColor = System.Drawing.Color.Transparent;
+            this.pbxConfirmarCambios.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxConfirmarCambios.Image = global::Frontend.Properties.Resources.aceptar;
+            this.pbxConfirmarCambios.Location = new System.Drawing.Point(474, 5);
+            this.pbxConfirmarCambios.Name = "pbxConfirmarCambios";
+            this.pbxConfirmarCambios.Size = new System.Drawing.Size(50, 50);
+            this.pbxConfirmarCambios.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxConfirmarCambios.TabIndex = 59;
+            this.pbxConfirmarCambios.TabStop = false;
+            this.pbxConfirmarCambios.Click += new System.EventHandler(this.pbxConfirmarCambios_Click);
+            // 
+            // pbxEditar
+            // 
+            this.pbxEditar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxEditar.BackColor = System.Drawing.Color.Transparent;
+            this.pbxEditar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbxEditar.Image = global::Frontend.Properties.Resources.mas_opciones;
+            this.pbxEditar.Location = new System.Drawing.Point(910, 5);
+            this.pbxEditar.Name = "pbxEditar";
+            this.pbxEditar.Size = new System.Drawing.Size(50, 50);
+            this.pbxEditar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxEditar.TabIndex = 53;
+            this.pbxEditar.TabStop = false;
+            this.pbxEditar.Click += new System.EventHandler(this.pbxEditar_Click);
+            // 
+            // btnCrear
+            // 
+            this.btnCrear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCrear.BackColor = System.Drawing.Color.Transparent;
+            this.btnCrear.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCrear.Image = global::Frontend.Properties.Resources.crear;
+            this.btnCrear.Location = new System.Drawing.Point(474, 172);
+            this.btnCrear.Name = "btnCrear";
+            this.btnCrear.Size = new System.Drawing.Size(50, 50);
+            this.btnCrear.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btnCrear.TabIndex = 52;
+            this.btnCrear.TabStop = false;
+            this.btnCrear.Click += new System.EventHandler(this.btnCrear_Click);
+            // 
+            // btnSeguir
+            // 
+            this.btnSeguir.Image = global::Frontend.Properties.Resources.seguir_removebg_preview;
+            this.btnSeguir.Location = new System.Drawing.Point(108, 70);
+            this.btnSeguir.Name = "btnSeguir";
+            this.btnSeguir.Size = new System.Drawing.Size(188, 41);
+            this.btnSeguir.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btnSeguir.TabIndex = 51;
+            this.btnSeguir.TabStop = false;
+            this.btnSeguir.Click += new System.EventHandler(this.btnSeguir_Click);
+            // 
+            // btnUbicacion
+            // 
+            this.btnUbicacion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUbicacion.BackColor = System.Drawing.Color.Transparent;
+            this.btnUbicacion.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnUbicacion.Image = global::Frontend.Properties.Resources.buscar;
+            this.btnUbicacion.Location = new System.Drawing.Point(12, 108);
+            this.btnUbicacion.Name = "btnUbicacion";
+            this.btnUbicacion.Size = new System.Drawing.Size(50, 50);
+            this.btnUbicacion.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btnUbicacion.TabIndex = 44;
+            this.btnUbicacion.TabStop = false;
+            // 
+            // pbxImagen
+            // 
+            this.pbxImagen.Location = new System.Drawing.Point(12, 12);
+            this.pbxImagen.Name = "pbxImagen";
+            this.pbxImagen.Size = new System.Drawing.Size(90, 90);
+            this.pbxImagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxImagen.TabIndex = 38;
+            this.pbxImagen.TabStop = false;
+            // 
             // EventoComunidad
             // 
             this.ClientSize = new System.Drawing.Size(996, 574);
@@ -484,14 +504,14 @@ namespace Frontend
             this.Controls.Add(this.dtpFechaInicio);
             this.Controls.Add(this.pbxImagen);
             this.Name = "EventoComunidad";
+            ((System.ComponentModel.ISupportInitialize)(this.pbxImagenEditar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxSeleccionarImagen)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxConfirmarCambios)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxEditar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnCrear)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnSeguir)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnUbicacion)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnCrear)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxEditar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxConfirmarCambios)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxSeleccionarImagen)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxImagenEditar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -573,10 +593,11 @@ namespace Frontend
             {
                 foreach(var post in posts)
                 {
-                    var postControl = new PostControl(post, modo, user, token);
+                    var postControl = new PostControl(post, modo, user, token,idioma);
                     postControl.AbrirComentarios += PostControl_AbrirComentarios;
                     postControl.ReportarPost += PostControl_ReportarPost;
                     await postControl.aplicarDatos();
+                    postControl.quitarLike();
                     // Calcula la ubicación Y acumulada
                     int currentYPosition = 0;
                     if (panelPosts.Controls.Count > 0)
@@ -625,7 +646,7 @@ namespace Frontend
             lblEditar.Visible = false;
             lblAdministradores.Visible = false;
             lblEliminar.Visible = false;
-            if (lblEditar.Text.Equals("Editar"))
+            if (lblEditar.Text.Equals("Editar") || lblEditar.Text.Equals("Edit"))
             {
                 txtNombre.Visible = true;
                 txtDesc.Visible = true;
@@ -697,7 +718,7 @@ namespace Frontend
             lblEditar.Visible = false;
             lblAdministradores.Visible = false;
             lblEliminar.Visible = false;
-            if (lblEliminar.Text.Equals("Eliminar"))
+            if (lblEliminar.Text.Equals("Eliminar") || lblEliminar.Text.Equals("Delete"))
             {
                 var resultado = await EliminarEvento(idEvento, token);
                 MessageBox.Show("" + resultado);

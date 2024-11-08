@@ -17,17 +17,19 @@ namespace Frontend
         private string idpost;
         private string user;
         private string token;
-        private string modo;
-        public CreadorComentarios(string nombreCuenta, string idpost, string token, string modo)
+        public CreadorComentarios(string nombreCuenta, string idpost, string token, string modo, string idioma)
         {
             this.idpost = idpost;
             this.token = token;
-            this.modo = modo;
             user = nombreCuenta;
             InitializeComponent();
             if (modo.Equals("Oscuro"))
             {
                 this.BackColor = Color.FromArgb(40, 40, 40);
+            }
+            if (idioma.Equals("English"))
+            {
+                this.pictureBox1.Image = Frontend.Properties.Resources.comentarIngles_removebg_preview;
             }
         }
         static async Task Publicar(string NombreDeCuenta, string IdPost, string nombreCreador, string texto, string fechayhora, string token)

@@ -20,7 +20,9 @@ namespace Frontend
         private string token;
         private string idevento;
         private string nombreReal;
-        public Post(string usuario, string token, string idevento = "", string nombreReal = "")//Deberíamos sacar el "" en idevento
+        private string idioma;
+        private string modo;
+        public Post(string usuario, string token, string idevento = "", string nombreReal = "", string idioma="", string modo="")
         {
             InitializeComponent();
             txtUrl.Visible = false;
@@ -42,6 +44,7 @@ namespace Frontend
             this.pnlOpcionGrupo.Visible = false;
             this.pnlURL.Visible = false;
             this.txtCategorias.Visible = true;
+            this.idioma = idioma;
             lblEvento.ForeColor = Color.Gray;
             lblGrupo.ForeColor = Color.Gray;
             pnlOpcionPost.Visible = true;
@@ -54,6 +57,34 @@ namespace Frontend
                 lblPost.Visible = false;
                 pnlOpcionPost.Visible = false;
                 this.txtCategorias.Visible = false;
+            }
+            if (modo.Equals("Oscuro"))
+            {
+                this.BackColor = Color.FromArgb(40, 40, 40);
+                lblPost.ForeColor = Color.White;
+                lblGrupo.ForeColor = Color.White;
+                lblEvento.ForeColor = Color.White;
+                txtNombre.BackColor= Color.FromArgb(50, 50, 50);
+                txtNombre.ForeColor = Color.White;
+                txtDescripcion.BackColor = Color.FromArgb(50, 50, 50);
+                txtDescripcion.ForeColor = Color.White;
+                txtCategorias.BackColor = Color.FromArgb(50, 50, 50);
+                txtCategorias.ForeColor = Color.White;
+                txtUrl.BackColor = Color.FromArgb(50, 50, 50);
+                txtUrl.ForeColor = Color.White;
+                btnUbicacion.Image = Frontend.Properties.Resources.buscar_claro;
+                btnVideo.Image = Frontend.Properties.Resources.VideoClaro;
+                btnImagen.Image = Frontend.Properties.Resources.Foto_negra;
+            }
+            if (idioma.Equals("English"))
+            {
+                lblEvento.Text = "Event";
+                lblGrupo.Text = "Group";
+                txtNombre.Text = "Name";
+                txtCategorias.Text = "Category";
+                txtDescripcion.Text = "Description";
+                txtUrl.Text = "URL of the video";
+                btnCrear.Image= Frontend.Properties.Resources.upload_removebg_preview__3_;
             }
             Console.WriteLine(nombreReal);
         }
@@ -364,9 +395,6 @@ namespace Frontend
         private string menuActual="post";
         private void lblPost_Click(object sender, EventArgs e)
         {
-            lblPost.ForeColor = Color.Black;
-            lblEvento.ForeColor = Color.Gray;
-            lblGrupo.ForeColor = Color.Gray;
             this.pnlOpcionPost.Visible = true;
             this.pnlOpcionEvento.Visible = false;
             this.pnlOpcionGrupo.Visible = false;
@@ -386,9 +414,6 @@ namespace Frontend
 
         private void lblEvento_Click(object sender, EventArgs e)
         {
-            lblEvento.ForeColor = Color.Black;
-            lblPost.ForeColor = Color.Gray;
-            lblGrupo.ForeColor = Color.Gray;
             this.pnlOpcionPost.Visible = false;
             this.pnlOpcionEvento.Visible = true;
             this.pnlOpcionGrupo.Visible = false;
@@ -409,9 +434,6 @@ namespace Frontend
 
         private void lblGrupo_Click(object sender, EventArgs e)
         {
-            lblGrupo.ForeColor = Color.Black;
-            lblPost.ForeColor = Color.Gray;
-            lblEvento.ForeColor = Color.Gray;
             this.pnlOpcionPost.Visible = false;
             this.pnlOpcionEvento.Visible = false;
             this.pnlOpcionGrupo.Visible = true;
@@ -464,7 +486,7 @@ namespace Frontend
 
         private void txtNombre_Enter(object sender, EventArgs e)
         {
-            if (txtNombre.Text == "Nombre")
+            if (txtNombre.Text == "Nombre"|| txtNombre.Text == "Name")
             {
                 txtNombre.Text = "";
             }
@@ -480,7 +502,7 @@ namespace Frontend
 
         private void txtDescripcion_Enter(object sender, EventArgs e)
         {
-            if(txtDescripcion.Text == "Descripción")
+            if(txtDescripcion.Text == "Descripción" || txtDescripcion.Text == "Description")
             {
                 txtDescripcion.Text = "";
             }
@@ -496,7 +518,7 @@ namespace Frontend
 
         private void txtTexto_Enter(object sender, EventArgs e)
         {
-            if (txtTexto.Text == "Texto")
+            if (txtTexto.Text == "Texto" || txtTexto.Text == "Text")
             {
                 txtTexto.Text = "";
             }
@@ -512,7 +534,7 @@ namespace Frontend
 
         private void txtUrl_Enter(object sender, EventArgs e)
         {
-            if (txtUrl.Text == "URL del video")
+            if (txtUrl.Text == "URL del video" || txtUrl.Text == "URL of the video")
             {
                 txtUrl.Text = "";
             }
@@ -545,7 +567,7 @@ namespace Frontend
         {
             if (txtCategorias.Text== "Categorías")
             {
-                txtUrl.Text = "";
+                txtCategorias.Text = "";
             }
         }
     }

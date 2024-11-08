@@ -30,10 +30,12 @@ namespace Frontend
         private string user;
         private string creador;
         private string token;
-        public PostControl(dynamic postData, string modo, string user, string token)
+        private string idioma;
+        public PostControl(dynamic postData, string modo, string user, string token, string idioma)
         {
             this.modo = modo;
             this.postData = postData;
+            this.idioma = idioma;
             this.idpost = int.Parse(Convert.ToString(postData.idPost));
             this.creador = Convert.ToString(postData.nombreDeCuenta);
             this.user = user;
@@ -120,12 +122,21 @@ namespace Frontend
                 Bitmap bitmap2 = new Bitmap(ms2);
                 this.PictureBoxUsuarioPost.Image = bitmap2;
                 redondearPictureBox(bitmap2);
+                if(int.Parse(Convert.ToString(postData.cantidadLikes)) > 0)
+                {
+                    this.lblLikes.Text = Convert.ToString(postData.cantidadLikes);
+                }
             }
-            catch (Exception)
+            catch (Exception )
             {
-                MessageBox.Show("No se han encontrado posts");
+                
             }
             
+        }
+        public void quitarLike()
+        {
+            this.Controls.Remove(lblLikes);
+            this.Controls.Remove(PictureBoxLike);
         }
         public static async Task<dynamic> AgregarNotificaciones(string user, string texto, string tipo, string imagen, string token)
         {
@@ -403,10 +414,6 @@ namespace Frontend
             this.PictureBoxLike.Click += PictureBoxLike_Click; //Acá salta error cuando cambio el evento a async
             this.PictureBoxLike.Cursor = Cursors.Hand;
 
-            this.lblLikes.Location = new Point(this.PictureBoxLike.Location.X + 10, this.PictureBoxLike.Bottom-20);
-            this.lblLikes.Name = "lblLikes";
-            this.lblLikes.Size = new Size(40, 20);
-            this.lblLikes.Font= new System.Drawing.Font("Microsoft Sans Serif", 12);
 
             // comentarios
             this.PictureBoxComentarios.Location = new System.Drawing.Point(548, 440);
@@ -472,7 +479,6 @@ namespace Frontend
             this.Controls.Add(this.txtDescripcion);
             this.Controls.Add(this.txtUrl);
             this.Controls.Add(this.lblFechaYhora);
-            this.Controls.Add(this.lblLikes);
             this.Name = "PostControl";
             this.Size = new System.Drawing.Size(787, 578);
 
@@ -554,6 +560,11 @@ namespace Frontend
                     }
                     break;
             }
+            this.lblLikes.Location = new Point(this.PictureBoxLike.Left + 60, this.PictureBoxLike.Top + 15);
+            this.lblLikes.Name = "lblLikes";
+            this.lblLikes.Size = new Size(40, 20);
+            this.lblLikes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12);
+            this.Controls.Add(this.lblLikes);
             if (modo.Equals("Oscuro"))
             {
                 this.PictureBoxOpcionesPost.Image = Properties.Resources.mas_opciones_claro_relleno;
@@ -565,6 +576,7 @@ namespace Frontend
                 this.txtDescripcion.ForeColor = Color.White;
                 this.lblNombre.ForeColor = Color.White;
                 this.lblFechaYhora.ForeColor = Color.White;
+                this.lblLikes.ForeColor = Color.White;
                 if (this.creador.Equals(user))
                 {
                     this.PictureBoxEditar.Image = Frontend.Properties.Resources.editarClaro;
@@ -611,6 +623,10 @@ namespace Frontend
                 {
                     btnReportar.ForeColor = Color.White;
                 }
+                if (idioma.Equals("English"))
+                {
+                    btnReportar.Text = "Report";
+                }
                 this.Controls.Add(this.btnReportar);
                 if (this.creador.Equals(user))
                 {
@@ -625,6 +641,10 @@ namespace Frontend
                     if (modo.Equals("Oscuro"))
                     {
                         btnEliminar.ForeColor = Color.White;
+                    }
+                    if (idioma.Equals("English"))
+                    {
+                        btnEliminar.Text = "Delete";
                     }
                     this.Controls.Add(this.btnEliminar);
                 }
@@ -843,7 +863,6 @@ namespace Frontend
                     resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, "", imagen, token);
                     this.imagen.Image = this.imagenEditar.Image;
                     this.txtDescripcion.Text = txtDescripcionEditar.Text;
-                    MessageBox.Show(resultado);
                     this.Controls.Remove(this.txtDescripcionEditar);
                     this.Controls.Remove(this.btnConfirmarCambios);
                     this.Controls.Remove(this.btnSeleccionarImagen);
@@ -856,7 +875,6 @@ namespace Frontend
                     byte[] image = ms.ToArray();
                     resultado = await Modificar(Convert.ToString(idpost), "", "", image, token);
                     this.imagen.Image = this.imagenEditar.Image;
-                    MessageBox.Show(resultado);
                     this.Controls.Remove(this.btnConfirmarCambios);
                     this.Controls.Remove(this.btnSeleccionarImagen);
                     this.Controls.Remove(this.imagenEditar);
@@ -867,7 +885,6 @@ namespace Frontend
                     resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, txtUrlEditar.Text, imagenfalsa, token);
                     this.txtDescripcion.Text = txtDescripcionEditar.Text;
                     this.txtUrl.Text = txtUrlEditar.Text;
-                    MessageBox.Show(resultado);
                     this.Controls.Remove(this.txtDescripcionEditar);
                     this.Controls.Remove(this.txtUrlEditar);
                     this.Controls.Remove(this.btnConfirmarCambios);
@@ -877,7 +894,6 @@ namespace Frontend
                 case "textOnly":
                     resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, "", imagenfalsa, token);
                     this.txtDescripcion.Text = txtDescripcionEditar.Text;
-                    MessageBox.Show(resultado);
                     this.Controls.Remove(this.txtDescripcionEditar);
                     this.Controls.Remove(this.btnConfirmarCambios);
                     this.txtDescripcion.Visible = true;
@@ -885,7 +901,6 @@ namespace Frontend
                 case "urlOnly":
                     resultado=await Modificar(Convert.ToString(idpost), "", txtUrlEditar.Text, imagenfalsa, token);
                     this.txtUrl.Text = txtUrlEditar.Text;
-                    MessageBox.Show(resultado);
                     this.Controls.Remove(this.txtUrlEditar);
                     this.Controls.Remove(this.btnConfirmarCambios);
                     this.txtUrl.Visible = true;

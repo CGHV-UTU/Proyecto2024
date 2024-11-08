@@ -18,14 +18,16 @@ namespace Frontend
         private string user;
         private string nombreGrupo;
         private string modo;
+        private string idioma;
         public event EventHandler<PersonalizedArgs> AbrirUsuario;
         public event EventHandler<PersonalizedArgs> AbrirEvento;
-        public Busqueda(string user,string token, string nombreGrupo="", string modo="")
+        public Busqueda(string user,string token, string nombreGrupo="", string modo="", string idioma="")
         {
             this.token = token;
             this.user = user;
             this.nombreGrupo = nombreGrupo;
             this.modo = modo;
+            this.idioma = idioma;
             InitializeComponent();
             this.pnlOpciones.Visible = false;
             this.Size= new Size(1012, 342);
@@ -45,11 +47,17 @@ namespace Frontend
                 label3.ForeColor = Color.White;
                 pictureBox3.Image = Frontend.Properties.Resources.User_negro;
                 pictureBox4.Image = Frontend.Properties.Resources.Comunidad_Claro;
-                pictureBox5.Image = Frontend.Properties.Resources.eventosBlanco;
+                pictureBox5.Image = Frontend.Properties.Resources.campana_clara_removebg_preview;
                 btnOpciones.Image = Frontend.Properties.Resources.mas_opciones_claro_relleno;
                 btnBuscar.Image = Frontend.Properties.Resources.lupaBlanca;
                 txtBusqueda.ForeColor = Color.White;
                 txtBusqueda.BackColor= Color.FromArgb(50, 50, 50);
+            }
+            if (idioma.Equals("English"))
+            {
+                label1.Text = "User";
+                label2.Text = "Group";
+                label3.Text = "Event";
             }
             if (!string.IsNullOrEmpty(nombreGrupo))
             {

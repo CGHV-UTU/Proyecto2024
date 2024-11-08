@@ -16,19 +16,21 @@ namespace Frontend
     {
         private const int margin = 10; // margen para los comentarios
         private string modo;
+        private string idioma;
         private string idpost;
         private string user;
         private string token;
         public event EventHandler<PersonalizedArgs> ReportarComentario;
         public event EventHandler<PersonalizedArgs> AbrirPaginaDelUsuario;
-        public Comentarios(string modo,string idpost, string user, string token)
+        public Comentarios(string modo,string idpost, string user, string token, string idioma)
         {
             this.modo = modo;
+            this.idioma = idioma;
             this.idpost = idpost;
             this.user = user;
             this.token = token;
             Iniciar();
-            CreadorComentarios comentario = new CreadorComentarios(user,idpost, token, modo);
+            CreadorComentarios comentario = new CreadorComentarios(user,idpost, token, modo, idioma);
             comentario.Location = new Point(margin, 0);
             PanelComentarios.Controls.Add(comentario);
             LoadComments();
@@ -67,7 +69,7 @@ namespace Frontend
             {
                 foreach(var comentario in comentarios)
                 {
-                    var commentControl = new CommentControl(modo, idpost, comentario,user, token);
+                    var commentControl = new CommentControl(modo, idpost, comentario,user, token, idioma);
                     commentControl.Size = new Size(465 + margin * 2, 171 + margin * 2);
                     var lastControl = PanelComentarios.Controls[PanelComentarios.Controls.Count - 1];
                     commentControl.Location = new Point(margin, lastControl.Bottom);

@@ -21,11 +21,13 @@ namespace Frontend
         private string token;
         private dynamic commentData;
         private string modo;
+        private string idioma;
         public event EventHandler<PersonalizedArgs> ReportarComentario;
         public event EventHandler<PersonalizedArgs> AbrirPaginaDelUsuario;
-        public CommentControl(string modo,string idpost, dynamic commentData,string user, string token)
+        public CommentControl(string modo,string idpost, dynamic commentData,string user, string token, string idioma)
         {
             this.idpost = idpost;
+            this.idioma = idioma;
             this.commentData = commentData;
             this.idcomentario = int.Parse(Convert.ToString(commentData.id));
             this.user = user;
@@ -317,6 +319,11 @@ namespace Frontend
                 {
                     this.btnEditar.ForeColor = Color.White;
                     this.btnEliminar.ForeColor = Color.White;
+                }
+                if (idioma.Equals("English"))
+                {
+                    this.btnEditar.Text = "Edit";
+                    this.btnEliminar.Text = "Delete";
                 }
                 this.Controls.Add(this.btnEditar);
                 this.Controls.Add(this.btnEliminar);
