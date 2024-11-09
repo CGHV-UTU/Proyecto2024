@@ -273,11 +273,10 @@ namespace Frontend
                 PictureBoxUsuario.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
                 string b64 = Convert.ToBase64String(ms.ToArray());
                 dynamic response = await AgregarNotificaciones(nombreDeCreador, texto, "seguir", b64, token);
-                MessageBox.Show("" + response);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ha ocurrido un error: " + ex.Message);
+                MessageBox.Show("ERROR " + ex.Message);
             }
         }
         public static async Task<dynamic> AgregarNotificaciones(string user, string texto, string tipo, string imagen, string token)

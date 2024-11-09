@@ -83,7 +83,7 @@ namespace Frontend
             // 
             // pictureBox5
             // 
-            this.pictureBox5.Image = global::Frontend.Properties.Resources.campana;
+            this.pictureBox5.Image = global::Frontend.Properties.Resources.evento_negro_removebg_preview;
             this.pictureBox5.Location = new System.Drawing.Point(3, 5);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(50, 50);
@@ -111,7 +111,7 @@ namespace Frontend
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Image = global::Frontend.Properties.Resources.Comunidad;
+            this.pictureBox4.Image = global::Frontend.Properties.Resources.chat_negro_removebg_preview__1_;
             this.pictureBox4.Location = new System.Drawing.Point(3, 5);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(50, 50);

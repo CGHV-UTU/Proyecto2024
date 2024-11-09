@@ -71,12 +71,12 @@ namespace Frontend
                 var resultado = await CambiarConfig(modoEspañol, Convert.ToString(cbxIdioma.SelectedItem), token);
                 if (resultado.Equals("Configuracion correcta"))
                 {
-                    MessageBox.Show("Configuración modificada con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Configuration changed succesfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     CambiarModo?.Invoke(this, new ConfiguraEventArgs(Convert.ToString(cbxModo.SelectedItem), Convert.ToString(cbxIdioma.SelectedItem)));
                 }
                 else
                 {
-                    MessageBox.Show("Hubo un error en backend", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Backend ERROR", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else

@@ -46,8 +46,8 @@ namespace Frontend
                 label2.ForeColor = Color.White;
                 label3.ForeColor = Color.White;
                 pictureBox3.Image = Frontend.Properties.Resources.User_negro;
-                pictureBox4.Image = Frontend.Properties.Resources.Comunidad_Claro;
-                pictureBox5.Image = Frontend.Properties.Resources.campana_clara_removebg_preview;
+                pictureBox4.Image = Frontend.Properties.Resources.chat_blanco_removebg_preview;
+                pictureBox5.Image = Frontend.Properties.Resources.evento_blanco_removebg_preview;
                 btnOpciones.Image = Frontend.Properties.Resources.mas_opciones_claro_relleno;
                 btnBuscar.Image = Frontend.Properties.Resources.lupaBlanca;
                 txtBusqueda.ForeColor = Color.White;
@@ -156,7 +156,14 @@ namespace Frontend
                     var respuesta = await BuscarUsuarios(txtBusqueda.Text, token);
                     if (Convert.ToString(respuesta).Equals("No se encontraron usuarios cuyos nombres concuerden con los parámetros de búsqueda especificados") || Convert.ToString(respuesta).Equals("Token expirado") || Convert.ToString(respuesta).Equals("Hubo un error"))
                     {
-                        MessageBox.Show(Convert.ToString(respuesta));
+                        if (idioma.Equals("English"))
+                        {
+                            MessageBox.Show("No users were found whose names match the specified search parameters.");
+                        }
+                        else
+                        {
+                            MessageBox.Show(Convert.ToString(respuesta));
+                        }
                     }
                     else
                     {
@@ -165,7 +172,7 @@ namespace Frontend
                             pnlMostrar.Controls.Clear();
                             foreach (dynamic usuario in respuesta)
                             {
-                                var usercontrol = new Grupo_EventoParaListar(user, token, usuariobuscar: usuario, busqueda:true, modo:modo);
+                                var usercontrol = new Grupo_EventoParaListar(user, token, usuariobuscar: usuario, busqueda:true, modo:modo, idioma:idioma);
                                 usercontrol.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
                                 if (pnlMostrar.Controls.Count > 0)
                                 {
@@ -183,7 +190,7 @@ namespace Frontend
                         {
                             foreach (dynamic usuario in respuesta)
                             {
-                                var usercontrol = new Grupo_EventoParaListar(user, token, usuariobuscar: usuario, busqueda: true, nombreGrupo: nombreGrupo);
+                                var usercontrol = new Grupo_EventoParaListar(user, token, usuariobuscar: usuario, busqueda: true, nombreGrupo: nombreGrupo, modo:modo, idioma:idioma);
                                 usercontrol.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
                                 if (pnlMostrar.Controls.Count > 0)
                                 {
@@ -205,14 +212,21 @@ namespace Frontend
                         var respuesta2 = await BuscarGrupos(txtBusqueda.Text, user, token);
                         if (Convert.ToString(respuesta2).StartsWith("No se encontraron grupos cuyos nombres concuerden con los parámetros de búsqueda especificados") || Convert.ToString(respuesta2).Equals("Token expirado") || Convert.ToString(respuesta2).Equals("Hubo un error"))
                         {
-                            MessageBox.Show(Convert.ToString(respuesta2));
+                            if (idioma.Equals("English"))
+                            {
+                                MessageBox.Show("No groups were found whose names match the specified search parameters.");
+                            }
+                            else
+                            {
+                                MessageBox.Show(Convert.ToString(respuesta2));
+                            }
                         }
                         else
                         {
                                 pnlMostrar.Controls.Clear();
                                 foreach (dynamic grupo in respuesta2)
                                 {
-                                var groupcontrol = new Grupo_EventoParaListar(user, token, grupo, busqueda:true,modo:modo);
+                                var groupcontrol = new Grupo_EventoParaListar(user, token, grupo, busqueda:true,modo:modo, idioma:idioma);
                                     if (pnlMostrar.Controls.Count > 0)
                                     {
                                         var lastControl = pnlMostrar.Controls[pnlMostrar.Controls.Count - 1];
@@ -231,14 +245,21 @@ namespace Frontend
                     var respuesta3 = await BuscarEventos(txtBusqueda.Text, token);
                     if (Convert.ToString(respuesta3).Equals("No se encontraron eventos cuyos nombres concuerden con los parámetros de búsqueda especificados") || Convert.ToString(respuesta3).Equals("Token expirado") || Convert.ToString(respuesta3).Equals("Hubo un error"))
                     {
-                        MessageBox.Show(Convert.ToString(respuesta3));
+                        if (idioma.Equals("English"))
+                        {
+                            MessageBox.Show("No events were found whose names match the specified search parameters.");
+                        }
+                        else
+                        {
+                            MessageBox.Show(Convert.ToString(respuesta3));
+                        }
                     }
                     else
                     {
                         pnlMostrar.Controls.Clear();
                         foreach (dynamic evento in respuesta3)
                         {
-                            var eventControl = new Grupo_EventoParaListar("", token, evento: evento, busqueda: true, modo:modo) ;
+                            var eventControl = new Grupo_EventoParaListar("", token, evento: evento, busqueda: true, modo:modo, idioma:idioma) ;
                             eventControl.AbrirEvento += Grupo_EventoParaListar_AbrirEvento;
                             if (pnlMostrar.Controls.Count > 0)
                             {

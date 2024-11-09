@@ -27,10 +27,11 @@ namespace Frontend
         private dynamic grupo;
         private dynamic evento;
         private string modo;
+        private string idioma;
         public event EventHandler<PersonalizedArgs> AbrirEvento;
         public event EventHandler<PersonalizedArgs> AbrirGrupo;
         public event EventHandler<PersonalizedArgs> AbrirUsuario;
-        public Grupo_EventoParaListar(string usuario, string token, dynamic grupo=null, dynamic evento=null, dynamic usuariobuscar = null, bool busqueda = false, string idpost="",string nombreGrupo="", int idevento=0, string modo="Claro")
+        public Grupo_EventoParaListar(string usuario, string token, dynamic grupo=null, dynamic evento=null, dynamic usuariobuscar = null, bool busqueda = false, string idpost="",string nombreGrupo="", int idevento=0, string modo="Claro", string idioma="Español")
         {
             if (grupo!=null)
             {
@@ -56,6 +57,7 @@ namespace Frontend
             this.idpost = idpost;
             this.busqueda = busqueda;
             this.modo = modo;
+            this.idioma = idioma;
             InitializeComponent();
             Iniciar();
             AplicarDatos();
@@ -631,7 +633,14 @@ namespace Frontend
                         {
                             await EliminarUsuarioDelGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
                             var respuesta = await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), "usuario", token);
-                            MessageBox.Show("" + respuesta);
+                            if (idioma.Equals("English"))
+                            {
+                                MessageBox.Show("Role changed successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Rol cambiado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
                             this.Controls.Remove(pbxUnirse);
                         }
                         else
@@ -762,7 +771,14 @@ namespace Frontend
         private async void lblEliminar_Click(object sender, EventArgs e)
         {
             var respuesta = await EliminarUsuarioDelGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
-            MessageBox.Show(""+respuesta);
+            if (idioma.Equals("English"))
+            {
+                MessageBox.Show("User deleted from the group successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Usuario eliminado del grupo de forma correcta", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
             this.Controls.Remove(this.lblEliminar);
             this.Controls.Remove(this.lblDarOQuitarAdmin);
         }
@@ -795,7 +811,14 @@ namespace Frontend
                 var respuesta = await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), "admin", token);
                 if (Convert.ToString(respuesta).Equals("Usuario agregado al grupo"))
                 {
-                    MessageBox.Show("Administrador asignado");
+                    if (idioma.Equals("English"))
+                    {
+                        MessageBox.Show("Administrator assigned", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Administrador asignado", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
             }
             else
@@ -804,7 +827,14 @@ namespace Frontend
                 var respuesta = await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), "usuario", token);
                 if (Convert.ToString(respuesta).Equals("Usuario agregado al grupo"))
                 {
-                    MessageBox.Show("Administrador eliminado");
+                    if (idioma.Equals("English"))
+                    {
+                        MessageBox.Show("Administrator removed", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Administrador eliminado", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
             }
             this.Controls.Remove(this.lblEliminar);

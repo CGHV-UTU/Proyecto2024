@@ -380,7 +380,6 @@ namespace Frontend
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/eliminarComentario",content);
                     response.EnsureSuccessStatusCode();
-                    MessageBox.Show("Comentario eliminado con éxito");
                 }
                 catch (Exception)
                 {
@@ -392,6 +391,14 @@ namespace Frontend
         private async void btnEliminar_Click(object sender, EventArgs e)
         {
             await Eliminar(Convert.ToString(idcomentario), token);
+            if (idioma.Equals("English"))
+            {
+                MessageBox.Show("Comment successfully deleted.");
+            }
+            else
+            {
+                MessageBox.Show("Comentario eliminado con éxito");
+            }
         }
         static async Task Modificar(string id, string texto, string token)
         {
@@ -415,11 +422,26 @@ namespace Frontend
         {
             if (string.IsNullOrEmpty(txtBoxEditar.Text))
             {
-                MessageBox.Show("No se ha editado el comentario", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (idioma.Equals("English"))
+                {
+                    MessageBox.Show("The comment has not been edited.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("No se ha editado el comentario", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             else
             {
                 await Modificar(Convert.ToString(idcomentario), this.txtBoxEditar.Text, token);
+                if (idioma.Equals("English"))
+                {
+                    MessageBox.Show("The comment has been edited succesfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("El comentario fué editado con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
         }
 

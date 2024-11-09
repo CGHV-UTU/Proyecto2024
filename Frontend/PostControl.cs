@@ -317,7 +317,6 @@ namespace Frontend
                 else
                 {
                     string respuesta = await darLike(user, idpost, creador, token);
-                    MessageBox.Show(respuesta);
                     await EnviarNotificacion();
                 }
                 HandleLikeClick();

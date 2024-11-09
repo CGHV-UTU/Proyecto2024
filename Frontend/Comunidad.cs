@@ -42,8 +42,8 @@ namespace Frontend
                 this.BackColor = Color.FromArgb(40, 40, 40);
                 this.PanelGrupos.BackColor = Color.FromArgb(50, 50, 50);
                 this.panelEventos.BackColor = Color.FromArgb(50, 50, 50);
-                this.PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_seleccionarBlanco;
-                this.PictureBoxEventos.Image = Frontend.Properties.Resources.eventosBlanco;
+                this.PictureBoxGrupos.Image = Frontend.Properties.Resources.chat_blanco_removebg_preview;
+                this.PictureBoxEventos.Image = Frontend.Properties.Resources.evento_blanco_removebg_preview;
             }
             CargarGrupos();
         }
@@ -225,16 +225,6 @@ namespace Frontend
 
         private void PictureBoxGrupos_Click(object sender, EventArgs e)
         {
-            if (modo.Equals("Oscuro"))
-            {
-                PictureBoxEventos.Image = Frontend.Properties.Resources.eventosBlanco;
-                PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_seleccionarBlanco;
-            }
-            else
-            {
-                PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_removebg_preview;
-                PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_seleccionar_removebg_preview__1_;
-            }
             pictureBox5.Visible = true;
             pictureBox6.Visible = false;
             PanelGrupos.Visible = true;
@@ -248,16 +238,6 @@ namespace Frontend
 
         private void PictureBoxEventos_Click(object sender, EventArgs e)
         {
-            if (modo.Equals("Oscuro"))
-            {
-                PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_seleccionadoBlanco;
-                PictureBoxGrupos.Image = Frontend.Properties.Resources.gruposBlanco;
-            }
-            else
-            {
-                PictureBoxEventos.Image = Frontend.Properties.Resources.eventos_removebg_preview;
-                PictureBoxGrupos.Image = Frontend.Properties.Resources.grupos_seleccionar_removebg_preview__1_;
-            }
             pictureBox5.Visible = false;
             pictureBox6.Visible = true;
             PanelGrupos.Visible = false;

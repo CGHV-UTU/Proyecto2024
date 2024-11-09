@@ -412,6 +412,12 @@
     <None Include="Resources\eventosBlanco.png" />
     <None Include="Resources\comentarIngles-removebg-preview.png" />
     <None Include="Resources\Follow-removebg-preview.png" />
+    <None Include="Resources\chat negro.jpeg" />
+    <None Include="Resources\chat_negro-removebg-preview %281%29.png" />
+    <None Include="Resources\evento negro.jpeg" />
+    <None Include="Resources\evento_negro-removebg-preview.png" />
+    <None Include="Resources\chat_blanco-removebg-preview.png" />
+    <None Include="Resources\evento_blanco-removebg-preview.png" />
     <Content Include="Resources\IconoInfini.ico" />
     <None Include="Resources\Logo_Infini_Completo.jpeg" />
     <None Include="Resources\salir.png" />

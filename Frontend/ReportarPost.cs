@@ -274,8 +274,14 @@ namespace Frontend
                 }
                 else
                 {
-                    MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                    if (idioma.Equals("English"))
+                    {
+                        MessageBox.Show("A report cant be made without a reason", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             if (!string.IsNullOrEmpty(idEvento) && !string.IsNullOrEmpty(idcomentario))
@@ -288,7 +294,14 @@ namespace Frontend
                 }
                 else
                 {
-                    MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (idioma.Equals("English"))
+                    {
+                        MessageBox.Show("A report cant be made without a reason", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             if (!string.IsNullOrEmpty(idEvento))
@@ -296,11 +309,25 @@ namespace Frontend
                 if (!string.IsNullOrEmpty(cbxRazon.Text))
                 {
                     var respuesta = await ReportaEvento(usuario, idEvento, cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
-                    MessageBox.Show(respuesta);
+                    if (idioma.Equals("English"))
+                    {
+                        MessageBox.Show("Report successfull", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Reporte realizado con éxito", "Éxiot", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (idioma.Equals("English"))
+                    {
+                        MessageBox.Show("A report cant be made without a reason", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             if (!string.IsNullOrEmpty(nombreReal))
@@ -308,11 +335,25 @@ namespace Frontend
                 if (!string.IsNullOrEmpty(cbxRazon.Text))
                 {
                     var respuesta = await ReportaGrupo(usuario, nombreReal, cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
-                    MessageBox.Show(respuesta);
+                    if (idioma.Equals("English"))
+                    {
+                        MessageBox.Show("Report successfull", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Reporte realizado con éxito", "Éxiot", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (idioma.Equals("English"))
+                    {
+                        MessageBox.Show("A report cant be made without a reason", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             if (!string.IsNullOrEmpty(usuarioAReportar))
@@ -320,11 +361,25 @@ namespace Frontend
                 if (!string.IsNullOrEmpty(cbxRazon.Text))
                 {
                     var respuesta = await ReportaUsuario(usuario, usuarioAReportar, cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
-                    MessageBox.Show(respuesta);
+                    if (idioma.Equals("English"))
+                    {
+                        MessageBox.Show("Report successfull", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Reporte realizado con éxito", "Éxiot", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (idioma.Equals("English"))
+                    {
+                        MessageBox.Show("A report cant be made without a reason", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No puede realizar un reporte sin razón", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             CerrarVentana?.Invoke(this, EventArgs.Empty);

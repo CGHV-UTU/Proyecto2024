@@ -983,7 +983,6 @@ namespace Frontend
                 }
                 texto = txtMensajeAEnviar.Text;
                 var respuesta = await EnviarMensaje(fechaHoraString, texto, data, video);
-                MessageBox.Show("" + respuesta);
                 txtMensajeAEnviar.Text = "";
                 foreach (var miembros in listaDeMiembros)
                 {
@@ -1237,7 +1236,7 @@ namespace Frontend
                 {
                     if (!Convert.ToString(elemento.rol).Equals("solicitante"))
                     {
-                        var groupControl = new Grupo_EventoParaListar(user, token, grupo, usuariobuscar: elemento);
+                        var groupControl = new Grupo_EventoParaListar(user, token, grupo, usuariobuscar: elemento, modo: modo, idioma: idioma);
                         groupControl.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
                         if (pnlPostsGrupo.Controls.Count > 0)
                         {
@@ -1399,7 +1398,7 @@ namespace Frontend
                 {
                     if (!Convert.ToString(miembro.rol).Equals("solicitante"))
                     {
-                        var groupControl = new Grupo_EventoParaListar(user, token, grupo, usuariobuscar: miembro);
+                        var groupControl = new Grupo_EventoParaListar(user, token, grupo, usuariobuscar: miembro, modo: modo, idioma: idioma);
                         groupControl.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
                         if (pnlPostsGrupo.Controls.Count > 0)
                         {
@@ -1472,7 +1471,14 @@ namespace Frontend
                 this.pbxFotoGrupo.Image.Save(ms, ImageFormat.Jpeg);
                 byte[] imagen = ms.ToArray();
                 var resultado = await Modificar(nombreGrupo, lblName.Text, configuracion, imagen, token);
-                MessageBox.Show("" + resultado);
+                if (idioma.Equals("English"))
+                {
+                    MessageBox.Show("Group modified successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Grupo modificado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
         }
 
@@ -1516,7 +1522,7 @@ namespace Frontend
                     {
                         if (Convert.ToString(elemento.rol).Equals("solicitante"))
                         {
-                            var groupControl = new Grupo_EventoParaListar(user, token, grupo, usuariobuscar: elemento);
+                            var groupControl = new Grupo_EventoParaListar(user, token, grupo, usuariobuscar: elemento, modo: modo, idioma: idioma);
                             groupControl.AbrirUsuario += Grupo_EventoParaListar_AbrirUsuario;
                             if (pnlPostsGrupo.Controls.Count > 0)
                             {

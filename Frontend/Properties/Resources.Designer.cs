@@ -153,6 +153,36 @@ namespace Frontend.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap chat_blanco_removebg_preview {
+            get {
+                object obj = ResourceManager.GetObject("chat_blanco-removebg-preview", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap chat_negro {
+            get {
+                object obj = ResourceManager.GetObject("chat negro", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap chat_negro_removebg_preview__1_ {
+            get {
+                object obj = ResourceManager.GetObject("chat_negro-removebg-preview (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Comentar {
             get {
                 object obj = ResourceManager.GetObject("Comentar", resourceCulture);
@@ -336,6 +366,36 @@ namespace Frontend.Properties {
         internal static System.Drawing.Bitmap editarClaro {
             get {
                 object obj = ResourceManager.GetObject("editarClaro", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap evento_blanco_removebg_preview {
+            get {
+                object obj = ResourceManager.GetObject("evento_blanco-removebg-preview", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap evento_negro {
+            get {
+                object obj = ResourceManager.GetObject("evento negro", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap evento_negro_removebg_preview {
+            get {
+                object obj = ResourceManager.GetObject("evento_negro-removebg-preview", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

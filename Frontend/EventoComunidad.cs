@@ -721,7 +721,14 @@ namespace Frontend
             if (lblEliminar.Text.Equals("Eliminar") || lblEliminar.Text.Equals("Delete"))
             {
                 var resultado = await EliminarEvento(idEvento, token);
-                MessageBox.Show("" + resultado);
+                if (idioma.Equals("English"))
+                {
+                    MessageBox.Show("Event deleted successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Evento eliminado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
                 EventoEliminado?.Invoke(this, new PersonalizedArgs("Eliminado"));
             }
             else
@@ -758,7 +765,14 @@ namespace Frontend
             this.pbxImagenEditar.Image.Save(ms, ImageFormat.Jpeg);
             byte[] imagen = ms.ToArray();
             var respuesta = await Modificar(idEvento,txtNombre.Text,dtpFechaInicio.Text,dtpFechaFinal.Text, imagen, txtUbicacion.Text, txtDesc.Text, token);
-            MessageBox.Show("" + respuesta);
+            if (idioma.Equals("English"))
+            {
+                MessageBox.Show("Event modified successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Evento modificado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
             lblNombre.Text = txtNombre.Text;
             lblDescripcion.Text= txtDesc.Text;
             lblUbicacion.Text = txtUbicacion.Text;
@@ -843,7 +857,7 @@ namespace Frontend
             {
                 if (!Convert.ToString(elemento.nombreDeCuenta).Equals(user))
                 {
-                    var groupControl = new Grupo_EventoParaListar(user, token, idevento:int.Parse(idEvento), usuariobuscar: elemento);
+                    var groupControl = new Grupo_EventoParaListar(user, token, idevento: int.Parse(idEvento), usuariobuscar: elemento, modo: modo, idioma:idioma);
                     if (panelPosts.Controls.Count > 0)
                     {
                         var lastControl = panelPosts.Controls[panelPosts.Controls.Count - 1];

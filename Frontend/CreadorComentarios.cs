@@ -17,11 +17,13 @@ namespace Frontend
         private string idpost;
         private string user;
         private string token;
+        private string idioma;
         public CreadorComentarios(string nombreCuenta, string idpost, string token, string modo, string idioma)
         {
             this.idpost = idpost;
             this.token = token;
             user = nombreCuenta;
+            this.idioma = idioma;
             InitializeComponent();
             if (modo.Equals("Oscuro"))
             {
@@ -78,6 +80,14 @@ namespace Frontend
             string fechayhora = now.ToString("yyyy-MM-dd HH:mm:ss");
             var creadorPost = await obtenerCreador(int.Parse(idpost), token);
             await Publicar(user, idpost, creadorPost, textBox1.Text, fechayhora, token);
+            if (idioma.Equals("English"))
+            {
+                MessageBox.Show("Comment successfully posted", "Correct", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Comentario realizado con exito", "Correcto", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

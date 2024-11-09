@@ -105,7 +105,14 @@ namespace Frontend
             {
                 if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text))
                 {
-                    MessageBox.Show("No puede realizar un post sin contenido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (idioma.Equals("English"))
+                    {
+                        MessageBox.Show("You cant make a post without content", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No puede realizar un post sin contenido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
                 else
                 {
@@ -115,7 +122,14 @@ namespace Frontend
                     {
                         byte[] data = new byte[0];
                         await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento);
-                        MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        if (idioma.Equals("English"))
+                        {
+                            MessageBox.Show("The post was created successfully", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
                         Creado?.Invoke(this, EventArgs.Empty);
                     }
                     else
@@ -124,7 +138,14 @@ namespace Frontend
                         pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                         byte[] data = ms.ToArray();
                         await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento);
-                        MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        if (idioma.Equals("English"))
+                        {
+                            MessageBox.Show("The post was created successfully", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
                         Creado?.Invoke(this, EventArgs.Empty);
                     }
                 }
