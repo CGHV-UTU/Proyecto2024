@@ -308,7 +308,7 @@ namespace Frontend
             }
             else
             {
-                btnOpciones.Image = Frontend.Properties.Resources.Comunidad;
+                btnOpciones.Image = Frontend.Properties.Resources.Comunidad_Claro;
             }
             pnlMostrar.Controls.Clear();
             pnlOpciones.Visible = false;
@@ -322,10 +322,11 @@ namespace Frontend
             }
             else
             {
-                btnOpciones.Image = Frontend.Properties.Resources.eventos_removebg_preview;
+                btnOpciones.Image = Frontend.Properties.Resources.evento_negro_removebg_preview;
             }
             pnlMostrar.Controls.Clear();
             pnlOpciones.Visible = false;
         }
+
     }
 }
