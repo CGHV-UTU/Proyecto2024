@@ -64,6 +64,8 @@ namespace Frontend
             // 
             // txtTexto
             // 
+            this.txtTexto.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTexto.BackColor = System.Drawing.SystemColors.Window;
             this.txtTexto.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTexto.ForeColor = System.Drawing.Color.Gray;
@@ -104,6 +106,8 @@ namespace Frontend
             // 
             // lblEvento
             // 
+            this.lblEvento.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEvento.AutoSize = true;
             this.lblEvento.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
             this.lblEvento.ForeColor = System.Drawing.SystemColors.Desktop;
@@ -116,6 +120,7 @@ namespace Frontend
             // 
             // lblGrupo
             // 
+            this.lblGrupo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblGrupo.AutoSize = true;
             this.lblGrupo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
             this.lblGrupo.ForeColor = System.Drawing.SystemColors.Desktop;
@@ -128,6 +133,8 @@ namespace Frontend
             // 
             // txtNombre
             // 
+            this.txtNombre.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtNombre.BackColor = System.Drawing.SystemColors.Window;
             this.txtNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNombre.ForeColor = System.Drawing.Color.Gray;
@@ -141,6 +148,8 @@ namespace Frontend
             // 
             // txtDescripcion
             // 
+            this.txtDescripcion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDescripcion.BackColor = System.Drawing.SystemColors.Window;
             this.txtDescripcion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDescripcion.ForeColor = System.Drawing.Color.Gray;
@@ -181,6 +190,8 @@ namespace Frontend
             // 
             // pnlOpciones
             // 
+            this.pnlOpciones.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlOpciones.BackColor = System.Drawing.Color.SlateBlue;
             this.pnlOpciones.Location = new System.Drawing.Point(26, 33);
             this.pnlOpciones.Name = "pnlOpciones";
@@ -189,6 +200,8 @@ namespace Frontend
             // 
             // pnlNombre
             // 
+            this.pnlNombre.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlNombre.BackColor = System.Drawing.Color.SlateBlue;
             this.pnlNombre.Location = new System.Drawing.Point(17, 68);
             this.pnlNombre.Name = "pnlNombre";
@@ -198,6 +211,8 @@ namespace Frontend
             // 
             // pnlTexto
             // 
+            this.pnlTexto.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlTexto.BackColor = System.Drawing.Color.SlateBlue;
             this.pnlTexto.Location = new System.Drawing.Point(17, 176);
             this.pnlTexto.Name = "pnlTexto";
@@ -256,6 +271,8 @@ namespace Frontend
             // 
             // txtCategorias
             // 
+            this.txtCategorias.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCategorias.BackColor = System.Drawing.SystemColors.Window;
             this.txtCategorias.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCategorias.ForeColor = System.Drawing.Color.Gray;
@@ -283,6 +300,9 @@ namespace Frontend
             // 
             // pbxImagen
             // 
+            this.pbxImagen.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxImagen.Location = new System.Drawing.Point(17, 272);
             this.pbxImagen.Name = "pbxImagen";
             this.pbxImagen.Size = new System.Drawing.Size(381, 212);
@@ -293,11 +313,12 @@ namespace Frontend
             // 
             // btnCrear
             // 
-            this.btnCrear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCrear.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCrear.BackColor = System.Drawing.Color.Transparent;
             this.btnCrear.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCrear.Image = ((System.Drawing.Image)(resources.GetObject("btnCrear.Image")));
-            this.btnCrear.Location = new System.Drawing.Point(22, 339);
+            this.btnCrear.Location = new System.Drawing.Point(19, 488);
             this.btnCrear.Name = "btnCrear";
             this.btnCrear.Size = new System.Drawing.Size(372, 87);
             this.btnCrear.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -338,7 +359,7 @@ namespace Frontend
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(420, 526);
+            this.ClientSize = new System.Drawing.Size(420, 587);
             this.Controls.Add(this.txtCategorias);
             this.Controls.Add(this.pnlOpcionGrupo);
             this.Controls.Add(this.pnlOpcionEvento);

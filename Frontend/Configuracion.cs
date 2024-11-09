@@ -73,6 +73,7 @@ namespace Frontend
                 {
                     MessageBox.Show("Configuration changed succesfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     CambiarModo?.Invoke(this, new ConfiguraEventArgs(Convert.ToString(cbxModo.SelectedItem), Convert.ToString(cbxIdioma.SelectedItem)));
+                    Application.Exit();
                 }
                 else
                 {
@@ -86,6 +87,7 @@ namespace Frontend
                 {
                     MessageBox.Show("Configuración modificada con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     CambiarModo?.Invoke(this, new ConfiguraEventArgs(Convert.ToString(cbxModo.SelectedItem), Convert.ToString(cbxIdioma.SelectedItem)));
+                    Application.Exit();
                 }
                 else
                 {

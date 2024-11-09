@@ -33,6 +33,8 @@ namespace Frontend
             txtDescripcion.Leave += txtDescripcion_Leave;
             redondearPictureBox(Properties.Resources.Perfil);
             cbxGenero.Text = "Hombre";
+            this.MaximumSize = new Size(700,788);
+            this.MinimumSize = new Size(700, 788);
         }
 
         private async void btnRegistrar_Click(object sender, EventArgs e)

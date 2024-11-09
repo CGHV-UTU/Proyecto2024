@@ -72,6 +72,8 @@ namespace Frontend
                 txtCategorias.ForeColor = Color.White;
                 txtUrl.BackColor = Color.FromArgb(50, 50, 50);
                 txtUrl.ForeColor = Color.White;
+                txtTexto.ForeColor = Color.White;
+                txtTexto.BackColor = Color.FromArgb(50, 50, 50);
                 btnUbicacion.Image = Frontend.Properties.Resources.buscar_claro;
                 btnVideo.Image = Frontend.Properties.Resources.VideoClaro;
                 btnImagen.Image = Frontend.Properties.Resources.Foto_negra;
@@ -86,7 +88,6 @@ namespace Frontend
                 txtUrl.Text = "URL of the video";
                 btnCrear.Image= Frontend.Properties.Resources.upload_removebg_preview__3_;
             }
-            Console.WriteLine(nombreReal);
         }
 
 
@@ -103,7 +104,7 @@ namespace Frontend
             }
             if (!idevento.Equals(""))
             {
-                if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text))
+                if ((string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text)) || ((txtUrl.Equals("URL of the video") || txtUrl.Equals("URL del video")) && (txtTexto.Equals("Texto") || txtTexto.Equals("Text")) && (txtUrl.Equals("Categorías") || txtUrl.Equals("Category")) && (txtNombre.Equals("Categorías") || txtUrl.Equals("Category")) && (txtUrl.Equals("Nombre") || txtUrl.Equals("Name")) && (txtUrl.Equals("Description") || txtUrl.Equals("Descripción"))))
                 {
                     if (idioma.Equals("English"))
                     {
@@ -154,7 +155,7 @@ namespace Frontend
 
             if (!nombreReal.Equals(""))
             {
-                    if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text))
+                    if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text) || ((txtUrl.Equals("URL of the video") || txtUrl.Equals("URL del video")) && (txtTexto.Equals("Texto") || txtTexto.Equals("Text")) && (txtUrl.Equals("Categorías") || txtUrl.Equals("Category")) && (txtNombre.Equals("Categorías") || txtUrl.Equals("Category")) && (txtUrl.Equals("Nombre") || txtUrl.Equals("Name")) && (txtUrl.Equals("Description") || txtUrl.Equals("Descripción"))))
                     {
                         MessageBox.Show("No puede realizar un post sin contenido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -186,7 +187,7 @@ namespace Frontend
             switch (menuActual)
                 {
                     case "post":
-                        if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text))
+                        if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text) || ((txtUrl.Equals("URL of the video") || txtUrl.Equals("URL del video")) && (txtTexto.Equals("Texto") || txtTexto.Equals("Text")) && (txtUrl.Equals("Categorías") || txtUrl.Equals("Category")) && (txtNombre.Equals("Categorías") || txtUrl.Equals("Category")) && (txtUrl.Equals("Nombre") || txtUrl.Equals("Name")) && (txtUrl.Equals("Description") || txtUrl.Equals("Descripción"))))
                         {
                             MessageBox.Show("No puede realizar un post sin contenido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             break;
@@ -216,7 +217,7 @@ namespace Frontend
                         }
                         break;
                     case "evento":
-                        if (string.IsNullOrEmpty(txtNombre.Text) || dtpFechaFinal.Value < DateTime.Now || dtpFechaFinal.Value<= dtpFechaInicio.Value)
+                        if (string.IsNullOrEmpty(txtNombre.Text) || dtpFechaFinal.Value < DateTime.Now || pbxImagen.Image==null || dtpFechaFinal.Value<= dtpFechaInicio.Value || ((txtUrl.Equals("URL of the video") || txtUrl.Equals("URL del video")) && (txtTexto.Equals("Texto") || txtTexto.Equals("Text")) && (txtUrl.Equals("Categorías") || txtUrl.Equals("Category")) && (txtNombre.Equals("Categorías") || txtUrl.Equals("Category")) && (txtUrl.Equals("Nombre") || txtUrl.Equals("Name")) && (txtUrl.Equals("Description") || txtUrl.Equals("Descripción"))))
                     {
                             MessageBox.Show("No puede realizar un evento sin título o fecha", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             break;
@@ -240,7 +241,7 @@ namespace Frontend
                         }
                         break;
                     case "grupo":
-                        if (string.IsNullOrEmpty(txtNombre.Text) || txtNombre.Text.StartsWith("-"))
+                        if (string.IsNullOrEmpty(txtNombre.Text) || txtNombre.Text.StartsWith("-") || pbxImagen.Image==null ||((txtUrl.Equals("URL of the video") || txtUrl.Equals("URL del video")) && (txtTexto.Equals("Texto") || txtTexto.Equals("Text")) && (txtUrl.Equals("Categorías") || txtUrl.Equals("Category")) && (txtNombre.Equals("Categorías") || txtUrl.Equals("Category")) && (txtUrl.Equals("Nombre") || txtUrl.Equals("Name")) && (txtUrl.Equals("Description") || txtUrl.Equals("Descripción"))))
                         {
                             MessageBox.Show("No puede realizar un grupo sin nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             break;
@@ -300,9 +301,6 @@ namespace Frontend
                 }
                 else
                 {
-                    CambiaTamaño?.Invoke(this, EventArgs.Empty);
-                    this.Height = 692;
-                    btnCrear.Location = new Point(16, pbxImagen.Bottom+10);
                     OpenFileDialog ofd = new OpenFileDialog();
                     ofd.Filter = "Archivos de imagen|*.png;*.jpg;*.jpeg"; //Para que sólo aparezcan fotos
                     if (ofd.ShowDialog() == DialogResult.OK)
@@ -515,10 +513,7 @@ namespace Frontend
 
         private void txtNombre_Leave(object sender, EventArgs e)
         {
-            if (txtNombre.Text == "")
-            {
-                txtNombre.Text = "Nombre";
-            }
+            
         }
 
         private void txtDescripcion_Enter(object sender, EventArgs e)
@@ -531,10 +526,7 @@ namespace Frontend
 
         private void txtDescripcion_Leave(object sender, EventArgs e)
         {
-            if (txtDescripcion.Text == "")
-            {
-                txtDescripcion.Text = "Descripción";
-            }
+             
         }
 
         private void txtTexto_Enter(object sender, EventArgs e)
@@ -547,10 +539,7 @@ namespace Frontend
 
         private void txtTexto_Leave(object sender, EventArgs e)
         {
-            if (txtTexto.Text == "")
-            {
-                txtTexto.Text = "Texto";
-            }
+            
         }
 
         private void txtUrl_Enter(object sender, EventArgs e)
@@ -563,10 +552,7 @@ namespace Frontend
 
         private void txtUrl_Leave(object sender, EventArgs e)
         {
-            if (txtUrl.Text == "")
-            {
-                txtUrl.Text = "URL del video";
-            }
+
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)

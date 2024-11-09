@@ -43,6 +43,8 @@ namespace Frontend
             // 
             // PanelGrupos
             // 
+            this.PanelGrupos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelGrupos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PanelGrupos.Location = new System.Drawing.Point(337, 86);
             this.PanelGrupos.Name = "PanelGrupos";
@@ -59,6 +61,8 @@ namespace Frontend
             // 
             // pictureBox5
             // 
+            this.pictureBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox5.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox5.Image = global::Frontend.Properties.Resources.subrayado_removebg_preview;
             this.pictureBox5.Location = new System.Drawing.Point(337, 59);
@@ -70,6 +74,8 @@ namespace Frontend
             // 
             // pictureBox6
             // 
+            this.pictureBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox6.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox6.Image = global::Frontend.Properties.Resources.subrayado_removebg_preview;
             this.pictureBox6.Location = new System.Drawing.Point(565, 59);
@@ -81,6 +87,8 @@ namespace Frontend
             // 
             // PictureBoxEventos
             // 
+            this.PictureBoxEventos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.PictureBoxEventos.Image = global::Frontend.Properties.Resources.evento_negro_removebg_preview;
             this.PictureBoxEventos.Location = new System.Drawing.Point(580, -9);
             this.PictureBoxEventos.Name = "PictureBoxEventos";
@@ -92,6 +100,8 @@ namespace Frontend
             // 
             // PictureBoxGrupos
             // 
+            this.PictureBoxGrupos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.PictureBoxGrupos.Image = global::Frontend.Properties.Resources.chat_negro_removebg_preview__1_;
             this.PictureBoxGrupos.Location = new System.Drawing.Point(356, 1);
             this.PictureBoxGrupos.Name = "PictureBoxGrupos";

@@ -43,10 +43,12 @@ namespace Frontend
             PanelNotificaciones.BringToFront();
             PanelNotificaciones.Parent = this;
             notis.NuevasNotificaciones += Notis_NuevasNotificaciones;
-            this.MinimumSize = new Size(1280, 720);
-            this.MaximumSize= new Size(1920, 1080);
+            this.Resize += Inicio_Rezise;
         }
-
+        private void Inicio_Rezise(object sender, EventArgs e)
+        {
+            
+        }
         private async void cargarLaImagen()
         {
             string imagenB64 = await conseguirImagenDePerfil(user, token);
@@ -239,7 +241,6 @@ namespace Frontend
             post.FormBorderStyle = FormBorderStyle.None;
             post.Dock = DockStyle.Fill;
             post.CerrarVentana += Reporte_CerrarVentana;
-            // post.BackColor = Color.FromArgb(34, 67, 220);
             PanelPostear.Controls.Add(post);
             post.Show();
         }
@@ -291,12 +292,10 @@ namespace Frontend
             Post post = new Post(user, token, idevento, idioma:idioma, modo:modo);
             post.TopLevel = false;
             post.FormBorderStyle = FormBorderStyle.None;
-            post.BackColor = Color.White;
             post.Dock = DockStyle.Fill;
             post.Creado += Post_Creado;
             post.Salir += Post_Salir;
             post.CambiaTamaño += Post_CambiaTamaño;
-            // post.BackColor = Color.FromArgb(34, 67, 220);
             PanelPostear.BackColor = Color.LightGray;
             PanelPostear.Controls.Add(post);
             post.Show();
@@ -354,6 +353,7 @@ namespace Frontend
             PanelPostear.Visible = false;
             PanelPosts.Visible = true;
             panelBusqueda.Visible = false;
+            PictureBoxSalir.Visible = false;
             PanelMostrarUsuario.Controls.Clear();
         }
          

@@ -76,9 +76,12 @@ namespace Frontend
             // 
             // PanelPostear
             // 
+            this.PanelPostear.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelPostear.Location = new System.Drawing.Point(436, 56);
             this.PanelPostear.Name = "PanelPostear";
-            this.PanelPostear.Size = new System.Drawing.Size(426, 489);
+            this.PanelPostear.Size = new System.Drawing.Size(436, 626);
             this.PanelPostear.TabIndex = 0;
             // 
             // PanelComentarios
@@ -92,6 +95,7 @@ namespace Frontend
             // 
             // PanelNotificaciones
             // 
+            this.PanelNotificaciones.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelNotificaciones.AutoScroll = true;
             this.PanelNotificaciones.BackColor = System.Drawing.SystemColors.ControlDark;
             this.PanelNotificaciones.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -104,6 +108,8 @@ namespace Frontend
             // 
             // panelBusqueda
             // 
+            this.panelBusqueda.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelBusqueda.Location = new System.Drawing.Point(160, 56);
             this.panelBusqueda.Name = "panelBusqueda";
             this.panelBusqueda.Size = new System.Drawing.Size(1012, 342);
@@ -125,7 +131,7 @@ namespace Frontend
             // PanelSuperior
             // 
             this.PanelSuperior.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.PanelSuperior.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PanelSuperior.BackgroundImage")));
+            this.PanelSuperior.BackgroundImage = global::Frontend.Properties.Resources.barra;
             this.PanelSuperior.Controls.Add(this.pbxBuscar);
             this.PanelSuperior.Controls.Add(this.PictureBoxUsuario);
             this.PanelSuperior.Controls.Add(this.PictureboxLogo);
@@ -223,7 +229,6 @@ namespace Frontend
             // 
             // PictureBoxComunidad
             // 
-            this.PictureBoxComunidad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PictureBoxComunidad.BackColor = System.Drawing.Color.Transparent;
             this.PictureBoxComunidad.Cursor = System.Windows.Forms.Cursors.Hand;
             this.PictureBoxComunidad.Image = global::Frontend.Properties.Resources.Comunidad_Claro1;

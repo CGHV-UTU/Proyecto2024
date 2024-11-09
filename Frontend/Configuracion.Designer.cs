@@ -38,6 +38,8 @@ namespace Frontend
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(44, 76);
             this.label1.Name = "label1";
@@ -47,6 +49,8 @@ namespace Frontend
             // 
             // cbxModo
             // 
+            this.cbxModo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbxModo.FormattingEnabled = true;
             this.cbxModo.Items.AddRange(new object[] {
             "Claro",
@@ -58,6 +62,8 @@ namespace Frontend
             // 
             // cbxIdioma
             // 
+            this.cbxIdioma.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cbxIdioma.FormattingEnabled = true;
             this.cbxIdioma.Items.AddRange(new object[] {
             "Español",
@@ -69,6 +75,8 @@ namespace Frontend
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(44, 131);
             this.label2.Name = "label2";
@@ -78,6 +86,9 @@ namespace Frontend
             // 
             // btnCambiar
             // 
+            this.btnCambiar.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCambiar.BackColor = System.Drawing.Color.Indigo;
             this.btnCambiar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.btnCambiar.Location = new System.Drawing.Point(108, 202);

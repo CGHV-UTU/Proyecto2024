@@ -418,6 +418,7 @@
     <None Include="Resources\evento_negro-removebg-preview.png" />
     <None Include="Resources\chat_blanco-removebg-preview.png" />
     <None Include="Resources\evento_blanco-removebg-preview.png" />
+    <None Include="Resources\barra.jpeg" />
     <Content Include="Resources\IconoInfini.ico" />
     <None Include="Resources\Logo_Infini_Completo.jpeg" />
     <None Include="Resources\salir.png" />

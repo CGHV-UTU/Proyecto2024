@@ -216,6 +216,7 @@ namespace Frontend
             // 
             // dtpFechaInicio
             // 
+            this.dtpFechaInicio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.dtpFechaInicio.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dtpFechaInicio.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpFechaInicio.Location = new System.Drawing.Point(760, 108);
@@ -226,6 +227,7 @@ namespace Frontend
             // 
             // dtpFechaFinal
             // 
+            this.dtpFechaFinal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.dtpFechaFinal.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.dtpFechaFinal.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpFechaFinal.Location = new System.Drawing.Point(760, 134);
@@ -266,6 +268,9 @@ namespace Frontend
             // 
             // panelPosts
             // 
+            this.panelPosts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPosts.AutoScroll = true;
             this.panelPosts.Location = new System.Drawing.Point(12, 228);
             this.panelPosts.Name = "panelPosts";
@@ -295,6 +300,7 @@ namespace Frontend
             // 
             // lblEditar
             // 
+            this.lblEditar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEditar.AutoSize = true;
             this.lblEditar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEditar.Location = new System.Drawing.Point(853, 9);
@@ -306,6 +312,7 @@ namespace Frontend
             // 
             // lblEliminar
             // 
+            this.lblEliminar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEliminar.AutoSize = true;
             this.lblEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEliminar.Location = new System.Drawing.Point(839, 35);
@@ -317,6 +324,8 @@ namespace Frontend
             // 
             // lblCancelar
             // 
+            this.lblCancelar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblCancelar.AutoSize = true;
             this.lblCancelar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCancelar.Location = new System.Drawing.Point(542, 35);
@@ -328,6 +337,7 @@ namespace Frontend
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(660, 108);
@@ -338,6 +348,7 @@ namespace Frontend
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(660, 134);
@@ -348,6 +359,7 @@ namespace Frontend
             // 
             // lblAdministradores
             // 
+            this.lblAdministradores.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAdministradores.AutoSize = true;
             this.lblAdministradores.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAdministradores.Location = new System.Drawing.Point(780, 55);
@@ -359,6 +371,7 @@ namespace Frontend
             // 
             // lblFechaInicio
             // 
+            this.lblFechaInicio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFechaInicio.AutoSize = true;
             this.lblFechaInicio.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblFechaInicio.Location = new System.Drawing.Point(756, 108);
@@ -369,6 +382,7 @@ namespace Frontend
             // 
             // lblFechaFinal
             // 
+            this.lblFechaFinal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFechaFinal.AutoSize = true;
             this.lblFechaFinal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblFechaFinal.Location = new System.Drawing.Point(756, 134);
@@ -388,7 +402,6 @@ namespace Frontend
             // 
             // pbxSeleccionarImagen
             // 
-            this.pbxSeleccionarImagen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxSeleccionarImagen.BackColor = System.Drawing.Color.Transparent;
             this.pbxSeleccionarImagen.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pbxSeleccionarImagen.Image = global::Frontend.Properties.Resources.Foto;
@@ -402,7 +415,8 @@ namespace Frontend
             // 
             // pbxConfirmarCambios
             // 
-            this.pbxConfirmarCambios.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxConfirmarCambios.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxConfirmarCambios.BackColor = System.Drawing.Color.Transparent;
             this.pbxConfirmarCambios.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pbxConfirmarCambios.Image = global::Frontend.Properties.Resources.aceptar;
@@ -430,7 +444,8 @@ namespace Frontend
             // 
             // btnCrear
             // 
-            this.btnCrear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCrear.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCrear.BackColor = System.Drawing.Color.Transparent;
             this.btnCrear.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCrear.Image = global::Frontend.Properties.Resources.crear;
@@ -455,7 +470,6 @@ namespace Frontend
             // 
             // btnUbicacion
             // 
-            this.btnUbicacion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUbicacion.BackColor = System.Drawing.Color.Transparent;
             this.btnUbicacion.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnUbicacion.Image = global::Frontend.Properties.Resources.buscar;

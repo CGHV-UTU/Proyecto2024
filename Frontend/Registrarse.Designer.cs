@@ -37,6 +37,7 @@ namespace Frontend
             this.panel8 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.dtpFecha = new System.Windows.Forms.DateTimePicker();
+            this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
             this.panel9 = new System.Windows.Forms.Panel();
             this.Género = new System.Windows.Forms.Label();
@@ -44,25 +45,24 @@ namespace Frontend
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.txtDescripcion = new System.Windows.Forms.TextBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.panel6 = new System.Windows.Forms.Panel();
             this.txtUsuario = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.txtNombreVisible = new System.Windows.Forms.TextBox();
-            this.txtContraseña2 = new System.Windows.Forms.TextBox();
-            this.pictureBox6 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.txtNombreVisible = new System.Windows.Forms.TextBox();
             this.btnRegistrar = new System.Windows.Forms.PictureBox();
             this.pcbxVerContraseña2 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pcbxVerContraseña = new System.Windows.Forms.PictureBox();
+            this.txtContraseña2 = new System.Windows.Forms.TextBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             pcbxVolver = new System.Windows.Forms.PictureBox();
-            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(pcbxVolver)).BeginInit();
+            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -73,6 +73,17 @@ namespace Frontend
             ((System.ComponentModel.ISupportInitialize)(this.pcbxVerContraseña)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
+            // 
+            // pcbxVolver
+            // 
+            pcbxVolver.Image = global::Frontend.Properties.Resources.Logo_Infini;
+            pcbxVolver.Location = new System.Drawing.Point(8, 2);
+            pcbxVolver.Name = "pcbxVolver";
+            pcbxVolver.Size = new System.Drawing.Size(99, 87);
+            pcbxVolver.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            pcbxVolver.TabIndex = 72;
+            pcbxVolver.TabStop = false;
+            pcbxVolver.Click += new System.EventHandler(this.pcbxLogo_Click);
             // 
             // panel1
             // 
@@ -160,6 +171,19 @@ namespace Frontend
             this.dtpFecha.TabIndex = 86;
             this.dtpFecha.Value = new System.DateTime(2009, 12, 29, 0, 0, 0, 0);
             // 
+            // pictureBox6
+            // 
+            this.pictureBox6.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox6.Image = global::Frontend.Properties.Resources.Perfil;
+            this.pictureBox6.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox6.InitialImage")));
+            this.pictureBox6.Location = new System.Drawing.Point(130, 458);
+            this.pictureBox6.Name = "pictureBox6";
+            this.pictureBox6.Size = new System.Drawing.Size(205, 162);
+            this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox6.TabIndex = 85;
+            this.pictureBox6.TabStop = false;
+            this.pictureBox6.Click += new System.EventHandler(this.pictureBox6_Click);
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -225,12 +249,22 @@ namespace Frontend
             this.txtDescripcion.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDescripcion.ForeColor = System.Drawing.Color.Gray;
             this.txtDescripcion.Location = new System.Drawing.Point(59, 263);
-            this.txtDescripcion.MaxLength = 20;
+            this.txtDescripcion.MaxLength = 99;
             this.txtDescripcion.Multiline = true;
             this.txtDescripcion.Name = "txtDescripcion";
             this.txtDescripcion.Size = new System.Drawing.Size(334, 79);
             this.txtDescripcion.TabIndex = 80;
             this.txtDescripcion.Text = "Descripción";
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::Frontend.Properties.Resources.Perfil;
+            this.pictureBox3.Location = new System.Drawing.Point(60, 3);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(45, 36);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox3.TabIndex = 66;
+            this.pictureBox3.TabStop = false;
             // 
             // panel6
             // 
@@ -253,6 +287,16 @@ namespace Frontend
             this.txtUsuario.Text = "Usuario";
             this.txtUsuario.Enter += new System.EventHandler(this.txtUsuario_Enter);
             this.txtUsuario.Leave += new System.EventHandler(this.txtUsuario_Leave);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Frontend.Properties.Resources.Perfil;
+            this.pictureBox1.Location = new System.Drawing.Point(59, 101);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(45, 36);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 78;
+            this.pictureBox1.TabStop = false;
             // 
             // txtEmail
             // 
@@ -282,6 +326,16 @@ namespace Frontend
             this.panel4.Size = new System.Drawing.Size(363, 3);
             this.panel4.TabIndex = 76;
             // 
+            // pictureBox5
+            // 
+            this.pictureBox5.Image = global::Frontend.Properties.Resources.Perfil;
+            this.pictureBox5.Location = new System.Drawing.Point(59, 52);
+            this.pictureBox5.Name = "pictureBox5";
+            this.pictureBox5.Size = new System.Drawing.Size(45, 36);
+            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox5.TabIndex = 74;
+            this.pictureBox5.TabStop = false;
+            // 
             // txtNombreVisible
             // 
             this.txtNombreVisible.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -293,73 +347,6 @@ namespace Frontend
             this.txtNombreVisible.Size = new System.Drawing.Size(224, 22);
             this.txtNombreVisible.TabIndex = 73;
             this.txtNombreVisible.Text = "Nombre visible";
-            // 
-            // txtContraseña2
-            // 
-            this.txtContraseña2.BackColor = System.Drawing.Color.White;
-            this.txtContraseña2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtContraseña2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtContraseña2.ForeColor = System.Drawing.Color.Gray;
-            this.txtContraseña2.Location = new System.Drawing.Point(110, 226);
-            this.txtContraseña2.MaxLength = 20;
-            this.txtContraseña2.Name = "txtContraseña2";
-            this.txtContraseña2.Size = new System.Drawing.Size(224, 22);
-            this.txtContraseña2.TabIndex = 73;
-            this.txtContraseña2.Text = "Repita su contraseña";
-            // 
-            // pcbxVolver
-            // 
-            pcbxVolver.Image = global::Frontend.Properties.Resources.Logo_Infini;
-            pcbxVolver.Location = new System.Drawing.Point(8, 2);
-            pcbxVolver.Name = "pcbxVolver";
-            pcbxVolver.Size = new System.Drawing.Size(99, 87);
-            pcbxVolver.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            pcbxVolver.TabIndex = 72;
-            pcbxVolver.TabStop = false;
-            pcbxVolver.Click += new System.EventHandler(this.pcbxLogo_Click);
-            // 
-            // pictureBox6
-            // 
-            this.pictureBox6.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox6.Image = global::Frontend.Properties.Resources.Perfil;
-            this.pictureBox6.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox6.InitialImage")));
-            this.pictureBox6.Location = new System.Drawing.Point(130, 458);
-            this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(205, 162);
-            this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox6.TabIndex = 85;
-            this.pictureBox6.TabStop = false;
-            this.pictureBox6.Click += new System.EventHandler(this.pictureBox6_Click);
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Image = global::Frontend.Properties.Resources.Perfil;
-            this.pictureBox3.Location = new System.Drawing.Point(60, 3);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(45, 36);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox3.TabIndex = 66;
-            this.pictureBox3.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::Frontend.Properties.Resources.Perfil;
-            this.pictureBox1.Location = new System.Drawing.Point(59, 101);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(45, 36);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 78;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox5
-            // 
-            this.pictureBox5.Image = global::Frontend.Properties.Resources.Perfil;
-            this.pictureBox5.Location = new System.Drawing.Point(59, 52);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(45, 36);
-            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox5.TabIndex = 74;
-            this.pictureBox5.TabStop = false;
             // 
             // btnRegistrar
             // 
@@ -405,6 +392,19 @@ namespace Frontend
             this.pcbxVerContraseña.TabStop = false;
             this.pcbxVerContraseña.Click += new System.EventHandler(this.pcbxVerContraseña_Click);
             // 
+            // txtContraseña2
+            // 
+            this.txtContraseña2.BackColor = System.Drawing.Color.White;
+            this.txtContraseña2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtContraseña2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtContraseña2.ForeColor = System.Drawing.Color.Gray;
+            this.txtContraseña2.Location = new System.Drawing.Point(110, 226);
+            this.txtContraseña2.MaxLength = 20;
+            this.txtContraseña2.Name = "txtContraseña2";
+            this.txtContraseña2.Size = new System.Drawing.Size(224, 22);
+            this.txtContraseña2.TabIndex = 73;
+            this.txtContraseña2.Text = "Repita su contraseña";
+            // 
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Frontend.Properties.Resources.Contraseña;
@@ -425,9 +425,9 @@ namespace Frontend
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Registrarse";
             this.Text = "Registrarse";
+            ((System.ComponentModel.ISupportInitialize)(pcbxVolver)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(pcbxVolver)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

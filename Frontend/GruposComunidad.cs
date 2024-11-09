@@ -44,7 +44,6 @@ namespace Frontend
         private Label lblPostsGrupo;
         private Label lblChat;
         private Panel pnlPostsGrupo;
-        private Panel panel8;
         private Panel panel7;
         private dynamic listaDeMiembros;
         private string nombreGrupo;
@@ -152,7 +151,6 @@ namespace Frontend
             this.lblNombre = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblEditando = new System.Windows.Forms.Label();
-            this.panel8 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -180,6 +178,7 @@ namespace Frontend
             this.lblEditar = new System.Windows.Forms.Label();
             this.pnlCrear = new System.Windows.Forms.Panel();
             this.pnlPostsGrupo = new System.Windows.Forms.Panel();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.lblName = new System.Windows.Forms.Label();
             this.lblPostsGrupo = new System.Windows.Forms.Label();
             this.lblChat = new System.Windows.Forms.Label();
@@ -187,7 +186,6 @@ namespace Frontend
             this.pnlChat = new System.Windows.Forms.Panel();
             this.txtURL = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.pbxImagen)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxEnviar)).BeginInit();
@@ -228,10 +226,11 @@ namespace Frontend
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.MediumPurple;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.lblEditando);
-            this.panel1.Controls.Add(this.panel8);
             this.panel1.Controls.Add(this.panel7);
             this.panel1.Controls.Add(this.panel6);
             this.panel1.Controls.Add(this.panel4);
@@ -245,20 +244,13 @@ namespace Frontend
             // 
             // lblEditando
             // 
+            this.lblEditando.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblEditando.AutoSize = true;
             this.lblEditando.Location = new System.Drawing.Point(59, 35);
             this.lblEditando.Name = "lblEditando";
             this.lblEditando.Size = new System.Drawing.Size(63, 13);
             this.lblEditando.TabIndex = 80;
             this.lblEditando.Text = "EDITANDO";
-            // 
-            // panel8
-            // 
-            this.panel8.BackColor = System.Drawing.Color.SlateBlue;
-            this.panel8.Location = new System.Drawing.Point(967, 3);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(3, 60);
-            this.panel8.TabIndex = 79;
             // 
             // panel7
             // 
@@ -278,6 +270,9 @@ namespace Frontend
             // 
             // panel4
             // 
+            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel4.BackColor = System.Drawing.Color.SlateBlue;
             this.panel4.Location = new System.Drawing.Point(-1, 0);
             this.panel4.Name = "panel4";
@@ -286,6 +281,7 @@ namespace Frontend
             // 
             // pbxEnviar
             // 
+            this.pbxEnviar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxEnviar.Image = ((System.Drawing.Image)(resources.GetObject("pbxEnviar.Image")));
             this.pbxEnviar.Location = new System.Drawing.Point(915, 8);
             this.pbxEnviar.Name = "pbxEnviar";
@@ -297,6 +293,7 @@ namespace Frontend
             // 
             // pbxAsociarContenido
             // 
+            this.pbxAsociarContenido.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pbxAsociarContenido.Image = global::Frontend.Properties.Resources.crear;
             this.pbxAsociarContenido.Location = new System.Drawing.Point(5, 8);
             this.pbxAsociarContenido.Name = "pbxAsociarContenido";
@@ -308,6 +305,8 @@ namespace Frontend
             // 
             // txtMensajeAEnviar
             // 
+            this.txtMensajeAEnviar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMensajeAEnviar.Location = new System.Drawing.Point(59, 8);
             this.txtMensajeAEnviar.MaxLength = 255;
             this.txtMensajeAEnviar.Name = "txtMensajeAEnviar";
@@ -316,6 +315,8 @@ namespace Frontend
             // 
             // pbxCrearPostGrupo
             // 
+            this.pbxCrearPostGrupo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxCrearPostGrupo.Image = global::Frontend.Properties.Resources.crear;
             this.pbxCrearPostGrupo.Location = new System.Drawing.Point(450, 615);
             this.pbxCrearPostGrupo.Name = "pbxCrearPostGrupo";
@@ -362,6 +363,7 @@ namespace Frontend
             // 
             // pnlAsociarContenido
             // 
+            this.pnlAsociarContenido.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pnlAsociarContenido.BackColor = System.Drawing.Color.MediumPurple;
             this.pnlAsociarContenido.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlAsociarContenido.Controls.Add(this.lblAsociarImagen);
@@ -450,6 +452,7 @@ namespace Frontend
             // 
             // pbxBuscar
             // 
+            this.pbxBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxBuscar.Image = global::Frontend.Properties.Resources.lupa_removebg_preview;
             this.pbxBuscar.Location = new System.Drawing.Point(615, 53);
             this.pbxBuscar.Name = "pbxBuscar";
@@ -551,13 +554,21 @@ namespace Frontend
             // 
             // pnlPostsGrupo
             // 
+            this.pnlPostsGrupo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.pnlPostsGrupo.AutoScroll = true;
             this.pnlPostsGrupo.BackColor = System.Drawing.Color.LightSkyBlue;
             this.pnlPostsGrupo.Controls.Add(this.progressBar1);
-            this.pnlPostsGrupo.Location = new System.Drawing.Point(12, 110);
+            this.pnlPostsGrupo.Location = new System.Drawing.Point(16, 110);
             this.pnlPostsGrupo.Name = "pnlPostsGrupo";
-            this.pnlPostsGrupo.Size = new System.Drawing.Size(971, 499);
+            this.pnlPostsGrupo.Size = new System.Drawing.Size(968, 502);
             this.pnlPostsGrupo.TabIndex = 80;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(210, 193);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(560, 23);
+            this.progressBar1.TabIndex = 0;
             // 
             // lblName
             // 
@@ -571,6 +582,8 @@ namespace Frontend
             // 
             // lblPostsGrupo
             // 
+            this.lblPostsGrupo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPostsGrupo.AutoSize = true;
             this.lblPostsGrupo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPostsGrupo.ForeColor = System.Drawing.Color.Black;
@@ -583,6 +596,8 @@ namespace Frontend
             // 
             // lblChat
             // 
+            this.lblChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblChat.AutoSize = true;
             this.lblChat.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChat.ForeColor = System.Drawing.Color.Black;
@@ -605,6 +620,7 @@ namespace Frontend
             // 
             // pnlChat
             // 
+            this.pnlChat.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.pnlChat.AutoScroll = true;
             this.pnlChat.BackColor = System.Drawing.Color.LightSteelBlue;
             this.pnlChat.Location = new System.Drawing.Point(13, 113);
@@ -614,6 +630,8 @@ namespace Frontend
             // 
             // txtURL
             // 
+            this.txtURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtURL.Location = new System.Drawing.Point(71, 618);
             this.txtURL.Multiline = true;
             this.txtURL.Name = "txtURL";
@@ -628,13 +646,6 @@ namespace Frontend
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(971, 3);
             this.panel2.TabIndex = 76;
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(210, 193);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(560, 23);
-            this.progressBar1.TabIndex = 0;
             // 
             // GruposComunidad
             // 
@@ -743,7 +754,6 @@ namespace Frontend
             } else
             {
                 pnlAsociarContenido.Visible = true;
-                pnlAsociarContenido.Location= new Point(pnlAsociarContenido.Location.X, 420);
             }
         }
 
@@ -913,6 +923,11 @@ namespace Frontend
                 this.progressBar1.Visible = false;
                 pnlPostsGrupo.Visible = false;
                 pnlChat.Visible = true;
+                if (pnlChat.VerticalScroll.Maximum - pnlChat.VerticalScroll.Value < 500 || pnlChat.VerticalScroll.Value==0)
+                {
+                    pnlChat.VerticalScroll.Value = pnlChat.VerticalScroll.Maximum;
+                    pnlChat.PerformLayout();
+                }
             }
             catch
             {

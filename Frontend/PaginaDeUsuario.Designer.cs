@@ -84,6 +84,9 @@ namespace Frontend
             // 
             // panelPosts
             // 
+            this.panelPosts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPosts.Location = new System.Drawing.Point(12, 138);
             this.panelPosts.Name = "panelPosts";
             this.panelPosts.Size = new System.Drawing.Size(972, 424);
@@ -102,6 +105,8 @@ namespace Frontend
             // 
             // pbxChatear
             // 
+            this.pbxChatear.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxChatear.Image = global::Frontend.Properties.Resources.Comunidad;
             this.pbxChatear.Location = new System.Drawing.Point(415, 82);
             this.pbxChatear.Name = "pbxChatear";
@@ -113,6 +118,8 @@ namespace Frontend
             // 
             // pbxReportar
             // 
+            this.pbxReportar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxReportar.Image = global::Frontend.Properties.Resources.reportar;
             this.pbxReportar.Location = new System.Drawing.Point(934, 12);
             this.pbxReportar.Name = "pbxReportar";
@@ -124,6 +131,8 @@ namespace Frontend
             // 
             // txtNombre
             // 
+            this.txtNombre.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtNombre.Location = new System.Drawing.Point(159, 22);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(100, 20);
@@ -131,6 +140,8 @@ namespace Frontend
             // 
             // txtDescripcion
             // 
+            this.txtDescripcion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDescripcion.Location = new System.Drawing.Point(159, 55);
             this.txtDescripcion.Name = "txtDescripcion";
             this.txtDescripcion.Size = new System.Drawing.Size(684, 20);
@@ -138,6 +149,9 @@ namespace Frontend
             // 
             // btnConfirmar
             // 
+            this.btnConfirmar.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnConfirmar.Image = global::Frontend.Properties.Resources.aceptar;
             this.btnConfirmar.Location = new System.Drawing.Point(473, 1);
             this.btnConfirmar.Name = "btnConfirmar";
@@ -161,6 +175,7 @@ namespace Frontend
             // 
             // pbxBloquear
             // 
+            this.pbxBloquear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxBloquear.Image = global::Frontend.Properties.Resources.salir;
             this.pbxBloquear.Location = new System.Drawing.Point(866, 12);
             this.pbxBloquear.Name = "pbxBloquear";

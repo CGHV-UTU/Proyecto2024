@@ -56,6 +56,8 @@ namespace Frontend
             // 
             // txtBusqueda
             // 
+            this.txtBusqueda.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBusqueda.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBusqueda.Location = new System.Drawing.Point(102, 28);
             this.txtBusqueda.Name = "txtBusqueda";
@@ -159,6 +161,8 @@ namespace Frontend
             // 
             // pnlMostrar
             // 
+            this.pnlMostrar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlMostrar.Location = new System.Drawing.Point(19, 77);
             this.pnlMostrar.Name = "pnlMostrar";
             this.pnlMostrar.Size = new System.Drawing.Size(869, 214);
@@ -177,6 +181,7 @@ namespace Frontend
             // 
             // btnBuscar
             // 
+            this.btnBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBuscar.BackgroundImage = global::Frontend.Properties.Resources.lupa_removebg_preview;
             this.btnBuscar.Image = global::Frontend.Properties.Resources.lupa_removebg_preview;
             this.btnBuscar.Location = new System.Drawing.Point(908, 13);
