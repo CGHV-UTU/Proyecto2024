@@ -45,6 +45,11 @@ namespace Frontend
                 this.PictureBoxGrupos.Image = Frontend.Properties.Resources.chat_blanco_removebg_preview;
                 this.PictureBoxEventos.Image = Frontend.Properties.Resources.evento_blanco_removebg_preview;
             }
+            else
+            {
+                this.PictureBoxGrupos.Image = Frontend.Properties.Resources.chat_negro_removebg_preview__1_;
+                this.PictureBoxEventos.Image = Frontend.Properties.Resources.evento_negro_removebg_preview;
+            }
             CargarGrupos();
         }
 

@@ -54,7 +54,6 @@ namespace Frontend
                         }
                         this.PanelNotificaciones.Controls.Add(notiControl);
                     }
-                    aplicarModoOscuro();
                     if (cantNotificaciones == 0)
                     {
                         cantNotificaciones = this.PanelNotificaciones.Controls.Count;

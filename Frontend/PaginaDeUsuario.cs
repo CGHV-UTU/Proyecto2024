@@ -136,13 +136,20 @@ namespace Frontend
                 this.PictureBoxUsuario.Image = bitmap;
                 this.PictureBoxUsuario.SizeMode = PictureBoxSizeMode.StretchImage;
                 this.lblNombre.Text = datos[0];
-                if (int.Parse(datos[3]) > 0)
+                if (datos[3] != null)
                 {
-                    this.lblSeguidores.Text = datos[3];
+                    if (int.Parse(datos[3]) > 0)
+                    {
+                        this.lblSeguidores.Text = datos[3];
+                    }
+                    else
+                    {
+                        this.lblSeguidores.Visible = false;
+                    }
                 }
                 else
                 {
-                    this.lblSeguidores.Visible = false;
+                    this.lblSeguidores.Text = "";
                 }
             }
             this.SuspendLayout();
