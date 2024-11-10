@@ -18,7 +18,7 @@ namespace BackofficeDeAdministracion
     public partial class GestionarEventos : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-        public GestionarEventos(string usuario)
+        public GestionarEventos()
         {
             InitializeComponent();
             CargarTabla();
@@ -222,6 +222,7 @@ namespace BackofficeDeAdministracion
             command1.Parameters.AddWithValue("@Id", int.Parse(id));
             command1.ExecuteNonQuery();
             conn.Close();
+            //Log
             string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
             string mensaje = $"{DateTime.Now}: {Principal.admin} ha eliminado el evento de id {id}";
             using (StreamWriter writer = new StreamWriter(path, true))

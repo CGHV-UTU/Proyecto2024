@@ -45,22 +45,22 @@ namespace BackofficeDeAdministracion
             // lblNom
             // 
             this.lblNom.AutoSize = true;
-            this.lblNom.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNom.Font = new System.Drawing.Font("Leelawadee UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNom.ForeColor = System.Drawing.Color.White;
-            this.lblNom.Location = new System.Drawing.Point(288, 259);
+            this.lblNom.Location = new System.Drawing.Point(249, 253);
             this.lblNom.Name = "lblNom";
-            this.lblNom.Size = new System.Drawing.Size(126, 15);
+            this.lblNom.Size = new System.Drawing.Size(179, 25);
             this.lblNom.TabIndex = 0;
             this.lblNom.Text = "Nombre De Usuario";
             // 
             // lblCont
             // 
             this.lblCont.AutoSize = true;
-            this.lblCont.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCont.Font = new System.Drawing.Font("Leelawadee UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCont.ForeColor = System.Drawing.Color.White;
-            this.lblCont.Location = new System.Drawing.Point(288, 311);
+            this.lblCont.Location = new System.Drawing.Point(300, 305);
             this.lblCont.Name = "lblCont";
-            this.lblCont.Size = new System.Drawing.Size(77, 15);
+            this.lblCont.Size = new System.Drawing.Size(108, 25);
             this.lblCont.TabIndex = 1;
             this.lblCont.Text = "Contraseña";
             // 
@@ -68,40 +68,41 @@ namespace BackofficeDeAdministracion
             // 
             this.btnAcceder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
             this.btnAcceder.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAcceder.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAcceder.Font = new System.Drawing.Font("Leelawadee UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAcceder.ForeColor = System.Drawing.Color.White;
-            this.btnAcceder.Location = new System.Drawing.Point(594, 305);
+            this.btnAcceder.Location = new System.Drawing.Point(594, 304);
             this.btnAcceder.Name = "btnAcceder";
-            this.btnAcceder.Size = new System.Drawing.Size(117, 23);
+            this.btnAcceder.Size = new System.Drawing.Size(117, 28);
             this.btnAcceder.TabIndex = 2;
             this.btnAcceder.Text = "Acceder";
+            this.btnAcceder.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnAcceder.UseVisualStyleBackColor = false;
             this.btnAcceder.Click += new System.EventHandler(this.btnAcceder_Click);
             // 
             // txtUser
             // 
-            this.txtUser.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUser.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.txtUser.Location = new System.Drawing.Point(434, 253);
             this.txtUser.Name = "txtUser";
-            this.txtUser.Size = new System.Drawing.Size(143, 23);
+            this.txtUser.Size = new System.Drawing.Size(143, 25);
             this.txtUser.TabIndex = 3;
             // 
             // txtPass
             // 
-            this.txtPass.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPass.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.txtPass.Location = new System.Drawing.Point(434, 305);
             this.txtPass.Name = "txtPass";
-            this.txtPass.Size = new System.Drawing.Size(143, 23);
+            this.txtPass.Size = new System.Drawing.Size(143, 25);
             this.txtPass.TabIndex = 4;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Consolas", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(357, 178);
+            this.label1.Location = new System.Drawing.Point(335, 154);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(261, 19);
+            this.label1.Size = new System.Drawing.Size(376, 28);
             this.label1.TabIndex = 5;
             this.label1.Text = "Iniciar Sesión en Backoffice";
             // 

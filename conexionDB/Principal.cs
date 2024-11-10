@@ -16,6 +16,7 @@ namespace BackofficeDeAdministracion
     {
         public static string admin;
         private bool modo = true;
+        private bool idioma = false;
         public Principal(string usuario)
         {
             InitializeComponent();   
@@ -52,7 +53,7 @@ namespace BackofficeDeAdministracion
                 {
                     writer.WriteLine(mensaje);
                 }
-                Environment.Exit(0);
+                
             }
         }
 
@@ -65,6 +66,7 @@ namespace BackofficeDeAdministracion
         private void lblSalir_Click(object sender, EventArgs e)
         {
             Salir();
+            Environment.Exit(0);
         }
 
 
@@ -310,6 +312,52 @@ namespace BackofficeDeAdministracion
             if (cargado)
             {
                 lblLogs.Font = new Font(lblLogs.Font, FontStyle.Underline);
+            }
+        }
+
+        private void btnIdioma_Click(object sender, EventArgs e)
+        {
+            if (idioma)
+            {
+                idioma = false;
+                lblSalir.Text = "🏃 Salir";
+                lblModo.Text = "✹ Cambiar Modo";
+                lblIdioma.Text = "⌨︎ Cambiar Idioma";
+                lblAbrirContenidos.Text = "Contenido";
+                lblAbrirReportes.Text = "Reportes";
+                lblAbrirBackoffice.Text = "Backoffice";
+                lblContenidoUsuarios.Text = "Usuarios";
+                lblContenidoPosts.Text = "Posts";
+                lblContenidoEventos.Text = "Eventos";
+                lblContenidoComentarios.Text = "Comentarios";
+                lblContenidoGrupos.Text = "Grupos";
+                lblReportesUsuario.Text = "Usuarios";
+                lblReportesPost.Text = "Posts";
+                lblReportesEvento.Text = "Eventos";
+                lblReportesComentario.Text = "Comentarios";
+                lblReportesGrupo.Text = "Grupos";
+                lblLogs.Text = "Ver Log";
+            }
+            else
+            {
+                idioma = true;
+                lblSalir.Text = "🏃 Logout";
+                lblModo.Text = "✹ Change Mode";
+                lblIdioma.Text = "⌨︎ Change Language";
+                lblAbrirContenidos.Text = "Content";
+                lblAbrirReportes.Text = "Reports";
+                lblAbrirBackoffice.Text = "Backoffice";
+                lblContenidoUsuarios.Text = "Users";
+                lblContenidoPosts.Text = "Posts";
+                lblContenidoEventos.Text = "Events";
+                lblContenidoComentarios.Text = "Comments";
+                lblContenidoGrupos.Text = "Groups";
+                lblReportesUsuario.Text = "Users";
+                lblReportesPost.Text = "Posts";
+                lblReportesEvento.Text = "Events";
+                lblReportesComentario.Text = "Comments";
+                lblReportesGrupo.Text = "Groups";
+                lblLogs.Text = "View Log";
             }
         }
     }

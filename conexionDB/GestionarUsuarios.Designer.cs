@@ -72,11 +72,11 @@ namespace BackofficeDeAdministracion
             this.lblNom.AutoSize = true;
             this.lblNom.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblNom.ForeColor = System.Drawing.Color.White;
-            this.lblNom.Location = new System.Drawing.Point(10, 56);
+            this.lblNom.Location = new System.Drawing.Point(1, 56);
             this.lblNom.Name = "lblNom";
-            this.lblNom.Size = new System.Drawing.Size(121, 17);
+            this.lblNom.Size = new System.Drawing.Size(123, 17);
             this.lblNom.TabIndex = 63;
-            this.lblNom.Text = "Nombre de cuenta:";
+            this.lblNom.Text = "Nombre de Cuenta:";
             // 
             // txtID
             // 

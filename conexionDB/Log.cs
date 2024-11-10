@@ -13,17 +13,15 @@ namespace BackofficeDeAdministracion
 {
     public partial class Log : Form
     {
-        private string admin;
-        public Log(string usuario)
+        public Log()
         {
-            admin = usuario;
             InitializeComponent();
             CargarLog();
 
         }
         private void CargarLog()
         {
-            string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+            string path = @"C:\Users\emerg\Downloads\lbackofinal\Proyecto2024\Log.txt";
             if (File.Exists(path))
             {
                 dataGridView1.ColumnCount = 3;

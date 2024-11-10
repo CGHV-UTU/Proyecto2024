@@ -303,7 +303,7 @@ namespace BackofficeDeAdministracion
             this.lblDescripcion.AutoSize = true;
             this.lblDescripcion.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblDescripcion.ForeColor = System.Drawing.Color.White;
-            this.lblDescripcion.Location = new System.Drawing.Point(12, 323);
+            this.lblDescripcion.Location = new System.Drawing.Point(13, 330);
             this.lblDescripcion.Name = "lblDescripcion";
             this.lblDescripcion.Size = new System.Drawing.Size(149, 17);
             this.lblDescripcion.TabIndex = 114;

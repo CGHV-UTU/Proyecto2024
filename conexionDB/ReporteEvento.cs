@@ -17,7 +17,7 @@ namespace BackofficeDeAdministracion
     public partial class ReporteEvento : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-        public ReporteEvento(string user)
+        public ReporteEvento()
         {
             InitializeComponent();
             CargarTabla();

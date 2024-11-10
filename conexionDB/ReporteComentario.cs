@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,19 +15,16 @@ namespace BackofficeDeAdministracion
     public partial class ReporteComentario : Form
     {
         static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-        private string admin;
-        public ReporteComentario(string usuario)
+        public ReporteComentario()
         {
-            admin = usuario;
             InitializeComponent();
-            cargarTabla();
-            inicializarTablaPosts();
+            cargarTabla();          
         }
 
         //Cargar tabla      
         private void cargarTabla()
         {
-            string connectionString = "server = localhost; database = base; uid = root; ";
+            string connectionString = "server = localhost; database = infini; uid = root; ";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
@@ -36,9 +34,9 @@ namespace BackofficeDeAdministracion
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-                    foreach (DataRow row in dataTable.Rows)
-                        dataGridView1.DataSource = dataTable;
+                    adapter.Fill(dataTable);                   
+                    dataGridView1.DataSource = dataTable;
+                    inicializarTablaPosts();
                 }
                 catch (Exception ex)
                 {
@@ -49,10 +47,10 @@ namespace BackofficeDeAdministracion
         private void inicializarTablaPosts()
         {
             DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle();
-            columnHeaderStyle.BackColor = Color.Beige;
             columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
             dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;
-            dataGridView1.Columns["numeroDeReporte"].Width = 60;
+            dataGridView1.Columns["numeroDeReporte"].Width = 80;
+            dataGridView1.Columns["tipo"].Width = 150;
             dataGridView1.Columns["numeroDeReporte"].HeaderText = "Reporte";
             dataGridView1.Columns["creadorDelComentario"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridView1.Columns["creadorDelComentario"].HeaderText = "Creador";
@@ -61,54 +59,84 @@ namespace BackofficeDeAdministracion
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(txtID.Text))
-            {
-                try
-                {
-                    Boolean encontrado = false;
-                    int id = int.Parse(txtID.Text);
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
-                    {
-                        if (row.Cells[0].Value != null && int.Parse(row.Cells[0].Value.ToString()) == id)
-                        {
-                            conn.Open();
-                            MySqlCommand command = new MySqlCommand("SELECT idComentario, creadorDelComentario, tipo, descripcion FROM Reportes WHERE numeroDeReporte=@id", conn);
-                            command.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
-                            MySqlDataReader reader = command.ExecuteReader();
-                            if (reader.Read())
-                            {
-                                lblNombreDeCuenta.Text = reader["creadorDelComentario"].ToString();
-                                lblDescripcionReporte.Text = reader["descripcion"].ToString();
-                                lblTipo.Text = reader["tipo"].ToString();
-                                lblNombre.Show();
-                                lblDescripcionReporte.Show();
-                                lblDescripcion.Show();
-                                reader.Close();
-                                MySqlCommand command2 = new MySqlCommand("SELECT texto FROM comentarios WHERE id = @idComentario");
-                                command2.Parameters.AddWithValue("@id", int.Parse(reader["idComentario"].ToString()));
-
-                            }
-                            conn.Close();
-                            dataGridView1.ClearSelection();
-                            row.Selected = true;
-                            encontrado = true;
-                            return;
-                        }
-                    }
-                    if (!encontrado)
-                    {
-                        MessageBox.Show("No se encontró el post especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    }
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("No se encontró el post especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-            }
-            else
+            if (string.IsNullOrEmpty(txtID.Text))
             {
                 MessageBox.Show("Debe ingresar una id", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
             }
+
+            try
+            {
+                //Buscar comentario y reporte
+                int id = int.Parse(txtID.Text);
+                if (buscarReporte(id))
+                {
+                    MessageBox.Show("Se encontro el comentario especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    Controls.OfType<Control>().ToList().ForEach(c => c.Visible = true);
+                }
+                else
+                {
+                    MessageBox.Show("No se encontro el comentario especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Ocurrio un error al buscar el comentario.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        //Busca un comentario en la base de datos usando el ID
+        private bool BuscarComentario(int id)
+        {
+            try
+            {
+                //Conexion con la base de datos
+                conn.Open();
+                MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta, idPost, texto, fechaYhora FROM Comentarios WHERE id=@id", conn);
+                command.Parameters.AddWithValue("@id", id);
+                MySqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    // Cargar los datos conseguidos
+                    lblNombreDeCuenta.Text = reader["nombreDeCuenta"].ToString();
+                    lblIdPost.Text = reader["idPost"].ToString();
+                    txtTexto.Text = reader["texto"].ToString();
+                    lblFechayHora.Text = reader["fechaYhora"].ToString();
+                    conn.Close();
+                    return true; // Comentario encontrado
+                }
+                conn.Close();
+                return false; // Comentario no encontrado
+            }
+            catch (Exception)
+            {
+                conn.Close();
+                return false; // Error
+            }
+        }
+        // Busca un reporte en la base de datos usando el ID
+        private bool buscarReporte(int id)
+        {
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("SELECT idComentario, creadorDelComentario, tipo, descripcion FROM Reportes WHERE numeroDeReporte=@id", conn);
+            command.Parameters.AddWithValue("@id", id);
+            MySqlDataReader reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                lblNombreDeCuenta.Text = reader["creadorDelComentario"].ToString();
+                txtDescripcionReporte.Text = reader["descripcion"].ToString();
+                lblTipo.Text = reader["tipo"].ToString();
+                //Si encuentra el reporte carga el comentario
+                if (BuscarComentario(Convert.ToInt32(reader["idComentario"].ToString())))
+                {
+                    return true; // Comentario encontrado
+                }
+                else
+                {
+                    return false; // Comentario no encontrado
+                }
+            }
+            return false; // Error
         }
 
         //Borro la fila del datagrid y registro su id
@@ -117,58 +145,38 @@ namespace BackofficeDeAdministracion
             try
             {
                 string id = txtID.Text;
-                GuardarId(id);
+                EliminarComentario(id);
+                cargarTabla();
             }
             catch (Exception)
             {
-                MessageBox.Show("No seleccionó una fila", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
+                MessageBox.Show("Ocurrio un error", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
-        //Guardo la id de los post borrados del datagrid para luego eliminarlos definitivamente
-        List<string> eliminarDatos = new List<string>();
-        private void GuardarId(string id)
+
+        //Eliminar informacion de la base de datos
+        private void EliminarComentario(string id)
         {
-            eliminarDatos.Add(id);
-        }
+            conn.Open();
+            MySqlCommand command2 = new MySqlCommand("DELETE FROM Reportes WHERE idComentario=@id", conn);
+            MySqlCommand command1 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=@id", conn);
+            MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE id = @id", conn);
+            command2.Parameters.AddWithValue("@id", int.Parse(id));
+            command2.ExecuteNonQuery();
+            command1.Parameters.AddWithValue("@id", int.Parse(id));
+            command1.ExecuteNonQuery();
+            command.Parameters.AddWithValue("@id", int.Parse(id));
+            command.ExecuteNonQuery();
+            conn.Close();
+            MessageBox.Show("Información eliminada con éxito");
 
-        private void btnGuardar_Click(object sender, EventArgs e)
-        {
-            try
+            //Registro en logs
+            string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+            string mensaje = $"{DateTime.Now}: {Principal.admin} ha eliminado el comentario de id {id} por un reporte";
+            using (StreamWriter writer = new StreamWriter(path, true))
             {
-                conn.Open();
-                //Para remover de la base de datos los comentarios eliminados
-                foreach (string id in eliminarDatos)
-                {
-                    string query = "DELETE FROM Comentarios WHERE id = @id";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    try
-                    {
-                        string query2 = "DELETE FROM DaLikeComentario WHERE idComentario=@id";
-                        MySqlCommand cmd2 = new MySqlCommand(query2, conn);
-                        cmd2.Parameters.AddWithValue("@id", id);
-                        cmd2.ExecuteNonQuery();
-                    }
-                    catch
-                    {
-
-                    }
-                    cmd.ExecuteNonQuery();
-                }
-                eliminarDatos.Clear();
-                conn.Close();
-                MessageBox.Show("Información guardada con éxito");
-                this.Close();
+                writer.WriteLine(mensaje);
             }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show("Ocurrió un error: " + ex.Message, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ocurrió un error: " + ex.Message, "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
+        }      
     }   
 }

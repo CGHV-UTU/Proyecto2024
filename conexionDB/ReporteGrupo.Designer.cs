@@ -49,7 +49,8 @@ namespace BackofficeDeAdministracion
             // txtDescripcionDeGrupo
             // 
             this.txtDescripcionDeGrupo.Cursor = System.Windows.Forms.Cursors.No;
-            this.txtDescripcionDeGrupo.Location = new System.Drawing.Point(596, 239);
+            this.txtDescripcionDeGrupo.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
+            this.txtDescripcionDeGrupo.Location = new System.Drawing.Point(592, 272);
             this.txtDescripcionDeGrupo.Multiline = true;
             this.txtDescripcionDeGrupo.Name = "txtDescripcionDeGrupo";
             this.txtDescripcionDeGrupo.Size = new System.Drawing.Size(232, 145);
@@ -60,21 +61,24 @@ namespace BackofficeDeAdministracion
             // 
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
             this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.button1.ForeColor = System.Drawing.Color.White;
             this.button1.Location = new System.Drawing.Point(15, 137);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(216, 23);
+            this.button1.Size = new System.Drawing.Size(216, 27);
             this.button1.TabIndex = 125;
             this.button1.Text = "❌Eliminar Grupo";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.button1.UseVisualStyleBackColor = false;
             // 
             // lblNombreVisible
             // 
             this.lblNombreVisible.AutoSize = true;
+            this.lblNombreVisible.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblNombreVisible.ForeColor = System.Drawing.Color.White;
             this.lblNombreVisible.Location = new System.Drawing.Point(123, 285);
             this.lblNombreVisible.Name = "lblNombreVisible";
-            this.lblNombreVisible.Size = new System.Drawing.Size(44, 13);
+            this.lblNombreVisible.Size = new System.Drawing.Size(57, 17);
             this.lblNombreVisible.TabIndex = 124;
             this.lblNombreVisible.Text = "Nombre";
             this.lblNombreVisible.Visible = false;
@@ -82,10 +86,11 @@ namespace BackofficeDeAdministracion
             // lblNomVisible
             // 
             this.lblNomVisible.AutoSize = true;
+            this.lblNomVisible.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblNomVisible.ForeColor = System.Drawing.Color.White;
             this.lblNomVisible.Location = new System.Drawing.Point(19, 285);
             this.lblNomVisible.Name = "lblNomVisible";
-            this.lblNomVisible.Size = new System.Drawing.Size(79, 13);
+            this.lblNomVisible.Size = new System.Drawing.Size(100, 17);
             this.lblNomVisible.TabIndex = 123;
             this.lblNomVisible.Text = "Nombre visible:";
             this.lblNomVisible.Visible = false;
@@ -93,38 +98,44 @@ namespace BackofficeDeAdministracion
             // lblFoto
             // 
             this.lblFoto.AutoSize = true;
+            this.lblFoto.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblFoto.ForeColor = System.Drawing.Color.White;
-            this.lblFoto.Location = new System.Drawing.Point(219, 248);
+            this.lblFoto.Location = new System.Drawing.Point(334, 237);
             this.lblFoto.Name = "lblFoto";
-            this.lblFoto.Size = new System.Drawing.Size(68, 13);
+            this.lblFoto.Size = new System.Drawing.Size(87, 17);
             this.lblFoto.TabIndex = 122;
             this.lblFoto.Text = "Foto de perfil";
             this.lblFoto.Visible = false;
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(307, 239);
+            this.pictureBox1.Location = new System.Drawing.Point(322, 272);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(196, 145);
             this.pictureBox1.TabIndex = 121;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Visible = false;
             // 
             // lblNombreDeGrupo
             // 
             this.lblNombreDeGrupo.AutoSize = true;
+            this.lblNombreDeGrupo.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblNombreDeGrupo.ForeColor = System.Drawing.Color.White;
-            this.lblNombreDeGrupo.Location = new System.Drawing.Point(123, 239);
+            this.lblNombreDeGrupo.Location = new System.Drawing.Point(145, 239);
             this.lblNombreDeGrupo.Name = "lblNombreDeGrupo";
-            this.lblNombreDeGrupo.Size = new System.Drawing.Size(0, 13);
+            this.lblNombreDeGrupo.Size = new System.Drawing.Size(54, 17);
             this.lblNombreDeGrupo.TabIndex = 120;
+            this.lblNombreDeGrupo.Text = "nombre";
+            this.lblNombreDeGrupo.Visible = false;
             // 
             // lblDesc
             // 
             this.lblDesc.AutoSize = true;
+            this.lblDesc.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblDesc.ForeColor = System.Drawing.Color.White;
-            this.lblDesc.Location = new System.Drawing.Point(524, 245);
+            this.lblDesc.Location = new System.Drawing.Point(593, 242);
             this.lblDesc.Name = "lblDesc";
-            this.lblDesc.Size = new System.Drawing.Size(66, 13);
+            this.lblDesc.Size = new System.Drawing.Size(79, 17);
             this.lblDesc.TabIndex = 119;
             this.lblDesc.Text = "Descripción:";
             this.lblDesc.Visible = false;
@@ -132,10 +143,11 @@ namespace BackofficeDeAdministracion
             // lblNombre
             // 
             this.lblNombre.AutoSize = true;
+            this.lblNombre.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblNombre.ForeColor = System.Drawing.Color.White;
             this.lblNombre.Location = new System.Drawing.Point(19, 239);
             this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(94, 13);
+            this.lblNombre.Size = new System.Drawing.Size(120, 17);
             this.lblNombre.TabIndex = 118;
             this.lblNombre.Text = "Nombre de Grupo:";
             this.lblNombre.Visible = false;
@@ -158,29 +170,33 @@ namespace BackofficeDeAdministracion
             // 
             this.btnBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
             this.btnBuscar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBuscar.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.btnBuscar.ForeColor = System.Drawing.Color.White;
             this.btnBuscar.Location = new System.Drawing.Point(15, 95);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(216, 23);
+            this.btnBuscar.Size = new System.Drawing.Size(216, 27);
             this.btnBuscar.TabIndex = 116;
             this.btnBuscar.Text = "🔎 Buscar ";
+            this.btnBuscar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnBuscar.UseVisualStyleBackColor = false;
             // 
             // lblNom
             // 
             this.lblNom.AutoSize = true;
+            this.lblNom.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblNom.ForeColor = System.Drawing.Color.White;
             this.lblNom.Location = new System.Drawing.Point(12, 56);
             this.lblNom.Name = "lblNom";
-            this.lblNom.Size = new System.Drawing.Size(94, 13);
+            this.lblNom.Size = new System.Drawing.Size(120, 17);
             this.lblNom.TabIndex = 115;
             this.lblNom.Text = "Nombre de Grupo:";
             // 
             // txtID
             // 
-            this.txtID.Location = new System.Drawing.Point(110, 53);
+            this.txtID.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
+            this.txtID.Location = new System.Drawing.Point(138, 53);
             this.txtID.Name = "txtID";
-            this.txtID.Size = new System.Drawing.Size(121, 20);
+            this.txtID.Size = new System.Drawing.Size(115, 25);
             this.txtID.TabIndex = 114;
             // 
             // ReporteGrupo

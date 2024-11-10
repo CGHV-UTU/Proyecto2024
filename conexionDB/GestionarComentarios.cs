@@ -85,7 +85,7 @@ namespace BackofficeDeAdministracion
         }
 
         // Boton para buscar Comentario
-        private void btnBuscar_Click(object sender, EventArgs e)
+        private async void btnBuscar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtID.Text))
             {
@@ -99,6 +99,7 @@ namespace BackofficeDeAdministracion
                 if (BuscarComentario(id))
                 {
                     Controls.OfType<Control>().ToList().ForEach(c => c.Visible = true);
+                    await CargarDatosPost(Convert.ToInt32(lblIdPost.Text));
                 }
                 else
                 {
@@ -138,6 +139,62 @@ namespace BackofficeDeAdministracion
             {
                 conn.Close();
                 return false; // Error
+            }
+        }
+
+        private async Task<bool> CargarDatosPost(int id)
+        {
+            bool encontrado = false;
+            using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+            {
+                await conn.OpenAsync();
+
+                // Consulta del post
+                using (var command = new MySqlCommand("SELECT texto, imagen, video, categoria FROM Posts WHERE idPost=@id", conn))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            txtPostTexto.Text = reader["texto"].ToString();
+                            txtCategorias.Text = reader["categoria"].ToString();
+                            txtURL.Text = reader["video"].ToString();
+                            try
+                            {
+                                string imagenUrl = reader["imagen"].ToString();
+                                await CargarYMostrarImagen(imagenUrl);
+                            }
+                            catch (Exception)
+                            {
+                                pictureBox1.Hide();
+                            }
+                            Controls.OfType<Control>().ToList().ForEach(c => c.Visible = true);
+                        }
+                    }
+                }
+            }
+            return encontrado;
+        }
+
+        // Cargar imagen
+        private async Task CargarYMostrarImagen(string urlImagen)
+        {
+            string imagenBase64 = await CargarImagen.CargarImagenDeGitHub(urlImagen);
+            if (!string.IsNullOrEmpty(imagenBase64))
+            {
+                byte[] imagenBytes = Convert.FromBase64String(imagenBase64);
+                using (MemoryStream ms = new MemoryStream(imagenBytes))
+                {
+                    Bitmap bitmap = new Bitmap(ms);
+                    pictureBox1.Image = bitmap;
+                    pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                    pictureBox1.Show();
+                }
+            }
+            else
+            {
+                pictureBox1.Hide();
             }
         }
 

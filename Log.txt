@@ -1,1 +1,9 @@
-
+08/08/2024 15:00:00: admin ha accedido al sistema
+08/08/2024 15:05:10: admin ha eliminado el comentario de id 4 por un reporte
+08/08/2024 15:10:15: admin ha eliminado el evento de id 3
+08/08/2024 15:12:30: admin ha baneado permanentemente al usuario Usuario123
+08/08/2024 15:15:45: admin ha baneado temporalmente al usuario Usuario456
+08/08/2024 15:18:20: admin ha eliminado el grupo GrupoA
+08/08/2024 15:21:35: admin ha eliminado el comentario de id 7
+08/08/2024 15:25:30: admin ha reactivado los comentarios del post 4
+08/08/2024 15:30:00: admin ha salido del sistema

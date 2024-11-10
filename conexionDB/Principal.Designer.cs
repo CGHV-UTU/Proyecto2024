@@ -32,6 +32,7 @@ namespace BackofficeDeAdministracion
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Principal));
             this.lblUsuarioBackoffice = new System.Windows.Forms.Label();
             this.PanelSuperior = new System.Windows.Forms.Panel();
+            this.lblIdioma = new System.Windows.Forms.Label();
             this.lblModo = new System.Windows.Forms.Label();
             this.lblSalir = new System.Windows.Forms.Label();
             this.PictureBoxUsuario = new System.Windows.Forms.PictureBox();
@@ -50,13 +51,13 @@ namespace BackofficeDeAdministracion
             this.lblAbrirContenidos = new System.Windows.Forms.Label();
             this.PanelReportes = new System.Windows.Forms.Panel();
             this.PanelOpcionesReportes = new System.Windows.Forms.Panel();
+            this.lblReportesEvento = new System.Windows.Forms.Label();
             this.lblReportesGrupo = new System.Windows.Forms.Label();
             this.lblReportesComentario = new System.Windows.Forms.Label();
             this.lblReportesPost = new System.Windows.Forms.Label();
             this.lblReportesUsuario = new System.Windows.Forms.Label();
             this.lblAbrirReportes = new System.Windows.Forms.Label();
             this.PanelVista = new System.Windows.Forms.Panel();
-            this.lblReportesEvento = new System.Windows.Forms.Label();
             this.PanelSuperior.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxUsuario)).BeginInit();
             this.PanelIzquierdo.SuspendLayout();
@@ -85,6 +86,7 @@ namespace BackofficeDeAdministracion
             // PanelSuperior
             // 
             this.PanelSuperior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
+            this.PanelSuperior.Controls.Add(this.lblIdioma);
             this.PanelSuperior.Controls.Add(this.lblModo);
             this.PanelSuperior.Controls.Add(this.lblSalir);
             this.PanelSuperior.Controls.Add(this.PictureBoxUsuario);
@@ -94,6 +96,20 @@ namespace BackofficeDeAdministracion
             this.PanelSuperior.Name = "PanelSuperior";
             this.PanelSuperior.Size = new System.Drawing.Size(1026, 75);
             this.PanelSuperior.TabIndex = 21;
+            // 
+            // lblIdioma
+            // 
+            this.lblIdioma.AutoSize = true;
+            this.lblIdioma.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblIdioma.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblIdioma.ForeColor = System.Drawing.Color.White;
+            this.lblIdioma.Location = new System.Drawing.Point(443, 47);
+            this.lblIdioma.Name = "lblIdioma";
+            this.lblIdioma.Size = new System.Drawing.Size(181, 22);
+            this.lblIdioma.TabIndex = 19;
+            this.lblIdioma.Text = "⌨︎ Cambiar Idioma";
+            this.lblIdioma.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblIdioma.Click += new System.EventHandler(this.btnIdioma_Click);
             // 
             // lblModo
             // 
@@ -183,7 +199,7 @@ namespace BackofficeDeAdministracion
             this.lblAbrirBackoffice.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblAbrirBackoffice.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAbrirBackoffice.ForeColor = System.Drawing.Color.White;
-            this.lblAbrirBackoffice.Location = new System.Drawing.Point(12, 8);
+            this.lblAbrirBackoffice.Location = new System.Drawing.Point(7, 8);
             this.lblAbrirBackoffice.Name = "lblAbrirBackoffice";
             this.lblAbrirBackoffice.Size = new System.Drawing.Size(110, 22);
             this.lblAbrirBackoffice.TabIndex = 1;
@@ -313,6 +329,19 @@ namespace BackofficeDeAdministracion
             this.PanelOpcionesReportes.TabIndex = 23;
             this.PanelOpcionesReportes.Visible = false;
             // 
+            // lblReportesEvento
+            // 
+            this.lblReportesEvento.AutoSize = true;
+            this.lblReportesEvento.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblReportesEvento.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblReportesEvento.ForeColor = System.Drawing.Color.White;
+            this.lblReportesEvento.Location = new System.Drawing.Point(12, 71);
+            this.lblReportesEvento.Name = "lblReportesEvento";
+            this.lblReportesEvento.Size = new System.Drawing.Size(64, 18);
+            this.lblReportesEvento.TabIndex = 4;
+            this.lblReportesEvento.Text = "Eventos";
+            this.lblReportesEvento.Click += new System.EventHandler(this.lblReportesEvento_Click);
+            // 
             // lblReportesGrupo
             // 
             this.lblReportesGrupo.AutoSize = true;
@@ -321,9 +350,9 @@ namespace BackofficeDeAdministracion
             this.lblReportesGrupo.ForeColor = System.Drawing.Color.White;
             this.lblReportesGrupo.Location = new System.Drawing.Point(12, 129);
             this.lblReportesGrupo.Name = "lblReportesGrupo";
-            this.lblReportesGrupo.Size = new System.Drawing.Size(48, 18);
+            this.lblReportesGrupo.Size = new System.Drawing.Size(56, 18);
             this.lblReportesGrupo.TabIndex = 3;
-            this.lblReportesGrupo.Text = "Grupo";
+            this.lblReportesGrupo.Text = "Grupos";
             this.lblReportesGrupo.Click += new System.EventHandler(this.ReportesGrupo_Click);
             // 
             // lblReportesComentario
@@ -334,9 +363,9 @@ namespace BackofficeDeAdministracion
             this.lblReportesComentario.ForeColor = System.Drawing.Color.White;
             this.lblReportesComentario.Location = new System.Drawing.Point(12, 98);
             this.lblReportesComentario.Name = "lblReportesComentario";
-            this.lblReportesComentario.Size = new System.Drawing.Size(88, 18);
+            this.lblReportesComentario.Size = new System.Drawing.Size(96, 18);
             this.lblReportesComentario.TabIndex = 2;
-            this.lblReportesComentario.Text = "Comentario";
+            this.lblReportesComentario.Text = "Comentarios";
             this.lblReportesComentario.Click += new System.EventHandler(this.ReportesComentario_Click);
             // 
             // lblReportesPost
@@ -347,9 +376,9 @@ namespace BackofficeDeAdministracion
             this.lblReportesPost.ForeColor = System.Drawing.Color.White;
             this.lblReportesPost.Location = new System.Drawing.Point(12, 43);
             this.lblReportesPost.Name = "lblReportesPost";
-            this.lblReportesPost.Size = new System.Drawing.Size(40, 18);
+            this.lblReportesPost.Size = new System.Drawing.Size(48, 18);
             this.lblReportesPost.TabIndex = 1;
-            this.lblReportesPost.Text = "Post";
+            this.lblReportesPost.Text = "Posts";
             this.lblReportesPost.Click += new System.EventHandler(this.ReportesPost_Click);
             // 
             // lblReportesUsuario
@@ -360,9 +389,9 @@ namespace BackofficeDeAdministracion
             this.lblReportesUsuario.ForeColor = System.Drawing.Color.White;
             this.lblReportesUsuario.Location = new System.Drawing.Point(12, 12);
             this.lblReportesUsuario.Name = "lblReportesUsuario";
-            this.lblReportesUsuario.Size = new System.Drawing.Size(64, 18);
+            this.lblReportesUsuario.Size = new System.Drawing.Size(72, 18);
             this.lblReportesUsuario.TabIndex = 0;
-            this.lblReportesUsuario.Text = "Usuario";
+            this.lblReportesUsuario.Text = "Usuarios";
             this.lblReportesUsuario.Click += new System.EventHandler(this.ReportesUsuario_Click);
             // 
             // lblAbrirReportes
@@ -388,19 +417,6 @@ namespace BackofficeDeAdministracion
             this.PanelVista.Name = "PanelVista";
             this.PanelVista.Size = new System.Drawing.Size(837, 438);
             this.PanelVista.TabIndex = 23;
-            // 
-            // lblReportesEvento
-            // 
-            this.lblReportesEvento.AutoSize = true;
-            this.lblReportesEvento.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblReportesEvento.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblReportesEvento.ForeColor = System.Drawing.Color.White;
-            this.lblReportesEvento.Location = new System.Drawing.Point(12, 71);
-            this.lblReportesEvento.Name = "lblReportesEvento";
-            this.lblReportesEvento.Size = new System.Drawing.Size(64, 18);
-            this.lblReportesEvento.TabIndex = 4;
-            this.lblReportesEvento.Text = "Eventos";
-            this.lblReportesEvento.Click += new System.EventHandler(this.lblReportesEvento_Click);
             // 
             // Principal
             // 
@@ -465,6 +481,7 @@ namespace BackofficeDeAdministracion
         private System.Windows.Forms.Panel PanelVista;
         private System.Windows.Forms.Label lblModo;
         private System.Windows.Forms.Label lblReportesEvento;
+        private System.Windows.Forms.Label lblIdioma;
     }
 }
 

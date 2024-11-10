@@ -156,7 +156,7 @@ namespace BackofficeDeAdministracion
                 await conn.OpenAsync();
 
                 // Consulta del post
-                using (var command = new MySqlCommand("SELECT texto, imagen FROM Posts WHERE idPost=@id", conn))
+                using (var command = new MySqlCommand("SELECT texto, imagen, video, categoria, comentarios FROM Posts WHERE idPost=@id", conn))
                 {
                     command.Parameters.AddWithValue("@id", id);
                     using (var reader = await command.ExecuteReaderAsync())
@@ -164,7 +164,26 @@ namespace BackofficeDeAdministracion
                         if (await reader.ReadAsync())
                         {
                             txtTexto.Text = reader["texto"].ToString();
-                            await CargarImagen(reader["imagen"].ToString());
+                            txtCategorias.Text = reader["categoria"].ToString();
+                            txtURL.Text = reader["video"].ToString();
+                            try
+                            {
+                                string imagenUrl = reader["imagen"].ToString();
+                                await CargarYMostrarImagen(imagenUrl);
+                            }
+                            catch (Exception)
+                            {
+                                pictureBox1.Hide();
+                            }
+                            Controls.OfType<Control>().ToList().ForEach(c => c.Visible = true);
+                            if (Convert.ToBoolean(reader["comentarios"]))
+                            {
+                                btnComentarios.Text = "Desactivar";
+                            }
+                            else
+                            {
+                                btnComentarios.Text = "Activar";
+                            }
                             encontrado = true;
                         }
                     }
@@ -181,121 +200,94 @@ namespace BackofficeDeAdministracion
         }
 
         // Cargar imagen
-        private async Task CargarImagen(string urlImagen)
+        private async Task CargarYMostrarImagen(string urlImagen)
         {
-            try
+            string imagenBase64 = await CargarImagen.CargarImagenDeGitHub(urlImagen);
+            if (!string.IsNullOrEmpty(imagenBase64))
             {
-                Controls.OfType<Control>().ToList().ForEach(c => c.Visible = true);
-                string imagenBase64 = await CargarImagenDeGitHub(urlImagen);
-
-                if (!string.IsNullOrEmpty(imagenBase64))
+                byte[] imagenBytes = Convert.FromBase64String(imagenBase64);
+                using (MemoryStream ms = new MemoryStream(imagenBytes))
                 {
+                    Bitmap bitmap = new Bitmap(ms);
+                    pictureBox1.Image = bitmap;
+                    pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
                     pictureBox1.Show();
-                    byte[] imagenBytes = Convert.FromBase64String(imagenBase64);
-                    using (MemoryStream ms = new MemoryStream(imagenBytes))
-                    {
-                        Bitmap bitmap = new Bitmap(ms);
-                        pictureBox1.Image = bitmap;
-                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                    }
-                }
-                else
-                {
-                    pictureBox1.Hide();
                 }
             }
-            catch
+            else
             {
-                MessageBox.Show("No se pudo cargar la imagen.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                pictureBox1.Hide();
             }
         }
-
 
         //Activar y Desactivar comentarios
         private void btnComentarios_Click(object sender, EventArgs e)
         {
+            //Comprobar id
+            if (string.IsNullOrEmpty(txtID.Text))
+            {
+                MessageBox.Show("Por favor, ingrese un ID.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            bool comentarios;
+            //Modificar boton
             if (btnComentarios.Text == "Activar")
             {
                 btnComentarios.Text = "Desactivar";
+                comentarios = true;
             }
             else
             {
                 btnComentarios.Text = "Activar";
+                comentarios = false;
             }
-        }
-        private Boolean EstadoComentarios()
-        {
-            Boolean estadoComentarios = false;
-            if (btnComentarios.Text == "Desactivar")
+         
+            //Aplicar cambio
+            try
             {
-                estadoComentarios = true;
-            }
-            return estadoComentarios;
-        }
+                conn.Open();
+                // Verificar si el ID existe en la base de datos
+                string checkQuery = "SELECT COUNT(*) FROM Posts WHERE idPost = @idPost;";
+                MySqlCommand checkCmd = new MySqlCommand(checkQuery, conn);
+                checkCmd.Parameters.AddWithValue("@idPost", txtID.Text);
+                int count = Convert.ToInt32(checkCmd.ExecuteScalar());
 
-        //Modifico la fila seleccionada en el Datagrid
-        private void btnModificar_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(txtID.Text))
-            {
-                int idBuscado;
-                if (!int.TryParse(txtID.Text, out idBuscado))
+                if (count > 0)
                 {
-                    MessageBox.Show("El ID ingresado no es válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                bool encontrado = false;
-                try
-                {
-                    conn.Open();
 
-                    // Verificamos si el ID existe en la base de datos
-                    string checkQuery = "SELECT COUNT(*) FROM Posts WHERE idPost = @idPost;";
-                    MySqlCommand checkCmd = new MySqlCommand(checkQuery, conn);
-                    checkCmd.Parameters.AddWithValue("@idPost", idBuscado);
-                    int count = Convert.ToInt32(checkCmd.ExecuteScalar());
-
-                    if (count > 0)
+                    // Actualizar la base de datos
+                    string updateQuery = "UPDATE Posts SET comentarios = @comentarios WHERE idPost = @idPost;";
+                    MySqlCommand updateCmd = new MySqlCommand(updateQuery, conn);
+                    updateCmd.Parameters.AddWithValue("@comentarios", comentarios);
+                    updateCmd.Parameters.AddWithValue("@idPost", txtID.Text);
+                    updateCmd.ExecuteNonQuery();
+                    MessageBox.Show("Informacion guardada con éxito.");
+                    CargarTabla();
+                    //Log
+                    string path = @"C:\Users\emerg\Downloads\lbackofinal\Proyecto2024\Log.txt";
+                    string mensaje = $"{DateTime.Now}: {Principal.admin} ha desactivado los comentarios del post {txtID.Text}";
+                    if (comentarios == true)
                     {
-                        encontrado = true;
-
-                        // Actualizamos el estado en el DataGridView
-                        foreach (DataGridViewRow dataRow in dataGridView1.Rows)
-                        {
-                            if (dataRow.Cells[0].Value != null && Convert.ToInt32(dataRow.Cells[0].Value) == idBuscado)
-                            {
-                                dataRow.Cells[4].Value = EstadoComentarios();
-                                break; // Solo actualiza la primera coincidencia
-                            }
-                        }
-
-                        // Actualizamos la base de datos
-                        string updateQuery = "UPDATE Posts SET comentarios = @comentarios WHERE idPost = @idPost;";
-                        MySqlCommand updateCmd = new MySqlCommand(updateQuery, conn);
-                        bool comentarios = Convert.ToBoolean(dataGridView1.CurrentRow.Cells["comentarios"].Value); // Suponiendo que tienes la fila seleccionada
-                        updateCmd.Parameters.AddWithValue("@comentarios", comentarios);
-                        updateCmd.Parameters.AddWithValue("@idPost", idBuscado);
-                        updateCmd.ExecuteNonQuery();
-
-                        MessageBox.Show("Información guardada con éxito.");
-                    }
-                    else
+                         mensaje = $"{DateTime.Now}: {Principal.admin} ha reactivado los comentarios del post {txtID.Text}";
+                    }                                      
+                    using (StreamWriter writer = new StreamWriter(path, true))
                     {
-                        MessageBox.Show("No se encontró el post especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        writer.WriteLine(mensaje);
                     }
                 }
-                catch (MySqlException ex)
+                else
                 {
-                    MessageBox.Show("Ocurrió un error: " + ex.Message);
-                }
-                finally
-                {
-                    conn.Close();
+                    MessageBox.Show("No se encontro el post especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
-            else
+            catch (MySqlException ex)
             {
-                MessageBox.Show("Por favor, ingrese un ID.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Ocurrio un error: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
             }
         }
 
@@ -307,42 +299,41 @@ namespace BackofficeDeAdministracion
                 string id = txtID.Text; 
                 EliminarPost(id);
                 CargarTabla();
-                InicializarTablaPosts();
             }
             catch (Exception)
             {
-                MessageBox.Show("No seleccionó una fila", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Ocurrio un error", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
         private void EliminarPost(string id)
         {
-            conn.Open();
-            MySqlCommand command = new MySqlCommand("DELETE FROM Reportes WHERE idPost=@Id;", conn);
-            MySqlCommand command8 = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", conn);
-            MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", conn);
-            MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost = @Id", conn);
-            MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost = @Id", conn);
-            MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost = @Id", conn);
-            MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost = @Id", conn);
-            MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=(SELECT id FROM Comentarios WHERE idPost=@id)", conn);
-            command.Parameters.AddWithValue("@Id", id);
-            command8.Parameters.AddWithValue("@Id", id);
-            command2.Parameters.AddWithValue("@Id", id);
-            command3.Parameters.AddWithValue("@Id", id);
-            command4.Parameters.AddWithValue("@Id", id);
-            command5.Parameters.AddWithValue("@Id", id);
-            command6.Parameters.AddWithValue("@Id", id);
-            command7.Parameters.AddWithValue("@Id", id);
-            command7.ExecuteNonQuery();
-            command.ExecuteNonQuery();
-            command2.ExecuteNonQuery();
-            command3.ExecuteNonQuery();
-            command4.ExecuteNonQuery();
-            command5.ExecuteNonQuery();
-            command6.ExecuteNonQuery();
-            conn.Close();
-            MessageBox.Show("Información eliminada con éxito.");
-            string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+            MySqlConnection eliminar = new MySqlConnection("server = localhost; database = infini; uid = root; ");
+            eliminar.Open();
+                MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", eliminar);
+                MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", eliminar);
+                MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost = @Id", eliminar);
+                MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost = @Id", eliminar);
+                MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost = @Id", eliminar);
+                MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost = @Id", eliminar);
+                MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=(SELECT id FROM Comentarios WHERE idPost=@id)", eliminar);
+                command.Parameters.AddWithValue("@Id", id);
+                command2.Parameters.AddWithValue("@Id", id);
+                command3.Parameters.AddWithValue("@Id", id);
+                command4.Parameters.AddWithValue("@Id", id);
+                command5.Parameters.AddWithValue("@Id", id);
+                command6.Parameters.AddWithValue("@Id", id);
+                command7.Parameters.AddWithValue("@Id", id);
+                command7.ExecuteNonQuery();
+                command.ExecuteNonQuery();
+                command2.ExecuteNonQuery();
+                command3.ExecuteNonQuery();
+                command4.ExecuteNonQuery();
+                command5.ExecuteNonQuery();
+                command6.ExecuteNonQuery();
+            eliminar.Close();
+            MessageBox.Show("Post eliminado con exito.");
+            //Log
+            string path = @"C:\Users\emerg\Downloads\lbackofinal\Proyecto2024\Log.txt";
             string mensaje = $"{DateTime.Now}: {Principal.admin} ha eliminado el post de id: {id}";
             using (StreamWriter writer = new StreamWriter(path, true))
             {

@@ -51,7 +51,7 @@ namespace BackofficeDeAdministracion
                 try
                 {
                     conn.Open();
-                    string query = "SELECT nombreReal, nombreVisible FROM Grupos";
+                    string query = "SELECT nombreReal, nombreVisible, descripcion FROM Grupos";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     DataTable dataTable = new DataTable();
@@ -70,8 +70,8 @@ namespace BackofficeDeAdministracion
             DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle();
             columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
             dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;
-            dataGridView1.Columns["nombreReal"].Width = 140;
-            dataGridView1.Columns["nombreVisible"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridView1.Columns["nombreReal"].Width = 100;
+            dataGridView1.Columns["descripcion"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridView1.Columns["nombreReal"].HeaderText = "Nombre";
             dataGridView1.Columns["nombreVisible"].HeaderText = "Nombre Visible";
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
@@ -164,7 +164,6 @@ namespace BackofficeDeAdministracion
         {
             try
             {
-                var filaSeleccionada = dataGridView1.CurrentRow;
                 string Nombre = lblNombreDeGrupo.Text;
                 EliminarGrupo(Nombre);
                 CargarTabla();
@@ -187,6 +186,7 @@ namespace BackofficeDeAdministracion
             cmd.Parameters.AddWithValue("@nombreReal", Nombre);
             cmd.ExecuteNonQuery();
             conn.Close();
+            //Log
             MessageBox.Show("Información eliminada con éxito.");
             string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
             string mensaje = $"{DateTime.Now}: {Principal.admin} ha eliminado el grupo {Nombre}";

@@ -85,26 +85,21 @@ namespace BackofficeDeAdministracion
                 }
             }
         }
+        // Evitar la selección en cualquier lugar del DataGridView
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            dataGridView1.ClearSelection(); // Evita la selección con el mouse
-        }
-
-        // Evitar la selección cuando se hace clic en cualquier lugar del DataGridView
+            dataGridView1.ClearSelection();
+        }    
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
-            dataGridView1.ClearSelection(); // Limpia la selección
+            dataGridView1.ClearSelection();
         }
-
-        // Evitar que cualquier selección se mantenga
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            dataGridView1.ClearSelection(); // Siempre limpia la selección si algo intenta seleccionarse
+            dataGridView1.ClearSelection();
         }
-
         private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
         {
-            // Cancela cualquier selección cuando se hace clic en el DataGridView
             dataGridView1.ClearSelection();
         }
 

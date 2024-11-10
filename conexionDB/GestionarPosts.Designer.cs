@@ -44,7 +44,6 @@
             this.txtID = new System.Windows.Forms.TextBox();
             this.txtCategorias = new System.Windows.Forms.TextBox();
             this.lblCategorias = new System.Windows.Forms.Label();
-            this.btnModificar = new System.Windows.Forms.Button();
             this.lblLikesDePost = new System.Windows.Forms.Label();
             this.lblNumeroDeLikes = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -53,6 +52,7 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.pictureBox1.Location = new System.Drawing.Point(547, 207);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(196, 145);
@@ -89,6 +89,7 @@
             this.lblUrl.AutoSize = true;
             this.lblUrl.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblUrl.ForeColor = System.Drawing.Color.White;
+            this.lblUrl.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lblUrl.Location = new System.Drawing.Point(28, 323);
             this.lblUrl.Name = "lblUrl";
             this.lblUrl.Size = new System.Drawing.Size(86, 17);
@@ -99,8 +100,9 @@
             // lblImagen
             // 
             this.lblImagen.AutoSize = true;
-            this.lblImagen.Font = new System.Drawing.Font("Leelawadee UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblImagen.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblImagen.ForeColor = System.Drawing.Color.White;
+            this.lblImagen.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lblImagen.Location = new System.Drawing.Point(468, 210);
             this.lblImagen.Name = "lblImagen";
             this.lblImagen.Size = new System.Drawing.Size(51, 17);
@@ -113,6 +115,7 @@
             this.lblTexto.AutoSize = true;
             this.lblTexto.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblTexto.ForeColor = System.Drawing.Color.White;
+            this.lblTexto.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lblTexto.Location = new System.Drawing.Point(28, 210);
             this.lblTexto.Name = "lblTexto";
             this.lblTexto.Size = new System.Drawing.Size(40, 17);
@@ -142,6 +145,7 @@
             this.lblEstadoDeComentarios.AutoSize = true;
             this.lblEstadoDeComentarios.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblEstadoDeComentarios.ForeColor = System.Drawing.Color.White;
+            this.lblEstadoDeComentarios.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lblEstadoDeComentarios.Location = new System.Drawing.Point(28, 366);
             this.lblEstadoDeComentarios.Name = "lblEstadoDeComentarios";
             this.lblEstadoDeComentarios.Size = new System.Drawing.Size(164, 17);
@@ -155,6 +159,7 @@
             this.btnComentarios.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnComentarios.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.btnComentarios.ForeColor = System.Drawing.Color.White;
+            this.btnComentarios.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.btnComentarios.Location = new System.Drawing.Point(224, 361);
             this.btnComentarios.Name = "btnComentarios";
             this.btnComentarios.Size = new System.Drawing.Size(201, 27);
@@ -170,6 +175,7 @@
             this.lblLikes.AutoSize = true;
             this.lblLikes.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblLikes.ForeColor = System.Drawing.Color.White;
+            this.lblLikes.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lblLikes.Location = new System.Drawing.Point(468, 371);
             this.lblLikes.Name = "lblLikes";
             this.lblLikes.Size = new System.Drawing.Size(36, 17);
@@ -183,6 +189,7 @@
             this.btnBuscar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnBuscar.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.btnBuscar.ForeColor = System.Drawing.Color.White;
+            this.btnBuscar.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.btnBuscar.Location = new System.Drawing.Point(12, 79);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(216, 27);
@@ -198,6 +205,7 @@
             this.btnEliminar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnEliminar.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.btnEliminar.ForeColor = System.Drawing.Color.White;
+            this.btnEliminar.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.btnEliminar.Location = new System.Drawing.Point(12, 117);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(216, 27);
@@ -210,8 +218,9 @@
             // lblIdPost
             // 
             this.lblIdPost.AutoSize = true;
-            this.lblIdPost.Font = new System.Drawing.Font("Leelawadee UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblIdPost.Font = new System.Drawing.Font("Leelawadee UI", 8.25F);
             this.lblIdPost.ForeColor = System.Drawing.Color.White;
+            this.lblIdPost.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lblIdPost.Location = new System.Drawing.Point(12, 40);
             this.lblIdPost.Name = "lblIdPost";
             this.lblIdPost.Size = new System.Drawing.Size(66, 13);
@@ -243,6 +252,7 @@
             this.lblCategorias.AutoSize = true;
             this.lblCategorias.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblCategorias.ForeColor = System.Drawing.Color.White;
+            this.lblCategorias.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lblCategorias.Location = new System.Drawing.Point(28, 281);
             this.lblCategorias.Name = "lblCategorias";
             this.lblCategorias.Size = new System.Drawing.Size(71, 17);
@@ -250,26 +260,12 @@
             this.lblCategorias.Text = "Categorías";
             this.lblCategorias.Visible = false;
             // 
-            // btnModificar
-            // 
-            this.btnModificar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(64)))), ((int)(((byte)(222)))));
-            this.btnModificar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnModificar.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
-            this.btnModificar.ForeColor = System.Drawing.Color.White;
-            this.btnModificar.Location = new System.Drawing.Point(13, 406);
-            this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(811, 27);
-            this.btnModificar.TabIndex = 65;
-            this.btnModificar.Text = "♻️ Actualizar";
-            this.btnModificar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnModificar.UseVisualStyleBackColor = false;
-            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
-            // 
             // lblLikesDePost
             // 
             this.lblLikesDePost.AutoSize = true;
             this.lblLikesDePost.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblLikesDePost.ForeColor = System.Drawing.Color.White;
+            this.lblLikesDePost.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lblLikesDePost.Location = new System.Drawing.Point(657, 371);
             this.lblLikesDePost.Name = "lblLikesDePost";
             this.lblLikesDePost.Size = new System.Drawing.Size(15, 17);
@@ -283,6 +279,7 @@
             this.lblNumeroDeLikes.CausesValidation = false;
             this.lblNumeroDeLikes.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
             this.lblNumeroDeLikes.ForeColor = System.Drawing.Color.White;
+            this.lblNumeroDeLikes.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lblNumeroDeLikes.Location = new System.Drawing.Point(544, 371);
             this.lblNumeroDeLikes.Name = "lblNumeroDeLikes";
             this.lblNumeroDeLikes.Size = new System.Drawing.Size(107, 17);
@@ -298,7 +295,6 @@
             this.ClientSize = new System.Drawing.Size(836, 441);
             this.Controls.Add(this.lblNumeroDeLikes);
             this.Controls.Add(this.lblLikesDePost);
-            this.Controls.Add(this.btnModificar);
             this.Controls.Add(this.txtCategorias);
             this.Controls.Add(this.lblCategorias);
             this.Controls.Add(this.btnBuscar);
@@ -315,6 +311,7 @@
             this.Controls.Add(this.lblImagen);
             this.Controls.Add(this.lblTexto);
             this.Controls.Add(this.dataGridView1);
+            this.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.Name = "GestionarPosts";
             this.Text = "Editar post";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -342,7 +339,6 @@
         private System.Windows.Forms.TextBox txtID;
         private System.Windows.Forms.TextBox txtCategorias;
         private System.Windows.Forms.Label lblCategorias;
-        private System.Windows.Forms.Button btnModificar;
         private System.Windows.Forms.Label lblLikesDePost;
         private System.Windows.Forms.Label lblNumeroDeLikes;
     }
