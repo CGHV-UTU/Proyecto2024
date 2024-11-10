@@ -91,6 +91,7 @@ namespace Frontend
             // txtDescripcionEditar
             // 
             this.txtDescripcionEditar.Location = new System.Drawing.Point(194, 74);
+            this.txtDescripcionEditar.MaxLength = 100;
             this.txtDescripcionEditar.Name = "txtDescripcionEditar";
             this.txtDescripcionEditar.Size = new System.Drawing.Size(520, 20);
             this.txtDescripcionEditar.TabIndex = 34;
@@ -98,6 +99,7 @@ namespace Frontend
             // txtUrlEditar
             // 
             this.txtUrlEditar.Location = new System.Drawing.Point(199, 13);
+            this.txtUrlEditar.MaxLength = 50;
             this.txtUrlEditar.Name = "txtUrlEditar";
             this.txtUrlEditar.Size = new System.Drawing.Size(520, 20);
             this.txtUrlEditar.TabIndex = 35;

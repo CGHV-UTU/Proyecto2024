@@ -139,6 +139,7 @@ namespace Frontend
             this.txtNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNombre.ForeColor = System.Drawing.Color.Gray;
             this.txtNombre.Location = new System.Drawing.Point(17, 44);
+            this.txtNombre.MaxLength = 20;
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(381, 26);
             this.txtNombre.TabIndex = 34;
@@ -277,6 +278,7 @@ namespace Frontend
             this.txtCategorias.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCategorias.ForeColor = System.Drawing.Color.Gray;
             this.txtCategorias.Location = new System.Drawing.Point(16, 184);
+            this.txtCategorias.MaxLength = 254;
             this.txtCategorias.Multiline = true;
             this.txtCategorias.Name = "txtCategorias";
             this.txtCategorias.Size = new System.Drawing.Size(216, 54);
@@ -289,7 +291,7 @@ namespace Frontend
             this.btnUbicacion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUbicacion.BackColor = System.Drawing.Color.Transparent;
             this.btnUbicacion.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnUbicacion.Image = global::Frontend.Properties.Resources.buscar;
+            this.btnUbicacion.Image = global::Frontend.Properties.Resources.comentario;
             this.btnUbicacion.Location = new System.Drawing.Point(238, 185);
             this.btnUbicacion.Name = "btnUbicacion";
             this.btnUbicacion.Size = new System.Drawing.Size(50, 50);

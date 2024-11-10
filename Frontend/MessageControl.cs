@@ -218,7 +218,7 @@ namespace Frontend
             this.txtMensaje.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMensaje.ForeColor = System.Drawing.Color.Gray;
             this.txtMensaje.Location = new System.Drawing.Point(89, 28);
-            this.txtMensaje.MaxLength = 255;
+            this.txtMensaje.MaxLength = 254;
             this.txtMensaje.Multiline = true;
             this.txtMensaje.Name = "txtMensaje";
             this.txtMensaje.Size = new System.Drawing.Size(381, 60);
@@ -275,7 +275,7 @@ namespace Frontend
             this.txtURL.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtURL.ForeColor = System.Drawing.Color.MidnightBlue;
             this.txtURL.Location = new System.Drawing.Point(3, 94);
-            this.txtURL.MaxLength = 255;
+            this.txtURL.MaxLength = 254;
             this.txtURL.Multiline = true;
             this.txtURL.Name = "txtURL";
             this.txtURL.Size = new System.Drawing.Size(467, 24);

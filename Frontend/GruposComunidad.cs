@@ -308,7 +308,7 @@ namespace Frontend
             this.txtMensajeAEnviar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMensajeAEnviar.Location = new System.Drawing.Point(59, 8);
-            this.txtMensajeAEnviar.MaxLength = 255;
+            this.txtMensajeAEnviar.MaxLength = 254;
             this.txtMensajeAEnviar.Name = "txtMensajeAEnviar";
             this.txtMensajeAEnviar.Size = new System.Drawing.Size(854, 20);
             this.txtMensajeAEnviar.TabIndex = 8;
@@ -509,6 +509,7 @@ namespace Frontend
             // 
             this.txtNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNombre.Location = new System.Drawing.Point(122, 59);
+            this.txtNombre.MaxLength = 20;
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(161, 38);
             this.txtNombre.TabIndex = 85;
@@ -633,6 +634,7 @@ namespace Frontend
             this.txtURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtURL.Location = new System.Drawing.Point(71, 618);
+            this.txtURL.MaxLength = 254;
             this.txtURL.Multiline = true;
             this.txtURL.Name = "txtURL";
             this.txtURL.Size = new System.Drawing.Size(854, 28);

@@ -50,6 +50,7 @@ namespace Frontend
             // txtBox
             // 
             this.txtBox.Location = new System.Drawing.Point(3, 53);
+            this.txtBox.MaxLength = 254;
             this.txtBox.Name = "txtBox";
             this.txtBox.Size = new System.Drawing.Size(401, 106);
             this.txtBox.TabIndex = 31;

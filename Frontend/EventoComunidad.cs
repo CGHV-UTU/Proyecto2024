@@ -280,6 +280,7 @@ namespace Frontend
             // txtNombre
             // 
             this.txtNombre.Location = new System.Drawing.Point(159, 17);
+            this.txtNombre.MaxLength = 20;
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(100, 20);
             this.txtNombre.TabIndex = 54;
@@ -287,6 +288,7 @@ namespace Frontend
             // txtDesc
             // 
             this.txtDesc.Location = new System.Drawing.Point(159, 47);
+            this.txtDesc.MaxLength = 100;
             this.txtDesc.Name = "txtDesc";
             this.txtDesc.Size = new System.Drawing.Size(100, 20);
             this.txtDesc.TabIndex = 55;
@@ -294,6 +296,7 @@ namespace Frontend
             // txtUbicacion
             // 
             this.txtUbicacion.Location = new System.Drawing.Point(101, 142);
+            this.txtUbicacion.MaxLength = 50;
             this.txtUbicacion.Name = "txtUbicacion";
             this.txtUbicacion.Size = new System.Drawing.Size(100, 20);
             this.txtUbicacion.TabIndex = 56;

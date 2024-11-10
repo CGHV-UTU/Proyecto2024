@@ -31,6 +31,7 @@ namespace Frontend
         private string creador;
         private string token;
         private string idioma;
+        private bool comentarios;
         public PostControl(dynamic postData, string modo, string user, string token, string idioma)
         {
             this.modo = modo;
@@ -40,6 +41,7 @@ namespace Frontend
             this.creador = Convert.ToString(postData.nombreDeCuenta);
             this.user = user;
             this.token = token;
+            this.comentarios = Convert.ToBoolean(postData.comentarios);
         }
         public void redondearPictureBox(Image image)
         {
@@ -131,7 +133,10 @@ namespace Frontend
             {
                 
             }
-            
+            if (!comentarios)
+            {
+                PictureBoxComentarios.Visible = false;
+            }
         }
         public void quitarLike()
         {

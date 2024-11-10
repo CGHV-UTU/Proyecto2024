@@ -22,6 +22,7 @@ namespace Frontend
         private string nombreReal;
         private string idioma;
         private string modo;
+        private bool comentarios=true;
         public Post(string usuario, string token, string idevento = "", string nombreReal = "", string idioma="", string modo="")
         {
             InitializeComponent();
@@ -30,8 +31,9 @@ namespace Frontend
             this.idevento = idevento;
             this.token = token;
             this.nombreReal = nombreReal;
+            this.modo = modo;
             this.BackColor = Color.LightGray;
-            this.btnUbicacion.Visible = false;
+            this.btnUbicacion.Visible = true;
             this.txtNombre.Visible = false;
             this.pnlNombre.Visible = false;
             this.txtDescripcion.Visible = false;
@@ -44,6 +46,7 @@ namespace Frontend
             this.pnlOpcionGrupo.Visible = false;
             this.pnlURL.Visible = false;
             this.txtCategorias.Visible = true;
+            this.txtUrl.Text = "";
             this.idioma = idioma;
             lblEvento.ForeColor = Color.Gray;
             lblGrupo.ForeColor = Color.Gray;
@@ -74,7 +77,7 @@ namespace Frontend
                 txtUrl.ForeColor = Color.White;
                 txtTexto.ForeColor = Color.White;
                 txtTexto.BackColor = Color.FromArgb(50, 50, 50);
-                btnUbicacion.Image = Frontend.Properties.Resources.buscar_claro;
+                btnUbicacion.Image = Frontend.Properties.Resources.comentario_claro;
                 btnVideo.Image = Frontend.Properties.Resources.VideoClaro;
                 btnImagen.Image = Frontend.Properties.Resources.Foto_negra;
             }
@@ -83,9 +86,9 @@ namespace Frontend
                 lblEvento.Text = "Event";
                 lblGrupo.Text = "Group";
                 txtNombre.Text = "Name";
+                txtTexto.Text = "Text";
                 txtCategorias.Text = "Category";
                 txtDescripcion.Text = "Description";
-                txtUrl.Text = "URL of the video";
                 btnCrear.Image= Frontend.Properties.Resources.upload_removebg_preview__3_;
             }
         }
@@ -119,10 +122,22 @@ namespace Frontend
                 {
                     DateTime fechayhoraactual = DateTime.Now;
                     string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
+                    if (txtTexto.Text.Equals("Texto") || txtTexto.Text.Equals("Text"))
+                    {
+                        txtTexto.Text = "";
+                    }
+                    if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
+                    {
+                        txtUrl.Text = "";
+                    }
+                    if(txtCategorias.Text.Equals("Categorías") || txtCategorias.Text.Equals("Category"))
+                    {
+                        txtCategorias.Text = "";
+                    }
                     if (pbxImagen.Image == null)
                     {
                         byte[] data = new byte[0];
-                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento);
+                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento, comentarios: comentarios);
                         if (idioma.Equals("English"))
                         {
                             MessageBox.Show("The post was created successfully", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -138,7 +153,7 @@ namespace Frontend
                         MemoryStream ms = new MemoryStream();
                         pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                         byte[] data = ms.ToArray();
-                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento);
+                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento, comentarios: comentarios);
                         if (idioma.Equals("English"))
                         {
                             MessageBox.Show("The post was created successfully", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -155,79 +170,77 @@ namespace Frontend
 
             if (!nombreReal.Equals(""))
             {
-                    if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text) || ((txtUrl.Equals("URL of the video") || txtUrl.Equals("URL del video")) && (txtTexto.Equals("Texto") || txtTexto.Equals("Text")) && (txtUrl.Equals("Categorías") || txtUrl.Equals("Category")) && (txtNombre.Equals("Categorías") || txtUrl.Equals("Category")) && (txtUrl.Equals("Nombre") || txtUrl.Equals("Name")) && (txtUrl.Equals("Description") || txtUrl.Equals("Descripción"))))
+                if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text) || ((txtUrl.Equals("URL of the video") || txtUrl.Equals("URL del video")) && (txtTexto.Equals("Texto") || txtTexto.Equals("Text")) && (txtUrl.Equals("Categorías") || txtUrl.Equals("Category")) && (txtNombre.Equals("Categorías") || txtUrl.Equals("Category")) && (txtUrl.Equals("Nombre") || txtUrl.Equals("Name")) && (txtUrl.Equals("Description") || txtUrl.Equals("Descripción"))))
+                {
+                    MessageBox.Show("No puede realizar un post sin contenido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    if (txtTexto.Text.Equals("Texto") || txtTexto.Text.Equals("Text"))
                     {
-                        MessageBox.Show("No puede realizar un post sin contenido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        txtTexto.Text = "";
+                    }
+                    if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
+                    {
+                        txtUrl.Text = "";
+                    }
+                    if (txtCategorias.Text.Equals("Categorías") || txtCategorias.Text.Equals("Category"))
+                    {
+                        txtCategorias.Text = "";
+                    }
+                    DateTime fechayhoraactual = DateTime.Now;
+                    string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
+                    if (pbxImagen.Image == null)
+                    {
+                        byte[] data = new byte[0];
+                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, "", "", nombreReal, comentarios: comentarios);
+                        MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Creado?.Invoke(this, EventArgs.Empty);
                     }
                     else
                     {
-                        DateTime fechayhoraactual = DateTime.Now;
-                        string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
-                        if (pbxImagen.Image == null)
-                        {
-                            byte[] data = new byte[0];
-                            await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, "", "", nombreReal);
-                            MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Creado?.Invoke(this, EventArgs.Empty);
-                        }
-                        else
-                        {
-                            MemoryStream ms = new MemoryStream();
-                            pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
-                            byte[] data = ms.ToArray();
-                            await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token,"","",nombreReal);
-                            MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Creado?.Invoke(this, EventArgs.Empty);
-                        }
+                        MemoryStream ms = new MemoryStream();
+                        pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
+                        byte[] data = ms.ToArray();
+                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, "", "", nombreReal, comentarios: comentarios);
+                        MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Creado?.Invoke(this, EventArgs.Empty);
                     }
-                    return;
+                }
+                return;
             }
 
 
             switch (menuActual)
-                {
-                    case "post":
-                        if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text) || ((txtUrl.Equals("URL of the video") || txtUrl.Equals("URL del video")) && (txtTexto.Equals("Texto") || txtTexto.Equals("Text")) && (txtUrl.Equals("Categorías") || txtUrl.Equals("Category")) && (txtNombre.Equals("Categorías") || txtUrl.Equals("Category")) && (txtUrl.Equals("Nombre") || txtUrl.Equals("Name")) && (txtUrl.Equals("Description") || txtUrl.Equals("Descripción"))))
-                        {
-                            MessageBox.Show("No puede realizar un post sin contenido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            break;
-                        }
-                        else
-                        {
-                            DateTime fechayhoraactual = DateTime.Now;
-                            string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
-                            if (pbxImagen.Image == null)
-                            {
-                                byte[] data = new byte[0];
-                                var respuesta =await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, categoria: txtCategorias.Text);
-                                MessageBox.Show("" + respuesta);
-                                MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                Creado?.Invoke(this, EventArgs.Empty);
-                            }
-                            else
-                            {
-                                MemoryStream ms = new MemoryStream();
-                                pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
-                                byte[] data = ms.ToArray();
-                                var respuesta = await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, categoria:txtCategorias.Text);
-                                MessageBox.Show("" + respuesta);
-                                MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                Creado?.Invoke(this, EventArgs.Empty);
-                            }
-                        }
-                        break;
-                    case "evento":
-                        if (string.IsNullOrEmpty(txtNombre.Text) || dtpFechaFinal.Value < DateTime.Now || pbxImagen.Image==null || dtpFechaFinal.Value<= dtpFechaInicio.Value || ((txtUrl.Equals("URL of the video") || txtUrl.Equals("URL del video")) && (txtTexto.Equals("Texto") || txtTexto.Equals("Text")) && (txtUrl.Equals("Categorías") || txtUrl.Equals("Category")) && (txtNombre.Equals("Categorías") || txtUrl.Equals("Category")) && (txtUrl.Equals("Nombre") || txtUrl.Equals("Name")) && (txtUrl.Equals("Description") || txtUrl.Equals("Descripción"))))
+            {
+                case "post":
+                    if (string.IsNullOrEmpty(txtTexto.Text) && pbxImagen.Image == null && string.IsNullOrEmpty(txtUrl.Text) || ((txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("URL del video")) && (txtTexto.Text.Equals("Texto") || txtTexto.Text.Equals("Text")) && (txtUrl.Text.Equals("Categorías") || txtUrl.Text.Equals("Category")) && (txtNombre.Text.Equals("Categorías") || txtUrl.Text.Equals("Category")) && (txtUrl.Text.Equals("Nombre") || txtUrl.Text.Equals("Name")) && (txtUrl.Text.Equals("Description") || txtUrl.Text.Equals("Descripción"))))
                     {
-                            MessageBox.Show("No puede realizar un evento sin título o fecha", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            break;
+                        MessageBox.Show("No puede realizar un post sin contenido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    }
+                    else
+                    {
+                        if (txtTexto.Text.Equals("Texto") || txtTexto.Text.Equals("Text"))
+                        {
+                            txtTexto.Text = "";
                         }
+                        if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
+                        {
+                            txtUrl.Text = "";
+                        }
+                        if (txtCategorias.Text.Equals("Categorías") || txtCategorias.Text.Equals("Category"))
+                        {
+                            txtCategorias.Text = "";
+                        }
+                        DateTime fechayhoraactual = DateTime.Now;
+                        string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
                         if (pbxImagen.Image == null)
                         {
 
                             byte[] data = new byte[0];
-                            await PublicarEvento(txtNombre.Text, txtUrl.Text, data, txtDescripcion.Text, dtpFechaInicio.Text, dtpFechaFinal.Text, token);
-                            MessageBox.Show("El evento se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            var respuesta = await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, categoria: txtCategorias.Text, comentarios: comentarios);
+                            MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             Creado?.Invoke(this, EventArgs.Empty);
                         }
                         else
@@ -235,36 +248,61 @@ namespace Frontend
                             MemoryStream ms = new MemoryStream();
                             pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
                             byte[] data = ms.ToArray();
-                            await PublicarEvento(txtNombre.Text, txtUrl.Text, data, txtDescripcion.Text, dtpFechaInicio.Text, dtpFechaFinal.Text, token);
-                            MessageBox.Show("El evento se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            var respuesta = await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, categoria: txtCategorias.Text, comentarios: comentarios);
+                            MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             Creado?.Invoke(this, EventArgs.Empty);
                         }
+                    }
+                    break;
+                case "evento":
+                    if (string.IsNullOrEmpty(txtNombre.Text) || dtpFechaFinal.Value < DateTime.Now || pbxImagen.Image == null || dtpFechaFinal.Value <= dtpFechaInicio.Value || ((txtUrl.Equals("URL of the video") || txtUrl.Equals("URL del video")) && (txtTexto.Equals("Texto") || txtTexto.Equals("Text")) && (txtUrl.Equals("Categorías") || txtUrl.Equals("Category")) && (txtNombre.Equals("Categorías") || txtUrl.Equals("Category")) && (txtUrl.Equals("Nombre") || txtUrl.Equals("Name")) && (txtUrl.Equals("Description") || txtUrl.Equals("Descripción"))))
+                    {
+                        MessageBox.Show("No puede realizar un evento sin título o fecha", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
-                    case "grupo":
-                        if (string.IsNullOrEmpty(txtNombre.Text) || txtNombre.Text.StartsWith("-") || pbxImagen.Image==null ||((txtUrl.Equals("URL of the video") || txtUrl.Equals("URL del video")) && (txtTexto.Equals("Texto") || txtTexto.Equals("Text")) && (txtUrl.Equals("Categorías") || txtUrl.Equals("Category")) && (txtNombre.Equals("Categorías") || txtUrl.Equals("Category")) && (txtUrl.Equals("Nombre") || txtUrl.Equals("Name")) && (txtUrl.Equals("Description") || txtUrl.Equals("Descripción"))))
-                        {
-                            MessageBox.Show("No puede realizar un grupo sin nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            break;
-                        }
-                        if (pbxImagen.Image == null)
-                        {
-                            byte[] data = new byte[0];
-                            await PublicarGrupo(txtNombre.Text, "default", data, txtDescripcion.Text, token);
-                            MessageBox.Show("El grupo se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Creado?.Invoke(this, EventArgs.Empty);
-                        }
-                        else
-                        {
-                            MemoryStream ms = new MemoryStream();
-                            pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
-                            byte[] data = ms.ToArray();
-                            await PublicarGrupo(txtNombre.Text, "default", data, txtDescripcion.Text, token);
-                            MessageBox.Show("El grupo se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Creado?.Invoke(this, EventArgs.Empty);
+                    }
+                    if (pbxImagen.Image == null)
+                    {
 
-                        }
+                        byte[] data = new byte[0];
+                        await PublicarEvento(txtNombre.Text, txtUrl.Text, data, txtDescripcion.Text, dtpFechaInicio.Text, dtpFechaFinal.Text, token);
+                        MessageBox.Show("El evento se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Creado?.Invoke(this, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        MemoryStream ms = new MemoryStream();
+                        pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
+                        byte[] data = ms.ToArray();
+                        await PublicarEvento(txtNombre.Text, txtUrl.Text, data, txtDescripcion.Text, dtpFechaInicio.Text, dtpFechaFinal.Text, token);
+                        MessageBox.Show("El evento se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Creado?.Invoke(this, EventArgs.Empty);
+                    }
+                    break;
+                case "grupo":
+                    if (string.IsNullOrEmpty(txtNombre.Text) || txtNombre.Text.StartsWith("-") || pbxImagen.Image == null || ((txtUrl.Equals("URL of the video") || txtUrl.Equals("URL del video")) && (txtTexto.Equals("Texto") || txtTexto.Equals("Text")) && (txtUrl.Equals("Categorías") || txtUrl.Equals("Category")) && (txtNombre.Equals("Categorías") || txtUrl.Equals("Category")) && (txtUrl.Equals("Nombre") || txtUrl.Equals("Name")) && (txtUrl.Equals("Description") || txtUrl.Equals("Descripción"))))
+                    {
+                        MessageBox.Show("No puede realizar un grupo sin nombre", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
-                
+                    }
+                    if (pbxImagen.Image == null)
+                    {
+                        byte[] data = new byte[0];
+                        await PublicarGrupo(txtNombre.Text, "default", data, txtDescripcion.Text, token);
+                        MessageBox.Show("El grupo se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Creado?.Invoke(this, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        MemoryStream ms = new MemoryStream();
+                        pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
+                        byte[] data = ms.ToArray();
+                        await PublicarGrupo(txtNombre.Text, "default", data, txtDescripcion.Text, token);
+                        MessageBox.Show("El grupo se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Creado?.Invoke(this, EventArgs.Empty);
+
+                    }
+                    break;
+
             }
         }
 
@@ -279,7 +317,14 @@ namespace Frontend
                 else
                 {
                     txtUrl.Visible = true;
-                    txtUrl.Text = "Url de video";
+                    if (idioma.Equals("English"))
+                    {
+                        txtUrl.Text = "URL of the video";
+                    }
+                    else
+                    {
+                        txtUrl.Text = "Url de video";
+                    }
                     pnlURL.Visible = true;
                 }
             }
@@ -317,7 +362,7 @@ namespace Frontend
             }
         }
 
-        public static async Task<dynamic> Publicar(string texto, string url, byte[] imagen, string fechaHora, string token, string idevento="", string categoria="", string nombreReal="")
+        public static async Task<dynamic> Publicar(string texto, string url, byte[] imagen, string fechaHora, string token, string idevento="", string categoria="", string nombreReal="", bool comentarios=true)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -325,7 +370,7 @@ namespace Frontend
                 {
                     if (imagen.Length == 0)
                     {
-                        var datos = new { text = texto, link = url, user = user, fechayhora = fechaHora, idEvento=idevento,token = token, categoria=categoria, nombreReal = nombreReal};
+                        var datos = new { text = texto, link = url, user = user, fechayhora = fechaHora, idEvento=idevento,token = token, categoria=categoria, nombreReal = nombreReal, comentarios= comentarios };
                         var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
                         response.EnsureSuccessStatusCode();
@@ -335,7 +380,7 @@ namespace Frontend
                     }
                     else
                     {
-                        var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user, fechayhora = fechaHora, idEvento = idevento, token = token , categoria = categoria, nombreReal = nombreReal };
+                        var datos = new { text = texto, link = url, image = Convert.ToBase64String(imagen), user = user, fechayhora = fechaHora, idEvento = idevento, token = token , categoria = categoria, nombreReal = nombreReal, comentarios= comentarios };
                         var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                         HttpResponseMessage response = await client.PostAsync("https://localhost:44340/postear", content);
                         response.EnsureSuccessStatusCode();
@@ -448,6 +493,14 @@ namespace Frontend
             this.dtpFechaFinal.Visible = true;
             this.dtpFechaInicio.Visible = true;
             this.txtCategorias.Visible = false;
+            if (modo.Equals("Oscuro"))
+            {
+                this.btnUbicacion.Image = Frontend.Properties.Resources.buscar_claro;
+            }
+            else
+            {
+                this.btnUbicacion.Image = Frontend.Properties.Resources.buscar;
+            }
             menuActual = "evento";
         }
 
@@ -474,18 +527,48 @@ namespace Frontend
 
         private void btnUbicacion_Click(object sender, EventArgs e)
         {
-            if (txtUrl.Visible == false)
+            if (menuActual.Equals("evento"))
             {
-                txtUrl.Visible = true;
-                pnlURL.Visible = true;
+                if (txtUrl.Visible == false)
+                {
+                    txtUrl.Visible = true;
+                    pnlURL.Visible = true;
+                }
+                else
+                {
+                    txtUrl.Visible = false;
+                    pnlURL.Visible = false;
+                }
             }
             else
             {
-                txtUrl.Visible = false;
-                pnlURL.Visible = false;
+                if (comentarios)
+                {
+                    comentarios = false;
+                    if (modo.Equals("Oscuro"))
+                    {
+                        btnUbicacion.Image = Frontend.Properties.Resources.salirBlanco;
+                    }
+                    else
+                    {
+                        btnUbicacion.Image = Frontend.Properties.Resources.salir;
+                    }
+                    MessageBox.Show("Quitaste los comentarios");
+                }
+                else
+                {
+                    comentarios = true;
+                    if (modo.Equals("Oscuro"))
+                    {
+                        btnUbicacion.Image = Frontend.Properties.Resources.comentario_claro;
+                    }
+                    else
+                    {
+                        btnUbicacion.Image = Frontend.Properties.Resources.comentario;
+                    }
+                    MessageBox.Show("Permitiste los comentarios");
+                }
             }
-
-            
         }
 
         private void pbxImagen_Click(object sender, EventArgs e)
