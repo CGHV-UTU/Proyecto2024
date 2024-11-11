@@ -65,7 +65,7 @@ namespace Frontend
         private PictureBox pbxConfirmarCambios;
         private Label lblAñadir;
         private PictureBox pbxBuscar;
-        private string idUltimoMensaje;
+        private string idUltimoMensaje="0";
         private ProgressBar progressBar1;
         public event EventHandler GrupoEliminado;
         public event EventHandler<PersonalizedArgs> AbrirUsuario;
@@ -854,28 +854,51 @@ namespace Frontend
                 }
             }
         }
-
         public async void MensajesNuevos()
         {
             while (true)
             {
                 await Task.Delay(100);
-                if (progressBar1.Value==progressBar1.Maximum)
+                if (!mensajeEliminado)
                 {
                     var ultimoMsg = await ultimomensaje();
-                    if (int.Parse(Convert.ToString(ultimoMsg)) > int.Parse(idUltimoMensaje))
+                    if (progressBar1.Value == progressBar1.Maximum)
                     {
-                        var salida = await ObtenerMensajesNuevos();
-                        try
+                        if (!Convert.ToString(ultimoMsg).Equals("no hay mensajes") && !Convert.ToString(ultimoMsg).Equals("hubo un error"))
                         {
-                            if (!Convert.ToString(salida).Equals("No se encontraron Mensajes para el grupo especificado") && !Convert.ToString(salida).Equals("Ocurrió un error al intentar obtener los mensajes del grupo.") && !Convert.ToString(salida).Equals("Token expirado"))
+                            if (int.Parse(Convert.ToString(ultimoMsg)) > int.Parse(idUltimoMensaje))
                             {
-                                await AñadirMensajes(salida);
+                                var salida = await ObtenerMensajesNuevos();
+                                try
+                                {
+                                    if (!Convert.ToString(salida).Equals("No se encontraron Mensajes para el grupo especificado") && !Convert.ToString(salida).Equals("Ocurrió un error al intentar obtener los mensajes del grupo.") && !Convert.ToString(salida).Equals("Token expirado"))
+                                    {
+                                        await AñadirMensajes(salida);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("ERROR" + ex.Message);
+                                }
                             }
                         }
-                        catch(Exception ex)
+                        else
                         {
-                            MessageBox.Show("ERROR"+ ex.Message);
+                            if (Convert.ToString(ultimoMsg).Equals("no hay mensajes"))
+                            {
+                                var salida = await ObtenerMensajesNuevos();
+                                try
+                                {
+                                    if (!Convert.ToString(salida).Equals("No se encontraron Mensajes para el grupo especificado") && !Convert.ToString(salida).Equals("Ocurrió un error al intentar obtener los mensajes del grupo.") && !Convert.ToString(salida).Equals("Token expirado"))
+                                    {
+                                        await AñadirMensajes(salida);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show("ERROR" + ex.Message);
+                                }
+                            }
                         }
                     }
                 }
@@ -896,39 +919,55 @@ namespace Frontend
                 {
                     listaDeMensajes = mensajes;
                 }
-                int count = 0;
-                foreach (var mensaje in listaDeMensajes)
+                if (!Convert.ToString(listaDeMensajes).Equals("No se encontraron Mensajes para el grupo especificado"))
                 {
-                    count++;
-                }
-                this.progressBar1.Maximum = count;
-                this.progressBar1.Value = 0;
-                foreach (var mensaje in listaDeMensajes)
-                {
-                    MessageControl messageControl = new MessageControl(mensaje, user,token, modo, idioma);
-                    messageControl.EditarMensaje += MessageControl_EditarMensaje;
-                    messageControl.MensajeEliminado+= MessageControl_RefrescarMensajes;
-                    await messageControl.aplicarDatos(mensaje);
-                    if (pnlChat.Controls.Count - 1 > 0)
+                    int count = 0;
+                    foreach (var mensaje in listaDeMensajes)
                     {
-                        var lastControl = pnlChat.Controls[pnlChat.Controls.Count - 1];
-                        messageControl.Location = new Point(50, lastControl.Bottom);
+                        count++;
                     }
-                    else
+                    this.progressBar1.Maximum = count;
+                    this.progressBar1.Value = 0;
+                    foreach (var mensaje in listaDeMensajes)
                     {
-                        messageControl.Location = new Point(50, 0);
+                        MessageControl messageControl = new MessageControl(mensaje, user, token, modo, idioma);
+                        messageControl.EditarMensaje += MessageControl_EditarMensaje;
+                        messageControl.MensajeEliminado += MessageControl_RefrescarMensajes;
+                        await messageControl.aplicarDatos(mensaje);
+                        if (pnlChat.Controls.Count - 1 > 0)
+                        {
+                            var lastControl = pnlChat.Controls[pnlChat.Controls.Count - 1];
+                            messageControl.Location = new Point(50, lastControl.Bottom);
+                        }
+                        else
+                        {
+                            messageControl.Location = new Point(50, 0);
+                        }
+                        pnlChat.Controls.Add(messageControl);
+                        idUltimoMensaje = Convert.ToString(mensaje.idMensaje);
+                        this.progressBar1.Value += 1;
                     }
-                    pnlChat.Controls.Add(messageControl);
-                    idUltimoMensaje = Convert.ToString(mensaje.idMensaje);
-                    this.progressBar1.Value += 1;
+                    this.progressBar1.Visible = false;
+                    pnlPostsGrupo.Visible = false;
+                    pnlChat.Visible = true;
+                    if (pnlChat.VerticalScroll.Maximum - pnlChat.VerticalScroll.Value < 500 || pnlChat.VerticalScroll.Value == 0)
+                    {
+                        pnlChat.VerticalScroll.Value = pnlChat.VerticalScroll.Maximum;
+                        pnlChat.PerformLayout();
+                    }
+                    if (mensajeEliminado)
+                    {
+                        mensajeEliminado = false;
+                    }
                 }
-                this.progressBar1.Visible = false;
-                pnlPostsGrupo.Visible = false;
-                pnlChat.Visible = true;
-                if (pnlChat.VerticalScroll.Maximum - pnlChat.VerticalScroll.Value < 500 || pnlChat.VerticalScroll.Value==0)
+                else
                 {
-                    pnlChat.VerticalScroll.Value = pnlChat.VerticalScroll.Maximum;
-                    pnlChat.PerformLayout();
+                    progressBar1.Visible = false;
+                    progressBar1.Value = progressBar1.Maximum;
+                    if (mensajeEliminado)
+                    {
+                        mensajeEliminado = false;
+                    }
                 }
             }
             catch
@@ -963,10 +1002,11 @@ namespace Frontend
             lblEditando.Visible = true;
             idMensajeAModificar = e.arg;
         }
-
+        private bool mensajeEliminado=false;
         private void MessageControl_RefrescarMensajes(object sender, PersonalizedArgs e)
         {
             pnlChat.Controls.Clear();
+            mensajeEliminado = true;
             AñadirMensajes();
         }
       
@@ -1127,6 +1167,10 @@ namespace Frontend
             pbxCrearPostGrupo.Visible = true;
             pnlAsociarContenido.Visible = false;
             panel1.Visible = false;
+            if (esChatPrivado)
+            {
+                pbxCrearPostGrupo.Visible = false;
+            }
             var posts = await ConseguirPosts(nombreGrupo, token);
             if (posts != null && !Convert.ToString(posts).Equals("Hubo un error"))
             {
@@ -1275,6 +1319,9 @@ namespace Frontend
         }
         private void lblEditar_Click(object sender, EventArgs e)
         {
+            lblAñadir.Visible = false;
+            lblEliminar.Visible = false;
+            lblEditar.Visible = false;
             if (lblEditar.Text.Equals("Editar") || lblEditar.Text.Equals("Edit"))
             {
                 pbxSeleccionarImagen.Visible = true;
@@ -1401,6 +1448,9 @@ namespace Frontend
 
         private async void lblEliminar_Click(object sender, EventArgs e)
         {
+            lblAñadir.Visible = false;
+            lblEliminar.Visible = false;
+            lblEditar.Visible = false;
             if (lblEliminar.Text.Equals("Eliminar") || lblEliminar.Text.Equals("Delete"))
             {
                 var respuesta = await EliminarGrupo(nombreGrupo, token);
@@ -1512,6 +1562,9 @@ namespace Frontend
 
         private async void lblAñadir_Click(object sender, EventArgs e)
         {
+            lblAñadir.Visible = false;
+            lblEliminar.Visible = false;
+            lblEditar.Visible = false;
             if (lblAñadir.Text.Equals("Añadir Usuarios") || lblAñadir.Text.Equals("Add Users"))
             {
                 if (!pbxBuscar.Visible)

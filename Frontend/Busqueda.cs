@@ -31,6 +31,9 @@ namespace Frontend
             InitializeComponent();
             this.pnlOpciones.Visible = false;
             this.Size= new Size(1012, 342);
+            pnlUsuario.AutoScroll = true;
+            pnlEvento.AutoScroll = true;
+            pnlGrupo.AutoScroll = true;
             pnlUsuario.Click += new EventHandler(pnlUsuario_Click);
             pnlGrupo.Click += new EventHandler(pnlGrupo_Click);
             pnlEvento.Click += new EventHandler(pnlEvento_Click);
@@ -308,7 +311,7 @@ namespace Frontend
             }
             else
             {
-                btnOpciones.Image = Frontend.Properties.Resources.Comunidad_Claro;
+                btnOpciones.Image = Frontend.Properties.Resources.Comunidad;
             }
             pnlMostrar.Controls.Clear();
             pnlOpciones.Visible = false;

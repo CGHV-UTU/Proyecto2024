@@ -151,8 +151,7 @@ namespace Frontend
             // 
             // btnConfirmar
             // 
-            this.btnConfirmar.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnConfirmar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnConfirmar.Image = global::Frontend.Properties.Resources.aceptar;
             this.btnConfirmar.Location = new System.Drawing.Point(473, 1);

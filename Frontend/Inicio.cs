@@ -162,6 +162,14 @@ namespace Frontend
             VerComentarios(e.arg);
             PanelComentarios.Visible = true;
             PictureBoxSalir.Visible = true;
+            if (modo.Equals("Oscuro"))
+            {
+                PictureBoxSalir.Image = Frontend.Properties.Resources.salirBlanco;
+            }
+            else
+            {
+                PictureBoxSalir.Image = Frontend.Properties.Resources.salir;
+            }
         }
         private void PostControl_ReportarPost(object sender, PersonalizedArgs e)
         {
@@ -494,6 +502,7 @@ namespace Frontend
 
         private void Comunidad_BuscarUsuarios(object sender, PersonalizedArgs e)
         {
+            panelBusqueda.Controls.Clear();
             panelBusqueda.Visible = true;
             PanelMostrarUsuario.Parent = this;
             PanelMostrarUsuario.Location = PanelPosts.Location;

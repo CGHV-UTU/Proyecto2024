@@ -583,6 +583,26 @@ namespace Frontend
                 }
             }
         }
+        static async Task<dynamic> ConseguirCreadorDelPost(string idPost, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datos = new { id = idPost, token = token };
+                    var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/conseguirCreador", content);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
         static async Task<dynamic> AñadirUsuarioAlGrupo(string nombreReal, string nombreDeCuenta,string rol, string token)
         {
             using (HttpClient client = new HttpClient())
@@ -609,13 +629,14 @@ namespace Frontend
             {
                 if (!string.IsNullOrEmpty(this.idpost))
                 {
-                    string respuesta = await CompartirPost(user, idpost, nombreReal, token);
+                    var creador = await ConseguirCreadorDelPost(idpost, token);
+                    string respuesta = await CompartirPost(Convert.ToString(creador), idpost, nombreReal, token);
                     this.Controls.Remove(pbxUnirse);
                 }
                 else
                 {
                     dynamic respuesta = await UnirseAlGrupo(nombreReal, user, token);
-                    this.Controls.Remove(pbxUnirse);
+                    this.pbxUnirse.Visible = false;
                 }
             }
             else
@@ -625,7 +646,7 @@ namespace Frontend
                     if (!string.IsNullOrEmpty(nombreReal) && datosDelUsuario != null && busqueda)
                     {
                         await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreDeCuenta), "usuario", token);
-                        this.Controls.Remove(pbxUnirse);
+                        this.pbxUnirse.Visible = false;
                     }
                     else
                     {

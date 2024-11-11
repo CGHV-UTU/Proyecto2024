@@ -146,7 +146,7 @@ namespace Frontend
                 this.PictureBoxReportar.Image = Frontend.Properties.Resources.reportarBlanco;
                 this.PictureBoxLike.Image = Frontend.Properties.Resources.like_claro;
             }
-            var Like = await dioLike(user, idcomentario, lblNombre.Text, token);
+            var Like = await dioLike(user, idcomentario, Convert.ToString(commentData.nombreDeCuenta), token);
             if (Like)
             {
                 HandleLikeClick();
@@ -174,11 +174,11 @@ namespace Frontend
             {
                 if (!isImage1)
                 {
-                    string respuesta = await quitarLike(user, idcomentario, lblNombre.Text, token);
+                    string respuesta = await quitarLike(user, idcomentario, Convert.ToString(commentData.nombreDeCuenta), token);
                 }
                 else
                 {
-                    string respuesta = await darLike(user, idcomentario, lblNombre.Text, token);
+                    string respuesta = await darLike(user, idcomentario, Convert.ToString(commentData.nombreDeCuenta), token);
                 }
                 HandleLikeClick();
             }

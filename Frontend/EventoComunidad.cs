@@ -447,8 +447,8 @@ namespace Frontend
             // 
             // btnCrear
             // 
-            this.btnCrear.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnCrear.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCrear.BackColor = System.Drawing.Color.Transparent;
             this.btnCrear.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCrear.Image = global::Frontend.Properties.Resources.crear;
@@ -672,6 +672,8 @@ namespace Frontend
                 dtpFechaFinal.Text = lblFechaFinal.Text;
                 dtpFechaInicio.Enabled = true;
                 dtpFechaFinal.Enabled = true;
+                dtpFechaFinal.Visible = true;
+                dtpFechaInicio.Visible = true;
                 pbxConfirmarCambios.Visible = true;
                 txtNombre.Text = lblNombre.Text;
                 txtDesc.Text = lblDescripcion.Text;

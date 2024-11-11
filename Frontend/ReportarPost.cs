@@ -284,13 +284,20 @@ namespace Frontend
                     }
                 }
             }
-            if (!string.IsNullOrEmpty(idEvento) && !string.IsNullOrEmpty(idcomentario))
+            if (!string.IsNullOrEmpty(idcomentario))
             {
                 if (!string.IsNullOrEmpty(cbxRazon.Text))
                 {
                     string creadorComentario = await obtenerCreadorComentario(int.Parse(idcomentario), token);
                     var respuesta = await ReportaComentario(usuario, creadorComentario, idcomentario, cbxRazon.SelectedItem.ToString(), txtDescripcion.Text, token);
-                    MessageBox.Show(respuesta);
+                    if (idioma.Equals("English"))
+                    {
+                        MessageBox.Show("Report successfull", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Reporte realizado con éxito", "Éxiot", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
                 else
                 {

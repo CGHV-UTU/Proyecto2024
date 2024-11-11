@@ -186,7 +186,6 @@ namespace Frontend
                     imagen.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
                     string b64 = Convert.ToBase64String(ms.ToArray());
                     dynamic response = await AgregarNotificaciones(creador,texto , "recibeLike", b64, token);
-                    MessageBox.Show(""+response);
                 }
                 else
                 {
