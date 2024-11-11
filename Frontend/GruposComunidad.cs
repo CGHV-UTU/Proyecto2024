@@ -859,7 +859,7 @@ namespace Frontend
             while (true)
             {
                 await Task.Delay(100);
-                if (!mensajeEliminado)
+                if (!evitarCarga)
                 {
                     var ultimoMsg = await ultimomensaje();
                     if (progressBar1.Value == progressBar1.Maximum)
@@ -955,18 +955,18 @@ namespace Frontend
                         pnlChat.VerticalScroll.Value = pnlChat.VerticalScroll.Maximum;
                         pnlChat.PerformLayout();
                     }
-                    if (mensajeEliminado)
+                    if (evitarCarga)
                     {
-                        mensajeEliminado = false;
+                        evitarCarga = false;
                     }
                 }
                 else
                 {
                     progressBar1.Visible = false;
                     progressBar1.Value = progressBar1.Maximum;
-                    if (mensajeEliminado)
+                    if (evitarCarga)
                     {
-                        mensajeEliminado = false;
+                        evitarCarga = false;
                     }
                 }
             }
@@ -1002,16 +1002,17 @@ namespace Frontend
             lblEditando.Visible = true;
             idMensajeAModificar = e.arg;
         }
-        private bool mensajeEliminado=false;
+        private bool evitarCarga=false;
         private void MessageControl_RefrescarMensajes(object sender, PersonalizedArgs e)
         {
             pnlChat.Controls.Clear();
-            mensajeEliminado = true;
+            evitarCarga = true;
             AñadirMensajes();
         }
       
         private async void pbxEnviar_Click(object sender, EventArgs e)
         {
+            evitarCarga = true;
             if (lblEditando.Visible == false)
             {
                 DateTime fechayhoraactual = DateTime.Now;
@@ -1041,6 +1042,7 @@ namespace Frontend
                 texto = txtMensajeAEnviar.Text;
                 var respuesta = await EnviarMensaje(fechaHoraString, texto, data, video);
                 txtMensajeAEnviar.Text = "";
+                evitarCarga = false;
                 foreach (var miembros in listaDeMiembros)
                 {
                     if (!Convert.ToString(miembros.nombreReal).Equals(user))

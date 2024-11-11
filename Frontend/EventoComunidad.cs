@@ -97,6 +97,7 @@ namespace Frontend
                 lblEditar.ForeColor = Color.White;
                 lblEliminar.ForeColor = Color.White;
                 lblCancelar.ForeColor = Color.White;
+                lblAdministradores.ForeColor = Color.White;
                 pbxSeleccionarImagen.Image = Frontend.Properties.Resources.Foto_negra;
                 btnUbicacion.Image = Frontend.Properties.Resources.buscar_claro;
                 btnCrear.Image = Frontend.Properties.Resources.crear_claro;
@@ -541,7 +542,7 @@ namespace Frontend
             lblFechaInicio.Text = EventData.fechaYhora_Inicio;
             lblFechaFinal.Text = EventData.fechaYhora_Final;
             lblUbicacion.Text = EventData.ubicacion;
-            idEvento = Convert.ToString(EventData.idEvento);
+            idEvento = Convert.ToString(EventData.id);
             //Creo que está bien?? 
             byte[] imagen = Convert.FromBase64String(Convert.ToString(EventData.foto));
             MemoryStream ms = new MemoryStream(imagen);
@@ -573,7 +574,7 @@ namespace Frontend
         }
         private async void btnSeguir_Click(object sender, EventArgs e)
         {
-            await Seguir(user, idEvento, "Seguidor", token);
+            var resultado=await Seguir(user, idEvento, "Seguidor", token);
             btnSeguir.Visible = false;
         }
 
@@ -833,8 +834,8 @@ namespace Frontend
             txtNombre.Visible = false;
             txtDesc.Visible = false;
             txtUbicacion.Visible = false;
-            dtpFechaInicio.Enabled = false;
-            dtpFechaFinal.Enabled = false;
+            dtpFechaInicio.Visible = false;
+            dtpFechaFinal.Visible= false;
             pbxConfirmarCambios.Visible = false;
             lblCancelar.Visible = false;
             pbxImagenEditar.Visible = false;
@@ -842,6 +843,8 @@ namespace Frontend
             lblNombre.Visible = true;
             lblDescripcion.Visible = true;
             lblUbicacion.Visible = true;
+            lblFechaFinal.Visible = true;
+            lblFechaInicio.Visible = true;
         }
         static async Task<dynamic> Miembros(string idevento, string token)
         {
@@ -876,11 +879,11 @@ namespace Frontend
             {
                 if (!Convert.ToString(elemento.nombreDeCuenta).Equals(user))
                 {
-                    var groupControl = new Grupo_EventoParaListar(user, token, idevento: int.Parse(idEvento), usuariobuscar: elemento, modo: modo, idioma:idioma);
+                    var groupControl = new Grupo_EventoParaListar(user, token, idevento: int.Parse(idEvento), usuariobuscar: elemento, modo: modo, idioma: idioma);
                     if (panelPosts.Controls.Count > 0)
                     {
                         var lastControl = panelPosts.Controls[panelPosts.Controls.Count - 1];
-                        groupControl.Location = new Point(0, lastControl.Bottom);
+                        groupControl.Location = new Point(100, lastControl.Bottom);
                     }
                     else
                     {

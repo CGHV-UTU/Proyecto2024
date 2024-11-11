@@ -307,11 +307,11 @@ namespace Frontend
             tipoDeBusqueda = "grupos";
             if (modo.Equals("Oscuro"))
             {
-                btnOpciones.Image = Frontend.Properties.Resources.Comunidad_Claro;
+                btnOpciones.Image = Frontend.Properties.Resources.chat_blanco_removebg_preview;
             }
             else
             {
-                btnOpciones.Image = Frontend.Properties.Resources.Comunidad;
+                btnOpciones.Image = Frontend.Properties.Resources.chat_negro_removebg_preview__1_;
             }
             pnlMostrar.Controls.Clear();
             pnlOpciones.Visible = false;
@@ -321,7 +321,7 @@ namespace Frontend
             tipoDeBusqueda = "eventos";
             if (modo.Equals("Oscuro"))
             {
-                btnOpciones.Image = Frontend.Properties.Resources.eventosBlanco;
+                btnOpciones.Image = Frontend.Properties.Resources.evento_blanco_removebg_preview;
             }
             else
             {

@@ -370,7 +370,7 @@ namespace Frontend
                 editando = false;
             }
         }
-        static async Task Eliminar(string id, string token)
+        static async Task<dynamic> Eliminar(string id, string token)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -380,17 +380,20 @@ namespace Frontend
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync($"https://localhost:44340/eliminarComentario",content);
                     response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    dynamic resultado = JsonConvert.DeserializeObject(responseBody);
+                    return resultado;
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Fallo al eliminar comentario");
+                    return "Fallo al eliminar comentario";
                 }
             }
         }
 
         private async void btnEliminar_Click(object sender, EventArgs e)
         {
-            await Eliminar(Convert.ToString(idcomentario), token);
+            var respuesta=await Eliminar(Convert.ToString(idcomentario), token);
             if (idioma.Equals("English"))
             {
                 MessageBox.Show("Comment successfully deleted.");
@@ -410,7 +413,6 @@ namespace Frontend
                     var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await client.PutAsync("https://localhost:44340/modificarComentario", content);
                     response.EnsureSuccessStatusCode();
-                    MessageBox.Show("Comentario modificado correctamente" ,"Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception)
                 {

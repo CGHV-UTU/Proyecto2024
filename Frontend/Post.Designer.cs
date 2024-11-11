@@ -29,7 +29,6 @@ namespace Frontend
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Post));
             this.txtTexto = new System.Windows.Forms.TextBox();
             this.txtUrl = new System.Windows.Forms.TextBox();
             this.lblPost = new System.Windows.Forms.Label();
@@ -319,7 +318,7 @@ namespace Frontend
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCrear.BackColor = System.Drawing.Color.Transparent;
             this.btnCrear.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCrear.Image = ((System.Drawing.Image)(resources.GetObject("btnCrear.Image")));
+            this.btnCrear.Image = global::Frontend.Properties.Resources.crearPost_removebg_preview;
             this.btnCrear.Location = new System.Drawing.Point(19, 488);
             this.btnCrear.Name = "btnCrear";
             this.btnCrear.Size = new System.Drawing.Size(372, 87);

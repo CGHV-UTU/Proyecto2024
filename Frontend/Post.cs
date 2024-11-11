@@ -60,6 +60,7 @@ namespace Frontend
                 lblPost.Visible = false;
                 pnlOpcionPost.Visible = false;
                 this.txtCategorias.Visible = false;
+                btnUbicacion.Visible = true;
             }
             if (modo.Equals("Oscuro"))
             {
@@ -137,7 +138,7 @@ namespace Frontend
                     if (pbxImagen.Image == null)
                     {
                         byte[] data = new byte[0];
-                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento, comentarios: comentarios);
+                        var resultado=await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento:idevento, comentarios: comentarios);
                         if (idioma.Equals("English"))
                         {
                             MessageBox.Show("The post was created successfully", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -462,7 +463,7 @@ namespace Frontend
             this.pnlOpcionPost.Visible = true;
             this.pnlOpcionEvento.Visible = false;
             this.pnlOpcionGrupo.Visible = false;
-            this.btnUbicacion.Visible = false;
+            this.btnUbicacion.Visible = true;
             this.btnVideo.Visible = true;
             this.txtNombre.Visible = false;
             this.pnlNombre.Visible = false;

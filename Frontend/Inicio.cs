@@ -304,7 +304,14 @@ namespace Frontend
             post.Creado += Post_Creado;
             post.Salir += Post_Salir;
             post.CambiaTamaño += Post_CambiaTamaño;
-            PanelPostear.BackColor = Color.LightGray;
+            if (modo.Equals("Oscuro"))
+            {
+                PanelPostear.BackColor = Color.FromArgb(40,40,40);
+            }
+            else
+            {
+                PanelPostear.BackColor = Color.LightGray;
+            }
             PanelPostear.Controls.Add(post);
             post.Show();
         }

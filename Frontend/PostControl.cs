@@ -574,7 +574,6 @@ namespace Frontend
                 this.PictureBoxCompartir.Image = Properties.Resources.compartir_claro;
                 this.PictureBoxLike.Image = Properties.Resources.like_claro;
                 this.PictureBoxComentarios.Image = Properties.Resources.comentario_claro;
-                this.PictureBoxEditar.Image = Frontend.Properties.Resources.editar_removebg_preview;
                 this.txtUrl.ForeColor = Color.White;
                 this.txtDescripcion.ForeColor = Color.White;
                 this.lblNombre.ForeColor = Color.White;
@@ -923,12 +922,11 @@ namespace Frontend
                     response.EnsureSuccessStatusCode();
                     var responseBody = await response.Content.ReadAsStringAsync();
                     dynamic result = JsonConvert.DeserializeObject(responseBody);
-                    MessageBox.Show(result);
                     return result;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Borrado incorrecto");
+                    MessageBox.Show("Borrado incorrecto"+ex.Message);
                     return "Borrado incorrecto";
                 }
             }
@@ -940,6 +938,14 @@ namespace Frontend
             if (result.Equals("Post eliminado"))
             {
                 //aca hacer que se mande un invoke a post que recargue los post existentes
+                if (idioma.Equals("English"))
+                {
+                    MessageBox.Show("Post deleted successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Post eliminado exitosamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
                 RecargarFeed?.Invoke(this, EventArgs.Empty);
             }
         }
