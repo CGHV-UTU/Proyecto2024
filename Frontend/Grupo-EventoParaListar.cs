@@ -440,7 +440,6 @@ namespace Frontend
             this.PictureBoxImagen.Name = "PictureBoxImagen";
             this.PictureBoxImagen.Size = new System.Drawing.Size(50, 50);
             this.PictureBoxImagen.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.PictureBoxImagen.Image = Properties.Resources.reportar;
             this.Cursor = Cursors.Hand;
 
             //pnlTop
@@ -506,7 +505,7 @@ namespace Frontend
                     this.pbxUnirse.Name = "pbxUnirse";
                     this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
                     this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
-                    this.pbxUnirse.Image = Properties.Resources.crearPost_removebg_preview;
+                    this.pbxUnirse.Image = Properties.Resources.crear;
                     this.pbxUnirse.Cursor = Cursors.Hand;
                     this.pbxUnirse.Visible = true;
                     this.pbxUnirse.Click += pbxUnirse_Click;
@@ -658,11 +657,11 @@ namespace Frontend
                             var respuesta = await AñadirUsuarioAlGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), "usuario", token);
                             if (idioma.Equals("English"))
                             {
-                                MessageBox.Show("Role changed successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show("User added to the group", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                             else
                             {
-                                MessageBox.Show("Rol cambiado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show("Usuario agregado al grupo", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                             this.Controls.Remove(pbxUnirse);
                         }

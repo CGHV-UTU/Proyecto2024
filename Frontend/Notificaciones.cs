@@ -30,12 +30,14 @@ namespace Frontend
         }
 
         private int cantNotificaciones=0;
+        private bool primerCiclo = true;
         public async void notificaciones()
         {
             // Obtener las notificaciones desde la API o la fuente de datos
             while (true)
             {
-                var notificaciones = await conseguirNotificaciones(user, token);
+                var notificaciones = await conseguirNotificaciones(user, token, primerCiclo);
+                primerCiclo = false;
                 if (!Convert.ToString(notificaciones).Equals($"No se encontraron notificaciones para el usuario: {user}"))
                 {
                     PanelNotificaciones.Controls.Clear();
@@ -91,13 +93,20 @@ namespace Frontend
         {
             cantNotificaciones = this.PanelNotificaciones.Controls.Count;
         }
-        public static async Task<dynamic> conseguirNotificaciones(string usuario, string token)
+        public static async Task<dynamic> conseguirNotificaciones(string usuario, string token, bool primerCiclo)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    await Task.Delay(10000);
+                    if (primerCiclo)
+                    {
+                        await Task.Delay(100);
+                    }
+                    else
+                    {
+                        await Task.Delay(10000);
+                    }
                     var datos = new { nombreDeCuenta = usuario, token=token };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("https://localhost:44383/user/ConseguirNotificaciones", content);

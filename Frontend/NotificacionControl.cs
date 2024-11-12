@@ -28,10 +28,10 @@ namespace Frontend
             this.SuspendLayout();
 
             // lblNoti
-            this.lblNoti.AutoSize = true;
+            this.lblNoti.AutoSize = false;
             this.lblNoti.Location = new System.Drawing.Point(59, 15);
             this.lblNoti.Name = "lblNoti";
-            this.lblNoti.Size = new System.Drawing.Size(75, 13);
+            this.lblNoti.Size = new System.Drawing.Size(75, 60);
             this.lblNoti.TabIndex = 0;
 
             // PictureBoxNotificacion
@@ -81,7 +81,7 @@ namespace Frontend
 
                 lblNoti.Text = primeraPalabra + textoEnIngles + nombreDeGrupo;
             }
-            if (lblNoti.Text.Contains("  le ha dado like a tu publicación"))
+            if (lblNoti.Text.Contains(" le ha dado like a tu publicación"))
             {
                 string textoEnIngles = " has liked your post";
                 string[] palabras = lblNoti.Text.Split(' ');

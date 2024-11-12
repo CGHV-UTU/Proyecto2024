@@ -66,7 +66,14 @@ namespace Frontend
             {
                 this.Controls.Remove(pnlOpciones);
                 tipoDeBusqueda = "usuarios";
-                btnOpciones.Image = Frontend.Properties.Resources.User;
+                if (modo.Equals("Oscuro"))
+                {
+                    pictureBox3.Image = Frontend.Properties.Resources.User_negro;
+                }
+                else
+                {
+                    btnOpciones.Image = Frontend.Properties.Resources.User;
+                }   
                 pnlMostrar.Controls.Clear();
                 pnlOpciones.Visible = false;
             }

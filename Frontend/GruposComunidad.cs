@@ -120,7 +120,7 @@ namespace Frontend
                 PictureBoxConfiguraciones.Image = Frontend.Properties.Resources.mas_opciones_claro_relleno;
                 pbxSeleccionarImagen.Image = Frontend.Properties.Resources.Foto_negra;
                 pbxCrearPostGrupo.Image = Frontend.Properties.Resources.crear_claro;
-                pbxBuscar.Image = Frontend.Properties.Resources.buscar_claro;
+                pbxBuscar.Image = Frontend.Properties.Resources.lupaBlanca;
                 this.BackColor= Color.FromArgb(40, 40, 40);
                 pnlAsociarContenido.BackColor= Color.FromArgb(50, 50, 50);
                 pnlChat.BackColor = Color.FromArgb(50, 50, 50);
