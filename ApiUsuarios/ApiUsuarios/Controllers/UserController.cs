@@ -308,7 +308,7 @@ namespace ApiUsuarios.Controllers
                 if (TestToken(user.token))
                 {
                     conn.Open();
-                    MySqlCommand command = new MySqlCommand("SELECT nombreVisible,descripcion,foto FROM Usuarios WHERE nombreDeCuenta=@nombreDeCuenta", conn);
+                    MySqlCommand command = new MySqlCommand("SELECT u.nombreVisible, u.descripcion, u.foto, COUNT(i.nombreDeCuenta) AS numeroSeguidores FROM Usuarios u LEFT JOIN Interactua i ON i.nombreDeCuenta2 = u.nombreDeCuenta AND i.tipoInteraccion = 'seguir' WHERE u.nombreDeCuenta = @nombreDeCuenta GROUP BY u.nombreVisible, u.descripcion, u.foto;", conn);
                     command.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
                     MySqlDataReader reader = command.ExecuteReader();
                     if (reader.Read())
@@ -317,6 +317,7 @@ namespace ApiUsuarios.Controllers
                         {
                             nombreVisible = reader["nombreVisible"].ToString(),
                             descripcion = reader["descripcion"].ToString() ?? "",
+                            seguidores = reader["numeroSeguidores"].ToString() ?? "",
                             foto = await CargarImagenDeGitHub(reader["foto"].ToString()),
                         };
                         conn.Close();
@@ -599,6 +600,8 @@ namespace ApiUsuarios.Controllers
                 return Json("Token expirado");
             }
         }
+
+
 
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Route("ActualizarNotificaciones")]
