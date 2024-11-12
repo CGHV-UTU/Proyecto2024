@@ -32,7 +32,7 @@ namespace APIPostYEventos2019.Controllers
             public string idEvento { get; set; }
             public string nombreReal { get; set; }
             public string token { get; set; }
-
+            public bool comentarios { get; set; }
         }
         public class EventData
         {
@@ -77,13 +77,6 @@ namespace APIPostYEventos2019.Controllers
             public string nombredeCreador { get; set; }
             public string token { get; set; }
         }
-        public class EventoResponse
-        {
-            public string idEvento { get; set; }
-            public string titulo { get; set; }
-            public string foto { get; set; }
-        }
-
         public async Task<string> SubirImagenAGitHub(string imagen, string carpeta)
         {
             using (var client = new HttpClient())
@@ -199,13 +192,14 @@ namespace APIPostYEventos2019.Controllers
                             if (!string.IsNullOrEmpty(postdata.link))
                             {
                                 string url = postdata.link;
-                                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, texto, video, fechaYhora, categoria) VALUES (@NombreDeCuenta, @Texto, @url, @fechaYhora, @categoria); SELECT LAST_INSERT_id();", conn))
+                                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, texto, video, fechaYhora, categoria, comentarios) VALUES (@NombreDeCuenta, @Texto, @url, @fechaYhora, @categoria, @comentarios); SELECT LAST_INSERT_id();", conn))
                                 {
                                     cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
                                     cmd.Parameters.AddWithValue("@Texto", texto);
                                     cmd.Parameters.AddWithValue("@url", url);
                                     cmd.Parameters.AddWithValue("@fechaYhora", postdata.fechayhora);
                                     cmd.Parameters.AddWithValue("@categoria", postdata.categoria);
+                                    cmd.Parameters.AddWithValue("@comentarios", postdata.comentarios);
                                     idPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
                                 }
 
@@ -216,24 +210,26 @@ namespace APIPostYEventos2019.Controllers
                                 {
                                     linkImagen = await SubirImagenAGitHub(postdata.image, "PostImages");
 
-                                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, texto, imagen, fechaYhora, categoria) VALUES (@NombreDeCuenta, @Texto, @Imagen, @fechaYhora, @categoria); SELECT LAST_INSERT_id();", conn))
+                                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, texto, imagen, fechaYhora, categoria, comentarios) VALUES (@NombreDeCuenta, @Texto, @Imagen, @fechaYhora, @categoria, @comentarios); SELECT LAST_INSERT_id();", conn))
                                     {
                                         cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
                                         cmd.Parameters.AddWithValue("@Texto", texto);
                                         cmd.Parameters.AddWithValue("@Imagen", linkImagen);
                                         cmd.Parameters.AddWithValue("@fechaYhora", postdata.fechayhora);
                                         cmd.Parameters.AddWithValue("@categoria", postdata.categoria);
+                                        cmd.Parameters.AddWithValue("@comentarios", postdata.comentarios);
                                         idPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
                                     }
                                 }
                                 else
                                 {
-                                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, texto, fechaYhora, categoria) VALUES (@NombreDeCuenta, @Texto, @fechaYhora, @categoria); SELECT LAST_INSERT_id();", conn))
+                                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, texto, fechaYhora, categoria, comentarios) VALUES (@NombreDeCuenta, @Texto, @fechaYhora, @categoria, @comentarios); SELECT LAST_INSERT_id();", conn))
                                     {
                                         cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
                                         cmd.Parameters.AddWithValue("@Texto", texto);
                                         cmd.Parameters.AddWithValue("@fechaYhora", postdata.fechayhora);
                                         cmd.Parameters.AddWithValue("@categoria", postdata.categoria);
+                                        cmd.Parameters.AddWithValue("@comentarios", postdata.comentarios);
                                         idPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
                                     }
                                 }
@@ -245,24 +241,26 @@ namespace APIPostYEventos2019.Controllers
                             {
                                 linkImagen = await SubirImagenAGitHub(postdata.image, "PostImages");
 
-                                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, imagen, fechaYhora, categoria) VALUES (@NombreDeCuenta, @Imagen, @fechaYhora, @categoria); SELECT LAST_INSERT_id();", conn))
+                                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, imagen, fechaYhora, categoria, comentarios) VALUES (@NombreDeCuenta, @Imagen, @fechaYhora, @categoria, @comentarios); SELECT LAST_INSERT_id();", conn))
                                 {
                                     cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
                                     cmd.Parameters.AddWithValue("@Imagen", linkImagen);
                                     cmd.Parameters.AddWithValue("@fechaYhora", postdata.fechayhora);
                                     cmd.Parameters.AddWithValue("@categoria", postdata.categoria);
+                                    cmd.Parameters.AddWithValue("@comentarios", postdata.comentarios);
                                     idPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
                                 }
                             }
                             else
                             {
                                 string url = postdata.link;
-                                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, video, fechaYhora, categoria) VALUES (@NombreDeCuenta, @url, @fechaYhora, @categoria); SELECT LAST_INSERT_id();", conn))
+                                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Posts (nombreDeCuenta, video, fechaYhora, categoria, comentarios) VALUES (@NombreDeCuenta, @url, @fechaYhora, @categoria, @comentarios); SELECT LAST_INSERT_id();", conn))
                                 {
                                     cmd.Parameters.AddWithValue("@NombreDeCuenta", postdata.user);
                                     cmd.Parameters.AddWithValue("@url", url);
                                     cmd.Parameters.AddWithValue("@fechaYhora", postdata.fechayhora);
                                     cmd.Parameters.AddWithValue("@categoria", postdata.categoria);
+                                    cmd.Parameters.AddWithValue("@comentarios", postdata.comentarios);
                                     idPost = Convert.ToInt32(await cmd.ExecuteScalarAsync());
                                 }
                             }
@@ -388,6 +386,72 @@ namespace APIPostYEventos2019.Controllers
         }
 
         [HttpPut]
+        [Route("conseguir40PostMasPopulares")]
+        public async Task<dynamic> conseguir40Post([FromBody] PostData post)
+        {
+            if (TestToken(post.token))
+            {
+                try
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand command = new MySqlCommand("SELECT p.idPost, p.texto, p.imagen, p.video, p.fechaYhora, p.comentarios, u.foto, u.nombreVisible, p.nombreDeCuenta, COUNT(dl.nombreDeCuenta) AS cantidadLikes FROM Posts p JOIN PostPublico pp ON p.idPost = pp.idPost AND p.nombreDeCuenta = pp.nombreDeCuenta JOIN Usuarios u ON p.nombreDeCuenta = u.nombreDeCuenta LEFT JOIN DaLike dl ON p.idPost = dl.idPost WHERE p.idPost BETWEEN @Id AND @segundaId GROUP BY p.idPost, p.nombreDeCuenta, p.texto, p.imagen, p.video, p.fechaYhora, u.foto ORDER BY cantidadLikes DESC, RAND() LIMIT 40", conn);
+                    command.Parameters.AddWithValue("@Id", post.id);
+                    command.Parameters.AddWithValue("@segundaId", post.idEvento);
+                    List<dynamic> posts = new List<dynamic>();
+                    MySqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        if (!string.IsNullOrEmpty(reader["imagen"].ToString()))
+                        {
+                            var posteo = new
+                            {
+                                idPost = reader["idPost"].ToString(),
+                                nombreDeCuenta = reader["nombreDeCuenta"].ToString(),
+                                nombreVisible = reader["nombreVisible"].ToString(),
+                                texto = reader["texto"].ToString(),
+                                video = reader["video"].ToString(),
+                                fechaYhora = reader["fechaYhora"].ToString(),
+                                cantidadLikes = reader["cantidadLikes"].ToString(),
+                                comentarios = reader["comentarios"].ToString(),
+                                imagen = await CargarImagenDeGitHub(reader["imagen"].ToString()),
+                                fotoUsuario = await CargarImagenDeGitHub(reader["foto"].ToString()),
+                            };
+                            posts.Add(posteo);
+                        }
+                        else
+                        {
+                            var posteo = new
+                            {
+                                idPost = reader["idPost"].ToString(),
+                                nombreDeCuenta = reader["nombreDeCuenta"].ToString(),
+                                nombreVisible = reader["nombreVisible"].ToString(),
+                                texto = reader["texto"].ToString(),
+                                video = reader["video"].ToString(),
+                                fechaYhora = reader["fechaYhora"].ToString(),
+                                cantidadLikes = reader["cantidadLikes"].ToString(),
+                                comentarios = reader["comentarios"].ToString(),
+                                fotoUsuario = await CargarImagenDeGitHub(reader["foto"].ToString()),
+                            };
+                            posts.Add(posteo);
+                        }
+                    }
+                    conn.Close();
+                    return Json(posts);
+                }
+                catch (Exception ex)
+                {
+                    return Json("no se encuentra");
+                }
+            }
+            else
+            {
+                return Json("Token expirado");
+            }
+        }
+
+
+        [HttpPut]
         [Route("conseguirNumeroDeLikes")]
         public dynamic conseguirNumeroDeLikes([FromBody] PostData post)
         {
@@ -503,9 +567,9 @@ namespace APIPostYEventos2019.Controllers
                     conn.Close();
                     return Json("Post eliminado");
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return Json("Post no eliminado");
+                    return Json("Post no eliminado" + ex.Message);
                 }
             }
             else
@@ -729,8 +793,8 @@ namespace APIPostYEventos2019.Controllers
                     MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("DELETE FROM PostEvento WHERE idEvento=@Id", conn);
-                    MySqlCommand command2 = new MySqlCommand("DELETE FROM ParticipaEvento WHERE idEvento=@Id", conn);
                     MySqlCommand command1 = new MySqlCommand("DELETE FROM Eventos WHERE idEvento=@Id", conn);
+                    MySqlCommand command2 = new MySqlCommand("DELETE FROM ParticipaEvento WHERE idEvento=@Id", conn);
                     command2.Parameters.AddWithValue("@Id", int.Parse(eventdata.id));
                     command2.ExecuteNonQuery();
                     command.Parameters.AddWithValue("@Id", int.Parse(eventdata.id));
@@ -892,7 +956,7 @@ namespace APIPostYEventos2019.Controllers
                     {
                         var evento = new
                         {
-                            idEvento = reader["idEvento"].ToString(),
+                            id = reader["idEvento"].ToString(),
                             titulo = reader["titulo"].ToString(),
                             ubicacion = reader["ubicacion"].ToString(),
                             fechaYhora_Inicio = reader["fechaYhora_Inicio"].ToString(),
@@ -1068,9 +1132,9 @@ namespace APIPostYEventos2019.Controllers
                     conn.Close();
                     return Json("Comentario eliminado");
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return Json("Comentario no eliminado");
+                    return Json("Comentario no eliminado" + ex.Message);
                 }
             }
             else
@@ -1118,7 +1182,6 @@ namespace APIPostYEventos2019.Controllers
             }
 
         }
-
         [HttpPut]
         [Route("conseguirComentario")]
         public dynamic conseguirComentario([FromBody] PostData post)
@@ -1444,7 +1507,6 @@ namespace APIPostYEventos2019.Controllers
             }
         }
 
-
         [HttpPut]
         [Route("seleccionarTodosLosPostPublicos")]
         public dynamic seleccionarTodosLosPostPublicos([FromBody] PostData post)
@@ -1554,7 +1616,6 @@ namespace APIPostYEventos2019.Controllers
             }
 
         }
-
         [HttpPut]
         [Route("seleccionarTodosLosPostDelUsuario")]
         public async Task<dynamic> seleccionarTodosLosPostDelUsuario([FromBody] PostData post)
@@ -1567,7 +1628,7 @@ namespace APIPostYEventos2019.Controllers
                     using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
                         conn.Open();
-                        MySqlCommand cmd = new MySqlCommand("SELECT p.idPost, p.texto, p.imagen, p.video, p.fechaYhora, u.foto, u.nombreVisible, p.nombreDeCuenta FROM PostPublico pp JOIN Posts p ON pp.idPost = p.idPost AND pp.nombreDeCuenta = p.nombreDeCuenta JOIN Usuarios u ON p.nombreDeCuenta = u.nombreDeCuenta WHERE pp.nombreDeCuenta = @nombreDeCuenta ORDER BY p.idPost DESC", conn);
+                        MySqlCommand cmd = new MySqlCommand("SELECT p.idPost, p.texto, p.imagen, p.video, p.fechaYhora, p.comentarios, u.foto, u.nombreVisible, p.nombreDeCuenta, COUNT(dl.idPost) AS cantidadLikes FROM PostPublico pp JOIN Posts p ON pp.idPost = p.idPost AND pp.nombreDeCuenta = p.nombreDeCuenta JOIN Usuarios u ON p.nombreDeCuenta = u.nombreDeCuenta LEFT JOIN DaLike dl ON dl.idPost = p.idPost AND dl.nombredeCreador = p.nombreDeCuenta WHERE pp.nombreDeCuenta = @nombreDeCuenta GROUP BY p.idPost, p.texto, p.imagen, p.video, p.fechaYhora, u.foto, u.nombreVisible, p.nombreDeCuenta ORDER BY p.idPost DESC", conn);
                         cmd.Parameters.AddWithValue("@nombreDeCuenta", post.user);
                         List<dynamic> posts = new List<dynamic>();
                         MySqlDataReader reader = cmd.ExecuteReader();
@@ -1583,6 +1644,8 @@ namespace APIPostYEventos2019.Controllers
                                     texto = reader["texto"].ToString(),
                                     video = reader["video"].ToString(),
                                     fechaYhora = reader["fechaYhora"].ToString(),
+                                    cantidadLikes = reader["cantidadLikes"].ToString(),
+                                    comentarios = reader["comentarios"].ToString(),
                                     imagen = await CargarImagenDeGitHub(reader["imagen"].ToString()),
                                     fotoUsuario = await CargarImagenDeGitHub(reader["foto"].ToString()),
                                 };
@@ -1598,6 +1661,8 @@ namespace APIPostYEventos2019.Controllers
                                     texto = reader["texto"].ToString(),
                                     video = reader["video"].ToString(),
                                     fechaYhora = reader["fechaYhora"].ToString(),
+                                    cantidadLikes = reader["cantidadLikes"].ToString(),
+                                    comentarios = reader["comentarios"].ToString(),
                                     fotoUsuario = await CargarImagenDeGitHub(reader["foto"].ToString()),
                                 };
                                 posts.Add(posteo);
@@ -1618,7 +1683,6 @@ namespace APIPostYEventos2019.Controllers
             }
 
         }
-
         [HttpPut]
         [Route("seleccionarTodosLosPostDelEvento")]
         public async Task<dynamic> seleccionarTodosLosPostDelEvento([FromBody] PostData post)
@@ -1631,7 +1695,7 @@ namespace APIPostYEventos2019.Controllers
                     using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
                         conn.Open();
-                        MySqlCommand cmd = new MySqlCommand("SELECT p.idPost, p.nombreDeCuenta, p.texto, p.video, p.imagen, p.categoria, p.fechaYhora, u.foto, u.nombreVisible FROM PostEvento pe JOIN Posts p ON pe.idPost = p.idPost AND pe.nombreDeCuenta = p.nombreDeCuenta JOIN Usuarios u ON p.nombreDeCuenta = u.nombreDeCuenta WHERE pe.idEvento = @idEvento ORDER BY p.fechaYhora DESC", conn);
+                        MySqlCommand cmd = new MySqlCommand("SELECT p.idPost, p.nombreDeCuenta, p.texto, p.video, p.imagen, p.categoria, p.fechaYhora, p.comentarios, u.foto, u.nombreVisible FROM PostEvento pe JOIN Posts p ON pe.idPost = p.idPost AND pe.nombreDeCuenta = p.nombreDeCuenta JOIN Usuarios u ON p.nombreDeCuenta = u.nombreDeCuenta WHERE pe.idEvento = @idEvento ORDER BY p.fechaYhora DESC", conn);
                         cmd.Parameters.AddWithValue("@idEvento", post.idEvento);
                         List<dynamic> posts = new List<dynamic>();
                         MySqlDataReader reader = cmd.ExecuteReader();
@@ -1647,6 +1711,7 @@ namespace APIPostYEventos2019.Controllers
                                     texto = reader["texto"].ToString(),
                                     video = reader["video"].ToString(),
                                     fechaYhora = reader["fechaYhora"].ToString(),
+                                    comentarios = reader["comentarios"].ToString(),
                                     imagen = await CargarImagenDeGitHub(reader["imagen"].ToString()),
                                     fotoUsuario = await CargarImagenDeGitHub(reader["foto"].ToString()),
                                 };
@@ -1662,6 +1727,7 @@ namespace APIPostYEventos2019.Controllers
                                     texto = reader["texto"].ToString(),
                                     video = reader["video"].ToString(),
                                     fechaYhora = reader["fechaYhora"].ToString(),
+                                    comentarios = reader["comentarios"].ToString(),
                                     fotoUsuario = await CargarImagenDeGitHub(reader["foto"].ToString()),
                                 };
                                 posts.Add(posteo);
@@ -1788,7 +1854,6 @@ namespace APIPostYEventos2019.Controllers
             }
 
         }
-
         [HttpPost]
         [Route("darLikeComentario")]
         public dynamic darLikeComentario([FromBody] like like)
@@ -1807,9 +1872,9 @@ namespace APIPostYEventos2019.Controllers
                     conn.Close();
                     return Json("like correcto");
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return Json("like incorrecto");
+                    return Json("like incorrecto" + ex.Message);
                 }
             }
             else
@@ -1960,7 +2025,7 @@ namespace APIPostYEventos2019.Controllers
                     {
                         lista.Add(new
                         {
-                            idEvento = reader["idEvento"].ToString(),
+                            id = reader["idEvento"].ToString(),
                             titulo = reader["titulo"].ToString(),
                             foto = await CargarImagenDeGitHub(reader["foto"].ToString())
                         });
@@ -2008,9 +2073,9 @@ namespace APIPostYEventos2019.Controllers
                     return Json("Token expirado");
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return Json("Hubo un error");
+                return Json("Hubo un error" + ex);
             }
         }
 
@@ -2048,7 +2113,6 @@ namespace APIPostYEventos2019.Controllers
                 return Json("Hubo un error");
             }
         }
-
         [HttpPut]
         [Route("RolDelEvento")]
         public dynamic RolDelEvento([FromBody] EventData eventData)
@@ -2062,6 +2126,40 @@ namespace APIPostYEventos2019.Controllers
                     MySqlCommand cmd = new MySqlCommand("SELECT rol FROM ParticipaEvento WHERE idEvento=@id AND nombreDeCuenta=@nombreDeCuenta", conn);
                     cmd.Parameters.AddWithValue("@id", eventData.id);
                     cmd.Parameters.AddWithValue("@nombreDeCuenta", eventData.user);
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        return Json(reader["rol"].ToString());
+                    }
+                    else
+                    {
+                        return Json("El usuario no participa del evento");
+                    }
+                }
+                else
+                {
+                    return Json("Token expirado");
+                }
+            }
+            catch
+            {
+                return Json("Hubo un error");
+            }
+        }
+        [HttpPut]
+        [Route("DarRolEvento")]
+        public dynamic DarRolEvento([FromBody] EventData eventData)
+        {
+            try
+            {
+                if (TestToken(eventData.token))
+                {
+                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("UPDATE ParticipaEvento SET rol=@rol WHERE idEvento=@id AND nombreDeCuenta=@nombreDeCuenta", conn);
+                    cmd.Parameters.AddWithValue("@id", eventData.id);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", eventData.user);
+                    cmd.Parameters.AddWithValue("@rol", eventData.rol);
                     MySqlDataReader reader = cmd.ExecuteReader();
                     if (reader.Read())
                     {
@@ -2121,104 +2219,6 @@ namespace APIPostYEventos2019.Controllers
                 catch (Exception)
                 {
                     return Json("No se pudieron obtener los Grupos");
-                }
-            }
-            else
-            {
-                return Json("Token expirado");
-            }
-        }
-
-        [HttpPut]
-        [Route("DarRolEvento")]
-        public dynamic DarRolEvento([FromBody] EventData eventData)
-        {
-            try
-            {
-                if (TestToken(eventData.token))
-                {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("UPDATE ParticipaEvento SET rol=@rol WHERE idEvento=@id AND nombreDeCuenta=@nombreDeCuenta", conn);
-                    cmd.Parameters.AddWithValue("@id", eventData.id);
-                    cmd.Parameters.AddWithValue("@nombreDeCuenta", eventData.user);
-                    cmd.Parameters.AddWithValue("@rol", eventData.rol);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.Read())
-                    {
-                        return Json(reader["rol"].ToString());
-                    }
-                    else
-                    {
-                        return Json("El usuario no participa del evento");
-                    }
-                }
-                else
-                {
-                    return Json("Token expirado");
-                }
-            }
-            catch
-            {
-                return Json("Hubo un error");
-            }
-        }
-
-        [HttpPut]
-        [Route("conseguir40PostMasPopulares")]
-        public async Task<dynamic> conseguir40Post([FromBody] PostData post)
-        {
-            if (TestToken(post.token))
-            {
-                try
-                {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
-                    conn.Open();
-                    MySqlCommand command = new MySqlCommand("SELECT p.idPost, p.texto, p.imagen, p.video, p.fechaYhora, u.foto, u.nombreVisible, p.nombreDeCuenta, COUNT(dl.nombreDeCuenta) AS cantidadLikes FROM Posts p JOIN PostPublico pp ON p.idPost = pp.idPost AND p.nombreDeCuenta = pp.nombreDeCuenta JOIN Usuarios u ON p.nombreDeCuenta = u.nombreDeCuenta LEFT JOIN DaLike dl ON p.idPost = dl.idPost AND p.nombreDeCuenta = dl.nombredeCreador WHERE p.idPost BETWEEN @Id AND @segundaId GROUP BY p.idPost, p.nombreDeCuenta, p.texto, p.imagen, p.video, p.fechaYhora, u.foto ORDER BY cantidadLikes DESC, RAND() LIMIT 40", conn);
-                    command.Parameters.AddWithValue("@Id", post.id);
-                    command.Parameters.AddWithValue("@segundaId", post.idEvento);
-                    List<dynamic> posts = new List<dynamic>();
-                    MySqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        if (!string.IsNullOrEmpty(reader["imagen"].ToString()))
-                        {
-                            var posteo = new
-                            {
-                                idPost = reader["idPost"].ToString(),
-                                nombreDeCuenta = reader["nombreDeCuenta"].ToString(),
-                                nombreVisible = reader["nombreVisible"].ToString(),
-                                texto = reader["texto"].ToString(),
-                                video = reader["video"].ToString(),
-                                fechaYhora = reader["fechaYhora"].ToString(),
-                                cantidadLikes = reader["cantidadLikes"].ToString(),
-                                imagen = await CargarImagenDeGitHub(reader["imagen"].ToString()),
-                                fotoUsuario = await CargarImagenDeGitHub(reader["foto"].ToString()),
-                            };
-                            posts.Add(posteo);
-                        }
-                        else
-                        {
-                            var posteo = new
-                            {
-                                idPost = reader["idPost"].ToString(),
-                                nombreDeCuenta = reader["nombreDeCuenta"].ToString(),
-                                nombreVisible = reader["nombreVisible"].ToString(),
-                                texto = reader["texto"].ToString(),
-                                video = reader["video"].ToString(),
-                                fechaYhora = reader["fechaYhora"].ToString(),
-                                cantidadLikes = reader["cantidadLikes"].ToString(),
-                                fotoUsuario = await CargarImagenDeGitHub(reader["foto"].ToString()),
-                            };
-                            posts.Add(posteo);
-                        }
-                    }
-                    conn.Close();
-                    return Json(posts);
-                }
-                catch (Exception ex)
-                {
-                    return Json("no se encuentra");
                 }
             }
             else
