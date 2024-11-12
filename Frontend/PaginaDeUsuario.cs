@@ -176,7 +176,7 @@ namespace Frontend
                 lblSiguiendo.ForeColor = Color.White;
                 pbxBloquear.Image = Frontend.Properties.Resources.salirBlanco;
                 pbxReportar.Image = Frontend.Properties.Resources.reportarBlanco;
-                pbxChatear.Image = Frontend.Properties.Resources.Comunidad_Claro;
+                pbxChatear.Image = Frontend.Properties.Resources.chat_blanco_removebg_preview;
                 panelPosts.BackColor= Color.FromArgb(50, 50, 50);
                 lblSeguidores.ForeColor = Color.White;
             }

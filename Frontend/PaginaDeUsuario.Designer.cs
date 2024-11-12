@@ -107,7 +107,7 @@ namespace Frontend
             // 
             this.pbxChatear.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbxChatear.Image = global::Frontend.Properties.Resources.Comunidad;
+            this.pbxChatear.Image = global::Frontend.Properties.Resources.chat_negro_removebg_preview__1_;
             this.pbxChatear.Location = new System.Drawing.Point(415, 82);
             this.pbxChatear.Name = "pbxChatear";
             this.pbxChatear.Size = new System.Drawing.Size(50, 50);
