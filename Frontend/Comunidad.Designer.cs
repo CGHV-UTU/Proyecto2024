@@ -43,20 +43,20 @@ namespace Frontend
             // 
             // PanelGrupos
             // 
-            this.PanelGrupos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PanelGrupos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.PanelGrupos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PanelGrupos.Location = new System.Drawing.Point(337, 86);
+            this.PanelGrupos.Location = new System.Drawing.Point(288, 86);
             this.PanelGrupos.Name = "PanelGrupos";
-            this.PanelGrupos.Size = new System.Drawing.Size(357, 476);
+            this.PanelGrupos.Size = new System.Drawing.Size(450, 476);
             this.PanelGrupos.TabIndex = 3;
             // 
             // panelEventos
             // 
+            this.panelEventos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.panelEventos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelEventos.Location = new System.Drawing.Point(337, 86);
+            this.panelEventos.Location = new System.Drawing.Point(288, 82);
             this.panelEventos.Name = "panelEventos";
-            this.panelEventos.Size = new System.Drawing.Size(357, 476);
+            this.panelEventos.Size = new System.Drawing.Size(450, 476);
             this.panelEventos.TabIndex = 4;
             // 
             // pictureBox5
@@ -116,9 +116,9 @@ namespace Frontend
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(996, 574);
+            this.Controls.Add(this.panelEventos);
             this.Controls.Add(this.pictureBox5);
             this.Controls.Add(this.PanelGrupos);
-            this.Controls.Add(this.panelEventos);
             this.Controls.Add(this.pictureBox6);
             this.Controls.Add(this.PictureBoxEventos);
             this.Controls.Add(this.PictureBoxGrupos);

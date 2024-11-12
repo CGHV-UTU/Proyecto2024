@@ -62,7 +62,7 @@ namespace Frontend
             this.pnlTop.BackColor = System.Drawing.Color.SlateBlue;
             this.pnlTop.Location = new System.Drawing.Point(47, 3);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(200, 3);
+            this.pnlTop.Size = new System.Drawing.Size(340, 3);
             this.pnlTop.TabIndex = 73;
             // 
             // pnlBot
@@ -70,7 +70,7 @@ namespace Frontend
             this.pnlBot.BackColor = System.Drawing.Color.SlateBlue;
             this.pnlBot.Location = new System.Drawing.Point(47, 61);
             this.pnlBot.Name = "pnlBot";
-            this.pnlBot.Size = new System.Drawing.Size(200, 3);
+            this.pnlBot.Size = new System.Drawing.Size(340, 3);
             this.pnlBot.TabIndex = 74;
             // 
             // pbxUnirse
@@ -113,7 +113,7 @@ namespace Frontend
             this.Controls.Add(this.PictureBoxImagen);
             this.Name = "Grupo_EventoParaListar";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.Size = new System.Drawing.Size(300, 67);
+            this.Size = new System.Drawing.Size(440, 67);
             this.Click += new System.EventHandler(this.Grupo_EventoParaListar_Click);
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxImagen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxUnirse)).EndInit();

@@ -71,7 +71,7 @@ namespace Frontend
                 var resultado = await CambiarConfig(modoEspañol, Convert.ToString(cbxIdioma.SelectedItem), token);
                 if (resultado.Equals("Configuracion correcta"))
                 {
-                    MessageBox.Show("Configuration changed succesfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Configuration changed succesfully, leaving the program", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     CambiarModo?.Invoke(this, new ConfiguraEventArgs(Convert.ToString(cbxModo.SelectedItem), Convert.ToString(cbxIdioma.SelectedItem)));
                     Application.Exit();
                 }
@@ -85,7 +85,7 @@ namespace Frontend
                 var resultado = await CambiarConfig(Convert.ToString(cbxModo.SelectedItem), Convert.ToString(cbxIdioma.SelectedItem), token);
                 if (resultado.Equals("Configuracion correcta"))
                 {
-                    MessageBox.Show("Configuración modificada con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Configuración modificada con éxito, saliendo del programa", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     CambiarModo?.Invoke(this, new ConfiguraEventArgs(Convert.ToString(cbxModo.SelectedItem), Convert.ToString(cbxIdioma.SelectedItem)));
                     Application.Exit();
                 }

@@ -56,13 +56,14 @@ namespace Frontend
         private void Iniciar()
         {
             this.SuspendLayout();
+            this.panelEventos.AutoScroll = true;
+            this.panelEventos.Size = new Size(450, 493);
             // panelGrupos
             this.PanelGrupos.AutoScroll = true;
             this.PanelGrupos.Location = panelEventos.Location;
             this.PanelGrupos.Name = "PanelMostrar";
-            this.PanelGrupos.Size = new System.Drawing.Size(357, 493);
+            this.PanelGrupos.Size = new System.Drawing.Size(450, 493);
             this.PanelGrupos.TabIndex = 0;
-            this.BackColor = Color.LightGray;
             // Form1
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = AutoScaleMode.Font;
@@ -202,6 +203,8 @@ namespace Frontend
                 else
                 {
                     panelEventos.Visible = false;
+                    pictureBox5.Visible = false;
+                    pictureBox6.Visible = false;
                     PanelGrupos.Controls.Clear();
                     foreach (var elemento in lista)
                     {

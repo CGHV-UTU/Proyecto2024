@@ -238,7 +238,7 @@ namespace Frontend
                         {
                             //pbxUnirse
                             this.pbxUnirse = new PictureBox();
-                            this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                            this.pbxUnirse.Location = new System.Drawing.Point(380, 7);
                             this.pbxUnirse.Name = "pbxUnirse";
                             this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
                             this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -353,7 +353,7 @@ namespace Frontend
                         {
                             //pbxUnirse acá se usa para eliminar al usuario del grupo o darle admin
                             this.pbxUnirse = new PictureBox();
-                            this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                            this.pbxUnirse.Location = new System.Drawing.Point(380, 7);
                             this.pbxUnirse.Name = "pbxUnirse";
                             this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
                             this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -377,7 +377,7 @@ namespace Frontend
                         if(!Convert.ToString(rol).Equals("usuario") && !Convert.ToString(rol).Equals("creador") && !Convert.ToString(rol).Equals("admin") && !Convert.ToString(rol).Equals("solicitante"))
                         {
                             this.pbxUnirse = new PictureBox();
-                            this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                            this.pbxUnirse.Location = new System.Drawing.Point(380, 7);
                             this.pbxUnirse.Name = "pbxUnirse";
                             this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
                             this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -394,7 +394,7 @@ namespace Frontend
                     if (!Convert.ToString(datosDelUsuario.rol).Equals("creador"))
                     {
                         this.pbxUnirse = new PictureBox();
-                        this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                        this.pbxUnirse.Location = new System.Drawing.Point(380, 7);
                         this.pbxUnirse.Name = "pbxUnirse";
                         this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
                         this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -460,17 +460,15 @@ namespace Frontend
             this.Controls.Add(this.pnlTop);
 
             // Configuración final del control
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = AutoScaleMode.Font;
             this.Name = "GroupEventControl";
-            this.Size = new System.Drawing.Size(350, 67);
+            this.Size = new System.Drawing.Size(440, 67);
             this.ResumeLayout(false);
             this.PerformLayout();
 
             if (!string.IsNullOrEmpty(this.idpost))
             {
                 this.pbxUnirse = new PictureBox();
-                this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                this.pbxUnirse.Location = new System.Drawing.Point(380, 7);
                 this.pbxUnirse.Name = "pbxUnirse";
                 this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
                 this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -487,7 +485,7 @@ namespace Frontend
             if (!string.IsNullOrEmpty(nombreReal) && datosDelUsuario!=null && busqueda)
             {
                 this.pbxUnirse = new PictureBox();
-                this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                this.pbxUnirse.Location = new System.Drawing.Point(380, 7);
                 this.pbxUnirse.Name = "pbxUnirse";
                 this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
                 this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -504,7 +502,7 @@ namespace Frontend
                 if (!Convert.ToString(rol).Equals("solicitante") && !Convert.ToString(rol).Equals("creador") && !Convert.ToString(rol).Equals("usuario") && !Convert.ToString(rol).Equals("admin"))
                 {
                     this.pbxUnirse = new PictureBox();
-                    this.pbxUnirse.Location = new System.Drawing.Point(247, 7);
+                    this.pbxUnirse.Location = new System.Drawing.Point(380, 7);
                     this.pbxUnirse.Name = "pbxUnirse";
                     this.pbxUnirse.Size = new System.Drawing.Size(50, 50);
                     this.pbxUnirse.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -626,6 +624,7 @@ namespace Frontend
                 }
             }
         }
+        private string rol;
         private async void pbxUnirse_Click(object sender, EventArgs e)
         {
             if (datosDelUsuario==null)
@@ -675,7 +674,7 @@ namespace Frontend
                                 this.lblDarOQuitarAdmin = new Label();
                                 // Eliminar
                                 this.lblEliminar.AutoSize = true;
-                                this.lblEliminar.Location = new System.Drawing.Point(200, 15);
+                                this.lblEliminar.Location = new System.Drawing.Point(320, 15);
                                 this.lblEliminar.Name = "lblEliminar";
                                 this.lblEliminar.Size = new System.Drawing.Size(100, 24);
                                 this.lblEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
@@ -685,12 +684,21 @@ namespace Frontend
 
                                 // DarOQuitarAdmin
                                 this.lblDarOQuitarAdmin.AutoSize = true;
-                                this.lblDarOQuitarAdmin.Location = new System.Drawing.Point(200, lblEliminar.Bottom + 10);
+                                this.lblDarOQuitarAdmin.Location = new System.Drawing.Point(320, lblEliminar.Bottom + 10);
                                 this.lblDarOQuitarAdmin.Name = "lblDarOQuitarAdmin";
                                 this.lblDarOQuitarAdmin.Size = new System.Drawing.Size(100, 24);
                                 this.lblDarOQuitarAdmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
                                 this.lblDarOQuitarAdmin.TabIndex = 0;
-                                this.lblDarOQuitarAdmin.Text = "Dar admin";
+                                var rol = await RolEnElGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
+                                if (Convert.ToString(rol).Equals("usuario"))
+                                {
+                                    this.lblDarOQuitarAdmin.Text = "Dar admin";
+                                }
+                                else
+                                {
+                                    this.lblDarOQuitarAdmin.Text = "Quitar admin";
+                                }
+                                this.rol = rol;
                                 this.lblDarOQuitarAdmin.Click += lblDarOQuitarAdmin_Click;
                                 if (modo.Equals("Oscuro"))
                                 {
@@ -700,7 +708,14 @@ namespace Frontend
                                 if (idioma.Equals("English"))
                                 {
                                     lblEliminar.Text = "Delete";
-                                    lblDarOQuitarAdmin.Text = "Give admin";
+                                    if (Convert.ToString(rol).Equals("usuario"))
+                                    {
+                                        this.lblDarOQuitarAdmin.Text = "Give admin";
+                                    }
+                                    else
+                                    {
+                                        this.lblDarOQuitarAdmin.Text = "Remove admin";
+                                    }
                                 }
                                 this.Controls.Add(lblEliminar);
                                 this.Controls.Add(lblDarOQuitarAdmin);
@@ -835,7 +850,6 @@ namespace Frontend
         }
         private async void lblDarOQuitarAdmin_Click(object sender, EventArgs e)
         {
-            var rol = await RolEnElGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
             if (Convert.ToString(rol).Equals("usuario"))
             {
                 await EliminarUsuarioDelGrupo(nombreReal, Convert.ToString(datosDelUsuario.nombreReal), token);
@@ -851,6 +865,7 @@ namespace Frontend
                         MessageBox.Show("Administrador asignado", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
+                rol = "admin";
             }
             else
             {
@@ -867,6 +882,7 @@ namespace Frontend
                         MessageBox.Show("Administrador eliminado", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
+                rol = "usuario";
             }
             this.Controls.Remove(this.lblEliminar);
             this.Controls.Remove(this.lblDarOQuitarAdmin);
