@@ -64,7 +64,7 @@ namespace API_Grupos.Controllers
 
             public string fechaYHora { get; set; }
 
-            public string video { get; set;  }
+            public string video { get; set; }
 
             public string imagen { get; set; }
 
@@ -75,27 +75,14 @@ namespace API_Grupos.Controllers
             public string nombreDeCuenta1 { get; set; }
             public string nombreDeCuenta2 { get; set; }
             public string nombreGrupo { get; set; }
-            public string nombreReal { get; set; }
             public string token { get; set; }
         }
 
-        private string crearNombreGrupo()
-        {
-            string nombre = "";
-            string caracteres = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
-            Random rnd = new Random();
-            for (int i = 0; i < 8; i++)
-            {
-
-                nombre += caracteres[rnd.Next(0, 61)];
-            }
-            return nombre;
-        }
 
 
         public string connectionString = "Server=localhost; database=infini; uID=root; pwd=;";
 
-        public async Task<string> SubirImagenAGitHub(string imagen , string carpeta)
+        public async Task<string> SubirImagenAGitHub(string imagen, string carpeta)
         {
             using (var client = new HttpClient())
             {
@@ -249,7 +236,7 @@ namespace API_Grupos.Controllers
                         }
                     }
 
-                    return Json("Registro correcto del grupo de codigo " + group.nombreReal);
+                    return Json("Registro correcto del grupo de código " + group.nombreReal);
                 }
                 catch (Exception ex)
                 {
@@ -519,7 +506,7 @@ namespace API_Grupos.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return Json("Ocurrio un error al intentar obtener los mensajes del grupo." + ex);
+                    return Json("OcurriÃ³ un error al intentar obtener los mensajes del grupo." + ex);
                 }
             }
             else
@@ -527,7 +514,6 @@ namespace API_Grupos.Controllers
                 return Json("Token expirado");
             }
         }
-
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("UltimoMensajeDelGrupo")]
         public dynamic UltimoMensajeDelGrupo([FromBody] Mensajes groupData)
@@ -984,6 +970,19 @@ namespace API_Grupos.Controllers
             }
         }
 
+        private string crearNombreGrupo()
+        {
+            string nombre = "";
+            string caracteres = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
+            Random rnd = new Random();
+            for (int i = 0; i < 8; i++)
+            {
+
+                nombre += caracteres[rnd.Next(0, 61)];
+            }
+            return nombre;
+        }
+
         [System.Web.Http.HttpPut]
         [System.Web.Http.Route("BuscarGrupos")]
         public async Task<dynamic> BuscarGrupos([FromBody] Grupo grupo)
@@ -1039,7 +1038,7 @@ namespace API_Grupos.Controllers
                 {
                     MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
                     conn.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT p.idPost, p.texto, p.imagen, p.video, p.fechaYhora, u.foto, u.nombreVisible, p.nombreDeCuenta FROM PostGrupo pg JOIN Posts p ON pg.idPost = p.idPost AND pg.nombreDeCuenta = p.nombreDeCuenta JOIN Usuarios u ON p.nombreDeCuenta = u.nombreDeCuenta WHERE pg.nombreReal = @nombreReal ORDER BY p.idPost DESC", conn);
+                    MySqlCommand cmd = new MySqlCommand("SELECT p.idPost, p.texto, p.imagen, p.video, p.fechaYhora, p.comentarios, u.foto, u.nombreVisible, p.nombreDeCuenta FROM PostGrupo pg JOIN Posts p ON pg.idPost = p.idPost AND pg.nombreDeCuenta = p.nombreDeCuenta JOIN Usuarios u ON p.nombreDeCuenta = u.nombreDeCuenta WHERE pg.nombreReal = @nombreReal ORDER BY p.idPost DESC", conn);
                     cmd.Parameters.AddWithValue("@nombreReal", grupo.nombreReal);
                     List<dynamic> posts = new List<dynamic>();
                     MySqlDataReader reader = cmd.ExecuteReader();
@@ -1055,6 +1054,7 @@ namespace API_Grupos.Controllers
                                 texto = reader["texto"].ToString(),
                                 video = reader["video"].ToString(),
                                 fechaYhora = reader["fechaYhora"].ToString(),
+                                comentarios = reader["comentarios"].ToString(),
                                 imagen = await CargarImagenDeGitHub(reader["imagen"].ToString()),
                                 fotoUsuario = await CargarImagenDeGitHub(reader["foto"].ToString()),
                             };
@@ -1070,6 +1070,7 @@ namespace API_Grupos.Controllers
                                 texto = reader["texto"].ToString(),
                                 video = reader["video"].ToString(),
                                 fechaYhora = reader["fechaYhora"].ToString(),
+                                comentarios = reader["comentarios"].ToString(),
                                 fotoUsuario = await CargarImagenDeGitHub(reader["foto"].ToString()),
                             };
                             posts.Add(posteo);
