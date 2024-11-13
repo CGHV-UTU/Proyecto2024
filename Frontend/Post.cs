@@ -127,18 +127,19 @@ namespace Frontend
                     {
                         txtTexto.Text = "";
                     }
-                    if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
-                    {
-                        txtUrl.Text = "";
-                    }
                     if(txtCategorias.Text.Equals("Categorías") || txtCategorias.Text.Equals("Category"))
                     {
                         txtCategorias.Text = "";
                     }
                     if (pbxImagen.Image == null)
                     {
+                        if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video")) 
+                        {
+                            MessageBox.Show("Url no puede ser vacio si esta seleccionado.");
+                        } else 
+                        { 
                         byte[] data = new byte[0];
-                        var resultado=await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento:idevento, comentarios: comentarios);
+                        var resultado = await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento: idevento, comentarios: comentarios);
                         if (idioma.Equals("English"))
                         {
                             MessageBox.Show("The post was created successfully", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -148,22 +149,30 @@ namespace Frontend
                             MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         Creado?.Invoke(this, EventArgs.Empty);
+                        }
                     }
                     else
                     {
-                        MemoryStream ms = new MemoryStream();
-                        pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
-                        byte[] data = ms.ToArray();
-                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento, comentarios: comentarios);
-                        if (idioma.Equals("English"))
+                        if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
                         {
-                            MessageBox.Show("The post was created successfully", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Url no puede ser vacio si esta seleccionado.");
                         }
                         else
                         {
-                            MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MemoryStream ms = new MemoryStream();
+                            pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
+                            byte[] data = ms.ToArray();
+                            await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento, comentarios: comentarios);
+                            if (idioma.Equals("English"))
+                            {
+                                MessageBox.Show("The post was created successfully", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            Creado?.Invoke(this, EventArgs.Empty);
                         }
-                        Creado?.Invoke(this, EventArgs.Empty);
                     }
                 }
                 return;
@@ -181,10 +190,6 @@ namespace Frontend
                     {
                         txtTexto.Text = "";
                     }
-                    if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
-                    {
-                        txtUrl.Text = "";
-                    }
                     if (txtCategorias.Text.Equals("Categorías") || txtCategorias.Text.Equals("Category"))
                     {
                         txtCategorias.Text = "";
@@ -193,19 +198,33 @@ namespace Frontend
                     string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
                     if (pbxImagen.Image == null)
                     {
-                        byte[] data = new byte[0];
-                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, "", "", nombreReal, comentarios: comentarios);
-                        MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        Creado?.Invoke(this, EventArgs.Empty);
+                        if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
+                        {
+                            MessageBox.Show("Url no puede ser vacio si esta seleccionado.");
+                        }
+                        else
+                        {
+                            byte[] data = new byte[0];
+                            await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, "", "", nombreReal, comentarios: comentarios);
+                            MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            Creado?.Invoke(this, EventArgs.Empty);
+                        }
                     }
                     else
                     {
-                        MemoryStream ms = new MemoryStream();
-                        pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
-                        byte[] data = ms.ToArray();
-                        await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, "", "", nombreReal, comentarios: comentarios);
-                        MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        Creado?.Invoke(this, EventArgs.Empty);
+                        if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
+                        {
+                            MessageBox.Show("Url no puede ser vacio si esta seleccionado.");
+                        }
+                        else
+                        {
+                            MemoryStream ms = new MemoryStream();
+                            pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
+                            byte[] data = ms.ToArray();
+                            await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, "", "", nombreReal, comentarios: comentarios);
+                            MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            Creado?.Invoke(this, EventArgs.Empty);
+                        }
                     }
                 }
                 return;
@@ -226,10 +245,6 @@ namespace Frontend
                         {
                             txtTexto.Text = "";
                         }
-                        if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
-                        {
-                            txtUrl.Text = "";
-                        }
                         if (txtCategorias.Text.Equals("Categorías") || txtCategorias.Text.Equals("Category"))
                         {
                             txtCategorias.Text = "";
@@ -238,20 +253,33 @@ namespace Frontend
                         string fechaHoraString = fechayhoraactual.ToString("yyyy-MM-dd HH:mm:ss");
                         if (pbxImagen.Image == null)
                         {
-
-                            byte[] data = new byte[0];
-                            var respuesta = await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, categoria: txtCategorias.Text, comentarios: comentarios);
-                            MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Creado?.Invoke(this, EventArgs.Empty);
+                            if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
+                            {
+                                MessageBox.Show("Url no puede ser vacio si esta seleccionado.");
+                            }
+                            else
+                            {
+                                byte[] data = new byte[0];
+                                var respuesta = await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, categoria: txtCategorias.Text, comentarios: comentarios);
+                                MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                Creado?.Invoke(this, EventArgs.Empty);
+                            }
                         }
                         else
                         {
-                            MemoryStream ms = new MemoryStream();
-                            pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
-                            byte[] data = ms.ToArray();
-                            var respuesta = await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, categoria: txtCategorias.Text, comentarios: comentarios);
-                            MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Creado?.Invoke(this, EventArgs.Empty);
+                            if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
+                            {
+                                MessageBox.Show("Url no puede ser vacio si esta seleccionado.");
+                            }
+                            else
+                            {
+                                MemoryStream ms = new MemoryStream();
+                                pbxImagen.Image.Save(ms, ImageFormat.Jpeg);
+                                byte[] data = ms.ToArray();
+                                var respuesta = await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, categoria: txtCategorias.Text, comentarios: comentarios);
+                                MessageBox.Show("El post se creó correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                Creado?.Invoke(this, EventArgs.Empty);
+                            }
                         }
                     }
                     break;

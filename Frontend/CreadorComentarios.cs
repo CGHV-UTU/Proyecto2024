@@ -76,17 +76,24 @@ namespace Frontend
 
         private async void pictureBox1_Click(object sender, EventArgs e)
         {
-            DateTime now = DateTime.Now;
-            string fechayhora = now.ToString("yyyy-MM-dd HH:mm:ss");
-            var creadorPost = await obtenerCreador(int.Parse(idpost), token);
-            await Publicar(user, idpost, creadorPost, textBox1.Text, fechayhora, token);
-            if (idioma.Equals("English"))
+            if (string.IsNullOrEmpty(textBox1.Text))
             {
-                MessageBox.Show("Comment successfully posted", "Correct", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("El comentario esta vacio.", "Correct", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Comentario realizado con exito", "Correcto", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DateTime now = DateTime.Now;
+                string fechayhora = now.ToString("yyyy-MM-dd HH:mm:ss");
+                var creadorPost = await obtenerCreador(int.Parse(idpost), token);
+                await Publicar(user, idpost, creadorPost, textBox1.Text, fechayhora, token);
+                if (idioma.Equals("English"))
+                {
+                    MessageBox.Show("Comment successfully posted", "Correct", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Comentario realizado con exito", "Correcto", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
         }
     }

@@ -784,37 +784,44 @@ namespace Frontend
             MemoryStream ms = new MemoryStream();
             this.pbxImagenEditar.Image.Save(ms, ImageFormat.Jpeg);
             byte[] imagen = ms.ToArray();
-            var respuesta = await Modificar(idEvento,txtNombre.Text,dtpFechaInicio.Text,dtpFechaFinal.Text, imagen, txtUbicacion.Text, txtDesc.Text, token);
-            if (idioma.Equals("English"))
+            var respuesta = await Modificar(idEvento, txtNombre.Text, dtpFechaInicio.Text, dtpFechaFinal.Text, imagen, txtUbicacion.Text, txtDesc.Text, token);
+            if (string.IsNullOrEmpty(txtNombre.Text) || dtpFechaFinal.Value < DateTime.Now || pbxImagen.Image == null || dtpFechaFinal.Value <= dtpFechaInicio.Value)
             {
-                MessageBox.Show("Event modified successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Error en los datos", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Evento modificado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (idioma.Equals("English"))
+                {
+                    MessageBox.Show("Event modified successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Evento modificado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                lblNombre.Text = txtNombre.Text;
+                lblDescripcion.Text = txtDesc.Text;
+                lblUbicacion.Text = txtUbicacion.Text;
+                pbxImagen.Image = pbxImagenEditar.Image;
+                pbxImagenEditar.Visible = false;
+                txtNombre.Visible = false;
+                txtDesc.Visible = false;
+                txtUbicacion.Visible = false;
+                dtpFechaInicio.Enabled = false;
+                dtpFechaFinal.Enabled = false;
+                pbxConfirmarCambios.Visible = false;
+                lblCancelar.Visible = false;
+                pbxSeleccionarImagen.Visible = false;
+                lblNombre.Visible = true;
+                lblDescripcion.Visible = true;
+                lblUbicacion.Visible = true;
+                lblFechaInicio.Text = dtpFechaInicio.Text;
+                lblFechaFinal.Text = dtpFechaFinal.Text;
+                lblFechaInicio.Visible = true;
+                lblFechaFinal.Visible = true;
+                dtpFechaInicio.Visible = false;
+                dtpFechaFinal.Visible = false;
             }
-            lblNombre.Text = txtNombre.Text;
-            lblDescripcion.Text= txtDesc.Text;
-            lblUbicacion.Text = txtUbicacion.Text;
-            pbxImagen.Image = pbxImagenEditar.Image;
-            pbxImagenEditar.Visible = false;
-            txtNombre.Visible = false;
-            txtDesc.Visible = false;
-            txtUbicacion.Visible = false;
-            dtpFechaInicio.Enabled = false;
-            dtpFechaFinal.Enabled = false;
-            pbxConfirmarCambios.Visible = false;
-            lblCancelar.Visible = false;
-            pbxSeleccionarImagen.Visible = false;
-            lblNombre.Visible = true;
-            lblDescripcion.Visible = true;
-            lblUbicacion.Visible = true;
-            lblFechaInicio.Text = dtpFechaInicio.Text;
-            lblFechaFinal.Text = dtpFechaFinal.Text;
-            lblFechaInicio.Visible = true;
-            lblFechaFinal.Visible = true;
-            dtpFechaInicio.Visible = false;
-            dtpFechaFinal.Visible = false;
         }
 
         private void pbxSeleccionarImagen_Click(object sender, EventArgs e)

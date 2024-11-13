@@ -1513,40 +1513,47 @@ namespace Frontend
 
         private async void pbxConfirmarCambios_Click(object sender, EventArgs e)
         {
-            if (lblName.Text.StartsWith("-"))
+            if (string.IsNullOrEmpty(txtNombre.Text))
             {
-                MessageBox.Show("ERROR");
-                pbxSeleccionarImagen.Visible = false;
-                pbxFotoGrupoEditar.Visible = false;
-                txtNombre.Visible = false;
-                lblName.Visible = true;
-                lblMiembros.Visible = true;
-                lblName.Text = txtNombre.Text;
-                pbxConfirmarCambios.Visible = false;
-                lblCancelar.Visible = false;
+                MessageBox.Show("Error en los datos", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                pbxSeleccionarImagen.Visible = false;
-                pbxFotoGrupoEditar.Visible = false;
-                txtNombre.Visible = false;
-                lblName.Visible = true;
-                lblMiembros.Visible = true;
-                lblName.Text = txtNombre.Text;
-                pbxConfirmarCambios.Visible = false;
-                lblCancelar.Visible = false;
-                pbxFotoGrupo.Image = pbxFotoGrupoEditar.Image;
-                MemoryStream ms = new MemoryStream();
-                this.pbxFotoGrupo.Image.Save(ms, ImageFormat.Jpeg);
-                byte[] imagen = ms.ToArray();
-                var resultado = await Modificar(nombreGrupo, lblName.Text, configuracion, imagen, token);
-                if (idioma.Equals("English"))
+                if (lblName.Text.StartsWith("-"))
                 {
-                    MessageBox.Show("Group modified successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("ERROR");
+                    pbxSeleccionarImagen.Visible = false;
+                    pbxFotoGrupoEditar.Visible = false;
+                    txtNombre.Visible = false;
+                    lblName.Visible = true;
+                    lblMiembros.Visible = true;
+                    lblName.Text = txtNombre.Text;
+                    pbxConfirmarCambios.Visible = false;
+                    lblCancelar.Visible = false;
                 }
                 else
                 {
-                    MessageBox.Show("Grupo modificado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    pbxSeleccionarImagen.Visible = false;
+                    pbxFotoGrupoEditar.Visible = false;
+                    txtNombre.Visible = false;
+                    lblName.Visible = true;
+                    lblMiembros.Visible = true;
+                    lblName.Text = txtNombre.Text;
+                    pbxConfirmarCambios.Visible = false;
+                    lblCancelar.Visible = false;
+                    pbxFotoGrupo.Image = pbxFotoGrupoEditar.Image;
+                    MemoryStream ms = new MemoryStream();
+                    this.pbxFotoGrupo.Image.Save(ms, ImageFormat.Jpeg);
+                    byte[] imagen = ms.ToArray();
+                    var resultado = await Modificar(nombreGrupo, lblName.Text, configuracion, imagen, token);
+                    if (idioma.Equals("English"))
+                    {
+                        MessageBox.Show("Group modified successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Grupo modificado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
             }
         }

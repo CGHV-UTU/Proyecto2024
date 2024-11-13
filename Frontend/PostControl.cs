@@ -872,19 +872,30 @@ namespace Frontend
                     this.txtDescripcion.Visible = true;
                     this.imagen.Visible = true;
                     break;
-                case "imageOnly": //falta esto
-                    this.imagenEditar.Image.Save(ms, ImageFormat.Jpeg);
-                    byte[] image = ms.ToArray();
-                    resultado = await Modificar(Convert.ToString(idpost), "", "", image, token);
-                    this.imagen.Image = this.imagenEditar.Image;
-                    this.Controls.Remove(this.btnConfirmarCambios);
-                    this.Controls.Remove(this.btnSeleccionarImagen);
-                    this.Controls.Remove(this.imagenEditar);
-                    this.txtDescripcion.Visible = true;
-                    this.imagen.Visible = true;
+                case "imageOnly":
+                    if (imagenEditar.Image != null)
+                    {
+                        this.imagenEditar.Image.Save(ms, ImageFormat.Jpeg);
+
+                        byte[] image = ms.ToArray();
+                        resultado = await Modificar(Convert.ToString(idpost), "", "", image, token);
+                        this.imagen.Image = this.imagenEditar.Image;
+                        this.Controls.Remove(this.btnConfirmarCambios);
+                        this.Controls.Remove(this.btnSeleccionarImagen);
+                        this.Controls.Remove(this.imagenEditar);
+                        this.txtDescripcion.Visible = true;
+                        this.imagen.Visible = true;
+                        break;
+                    }
+                    else
+                    {
+                        MessageBox.Show("imagen incorrecta");
+                    }
                     break;
                 case "textAndUrl":
-                    resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, txtUrlEditar.Text, imagenfalsa, token);
+                    if (!string.IsNullOrEmpty(txtDescripcionEditar.Text) && !string.IsNullOrEmpty(txtUrlEditar.Text))
+                    {
+                        resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, txtUrlEditar.Text, imagenfalsa, token);
                     this.txtDescripcion.Text = txtDescripcionEditar.Text;
                     this.txtUrl.Text = txtUrlEditar.Text;
                     this.Controls.Remove(this.txtDescripcionEditar);
@@ -892,13 +903,25 @@ namespace Frontend
                     this.Controls.Remove(this.btnConfirmarCambios);
                     this.txtDescripcion.Visible = true;
                     this.txtUrl.Visible = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("El post no puede ser vacio.");
+                    }
                     break;
                 case "textOnly":
-                    resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, "", imagenfalsa, token);
-                    this.txtDescripcion.Text = txtDescripcionEditar.Text;
-                    this.Controls.Remove(this.txtDescripcionEditar);
-                    this.Controls.Remove(this.btnConfirmarCambios);
-                    this.txtDescripcion.Visible = true;
+                    if (!string.IsNullOrEmpty(txtDescripcionEditar.Text))
+                    {
+                        resultado = await Modificar(Convert.ToString(idpost), txtDescripcionEditar.Text, "", imagenfalsa, token);
+                        this.txtDescripcion.Text = txtDescripcionEditar.Text;
+                        this.Controls.Remove(this.txtDescripcionEditar);
+                        this.Controls.Remove(this.btnConfirmarCambios);
+                        this.txtDescripcion.Visible = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("El post no puede ser vacio.");
+                    }
                     break;
                 case "urlOnly":
                     resultado=await Modificar(Convert.ToString(idpost), "", txtUrlEditar.Text, imagenfalsa, token);

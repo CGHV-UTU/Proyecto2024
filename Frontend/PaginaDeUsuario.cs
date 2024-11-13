@@ -528,19 +528,26 @@ namespace Frontend
 
         private async void btnConfirmar_Click(object sender, EventArgs e)
         {
-            lblDescripcion.Text = txtDescripcion.Text;
-            lblNombre.Text = txtNombre.Text;
-            PictureBoxUsuario.Image = pbxImagenEditar.Image;
-            MemoryStream ms = new MemoryStream();
-            pbxImagenEditar.Image.Save(ms, ImageFormat.Jpeg);
-            byte[] imagen = ms.ToArray();
-            await EditarUsuario(user, txtNombre.Text,imagen,txtDescripcion.Text, token);
-            txtDescripcion.Visible = false;
-            txtNombre.Visible = false;
-            pbxImagenEditar.Visible = false;
-            PictureBoxUsuario.Visible = true;
-            btnConfirmar.Visible = false;
-            NuevaImagen?.Invoke(this, new PersonalizedArgs(imagen));
+            if (string.IsNullOrEmpty(txtNombre.Text))
+            {
+                MessageBox.Show("El nombre es incorrecto");
+            }
+            else
+            {
+                lblDescripcion.Text = txtDescripcion.Text;
+                lblNombre.Text = txtNombre.Text;
+                PictureBoxUsuario.Image = pbxImagenEditar.Image;
+                MemoryStream ms = new MemoryStream();
+                pbxImagenEditar.Image.Save(ms, ImageFormat.Jpeg);
+                byte[] imagen = ms.ToArray();
+                await EditarUsuario(user, txtNombre.Text, imagen, txtDescripcion.Text, token);
+                txtDescripcion.Visible = false;
+                txtNombre.Visible = false;
+                pbxImagenEditar.Visible = false;
+                PictureBoxUsuario.Visible = true;
+                btnConfirmar.Visible = false;
+                NuevaImagen?.Invoke(this, new PersonalizedArgs(imagen));
+            }
         }
 
         static async Task<dynamic> EditarUsuario(string creador, string nombreVisible, byte[] imagen, string descripcion, string token)
