@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -133,10 +134,10 @@ namespace BackofficeDeAdministracion
 
                     if (reader.Read())
                     {
-                        MessageBox.Show("El usuario ya se encuentra baneado");
+                        MessageBox.Show("El usuario ya se encuentra baneado permanentemente");
                         return;
                     }
-                    reader.Close(); 
+                    reader.Close();
                     MySqlCommand command = new MySqlCommand("INSERT INTO Ban (nombreDeUsuario, fechaInicio, fechaFinalizacion) VALUES (@NombreDeCuenta, NOW(), '3024-12-24 23:59:59')", conn);
                     command.Parameters.AddWithValue("@NombreDeCuenta", lblNombreDeCuenta.Text);
 
@@ -145,6 +146,16 @@ namespace BackofficeDeAdministracion
                     {
                         MessageBox.Show("Se ha baneado al usuario correctamente.");
                         cargarTabla();
+                        //Log
+                        string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+                        Directory.CreateDirectory(folderPath);
+                        string path = Path.Combine(folderPath, "Log.txt");
+                        string mensaje = $"{DateTime.Now}: {admin} ha baneado permanentemente al usuario {lblNombreDeCuenta.Text}";
+                        using (StreamWriter writer = new StreamWriter(path, true))
+                        {
+                            writer.WriteLine(mensaje);
+                        }
+
                     }
                     else
                     {
@@ -155,7 +166,6 @@ namespace BackofficeDeAdministracion
                 {
                     MessageBox.Show($"Error al intentar banear al usuario: {ex.Message}");
                 }
-                conn.Close();
             }
         }
      
@@ -183,6 +193,15 @@ namespace BackofficeDeAdministracion
                         {
                             MessageBox.Show("Se ha baneado temporalmente al usuario.");
                             cargarTabla();
+                            //Log
+                            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+                            Directory.CreateDirectory(folderPath);
+                            string path = Path.Combine(folderPath, "Log.txt");
+                            string mensaje = $"{DateTime.Now}: {admin} ha baneado temporalmente al usuario {lblNombreDeCuenta.Text} por un reporte";
+                            using (StreamWriter writer = new StreamWriter(path, true))
+                            {
+                                writer.WriteLine(mensaje);
+                            }
                         }
                         else
                         {
@@ -196,6 +215,7 @@ namespace BackofficeDeAdministracion
                 }
             }
         }
+
         private void btnDesbanear(object sender, EventArgs e)
         {
             if (lblNombreDeCuenta.Text == "")
@@ -224,6 +244,15 @@ namespace BackofficeDeAdministracion
                             {
                                 MessageBox.Show("Se ha desbaneado al usuario.");
                                 cargarTabla();
+                                //Log
+                                string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+                                Directory.CreateDirectory(folderPath);
+                                string path = Path.Combine(folderPath, "Log.txt");
+                                string mensaje = $"{DateTime.Now}: {admin} ha desbaneado al usuario {lblNombreDeCuenta.Text}  por un reporte";
+                                using (StreamWriter writer = new StreamWriter(path, true))
+                                {
+                                    writer.WriteLine(mensaje);
+                                }
                             }
                             else
                             {

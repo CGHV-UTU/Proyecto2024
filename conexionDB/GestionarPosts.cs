@@ -96,27 +96,6 @@ namespace BackofficeDeAdministracion
             dataGridView1.Columns["comentarios"].HeaderText = "Coment";
         }
 
-
-        //Para visualizar las imagenes
-        private async Task<string> CargarImagenDeGitHub(string urlImagen)
-        {
-            using (var client = new HttpClient())
-            {
-                string token = "no";
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var response = await client.GetAsync(urlImagen);
-                if (response.IsSuccessStatusCode)
-                {
-                    byte[] imagenBytes = await response.Content.ReadAsByteArrayAsync();
-                    return Convert.ToBase64String(imagenBytes);
-                }
-                else
-                {
-                    throw new Exception("No se pudo descargar la imagen desde GitHub.");
-                }
-            }
-        }
-
         // Buscar post
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
@@ -265,16 +244,19 @@ namespace BackofficeDeAdministracion
                     MessageBox.Show("Informacion guardada con éxito.");
                     CargarTabla();
                     //Log
-                    string path = @"C:\Users\emerg\Downloads\lbackofinal\Proyecto2024\Log.txt";
+                    string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+                    Directory.CreateDirectory(folderPath);
+                    string path = Path.Combine(folderPath, "Log.txt");
                     string mensaje = $"{DateTime.Now}: {Principal.admin} ha desactivado los comentarios del post {txtID.Text}";
                     if (comentarios == true)
                     {
-                         mensaje = $"{DateTime.Now}: {Principal.admin} ha reactivado los comentarios del post {txtID.Text}";
-                    }                                      
+                        mensaje = $"{DateTime.Now}: {Principal.admin} ha reactivado los comentarios del post {txtID.Text}";
+                    }
                     using (StreamWriter writer = new StreamWriter(path, true))
                     {
                         writer.WriteLine(mensaje);
                     }
+
                 }
                 else
                 {
@@ -293,11 +275,11 @@ namespace BackofficeDeAdministracion
 
 
         private void btnEliminar_Click(object sender, EventArgs e)
-        {
+        {           
             try
-            {            
-                string id = txtID.Text; 
-                EliminarPost(id);
+            {
+                string id = txtID.Text;
+                EliminarPost(txtID.Text);
                 CargarTabla();
             }
             catch (Exception)
@@ -307,38 +289,47 @@ namespace BackofficeDeAdministracion
         }
         private void EliminarPost(string id)
         {
-            MySqlConnection eliminar = new MySqlConnection("server = localhost; database = infini; uid = root; ");
+            MySqlConnection eliminar = new MySqlConnection("server=localhost; database=infini; uid=root;");
             eliminar.Open();
-                MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", eliminar);
-                MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", eliminar);
-                MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost = @Id", eliminar);
-                MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost = @Id", eliminar);
-                MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost = @Id", eliminar);
-                MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost = @Id", eliminar);
-                MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=(SELECT id FROM Comentarios WHERE idPost=@id)", eliminar);
-                command.Parameters.AddWithValue("@Id", id);
-                command2.Parameters.AddWithValue("@Id", id);
-                command3.Parameters.AddWithValue("@Id", id);
-                command4.Parameters.AddWithValue("@Id", id);
-                command5.Parameters.AddWithValue("@Id", id);
-                command6.Parameters.AddWithValue("@Id", id);
-                command7.Parameters.AddWithValue("@Id", id);
-                command7.ExecuteNonQuery();
-                command.ExecuteNonQuery();
-                command2.ExecuteNonQuery();
-                command3.ExecuteNonQuery();
-                command4.ExecuteNonQuery();
-                command5.ExecuteNonQuery();
-                command6.ExecuteNonQuery();
+            MySqlCommand command8 = new MySqlCommand("DELETE FROM reportes WHERE idComentario IN (SELECT id FROM Comentarios WHERE idPost = @Id)", eliminar);
+            MySqlCommand command9 = new MySqlCommand("DELETE FROM reportes WHERE idPost = @Id", eliminar);
+            command8.Parameters.AddWithValue("@Id", id);
+            command9.Parameters.AddWithValue("@Id", id);
+            command8.ExecuteNonQuery();
+            command9.ExecuteNonQuery();
+            MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", eliminar);
+            MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost=@Id", eliminar);
+            MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost=@Id", eliminar);
+            MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost=@Id", eliminar);
+            MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost=@Id", eliminar);
+            MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost=@Id", eliminar);
+            MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario IN (SELECT id FROM Comentarios WHERE idPost=@Id)", eliminar);
+            command.Parameters.AddWithValue("@Id", id);
+            command2.Parameters.AddWithValue("@Id", id);
+            command3.Parameters.AddWithValue("@Id", id);
+            command4.Parameters.AddWithValue("@Id", id);
+            command5.Parameters.AddWithValue("@Id", id);
+            command6.Parameters.AddWithValue("@Id", id);
+            command7.Parameters.AddWithValue("@Id", id);
+            command.ExecuteNonQuery();
+            command2.ExecuteNonQuery();
+            command3.ExecuteNonQuery();
+            command4.ExecuteNonQuery();
+            command5.ExecuteNonQuery();
+            command6.ExecuteNonQuery();
+            command7.ExecuteNonQuery();
             eliminar.Close();
             MessageBox.Show("Post eliminado con exito.");
-            //Log
-            string path = @"C:\Users\emerg\Downloads\lbackofinal\Proyecto2024\Log.txt";
+            // Log
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+            Directory.CreateDirectory(folderPath);
+            string path = Path.Combine(folderPath, "Log.txt");
             string mensaje = $"{DateTime.Now}: {Principal.admin} ha eliminado el post de id: {id}";
+
             using (StreamWriter writer = new StreamWriter(path, true))
             {
                 writer.WriteLine(mensaje);
             }
         }
-    }  
+    }
 }

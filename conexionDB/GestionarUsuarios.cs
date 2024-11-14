@@ -105,79 +105,66 @@ namespace BackofficeDeAdministracion
 
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(txtID.Text))
+            if (string.IsNullOrEmpty(txtID.Text))
             {
-                try
-                {
-                    Boolean encontrado = false;
-                    string nombre = txtID.Text;                    
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
-                    {
-                        if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == nombre)
-                        {
-                            conn.Open();
-                            MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta, nombreVisible, foto, estadoDeCuenta, descripcion FROM Usuarios WHERE nombreDeCuenta=@NombreDeCuenta", conn);
-                            command.Parameters.AddWithValue("@NombreDeCuenta", txtID.Text);
-                            MySqlDataReader reader = command.ExecuteReader();
-                            if (reader.Read())
-                            {
-                                lblNombreDeCuenta.Text = reader["nombreDeCuenta"].ToString();
-                                lblNombreVisible.Text = reader["nombreVisible"].ToString();
-                                lblEstadoDeCuenta.Text = reader["estadoDeCuenta"].ToString();
-                                lblDescripcion.Text = reader["descripcion"].ToString();
-                                try
-                                {
-                                    
-                                    string imagen = await CargarImagenDeGitHub(reader["foto"].ToString());
-                                    if (!string.IsNullOrEmpty(imagen))
-                                    {
-                                        pictureBox1.Show();
-                                        byte[] imagenBytes = Convert.FromBase64String(imagen);
-                                        using (MemoryStream ms = new MemoryStream(imagenBytes))
-                                        {
-                                            Bitmap bitmap = new Bitmap(ms);
-                                            pictureBox1.Image = bitmap;
-                                            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        pictureBox1.Hide();
-                                    }
-                                }
-                                catch
-                                {
+                MessageBox.Show("Debe ingresar un nombre", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
 
-                                }
-                                label2.Show();
-                                lblDescripcion.Show();
-                                lblNombre.Show();
-                                lblNombreVisible.Show();
-                                lblNomVisible.Show();
-                                lblEstadoDeCuenta.Show();
-                                lblEstado.Show();
-                                lblFoto.Show();
-                            }
-                            conn.Close();
-                            dataGridView1.ClearSelection();
-                            row.Selected = true;
-                            encontrado = true;
-                            return;
-                        }
-                    }
-                    if (!encontrado)
+            try
+            {
+                Boolean encontrado = false;
+                string nombre = txtID.Text;
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.Cells[0].Value != null && row.Cells[0].Value.ToString() == nombre)
                     {
-                        MessageBox.Show("No se encontró el usuario especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        conn.Open();
+                        MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta, nombreVisible, foto, estadoDeCuenta, descripcion FROM Usuarios WHERE nombreDeCuenta=@NombreDeCuenta", conn);
+                        command.Parameters.AddWithValue("@NombreDeCuenta", txtID.Text);
+                        MySqlDataReader reader = command.ExecuteReader();
+                        if (reader.Read())
+                        {
+                            lblNombreDeCuenta.Text = reader["nombreDeCuenta"].ToString();
+                            lblNombreVisible.Text = reader["nombreVisible"].ToString();
+                            lblEstadoDeCuenta.Text = reader["estadoDeCuenta"].ToString();
+                            lblDescripcion.Text = reader["descripcion"].ToString();
+                            try
+                            {
+                                pictureBox1.Hide();
+                                string imagen = await CargarImagenDeGitHub(reader["foto"].ToString());
+                                if (!string.IsNullOrEmpty(imagen))
+                                {
+                                    pictureBox1.Show();
+                                    byte[] imagenBytes = Convert.FromBase64String(imagen);
+                                    using (MemoryStream ms = new MemoryStream(imagenBytes))
+                                    {
+                                        Bitmap bitmap = new Bitmap(ms);
+                                        pictureBox1.Image = bitmap;
+                                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                                    }
+                                }
+                            }
+                            catch
+                            {
+                                
+                            }
+                            Controls.OfType<Control>().ToList().ForEach(c => c.Visible = true);
+                        }
+                        conn.Close();
+                        dataGridView1.ClearSelection();
+                        row.Selected = true;
+                        encontrado = true;
+                        return;
                     }
                 }
-                catch (Exception)
+                if (!encontrado)
                 {
                     MessageBox.Show("No se encontró el usuario especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
-            else
+            catch (Exception)
             {
-                MessageBox.Show("Debe ingresar una id", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("No se encontró el usuario especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -213,12 +200,16 @@ namespace BackofficeDeAdministracion
                     {
                         MessageBox.Show("Se ha baneado al usuario correctamente.");
                         cargarTabla();
-                        string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
-                        string mensaje = $"{DateTime.Now}: {admin} ha baneado permanentemente al usuario {lblNombreDeCuenta.Text}";
+                        //Log
+                        string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+                        Directory.CreateDirectory(folderPath);
+                        string path = Path.Combine(folderPath, "Log.txt");
+                        string mensaje = $"{DateTime.Now}: {admin} ha baneado permanentemente al usuario {lblNombreDeCuenta.Text} por un reporte";
                         using (StreamWriter writer = new StreamWriter(path, true))
                         {
                             writer.WriteLine(mensaje);
                         }
+
                     }
                     else
                     {
@@ -256,7 +247,10 @@ namespace BackofficeDeAdministracion
                         {
                             MessageBox.Show("Se ha baneado temporalmente al usuario.");
                             cargarTabla();
-                            string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+                            //Log
+                            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+                            Directory.CreateDirectory(folderPath);
+                            string path = Path.Combine(folderPath, "Log.txt");
                             string mensaje = $"{DateTime.Now}: {admin} ha baneado temporalmente al usuario {lblNombreDeCuenta.Text}";
                             using (StreamWriter writer = new StreamWriter(path, true))
                             {
@@ -303,7 +297,10 @@ namespace BackofficeDeAdministracion
                             {
                                 MessageBox.Show("Se ha desbaneado al usuario.");
                                 cargarTabla();
-                                string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+                                //Log
+                                string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+                                Directory.CreateDirectory(folderPath);
+                                string path = Path.Combine(folderPath, "Log.txt");
                                 string mensaje = $"{DateTime.Now}: {admin} ha desbaneado al usuario {lblNombreDeCuenta.Text}";
                                 using (StreamWriter writer = new StreamWriter(path, true))
                                 {

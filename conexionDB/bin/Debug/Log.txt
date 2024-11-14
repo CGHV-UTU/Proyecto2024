@@ -6,3 +6,8 @@
 02/11/2024 17:24:51: nombre ha desbaneado al usuario usuario18
 02/11/2024 17:26:12: nombre ha desbaneado al usuario usuario16
 02/11/2024 17:26:22: nombre ha desbaneado al usuario usuario16
+13/11/2024 12:59:48: wenten ha salido del sistema
+13/11/2024 13:00:10: wenten ha salido del sistema
+13/11/2024 13:01:06: wenten ha accedido al sistema
+13/11/2024 13:12:41: wenten ha salido del sistema
+13/11/2024 13:21:32: wenten ha salido del sistema

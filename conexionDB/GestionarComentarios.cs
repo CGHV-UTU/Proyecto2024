@@ -231,12 +231,15 @@ namespace BackofficeDeAdministracion
             MessageBox.Show("Información eliminada con éxito");
 
             //Registro en logs
-            string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+            Directory.CreateDirectory(folderPath);
+            string path = Path.Combine(folderPath, "Log.txt");
             string mensaje = $"{DateTime.Now}: {Principal.admin} ha eliminado el comentario de id {id}";
             using (StreamWriter writer = new StreamWriter(path, true))
             {
                 writer.WriteLine(mensaje);
             }
+
         }
     }
 }

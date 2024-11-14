@@ -52,7 +52,7 @@ namespace BackofficeDeAdministracion
             this.lblDescripcion = new System.Windows.Forms.Label();
             this.lblNombreDeCuenta = new System.Windows.Forms.Label();
             this.lblNombre = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtDescripcionReporte = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -70,6 +70,7 @@ namespace BackofficeDeAdministracion
             this.btnBuscar.Text = "🔎 Buscar ";
             this.btnBuscar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnBuscar.UseVisualStyleBackColor = false;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // btnEliminar
             // 
@@ -84,6 +85,7 @@ namespace BackofficeDeAdministracion
             this.btnEliminar.Text = "❌Eliminar ";
             this.btnEliminar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnEliminar.UseVisualStyleBackColor = false;
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             // 
             // lblIdPost
             // 
@@ -267,7 +269,7 @@ namespace BackofficeDeAdministracion
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Leelawadee UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(310, 209);
+            this.label2.Location = new System.Drawing.Point(322, 207);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(69, 25);
             this.label2.TabIndex = 103;
@@ -334,18 +336,18 @@ namespace BackofficeDeAdministracion
             this.lblNombre.Text = "Nombre de cuenta:";
             this.lblNombre.Visible = false;
             // 
-            // textBox1
+            // txtDescripcionReporte
             // 
-            this.textBox1.Cursor = System.Windows.Forms.Cursors.No;
-            this.textBox1.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
-            this.textBox1.Location = new System.Drawing.Point(16, 360);
-            this.textBox1.MaxLength = 100;
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(216, 65);
-            this.textBox1.TabIndex = 118;
-            this.textBox1.Visible = false;
+            this.txtDescripcionReporte.Cursor = System.Windows.Forms.Cursors.No;
+            this.txtDescripcionReporte.Font = new System.Drawing.Font("Leelawadee UI", 9.75F);
+            this.txtDescripcionReporte.Location = new System.Drawing.Point(16, 360);
+            this.txtDescripcionReporte.MaxLength = 100;
+            this.txtDescripcionReporte.Multiline = true;
+            this.txtDescripcionReporte.Name = "txtDescripcionReporte";
+            this.txtDescripcionReporte.ReadOnly = true;
+            this.txtDescripcionReporte.Size = new System.Drawing.Size(216, 65);
+            this.txtDescripcionReporte.TabIndex = 118;
+            this.txtDescripcionReporte.Visible = false;
             // 
             // ReporteEvento
             // 
@@ -353,7 +355,7 @@ namespace BackofficeDeAdministracion
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(836, 441);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtDescripcionReporte);
             this.Controls.Add(this.lblTipo);
             this.Controls.Add(this.lblT);
             this.Controls.Add(this.lblDescripcion);
@@ -411,6 +413,6 @@ namespace BackofficeDeAdministracion
         private System.Windows.Forms.Label lblDescripcion;
         private System.Windows.Forms.Label lblNombreDeCuenta;
         private System.Windows.Forms.Label lblNombre;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtDescripcionReporte;
     }
 }

@@ -103,7 +103,7 @@ namespace BackofficeDeAdministracion
             this.lblIdioma.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblIdioma.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblIdioma.ForeColor = System.Drawing.Color.White;
-            this.lblIdioma.Location = new System.Drawing.Point(443, 47);
+            this.lblIdioma.Location = new System.Drawing.Point(620, 9);
             this.lblIdioma.Name = "lblIdioma";
             this.lblIdioma.Size = new System.Drawing.Size(181, 22);
             this.lblIdioma.TabIndex = 19;
@@ -117,7 +117,7 @@ namespace BackofficeDeAdministracion
             this.lblModo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblModo.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblModo.ForeColor = System.Drawing.Color.White;
-            this.lblModo.Location = new System.Drawing.Point(257, 47);
+            this.lblModo.Location = new System.Drawing.Point(403, 9);
             this.lblModo.Name = "lblModo";
             this.lblModo.Size = new System.Drawing.Size(153, 22);
             this.lblModo.TabIndex = 18;
@@ -131,7 +131,7 @@ namespace BackofficeDeAdministracion
             this.lblSalir.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblSalir.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSalir.ForeColor = System.Drawing.Color.White;
-            this.lblSalir.Location = new System.Drawing.Point(257, 9);
+            this.lblSalir.Location = new System.Drawing.Point(242, 9);
             this.lblSalir.Name = "lblSalir";
             this.lblSalir.Size = new System.Drawing.Size(87, 22);
             this.lblSalir.TabIndex = 17;

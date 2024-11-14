@@ -18,6 +18,30 @@ namespace BackofficeDeAdministracion
         {
             InitializeComponent();
             VerificarConexión();
+            VerificarAdmin();
+        }
+
+        //Crear usuario si no existe
+        private void VerificarAdmin()
+        {
+            try
+            {
+                conn.Open();
+                string query = "SELECT COUNT(*) FROM Login WHERE nombreDeCuenta = 'admin' AND contrasena = 'admincghv'";
+                MySqlCommand command = new MySqlCommand(query, conn);
+                int count = Convert.ToInt32(command.ExecuteScalar());
+                if (count == 0)
+                {
+                    string insertQuery = "INSERT INTO Login (nombreDeCuenta, contrasena) VALUES ('admin', 'admincghv')";
+                    MySqlCommand insertCommand = new MySqlCommand(insertQuery, conn);
+                    insertCommand.ExecuteNonQuery();
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al verificar o crear el usuario admin: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnAcceder_Click(object sender, EventArgs e)
@@ -28,10 +52,11 @@ namespace BackofficeDeAdministracion
                 return;
             }            
                 try
-                {                    
+                {
+                    string nombre = txtUser.Text;
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT contrasena FROM Login WHERE nombreDeCuenta=@Nombre", conn);
-                    command.Parameters.AddWithValue("@Nombre", txtUser.Text);
+                    command.Parameters.AddWithValue("@Nombre", nombre);
                     MySqlDataReader reader = command.ExecuteReader();
                     if (reader.Read())
                     {
@@ -39,7 +64,7 @@ namespace BackofficeDeAdministracion
                         if (contReal == txtPass.Text)
                         {
                             MessageBox.Show("Acceso concedido.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            Principal inicio = new Principal(txtUser.Text);
+                            Principal inicio = new Principal(nombre);
                             inicio.FormClosed += (s, args) => this.Close();
                             inicio.Show();
                             this.Hide();
@@ -57,7 +82,7 @@ namespace BackofficeDeAdministracion
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("No encontrado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show("Error.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
                      
         }

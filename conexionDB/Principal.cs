@@ -32,8 +32,12 @@ namespace BackofficeDeAdministracion
         //Registrar la entrada del administrador
         private void Registro()
         {
-            string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+            Directory.CreateDirectory(folderPath); // Crea la carpeta si no existe
+
+            string path = Path.Combine(folderPath, "Log.txt");
             string mensaje = $"{DateTime.Now}: {admin} ha accedido al sistema";
+
             using (StreamWriter writer = new StreamWriter(path, true))
             {
                 writer.WriteLine(mensaje);
@@ -46,14 +50,15 @@ namespace BackofficeDeAdministracion
             var result = MessageBox.Show("¿Esta seguro de salir?", "Confirmar cierre", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
-                //Registrar salida del administrador
-                string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+                // Registrar salida del administrador
+                string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+                Directory.CreateDirectory(folderPath);
+                string path = Path.Combine(folderPath, "Log.txt");
                 string mensaje = $"{DateTime.Now}: {admin} ha salido del sistema";
                 using (StreamWriter writer = new StreamWriter(path, true))
                 {
                     writer.WriteLine(mensaje);
                 }
-                
             }
         }
 

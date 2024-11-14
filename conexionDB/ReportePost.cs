@@ -209,34 +209,43 @@ namespace BackofficeDeAdministracion
         }
         private void EliminarPost(string id)
         {
-            conn.Open();
-            MySqlCommand command = new MySqlCommand("DELETE FROM Reportes WHERE idPost=@Id;", conn);
-            MySqlCommand command8 = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", conn);
-            MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", conn);
-            MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost = @Id", conn);
-            MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost = @Id", conn);
-            MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost = @Id", conn);
-            MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost = @Id", conn);
-            MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=(SELECT id FROM Comentarios WHERE idPost=@id)", conn);
-            command.Parameters.AddWithValue("@Id", id);
+            MySqlConnection eliminar = new MySqlConnection("server=localhost; database=infini; uid=root;");
+            eliminar.Open();
+            MySqlCommand command8 = new MySqlCommand("DELETE FROM reportes WHERE idComentario IN (SELECT id FROM Comentarios WHERE idPost = @Id)", eliminar);
+            MySqlCommand command9 = new MySqlCommand("DELETE FROM reportes WHERE idPost = @Id", eliminar);
             command8.Parameters.AddWithValue("@Id", id);
+            command9.Parameters.AddWithValue("@Id", id);
+            command8.ExecuteNonQuery();
+            command9.ExecuteNonQuery();
+            MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", eliminar);
+            MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost=@Id", eliminar);
+            MySqlCommand command3 = new MySqlCommand("DELETE FROM PostPublico WHERE idPost=@Id", eliminar);
+            MySqlCommand command4 = new MySqlCommand("DELETE FROM PostGrupo WHERE idPost=@Id", eliminar);
+            MySqlCommand command5 = new MySqlCommand("DELETE FROM PostEvento WHERE idPost=@Id", eliminar);
+            MySqlCommand command6 = new MySqlCommand("DELETE FROM Posts WHERE idPost=@Id", eliminar);
+            MySqlCommand command7 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario IN (SELECT id FROM Comentarios WHERE idPost=@Id)", eliminar);
+            command.Parameters.AddWithValue("@Id", id);
             command2.Parameters.AddWithValue("@Id", id);
             command3.Parameters.AddWithValue("@Id", id);
             command4.Parameters.AddWithValue("@Id", id);
             command5.Parameters.AddWithValue("@Id", id);
             command6.Parameters.AddWithValue("@Id", id);
             command7.Parameters.AddWithValue("@Id", id);
-            command7.ExecuteNonQuery();
             command.ExecuteNonQuery();
             command2.ExecuteNonQuery();
             command3.ExecuteNonQuery();
             command4.ExecuteNonQuery();
             command5.ExecuteNonQuery();
             command6.ExecuteNonQuery();
-            conn.Close();
-            MessageBox.Show("Información eliminada con éxito.");
-            string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+            command7.ExecuteNonQuery();
+            eliminar.Close();
+            MessageBox.Show("Post eliminado con exito.");
+            // Log
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+            Directory.CreateDirectory(folderPath);
+            string path = Path.Combine(folderPath, "Log.txt");
             string mensaje = $"{DateTime.Now}: {Principal.admin} ha eliminado el post de id: {id}";
+
             using (StreamWriter writer = new StreamWriter(path, true))
             {
                 writer.WriteLine(mensaje);

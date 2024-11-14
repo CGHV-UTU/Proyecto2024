@@ -87,7 +87,7 @@ namespace BackofficeDeAdministracion
                 try
                 {
                     conn.Open();
-                    string query = "SELECT numeroDeReporte, idEvento, tipo, descripcion FROM Reportes";
+                    string query = "SELECT numeroDeReporte, idEvento, tipo, descripcion FROM Reportes WHERE idEvento IS NOT NULL";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     DataTable dataTable = new DataTable();
@@ -118,7 +118,7 @@ namespace BackofficeDeAdministracion
         // Gestion de Eventos
         // ------------------
 
-        // Buscar Evento
+        // Buscar Reporte y evento
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
 
@@ -131,13 +131,33 @@ namespace BackofficeDeAdministracion
 
             //Buscar el evento
             int id = int.Parse(txtID.Text);
-            bool encontrado = await CargarDatosEvento(id);
+            bool encontrado = await CargarReporte(id);
 
             // Si no se encuentra da error
             if (!encontrado)
             {
                 MessageBox.Show("No se encontró el evento especificado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+        }
+        private async Task<bool> CargarReporte(int id)
+        {
+            conn.Open();
+            MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta, idEvento, tipo, descripcion FROM Reportes WHERE numeroDeReporte=@id", conn);
+            command.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
+            MySqlDataReader reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                lblNombreDeCuenta.Text = reader["nombreDeCuenta"].ToString();
+                txtDescripcionReporte.Text = reader["descripcion"].ToString();
+                lblTipo.Text = reader["tipo"].ToString();
+                lblIdPost.Text = reader["idEvento"].ToString();
+                Controls.OfType<Control>().ToList().ForEach(c => c.Visible = true);
+                bool post = await CargarDatosEvento(Convert.ToInt32(reader["idEvento"]));
+                conn.Close();
+                return true;
+            }
+            conn.Close();
+            return false;
         }
 
         //Cargar un evento con su id
@@ -228,7 +248,10 @@ namespace BackofficeDeAdministracion
             command1.Parameters.AddWithValue("@Id", int.Parse(id));
             command1.ExecuteNonQuery();
             conn.Close();
-            string path = @"C:\Users\emerg\Downloads\elbackoffice\Proyecto2024\Log.txt";
+            //Log
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+            Directory.CreateDirectory(folderPath);
+            string path = Path.Combine(folderPath, "Log.txt");
             string mensaje = $"{DateTime.Now}: {Principal.admin} ha eliminado el evento de id por un reporte {id}";
             using (StreamWriter writer = new StreamWriter(path, true))
             {

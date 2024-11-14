@@ -21,13 +21,16 @@ namespace BackofficeDeAdministracion
         }
         private void CargarLog()
         {
-            string path = @"C:\Users\emerg\Downloads\lbackofinal\Proyecto2024\Log.txt";
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads", "Backoffice_CGHV_Log");
+            string path = Path.Combine(folderPath, "Log.txt");
+
             if (File.Exists(path))
             {
                 dataGridView1.ColumnCount = 3;
                 dataGridView1.Columns[0].Name = "Fecha";
                 dataGridView1.Columns[1].Name = "Administrador";
                 dataGridView1.Columns[2].Name = "Acción";
+
                 string[] lines = File.ReadAllLines(path);
                 foreach (string line in lines)
                 {
@@ -46,15 +49,14 @@ namespace BackofficeDeAdministracion
                             dataGridView1.ColumnHeadersDefaultCellStyle = columnHeaderStyle;
                             dataGridView1.Columns[0].Width = 130;
                             dataGridView1.Columns[1].Width = 165;
-                            dataGridView1.Columns[2].Width = 514; 
-
+                            dataGridView1.Columns[2].Width = 514;
                         }
                     }
                 }
             }
             else
             {
-                MessageBox.Show("El archivo no se encontró.");
+                MessageBox.Show("El archivo no se encontro.");
             }
         }
 

@@ -70,6 +70,7 @@ namespace BackofficeDeAdministracion
             this.button1.Text = "❌Eliminar Grupo";
             this.button1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.btnEliminar);
             // 
             // lblNombreVisible
             // 
@@ -179,6 +180,7 @@ namespace BackofficeDeAdministracion
             this.btnBuscar.Text = "🔎 Buscar ";
             this.btnBuscar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnBuscar.UseVisualStyleBackColor = false;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // lblNom
             // 
