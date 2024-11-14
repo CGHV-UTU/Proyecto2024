@@ -233,7 +233,7 @@ namespace Frontend
                         configuraciones = "{Claro};{Español}",
                         genero = género,
                         fechaDeNacimiento = fechaDeNacimiento,
-                        estadoDeCuenta = "activo",
+                        estadoDeCuenta = "publica",
                         contraseña = contraseña
                     };
                     var content = new StringContent(JsonConvert.SerializeObject(datos), Encoding.UTF8, "application/json");
