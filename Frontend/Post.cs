@@ -135,8 +135,16 @@ namespace Frontend
                     {
                         if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video")) 
                         {
-                            MessageBox.Show("Url no puede ser vacio si esta seleccionado.");
-                        } else 
+                            if (idioma.Equals("English"))
+                            {
+                                MessageBox.Show("The Url of the video can´t be empty if it´s selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Url no puede ser vacio si esta seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        } 
+                        else 
                         { 
                         byte[] data = new byte[0];
                         var resultado = await Publicar(txtTexto.Text, txtUrl.Text, data, fechaHoraString, token, idevento: idevento, comentarios: comentarios);
@@ -155,7 +163,14 @@ namespace Frontend
                     {
                         if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
                         {
-                            MessageBox.Show("Url no puede ser vacio si esta seleccionado.");
+                            if (idioma.Equals("English"))
+                            {
+                                MessageBox.Show("The Url of the video can´t be empty if it´s selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Url no puede ser vacio si esta seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
                         else
                         {
@@ -200,7 +215,14 @@ namespace Frontend
                     {
                         if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
                         {
-                            MessageBox.Show("Url no puede ser vacio si esta seleccionado.");
+                            if (idioma.Equals("English"))
+                            {
+                                MessageBox.Show("The Url of the video can´t be empty if it´s selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Url no puede ser vacio si esta seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
                         else
                         {
@@ -214,7 +236,14 @@ namespace Frontend
                     {
                         if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
                         {
-                            MessageBox.Show("Url no puede ser vacio si esta seleccionado.");
+                            if (idioma.Equals("English"))
+                            {
+                                MessageBox.Show("The Url of the video can´t be empty if it´s selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Url no puede ser vacio si esta seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
                         else
                         {
@@ -255,7 +284,14 @@ namespace Frontend
                         {
                             if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
                             {
-                                MessageBox.Show("Url no puede ser vacio si esta seleccionado.");
+                                if (idioma.Equals("English"))
+                                {
+                                    MessageBox.Show("The Url of the video can´t be empty if it´s selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Url no puede ser vacio si esta seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
                             }
                             else
                             {
@@ -269,7 +305,14 @@ namespace Frontend
                         {
                             if (txtUrl.Text.Equals("URL of the video") || txtUrl.Text.Equals("Url de video"))
                             {
-                                MessageBox.Show("Url no puede ser vacio si esta seleccionado.");
+                                if (idioma.Equals("English"))
+                                {
+                                    MessageBox.Show("The Url of the video can´t be empty if it´s selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Url no puede ser vacio si esta seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
                             }
                             else
                             {

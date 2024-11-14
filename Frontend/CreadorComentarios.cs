@@ -78,7 +78,14 @@ namespace Frontend
         {
             if (string.IsNullOrEmpty(textBox1.Text))
             {
-                MessageBox.Show("El comentario esta vacio.", "Correct", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (idioma.Equals("English"))
+                {
+                    MessageBox.Show("The Comment can´t be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("El Comentario no puede estar vacio.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {

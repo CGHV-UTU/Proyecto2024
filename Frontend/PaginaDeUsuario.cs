@@ -530,7 +530,14 @@ namespace Frontend
         {
             if (string.IsNullOrEmpty(txtNombre.Text))
             {
-                MessageBox.Show("El nombre es incorrecto");
+                if (idioma.Equals("English"))
+                {
+                    MessageBox.Show("The name can´t be empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("El nombre no puede ser vacio.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {

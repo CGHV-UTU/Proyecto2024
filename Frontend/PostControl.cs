@@ -920,15 +920,36 @@ namespace Frontend
                     }
                     else
                     {
-                        MessageBox.Show("El post no puede ser vacio.");
+                        if (idioma.Equals("English"))
+                        {
+                            MessageBox.Show("The Post can´t be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        else
+                        {
+                            MessageBox.Show("El Post no puede estar vacio.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                     break;
                 case "urlOnly":
-                    resultado=await Modificar(Convert.ToString(idpost), "", txtUrlEditar.Text, imagenfalsa, token);
+                    if (!string.IsNullOrEmpty(txtDescripcionEditar.Text))
+                    {
+                    resultado =await Modificar(Convert.ToString(idpost), "", txtUrlEditar.Text, imagenfalsa, token);
                     this.txtUrl.Text = txtUrlEditar.Text;
                     this.Controls.Remove(this.txtUrlEditar);
                     this.Controls.Remove(this.btnConfirmarCambios);
                     this.txtUrl.Visible = true;
+                    }
+                    else
+                    {
+                        if (idioma.Equals("English"))
+                        {
+                            MessageBox.Show("The Post can´t be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        else
+                        {
+                            MessageBox.Show("El Post no puede estar vacio.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
                     break;
             }
         }

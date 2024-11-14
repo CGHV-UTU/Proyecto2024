@@ -1515,7 +1515,14 @@ namespace Frontend
         {
             if (string.IsNullOrEmpty(txtNombre.Text))
             {
-                MessageBox.Show("Error en los datos", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (idioma.Equals("English"))
+                {
+                    MessageBox.Show("There is an error on the event data, check again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Hay un error en la información del evento, verifiquelo otra vez.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
