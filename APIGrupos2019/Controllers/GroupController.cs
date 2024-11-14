@@ -79,8 +79,7 @@ namespace API_Grupos.Controllers
         }
 
 
-
-        public string connectionString = "Server=localhost; database=infini; uID=root; pwd=;";
+        public string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
 
         public async Task<string> SubirImagenAGitHub(string imagen, string carpeta)
         {
@@ -991,7 +990,7 @@ namespace API_Grupos.Controllers
             {
                 if (TestToken(grupo.token))
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection(connectionString);
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT nombreReal, nombreVisible, foto FROM Grupos WHERE nombreVisible LIKE CONCAT('%', @nombre, '%')", conn);
                     cmd.Parameters.AddWithValue("@nombre", grupo.nombreVisible);
@@ -1036,7 +1035,7 @@ namespace API_Grupos.Controllers
             {
                 if (TestToken(grupo.token))
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection(connectionString);
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT p.idPost, p.texto, p.imagen, p.video, p.fechaYhora, p.comentarios, u.foto, u.nombreVisible, p.nombreDeCuenta FROM PostGrupo pg JOIN Posts p ON pg.idPost = p.idPost AND pg.nombreDeCuenta = p.nombreDeCuenta JOIN Usuarios u ON p.nombreDeCuenta = u.nombreDeCuenta WHERE pg.nombreReal = @nombreReal ORDER BY p.idPost DESC", conn);
                     cmd.Parameters.AddWithValue("@nombreReal", grupo.nombreReal);
@@ -1098,7 +1097,7 @@ namespace API_Grupos.Controllers
             {
                 if (TestToken(grupo.token))
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection(connectionString);
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT nombreDeCuenta FROM Participa WHERE nombreReal=@nombreReal AND nombreDeCuenta=@nombreDeCuenta", conn);
                     cmd.Parameters.AddWithValue("@nombreReal", grupo.nombreReal);
@@ -1133,7 +1132,7 @@ namespace API_Grupos.Controllers
             {
                 if (TestToken(grupo.token))
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection(connectionString);
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT rol FROM Participa WHERE nombreReal=@nombreReal AND nombreDeCuenta=@nombreDeCuenta", conn);
                     cmd.Parameters.AddWithValue("@nombreReal", grupo.nombreReal);
@@ -1218,7 +1217,7 @@ namespace API_Grupos.Controllers
             {
                 if (TestToken(grupo.token))
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection(connectionString);
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT p1.nombreDeCuenta AS usuario1, p2.nombreDeCuenta AS usuario2, p1.nombreReal AS grupo FROM infini.Participa p1 JOIN infini.Participa p2 ON p1.nombreReal = p2.nombreReal WHERE p1.nombreDeCuenta < p2.nombreDeCuenta AND p1.rol = 'usuario' AND p2.rol = 'usuario' AND p1.nombreReal = @grupo AND p1.nombreReal IN (SELECT nombreReal FROM infini.Participa GROUP BY nombreReal HAVING COUNT(*) = 2)", conn);
                     cmd.Parameters.AddWithValue("@grupo", grupo.nombreReal);
@@ -1254,7 +1253,7 @@ namespace API_Grupos.Controllers
             {
                 if (TestToken(chat.token))
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection(connectionString);
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT p1.nombreReal AS grupo FROM Participa p1 JOIN Participa p2 ON p1.nombreReal = p2.nombreReal WHERE p1.rol = 'usuario' AND p2.rol = 'usuario' AND p1.nombreDeCuenta < p2.nombreDeCuenta AND p1.nombreReal IN (SELECT nombreReal FROM infini.Participa GROUP BY nombreReal HAVING COUNT(*) = 2) AND ((p1.nombreDeCuenta = @nombreDeCuenta1 AND p2.nombreDeCuenta = @nombreDeCuenta2) OR (p1.nombreDeCuenta = @nombreDeCuenta2 AND p2.nombreDeCuenta = @nombreDeCuenta1)); ", conn);
                     cmd.Parameters.AddWithValue("@nombreDeCuenta1", chat.nombreDeCuenta1);
