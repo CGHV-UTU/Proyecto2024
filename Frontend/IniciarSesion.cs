@@ -92,6 +92,28 @@ namespace Frontend
             }
         }
 
+        public static async Task<string> VerificarBaneo(string usuario, string token)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    var datosUsuario = new { nombreDeCuenta = usuario };
+                    var content = new StringContent(JsonConvert.SerializeObject(datosUsuario), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PutAsync("https://localhost:44383/user/VerBaneo", content);
+                    response.EnsureSuccessStatusCode();
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("ResponseBody en VerificarBaneo: " + responseBody);
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    return data; 
+                }
+                catch (Exception ex)
+                {
+                    return "Hubo un error " + ex ; 
+                }
+            }
+        }
+
         private void pcbxVerContraseña_Click(object sender, EventArgs e)
         {
             if (!txtContraseña.UseSystemPasswordChar)
@@ -116,6 +138,15 @@ namespace Frontend
                         var resultado = await ComprobarPeticion(token);
                         if (resultado)
                         {
+                            var baneado = await VerificarBaneo(txtUsuario.Text, token);
+                            if (baneado.ToString() != "NoBan")
+                            {
+                                MessageBox.Show("Este usuario está baneado. No se puede iniciar sesión. " + baneado, "Usuario Baneado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                Console.WriteLine("Respuesta de VerificarBaneo (baneado): "+ baneado.ToString());    
+                                txtUsuario.Text = "Usuario";
+                                txtContraseña.Text = "Contraseña";
+                                return;
+                            }
                             Inicio inicio = new Inicio(txtUsuario.Text, token);
                             inicio.FormClosed += (s, args) => this.Close();
                             inicio.Show();
