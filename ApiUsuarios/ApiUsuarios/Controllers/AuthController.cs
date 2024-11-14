@@ -84,7 +84,8 @@ namespace ApiUsuarios.Controllers
         {
             try
             {
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
+
                 conn.Open();
                 MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta,contrasena FROM Login WHERE nombreDeCuenta=@nombredecuenta", conn);
                 command.Parameters.AddWithValue("@nombredecuenta", nombredecuenta);

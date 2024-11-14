@@ -18,7 +18,7 @@ namespace ApiUsuarios.Controllers
     [System.Web.Mvc.RoutePrefix("user")]
     public class UserController : Controller
     {
-        private MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+        private MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
         public class usuario
         {
             public string nombreDeCuenta { get; set; }
@@ -759,7 +759,7 @@ namespace ApiUsuarios.Controllers
             {
                 if (TestToken(reporte.token))
                 {
-                    using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;")) // Creo pq me obliga el testing
+                    using (var conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;"))
                     {
                         await conn.OpenAsync();
 
