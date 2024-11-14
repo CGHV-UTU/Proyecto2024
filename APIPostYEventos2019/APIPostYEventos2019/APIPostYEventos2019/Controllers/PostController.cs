@@ -179,7 +179,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 if (TestToken(postdata.token))
                 {
-                    using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+                    using (MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;"))
                     {
                         await conn.OpenAsync();
                         int idPost;
@@ -320,7 +320,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT texto,imagen,video,fechaYhora FROM Posts WHERE idPost=@Id", conn);
                     command.Parameters.AddWithValue("@Id", post.id);
@@ -393,7 +393,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT p.idPost, p.texto, p.imagen, p.video, p.fechaYhora, p.comentarios, u.foto, u.nombreVisible, p.nombreDeCuenta, COUNT(dl.nombreDeCuenta) AS cantidadLikes FROM Posts p JOIN PostPublico pp ON p.idPost = pp.idPost AND p.nombreDeCuenta = pp.nombreDeCuenta JOIN Usuarios u ON p.nombreDeCuenta = u.nombreDeCuenta LEFT JOIN DaLike dl ON p.idPost = dl.idPost WHERE p.idPost BETWEEN @Id AND @segundaId GROUP BY p.idPost, p.nombreDeCuenta, p.texto, p.imagen, p.video, p.fechaYhora, u.foto ORDER BY cantidadLikes DESC, RAND() LIMIT 40", conn);
                     command.Parameters.AddWithValue("@Id", post.id);
@@ -459,7 +459,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT COUNT(*) FROM DaLike WHERE idPost=@Id", conn);
                     command.Parameters.AddWithValue("@Id", post.id);
@@ -495,7 +495,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta FROM Posts WHERE idPost=@Id", conn);
                     command.Parameters.AddWithValue("@Id", post.id);
@@ -541,7 +541,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE idPost=@Id", conn);
                     MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLike WHERE idPost = @Id", conn);
@@ -588,7 +588,7 @@ namespace APIPostYEventos2019.Controllers
                 string id = postdata.id;
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd;
 
@@ -686,7 +686,7 @@ namespace APIPostYEventos2019.Controllers
                     string fechaYhoraFinal = eventdata.fechaYhora_Final;
                     string linkImagen;
                     linkImagen = await SubirImagenAGitHub(eventdata.foto, "EventImages");
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd2;
                     if (string.IsNullOrEmpty(eventdata.user))
@@ -790,7 +790,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("DELETE FROM PostEvento WHERE idEvento=@Id", conn);
                     MySqlCommand command1 = new MySqlCommand("DELETE FROM Eventos WHERE idEvento=@Id", conn);
@@ -824,7 +824,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT idEvento,titulo,ubicacion,descripcion,foto,fechaYhora_Inicio,fechaYhora_Final FROM Eventos WHERE idEvento=@Id", conn);
                     command.Parameters.AddWithValue("@Id", eventData.id);
@@ -889,7 +889,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("INSERT INTO ParticipaEvento (nombreDeCuenta,idEvento,rol) VALUES (@nombreUsuario, @idEvento, @rol)", conn);
                     command.Parameters.AddWithValue("@nombreUsuario", eventData.user);
@@ -918,7 +918,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("DELETE FROM ParticipaEvento WHERE nombreDeCuenta=@nombreUsuario AND idEvento=@idEvento", conn);
                     command.Parameters.AddWithValue("@nombreUsuario", eventData.user);
@@ -946,7 +946,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT e.idEvento, e.titulo, e.ubicacion, e.fechaYhora_Inicio, e.fechaYhora_Final, e.foto, e.descripcion, p.rol FROM Eventos e JOIN ParticipaEvento p ON e.idEvento = p.idEvento WHERE p.nombreDeCuenta = @nombreUsuario ORDER BY e.fechaYhora_Inicio", conn);
                     command.Parameters.AddWithValue("@nombreUsuario", eventData.user);
@@ -989,7 +989,7 @@ namespace APIPostYEventos2019.Controllers
             if (TestToken(eventdata.token))
             {
                 string id = eventdata.id;
-                MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                 conn.Open();
                 try
                 {
@@ -1074,7 +1074,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd;
                     if (!string.IsNullOrEmpty(commentdata.NombreDeCuenta) &&
@@ -1121,7 +1121,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("DELETE FROM Comentarios WHERE id=@Id", conn);
                     MySqlCommand command2 = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=@Id", conn);
@@ -1153,7 +1153,7 @@ namespace APIPostYEventos2019.Controllers
                 string id = commentdata.id;
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd;
                     if (!string.IsNullOrEmpty(commentdata.texto))
@@ -1190,7 +1190,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta, texto, fechaYHora FROM Comentarios WHERE id=@Id", conn);
                     command.Parameters.AddWithValue("@Id", post.id);
@@ -1238,7 +1238,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT idPost FROM Posts WHERE idPost=@Id", conn);
                     command.Parameters.AddWithValue("@Id", post.id);
@@ -1285,7 +1285,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT idEvento FROM Eventos WHERE idEvento=@Id", conn);
                     command.Parameters.AddWithValue("@Id", eventData.id);
@@ -1330,7 +1330,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT id FROM Comentarios WHERE id=@Id", conn);
                     command.Parameters.AddWithValue("@Id", post.id);
@@ -1378,7 +1378,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT idPost FROM Posts ORDER BY idPost DESC LIMIT 1", conn);
                     MySqlDataReader reader = command.ExecuteReader();
@@ -1413,7 +1413,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT idEvento FROM Eventos ORDER BY idEvento DESC LIMIT 1", conn);
                     MySqlDataReader reader = cmd.ExecuteReader();
@@ -1447,7 +1447,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT id FROM Comentarios ORDER BY id DESC LIMIT 1", conn);
                     MySqlDataReader reader = command.ExecuteReader();
@@ -1484,7 +1484,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    string connectionString = "server = localhost; database = infini; uid = root; ";
+                    string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
                     using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
                         conn.Open();
@@ -1515,7 +1515,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    string connectionString = "server = localhost; database = infini; uid = root; ";
+                    string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
                     using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
                         conn.Open();
@@ -1546,8 +1546,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    string connectionString = "server = localhost; database = infini; uid = root; ";
-                    // Create a new MySQL connection
+                    string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
                     using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
                         conn.Open();
@@ -1578,7 +1577,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    string connectionString = "server = localhost; database = infini; uid = root; ";
+                    string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
                     using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
                         conn.Open();
@@ -1624,7 +1623,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    string connectionString = "server = localhost; database = infini; uid = root; ";
+                    string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
                     using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
                         conn.Open();
@@ -1691,7 +1690,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    string connectionString = "server = localhost; database = infini; uid = root; ";
+                    string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
                     using (MySqlConnection conn = new MySqlConnection(connectionString))
                     {
                         conn.Open();
@@ -1757,7 +1756,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("INSERT INTO DaLike (nombreDeCuenta, idPost, nombredeCreador) VALUES (@nombreDeCuenta, @idPost, @nombredeCreador)", conn);
                     cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
@@ -1787,7 +1786,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT idPost FROM DaLike WHERE idPost=@idpost AND nombreDeCuenta=@nombreDeCuenta AND nombredeCreador=@nombredeCreador", conn);
                     cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
@@ -1833,7 +1832,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("DELETE FROM DaLike WHERE idPost=@idpost AND nombreDeCuenta=@nombreDeCuenta AND nombredeCreador=@nombredeCreador", conn);
                     cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
@@ -1862,7 +1861,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("INSERT INTO DaLikeComentario (nombreDeCuenta, idComentario, quienDaLike) VALUES (@nombreDeCuenta, @idComentario, @quienDaLike)", conn);
                     cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
@@ -1892,7 +1891,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT idComentario FROM DaLikeComentario WHERE idComentario=@idComentario AND nombreDeCuenta=@nombreDeCuenta AND quienDaLike=@quienDaLike", conn);
                     cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
@@ -1938,7 +1937,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("DELETE FROM DaLikeComentario WHERE idComentario=@idComentario AND nombreDeCuenta=@nombreDeCuenta AND quienDaLike=@quienDaLike", conn);
                     cmd.Parameters.AddWithValue("@nombreDeCuenta", like.nombreDeCuenta);
@@ -1967,7 +1966,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 try
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand command = new MySqlCommand("SELECT nombreDeCuenta FROM Comentarios WHERE id=@Id", conn);
                     command.Parameters.AddWithValue("@Id", post.id);
@@ -2013,7 +2012,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 if (TestToken(evento.token))
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT idEvento, titulo, foto FROM Eventos WHERE titulo LIKE CONCAT('%', @titulo, '%')", conn);
                     cmd.Parameters.AddWithValue("@titulo", evento.titulo);
@@ -2059,7 +2058,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 if (TestToken(post.token))
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("INSERT INTO PostGrupo (idPost, nombreDeCuenta, nombreReal) VALUES (@idPost, @nombreDeCuenta, @nombreReal)", conn);
                     cmd.Parameters.AddWithValue("@idPost", post.id);
@@ -2087,7 +2086,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 if (TestToken(eventData.token))
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT nombreDeCuenta FROM infini.ParticipaEvento WHERE idEvento=@id AND nombreDeCuenta=@nombreDeCuenta AND rol=@rol", conn);
                     cmd.Parameters.AddWithValue("@id", eventData.id);
@@ -2121,7 +2120,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 if (TestToken(eventData.token))
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("SELECT rol FROM ParticipaEvento WHERE idEvento=@id AND nombreDeCuenta=@nombreDeCuenta", conn);
                     cmd.Parameters.AddWithValue("@id", eventData.id);
@@ -2154,7 +2153,7 @@ namespace APIPostYEventos2019.Controllers
             {
                 if (TestToken(eventData.token))
                 {
-                    MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+                    MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand("UPDATE ParticipaEvento SET rol=@rol WHERE idEvento=@id AND nombreDeCuenta=@nombreDeCuenta", conn);
                     cmd.Parameters.AddWithValue("@id", eventData.id);
@@ -2191,7 +2190,7 @@ namespace APIPostYEventos2019.Controllers
                 {
                     List<dynamic> usuarios = new List<dynamic>();
 
-                    using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+                    using (MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;"))
                     {
                         conn.Open();
 
