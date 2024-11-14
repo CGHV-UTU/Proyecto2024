@@ -876,6 +876,44 @@ namespace ApiUsuarios.Controllers
         }
 
         [System.Web.Mvc.HttpPut]
+        [System.Web.Mvc.Route("VerBaneo")]
+        public dynamic VerBaneo([FromBody] usuario user)
+        {
+            if (user == null)
+            {
+                return Json("Hubo un error: Usuario inválido o token incorrecto");
+            }
+            try
+            {
+                if (TestToken(user.token))
+                {
+                    return Json("Token inválido");
+                }
+                using (conn)
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM Ban WHERE nombreDeUsuario=@nombreDeCuenta", conn);
+                    cmd.Parameters.AddWithValue("@nombreDeCuenta", user.nombreDeCuenta);
+                    var result = cmd.ExecuteScalar();
+                    if (result != null)
+                    {
+                        return Json(result.ToString());
+                    }
+                    else
+                    {
+                        return Json("NoBan");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json("Ha ocurrido un error en la consulta");
+            }
+        }
+
+
+
+        [System.Web.Mvc.HttpPut]
         [System.Web.Mvc.Route("ConseguirInteraccion")]
         public dynamic ConseguirInteraccion([FromBody] usuario user)
         {
