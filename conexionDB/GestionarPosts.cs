@@ -16,7 +16,7 @@ namespace BackofficeDeAdministracion
 {
     public partial class GestionarPosts : Form
     {
-        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+        static MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
         public GestionarPosts()
         {
             InitializeComponent();        
@@ -56,7 +56,7 @@ namespace BackofficeDeAdministracion
         //Cargar tabla
         private void CargarTabla()
         {
-            string connectionString = "server = localhost; database = infini; uid = root; ";
+            string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
@@ -130,7 +130,7 @@ namespace BackofficeDeAdministracion
         private async Task<bool> CargarDatosPost(int id)
         {
             bool encontrado = false;
-            using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+            using (var conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;"))
             {
                 await conn.OpenAsync();
 
@@ -289,7 +289,7 @@ namespace BackofficeDeAdministracion
         }
         private void EliminarPost(string id)
         {
-            MySqlConnection eliminar = new MySqlConnection("server=localhost; database=infini; uid=root;");
+            MySqlConnection eliminar = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
             eliminar.Open();
             MySqlCommand command8 = new MySqlCommand("DELETE FROM reportes WHERE idComentario IN (SELECT id FROM Comentarios WHERE idPost = @Id)", eliminar);
             MySqlCommand command9 = new MySqlCommand("DELETE FROM reportes WHERE idPost = @Id", eliminar);

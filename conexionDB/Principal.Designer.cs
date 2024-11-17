@@ -109,6 +109,7 @@ namespace BackofficeDeAdministracion
             this.lblIdioma.TabIndex = 19;
             this.lblIdioma.Text = "⌨︎ Cambiar Idioma";
             this.lblIdioma.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblIdioma.Visible = false;
             this.lblIdioma.Click += new System.EventHandler(this.btnIdioma_Click);
             // 
             // lblModo

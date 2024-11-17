@@ -14,7 +14,7 @@ namespace BackofficeDeAdministracion
 {
     public partial class GestionarComentarios : Form
     {
-        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+        static MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
         public GestionarComentarios()
         {
             InitializeComponent();
@@ -50,7 +50,7 @@ namespace BackofficeDeAdministracion
         private void CargarTabla()
         {
             // vuelvo a abrir una conexion porque la principal esta en uso y genera errores
-            string connectionString = "server = localhost; database = infini; uid = root; ";
+            string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
@@ -145,7 +145,7 @@ namespace BackofficeDeAdministracion
         private async Task<bool> CargarDatosPost(int id)
         {
             bool encontrado = false;
-            using (var conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+            using (var conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;"))
             {
                 await conn.OpenAsync();
 

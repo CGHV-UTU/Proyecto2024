@@ -16,7 +16,7 @@ namespace BackofficeDeAdministracion
 {
     public partial class GestionarUsuarios : Form
     {
-        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+        static MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
         private string admin;
         public GestionarUsuarios(string usuario)
         {
@@ -35,7 +35,7 @@ namespace BackofficeDeAdministracion
         }    
         private void cargarTabla()
         {
-            string connectionString = "server = localhost; database = infini; uid = root; ";
+            string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
@@ -176,7 +176,7 @@ namespace BackofficeDeAdministracion
                 return;
             }
 
-            string connectionString = "server=localhost; database=infini; uid=root;";
+            string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
@@ -233,7 +233,7 @@ namespace BackofficeDeAdministracion
             {
                 string fechayhora = dtpFecha.Text + " " + dtpHora.Text;
                 DateTime fechayhora1 = Convert.ToDateTime(fechayhora);
-                string connectionString = "server=localhost; database=infini; uid=root;";
+                string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     MySqlCommand command = new MySqlCommand("INSERT INTO Ban(nombreDeUsuario, fechaInicio, fechaFinalizacion) VALUES(@NombreDeCuenta, NOW(), @FechaBaneoTemporal)", conn);
@@ -277,7 +277,7 @@ namespace BackofficeDeAdministracion
             }
             else
             {
-                string connectionString = "server=localhost; database=infini; uid=root;";
+                string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();

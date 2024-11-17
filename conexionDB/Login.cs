@@ -13,7 +13,7 @@ namespace BackofficeDeAdministracion
 {
     public partial class Login : Form
     {
-        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+        static MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
         public Login()
         {
             InitializeComponent();
@@ -90,7 +90,7 @@ namespace BackofficeDeAdministracion
         //Verificar conexión con la Base de Datos
         private void VerificarConexión()
         {       
-            MySqlConnection conn = new MySqlConnection("server=localhost;database=infini;uid=root;");
+            MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
             try
             {
                 conn.Open();

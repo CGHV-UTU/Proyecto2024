@@ -14,7 +14,7 @@ namespace BackofficeDeAdministracion
 {
     public partial class ReporteGrupo : Form
     {
-        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+        static MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
         public ReporteGrupo()
         {
             InitializeComponent();
@@ -42,7 +42,7 @@ namespace BackofficeDeAdministracion
         //Cargar tabla      
         private void CargarTabla()
         {
-            string connectionString = "server = localhost; database = infini; uid = root; ";
+            string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
@@ -98,7 +98,7 @@ namespace BackofficeDeAdministracion
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+                using (MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;"))
                 {
                     await conn.OpenAsync();
                     MySqlCommand command = new MySqlCommand("SELECT nombreReal, nombreVisible, foto, descripcion FROM Grupos WHERE nombreReal=@nombreReal", conn);

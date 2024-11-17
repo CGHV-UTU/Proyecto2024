@@ -17,7 +17,7 @@ namespace BackofficeDeAdministracion
    
     public partial class GestionarEventos : Form
     {
-        static MySqlConnection conn = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;");
+        static MySqlConnection conn = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;");
         public GestionarEventos()
         {
             InitializeComponent();
@@ -58,7 +58,7 @@ namespace BackofficeDeAdministracion
         private void CargarTabla()
         {
             // vuelvo a abrir una conexion porque la principal esta en uso y genera errores
-            string connectionString = "server = localhost; database = infini; uid = root; ";
+            string connectionString = "Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;";
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 try
@@ -139,7 +139,7 @@ namespace BackofficeDeAdministracion
         {
             try
             {
-                using (var conn2 = new MySqlConnection("Server=localhost; database=infini; uID=root; pwd=;"))
+                using (var conn2 = new MySqlConnection("Server=192.168.5.50; database=cghv; uID=federico.gonzalez; pwd=56983793;"))
                 {
                     await conn2.OpenAsync();
                     MySqlCommand command = new MySqlCommand("SELECT titulo, ubicacion, descripcion, foto, fechaYhora_Inicio, fechaYhora_Final FROM Eventos WHERE idEvento=@id", conn2);
